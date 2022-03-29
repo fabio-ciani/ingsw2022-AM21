@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
  */
 public class StudentContainer {
 
+	private static final int NO_MAX_SIZE = 130;
+	protected static final int NUMBER_OF_COLORS = 5;
+
 	/**
 	 * The {@link Map} containing the number of students stored in the container for each {@link Color}.
 	 * Keys must be all and only the values of {@link Color}.
@@ -26,22 +29,28 @@ public class StudentContainer {
 	private final int maxSize;
 
 	/**
-	 * Constructs an empty {@code StudentContainer} with the specified maximum size.
-	 * @param maxSize the maximum number of students allowed in the container at any moment.
+	 * Constructs a {@code StudentContainer} with maximum size equal to the total number of student discs in the
+	 * game (130). This constructor is to be used only to construct a {@code StudentContainer} with no specified
+	 * maximum size.
 	 */
-	public StudentContainer(int maxSize) {
-		this.maxSize = maxSize;
+	public StudentContainer() {
+		this.maxSize = NO_MAX_SIZE;
 		this.students = new HashMap<>();
 		for (Color color : Color.values())
 			students.put(color, 0);
 	}
 
 	/**
-	 * Returns the maximum size allowed for the container.
-	 * @return the maximum size allowed for the container.
+	 * Constructs an empty {@code StudentContainer} with the specified maximum size. The size has an upper bound equal to
+	 * the total number of student discs in the game (130).
+	 *
+	 * @param maxSize the maximum number of students allowed in the container at any moment.
 	 */
-	public int getMaxSize() {
-		return maxSize;
+	public StudentContainer(int maxSize) {
+		this.maxSize = Math.min(maxSize, 130);
+		this.students = new HashMap<>();
+		for (Color color : Color.values())
+			students.put(color, 0);
 	}
 
 	/**
@@ -50,111 +59,130 @@ public class StudentContainer {
 	 * @return the amount of students of color {@code color} currently in the container.
 	 */
 	public int getQuantity(Color color) {
+		if (color == null)
+			return -1;
+
 		Integer res = students.putIfAbsent(color, 0);
 		return (res == null) ? 0 : res;
 	}
 
 	/**
-	 * Moves a student of color {@code color} from the source container {@code from} to the destination container
-	 * {@code to}. No movement occurs if the destination container has reached its {@code maxSize}.
-	 * @param from the source {@code StudentContainer}.
-	 * @param to the destination {@code StudentContainer}.
+	 * Moves a student of color {@code color} from {@code this} to the destination container {@code dest}. No movement
+	 * occurs if {@code this} is empty or the destination container has no remaining capacity.
+	 * @param dest the destination {@code StudentContainer}.
 	 * @param color the {@link Color} of the student to be moved.
-	 * @throws NoMovementException if the source container is empty or the destination container is full.
+	 * @throws NoMovementException if {@code this} is empty or the destination container is full.
 	 */
-	public static void move(StudentContainer from, StudentContainer to, Color color) throws NoMovementException {
-		if (to.remainingCapacity() == 0)
-			return;
+	public void moveTo(StudentContainer dest, Color color) throws NoMovementException {
+		if (!dest.hasRemainingCapacity(color))
+			throw new NoMovementException("Moved 0/1: the destination container is full.");
 
-		Integer srcAmount = from.students.putIfAbsent(color, 0);
-		Integer destAmount = to.students.get(color);
+		Integer srcAmount = this.students.putIfAbsent(color, 0);
+		Integer destAmount = dest.students.get(color);
 
 		if (srcAmount == null || srcAmount == 0)
 			throw new NoMovementException("Moved 0/1: the source container is empty.");
 
 		if (destAmount == null)
 			destAmount = 0;
-		else if (destAmount == to.maxSize)
-			throw new NoMovementException("Moved 0/1: the destination container is full.");
 
-		from.students.put(color, srcAmount - 1);
-		to.students.put(color, destAmount + 1);
+		this.students.put(color, srcAmount - 1);
+		dest.students.put(color, destAmount + 1);
 	}
 
 	/**
-	 * Moves {@code amount} students of random colors from the source container {@code from} to the destination container
-	 * {@code to}. Students are moved one by one until the destination container has reached its {@code maxSize}, at which
-	 * point no subsequent movements occur.
-	 * @param from the source {@code StudentContainer}.
-	 * @param to the destination {@code StudentContainer}.
+	 * Moves {@code amount} students of random colors from {@code this} to the destination container {@code dest}.
+	 * Students are moved one by one until no colors that can be both removed from {@code this} and added to {@code dest}
+	 * can be found, at which point no subsequent movements occur.
+	 * @param dest the destination {@code StudentContainer}.
 	 * @param amount the amount of students to be moved.
-	 * @throws NoMovementException if the source container has less than {@code amount} students or the destination
-	 * container has less than {@code amount} remaining capacity.
+	 * @throws NoMovementException if no colors that can be both removed from {@code this} and added to {@code dest}
+	 * can be found.
 	 */
-	public static void move(StudentContainer from, StudentContainer to, int amount) throws NoMovementException {
-		int maxMovements = Math.min(to.remainingCapacity(), amount);
-
-		for (int i = 0; i < maxMovements; i++) {
-			Color color = from.getRandomColor();
+	public void moveTo(StudentContainer dest, int amount) throws NoMovementException {
+		for (int i = 0; i < amount; i++) {
+			Color color = this.getRandomColor(dest.availableColors());
 			if (color == null)
-				throw new NoMovementException("Moved " + i + "/" + amount + ": the source container is empty.");
-			move(from, to, from.getRandomColor());
+				throw new NoMovementException("Moved " + i + "/" + amount + ": no matching colors were found.");
+			moveTo(dest, color);
 		}
-
-		if (maxMovements < amount)
-			throw new NoMovementException("Moved " + maxMovements + "/" + amount + ": the destination container is full.");
 	}
 
 	/**
-	 * Moves all the students in the source container {@code from} to the destination container {@code to}. Students are
-	 * moved color by color until the destination container has reached its {@code maxSize}, at which point no subsequent
-	 * movements occur. The source container {@code from} is effectively emptied as a result of this method, unless it
-	 * contained more students than the destination container could add.
-	 * @param from the source {@code StudentContainer}.
-	 * @param to the destination {@code StudentContainer}.
-	 * @throws NoMovementException if the source container has more students than the destination container can contain.
+	 * Moves all the students from {@code this} to the destination container {@code dest}. Students are moved color by
+	 * color until the destination container has no remaining capacity, at which point no subsequent movements occur. The
+	 * source container, {@code this}, is effectively emptied as a result of this method, unless it contained more
+	 * students than the destination container could add.
+	 * @param dest the destination {@code StudentContainer}.
+	 * @throws NoMovementException if {@code this} contains more students than the destination container can add.
 	 */
-	public static void moveAll(StudentContainer from, StudentContainer to) throws NoMovementException {
+	public void moveAllTo(StudentContainer dest) throws NoMovementException {
+		boolean destinationFull = false;
+
 		for (Color color : Color.values()) {
-			Integer srcAmount = from.students.get(color);
-			Integer destAmount = to.students.get(color);
+			Integer srcAmount = this.students.get(color);
+			Integer destAmount = dest.students.get(color);
 
 			if (srcAmount == null)
 				srcAmount = 0;
-
 			if (destAmount == null)
 				destAmount = 0;
 
-			int maxMovements = Math.min(to.remainingCapacity(), srcAmount);
-
-			from.students.put(color, srcAmount - maxMovements);
-			to.students.put(color, destAmount + maxMovements);
-
+			int maxMovements = Math.min(dest.remainingCapacity(color), srcAmount);
+			this.students.put(color, srcAmount - maxMovements);
+			dest.students.put(color, destAmount + maxMovements);
 			if (maxMovements < srcAmount)
-				throw new NoMovementException("Moved " + maxMovements + "/" + srcAmount + ": the destination container is full.");
+				destinationFull = true;
 		}
+
+		if (destinationFull)
+			throw new NoMovementException("Source not emptied: the destination container is full.");
+	}
+
+	public void refillFrom(StudentContainer source) throws NoMovementException {
+		source.moveTo(this, this.remainingCapacity());
 	}
 
 	/**
 	 * Returns a random {@link Color} such that {@code this} contains students of that color, or {@code null} if the
 	 * container is empty.
+	 *
 	 * @return a random {@link Color} such that {@code this} contains students of that color, or {@code null} if the
 	 * container is empty.
 	 */
-	private Color getRandomColor() {
-		List<Color> available = students.keySet().stream().filter(c -> students.get(c) > 0).collect(Collectors.toList());
+	private Color getRandomColor(Set<Color> destAvailable) {
+		List<Color> available = students.keySet().stream().filter(c -> students.get(c) > 0).toList();
+		available.retainAll(destAvailable);
 
 		if (available.size() == 0)
 			return null;
 		return available.get(new Random().nextInt(available.size()));
 	}
 
+	private Set<Color> availableColors() {
+		return students.keySet().stream().filter(this::hasRemainingCapacity).collect(Collectors.toSet());
+	}
+
 	/**
-	 * Returns the remaining capacity of the container, an integer between 0 and {@code maxSize}.
-	 * @return the remaining capacity of the container, an integer between 0 and {@code maxSize}.
+	 * Returns {@code true} if and only if the container still has some capacity for the specified {@link Color}.
+	 * @param color the color whose remaining capacity is checked.
+	 * @return {@code true} if and only if the container still has some capacity for the specified {@link Color}.
+	 * @see StudentContainer#remainingCapacity(Color)
 	 */
+	private boolean hasRemainingCapacity(Color color) {
+		return remainingCapacity(color) > 0;
+	}
+
 	private int remainingCapacity() {
 		int currentOccupation = students.values().stream().reduce(0, Integer::sum);
 		return maxSize - currentOccupation;
+	}
+
+	protected int remainingCapacity(Color color) {
+		return remainingCapacity();
+	}
+
+	protected void put(Color color, int amount) {
+		students.put(color, amount);
 	}
 }

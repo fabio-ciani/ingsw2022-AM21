@@ -55,8 +55,20 @@ public class IslandGroup extends StudentContainer {
 		return id;
 	}
 
+	private List<String> getComponents() {
+		return new ArrayList<>(islandIds);
+	}
+
+	public Player getController() {
+		return controller;
+	}
+
 	public int getTowers() {
 		return islandIds.size();
+	}
+
+	private boolean hasSameController(IslandGroup that) {
+		return this.controller.equals(that.controller);
 	}
 
 	public void putNoEntryTile(int id) {
@@ -67,14 +79,6 @@ public class IslandGroup extends StudentContainer {
 		if (noEntryTiles.empty())
 			return null;
 		return noEntryTiles.pop();
-	}
-
-	private boolean hasSameController(IslandGroup that) {
-		return this.controller.equals(that.controller);
-	}
-
-	private List<String> getComponents() {
-		return new ArrayList<>(islandIds);
 	}
 
 	@Override

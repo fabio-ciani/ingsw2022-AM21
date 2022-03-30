@@ -35,18 +35,6 @@ public class SchoolBoard {
 	}
 
 	/**
-	 * Returns {@code true} if and only if the {@link Player} who owns this {@code SchoolBoard} is entitled to receive a
-	 * coin based on the number of students of color {@code color} their {@link DiningRoom} contains.
-	 * @param color the {@link Color} whose amount of students is checked.
-	 * @return {@code true} if and only if the {@link Player} who owns this {@code DiningRoom} is entitled to receive a
-	 * coin based on the number of students of color {@code color} their {@link DiningRoom} contains.
-	 */
-	public boolean checkForCoins(Color color) {
-		// TODO this should be called automatically after a student is moved into the dining room
-		return diningRoom.checkForCoins(color);
-	}
-
-	/**
 	 * Returns this {@code SchoolBoard}'s entrance.
 	 * @return this {@code SchoolBoard}'s entrance.
 	 */
@@ -60,6 +48,18 @@ public class SchoolBoard {
 	 */
 	public DiningRoom getDiningRoom() {
 		return diningRoom;
+	}
+
+	/**
+	 * Returns {@code true} if and only if the {@link Player} who owns this {@code SchoolBoard} is entitled to receive a
+	 * coin based on the number of students of color {@code color} their {@link DiningRoom} contains.
+	 * @param color the {@link Color} whose amount of students is checked.
+	 * @return {@code true} if and only if the {@link Player} who owns this {@code DiningRoom} is entitled to receive a
+	 * coin based on the number of students of color {@code color} their {@link DiningRoom} contains.
+	 */
+	public boolean checkForCoins(Color color) {
+		// TODO this should be called automatically after a student is moved into the dining room
+		return diningRoom.checkForCoins(color);
 	}
 
 	/**

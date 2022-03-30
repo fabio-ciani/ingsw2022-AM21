@@ -19,7 +19,7 @@ public enum AssistantCard {
 
     /**
      * The number graphically written in the top-left corner of the card.
-     * @return The value of the given {@code AssistantCard} object.
+     * @return the value of the given {@code AssistantCard} object
      */
     public int value() {
         return value;
@@ -27,7 +27,7 @@ public enum AssistantCard {
 
     /**
      * The number graphically written in the top-right corner of the card.
-     * @return The quantity of movements that Mother Nature may perform by playing the given {@code AssistantCard} object.
+     * @return the quantity of movements that Mother Nature may perform by playing the given {@code AssistantCard} object
      */
     public int movement() {
         return movement;

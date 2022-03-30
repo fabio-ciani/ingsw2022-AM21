@@ -1,8 +1,8 @@
 package it.polimi.ingsw.eriantys.model;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * A {@link GameManager} helper class to handle the players of the game,
@@ -18,16 +18,14 @@ public class PlayerList {
             players[i] = new Player(nicknames.get(i));
     }
 
-    public void setFirst() {
-        // TODO: Do we need to pass a Player or a String? Should we use rotate()?
-    }
+    // TODO: Do we need to pass to setFirst() method a Player or a String? Should we use rotate()?
 
-    // TODO: getTurnOrder()
+    // TODO: getTurnOrder() and its test
 
     /**
      * A getter for the {@link Player} object associated to a nickname.
-     * @param nickname The identificator of the {@link Player}.
-     * @return The {@link Player} corresponding to the given nickname if it exists, {@code null} otherwise.
+     * @param nickname the identificator of the {@link Player}
+     * @return the {@link Player} corresponding to the given nickname if it exists, {@code null} otherwise
      */
     public Player get(String nickname) {
         Player temp = new Player(nickname);

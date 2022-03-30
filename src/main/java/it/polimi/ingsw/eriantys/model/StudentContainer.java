@@ -3,18 +3,26 @@ package it.polimi.ingsw.eriantys.model;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * This class provides a container for student discs.
- * It is meant to be used in every class representing a game object on which student discs can be placed.
- * It exposes methods to move students between two {@code StudentContainer} objects, to get the container's maximum size
- * and to get the number of students of a given {@link Color} in the container.
+ * It is meant to model every game object on which student discs can be placed. It can be used as is, or it can be
+ * extended in order to include additional methods and attributes.
+ * It exposes various methods to move students between two {@code StudentContainer} objects and a method returning the
+ * number of students of a given {@link Color} in the container.
  */
 public class StudentContainer {
 
+	/**
+	 * The default maximum size for containers which do not intrinsically have a limit on the number of students. The
+	 * value 130 is the total number of student discs in the game, so no container should have to hold more.
+	 */
 	private static final int NO_MAX_SIZE = 130;
-	protected static final int NUMBER_OF_COLORS = 5;
+
+	/**
+	 * The total number of student discs of each color in the game.
+	 */
+	private static final int MAX_STUDENTS_PER_COLOR = 26;
 
 	/**
 	 * The {@link Map} containing the number of students stored in the container for each {@link Color}.
@@ -41,22 +49,22 @@ public class StudentContainer {
 	}
 
 	/**
-	 * Constructs an empty {@code StudentContainer} with the specified maximum size. The size has an upper bound equal to
-	 * the total number of student discs in the game (130).
-	 *
+	 * Constructs an empty {@code StudentContainer} with the specified maximum size. The size has an upper bound of 130.
 	 * @param maxSize the maximum number of students allowed in the container at any moment.
 	 */
 	public StudentContainer(int maxSize) {
-		this.maxSize = Math.min(maxSize, 130);
+		this.maxSize = Math.min(maxSize, NO_MAX_SIZE);
 		this.students = new HashMap<>();
 		for (Color color : Color.values())
 			students.put(color, 0);
 	}
 
 	/**
-	 * Returns the amount of students of color {@code color} currently in the container.
+	 * Returns the amount of students of color {@code color} currently in the container, or -1 if {@code color} is
+	 * {@code null}.
 	 * @param color the color of students whose amount is requested.
-	 * @return the amount of students of color {@code color} currently in the container.
+	 * @return the amount of students of color {@code color} currently in the container, or -1 if {@code color} is
+	 * {@code null}.
 	 */
 	public int getQuantity(Color color) {
 		if (color == null)
@@ -92,8 +100,8 @@ public class StudentContainer {
 
 	/**
 	 * Moves {@code amount} students of random colors from {@code this} to the destination container {@code dest}.
-	 * Students are moved one by one until no colors that can be both removed from {@code this} and added to {@code dest}
-	 * can be found, at which point no subsequent movements occur.
+	 * Students are moved one by one until {@code amount} is reached ot no colors that can be both removed from
+	 * {@code this} and added to {@code dest} can be found, at which point no subsequent movements occur.
 	 * @param dest the destination {@code StudentContainer}.
 	 * @param amount the amount of students to be moved.
 	 * @throws NoMovementException if no colors that can be both removed from {@code this} and added to {@code dest}
@@ -101,7 +109,7 @@ public class StudentContainer {
 	 */
 	public void moveTo(StudentContainer dest, int amount) throws NoMovementException {
 		for (int i = 0; i < amount; i++) {
-			Color color = this.getRandomColor(dest.availableColors());
+			Color color = this.getRandomColor(dest);
 			if (color == null)
 				throw new NoMovementException("Moved " + i + "/" + amount + ": no matching colors were found.");
 			moveTo(dest, color);
@@ -110,9 +118,9 @@ public class StudentContainer {
 
 	/**
 	 * Moves all the students from {@code this} to the destination container {@code dest}. Students are moved color by
-	 * color until the destination container has no remaining capacity, at which point no subsequent movements occur. The
-	 * source container, {@code this}, is effectively emptied as a result of this method, unless it contained more
-	 * students than the destination container could add.
+	 * color until the source container {@code this} is empty or the destination container has no remaining capacity, at
+	 * which point no subsequent movements occur. Generally, the source container {@code this} should be emptied as a
+	 * result of this method.
 	 * @param dest the destination {@code StudentContainer}.
 	 * @throws NoMovementException if {@code this} contains more students than the destination container can add.
 	 */
@@ -139,19 +147,60 @@ public class StudentContainer {
 			throw new NoMovementException("Source not emptied: the destination container is full.");
 	}
 
+	/**
+	 * Refills {@code this} to its maximum capacity by picking random students from {@code source}. Students are moved one
+	 * by one until {@code this} is full or {@code source} is empty, at which point no subsequent movements occur.
+	 * @param source the source {@code StudentContainer}.
+	 * @throws NoMovementException if {@code source} is emptied before {@code this} can be filled.
+	 * @see StudentContainer#moveTo(StudentContainer, int)
+	 */
 	public void refillFrom(StudentContainer source) throws NoMovementException {
 		source.moveTo(this, this.remainingCapacity());
 	}
 
 	/**
-	 * Returns a random {@link Color} such that {@code this} contains students of that color, or {@code null} if the
-	 * container is empty.
-	 *
-	 * @return a random {@link Color} such that {@code this} contains students of that color, or {@code null} if the
-	 * container is empty.
+	 * Swaps two student discs between {@code this} and {@code that}: one student of color {@code thisColor} is removed
+	 * from {@code this} and added to {@code that}, and one student of color {@code thatColor} is removed from
+	 * {@code that} and added to {@code this}. If any container does not have enough students or enough capacity to
+	 * perform the swap, the operation is aborted.
+	 * @param that the second {@code StudentContainer}.
+	 * @param thisColor the {@link Color} of the student being moved from {@code this} to {@code that}.
+	 * @param thatColor the {@link Color} of the student being moved from {@code that} to {@code this}.
+	 * @throws NoMovementException if any container does not have enough students or enough capacity to perform the swap.
 	 */
-	private Color getRandomColor(Set<Color> destAvailable) {
+	public void swap(StudentContainer that, Color thisColor, Color thatColor) throws NoMovementException {
+		if (thisColor == thatColor)
+			return;
+
+		Integer thisAmount = this.students.putIfAbsent(thisColor, 0);
+		Integer thatAmount = that.students.putIfAbsent(thatColor, 0);
+
+		if (thisAmount == null || thisAmount == 0 || thatAmount == null || thatAmount == 0)
+			throw new NoMovementException("No swap: a container is empty.");
+
+		this.students.put(thisColor, thisAmount - 1);
+		that.students.put(thatColor, thatAmount - 1);
+
+		if (!this.hasRemainingCapacity(thatColor) || !that.hasRemainingCapacity(thisColor)) {
+			this.students.put(thisColor, thisAmount);
+			that.students.put(thatColor, thatAmount);
+			throw new NoMovementException("No swap: a container is full.");
+		}
+
+		this.students.put(thatColor, this.students.get(thatColor) + 1);
+		that.students.put(thisColor, that.students.get(thisColor) + 1);
+	}
+
+	/**
+	 * Returns a random {@link Color} such that {@code this} contains students of that color and {@code destination} has
+	 * the capacity to contain more, or {@code null} if no such color can be found.
+	 * @param destination the destination {@code StudentContainer}.
+	 * @return a random {@link Color} such that {@code this} contains students of that color and {@code destination} has
+	 * the capacity to contain more, or {@code null} if no such color can be found.
+	 */
+	private Color getRandomColor(StudentContainer destination) {
 		List<Color> available = students.keySet().stream().filter(c -> students.get(c) > 0).toList();
+		List<Color> destAvailable = destination.students.keySet().stream().filter(this::hasRemainingCapacity).toList();
 		available.retainAll(destAvailable);
 
 		if (available.size() == 0)
@@ -159,30 +208,42 @@ public class StudentContainer {
 		return available.get(new Random().nextInt(available.size()));
 	}
 
-	private Set<Color> availableColors() {
-		return students.keySet().stream().filter(this::hasRemainingCapacity).collect(Collectors.toSet());
-	}
-
 	/**
-	 * Returns {@code true} if and only if the container still has some capacity for the specified {@link Color}.
+	 * Returns {@code true} if and only if the container has some remaining capacity for the specified {@link Color}.
 	 * @param color the color whose remaining capacity is checked.
-	 * @return {@code true} if and only if the container still has some capacity for the specified {@link Color}.
+	 * @return {@code true} if and only if the container has some remaining capacity for the specified {@link Color}.
 	 * @see StudentContainer#remainingCapacity(Color)
 	 */
 	private boolean hasRemainingCapacity(Color color) {
 		return remainingCapacity(color) > 0;
 	}
 
+	/**
+	 * Returns the container's total remaining capacity.
+	 * @return the container's total remaining capacity.
+	 * @see StudentContainer#remainingCapacity(Color)
+	 */
 	private int remainingCapacity() {
 		int currentOccupation = students.values().stream().reduce(0, Integer::sum);
 		return maxSize - currentOccupation;
 	}
 
+	/**
+	 * Returns the container's remaining capacity for the specified {@link Color}.
+	 * @param color the color whose remaining capacity is returned.
+	 * @return the container's remaining capacity for the specified {@link Color}.
+	 * @see StudentContainer#remainingCapacity()
+	 */
 	protected int remainingCapacity(Color color) {
 		return remainingCapacity();
 	}
 
-	protected void put(Color color, int amount) {
-		students.put(color, amount);
+	/**
+	 * Fills the container with {@link StudentContainer#MAX_STUDENTS_PER_COLOR} (26) students of each color. This method
+	 * is only to be called while constructing a {@link Bag} object.
+	 */
+	protected void fill() {
+		for (Color color : Color.values())
+			students.put(color, MAX_STUDENTS_PER_COLOR);
 	}
 }

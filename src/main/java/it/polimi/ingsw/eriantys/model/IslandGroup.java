@@ -6,17 +6,20 @@ import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Stack;
 
 public class IslandGroup extends StudentContainer {
 	private final String id;
 	private final List<String> islandIds;
 	private final Player controller;
+	private final Stack<Integer> noEntryTiles;
 
 	public IslandGroup(String id) {
 		super();
 
 		this.id = id;
 		this.controller = null;
+		this.noEntryTiles = new Stack<>();
 		this.islandIds = new ArrayList<>();
 		this.islandIds.add(id);
 	}
@@ -26,6 +29,7 @@ public class IslandGroup extends StudentContainer {
 
 		this.id = i1.id + "-" + i2.id;
 		this.controller = i1.controller;
+		this.noEntryTiles = new Stack<>();
 
 		try {
 			i1.moveAllTo(this);
@@ -51,7 +55,21 @@ public class IslandGroup extends StudentContainer {
 		return id;
 	}
 
-	public boolean hasSameController(IslandGroup that) {
+	public int getTowers() {
+		return islandIds.size();
+	}
+
+	public void putNoEntryTile(int id) {
+		noEntryTiles.push(id);
+	}
+
+	public Integer popNoEntryTile() {
+		if (noEntryTiles.empty())
+			return null;
+		return noEntryTiles.pop();
+	}
+
+	private boolean hasSameController(IslandGroup that) {
 		return this.controller.equals(that.controller);
 	}
 

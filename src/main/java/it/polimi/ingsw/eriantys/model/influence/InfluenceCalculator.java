@@ -1,8 +1,8 @@
 package it.polimi.ingsw.eriantys.model.influence;
 
-import it.polimi.ingsw.eriantys.model.Player;
-import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.Color;
+import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.Player;
 
 import java.util.Set;
 
@@ -18,5 +18,5 @@ public interface InfluenceCalculator {
      * @param ownedProfessors the {@link Color}(s) of the professors which the {@link Player} owns
      * @return the influence value for the given {@link Player} on the specified island
      */
-    public abstract int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors);
+    int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors);
 }

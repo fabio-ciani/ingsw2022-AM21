@@ -1,11 +1,10 @@
 package it.polimi.ingsw.eriantys.model.influence;
 
+import it.polimi.ingsw.eriantys.model.Color;
+import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.Player;
 import it.polimi.ingsw.eriantys.model.characters.CharacterCard;
 import it.polimi.ingsw.eriantys.model.characters.MushroomGuy;
-
-import it.polimi.ingsw.eriantys.model.Player;
-import it.polimi.ingsw.eriantys.model.IslandGroup;
-import it.polimi.ingsw.eriantys.model.Color;
 
 import java.util.Set;
 
@@ -16,7 +15,7 @@ import java.util.Set;
 public class ExcludeColorInfluence extends CommonInfluence implements InfluenceCalculator {
     private final Color excluded;
 
-    ExcludeColorInfluence(Color excluded) {
+    public ExcludeColorInfluence(Color excluded) {
         this.excluded = excluded;
     }
 

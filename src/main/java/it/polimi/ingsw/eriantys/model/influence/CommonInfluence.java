@@ -1,11 +1,10 @@
 package it.polimi.ingsw.eriantys.model.influence;
 
+import it.polimi.ingsw.eriantys.model.Color;
+import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.Player;
 import it.polimi.ingsw.eriantys.model.StudentContainer;
 import it.polimi.ingsw.eriantys.model.characters.CharacterCard;
-
-import it.polimi.ingsw.eriantys.model.Player;
-import it.polimi.ingsw.eriantys.model.IslandGroup;
-import it.polimi.ingsw.eriantys.model.Color;
 
 import java.util.Set;
 

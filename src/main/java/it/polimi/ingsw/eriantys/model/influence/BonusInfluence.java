@@ -1,11 +1,10 @@
 package it.polimi.ingsw.eriantys.model.influence;
 
+import it.polimi.ingsw.eriantys.model.Color;
+import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.Player;
 import it.polimi.ingsw.eriantys.model.characters.CharacterCard;
 import it.polimi.ingsw.eriantys.model.characters.Knight;
-
-import it.polimi.ingsw.eriantys.model.Player;
-import it.polimi.ingsw.eriantys.model.IslandGroup;
-import it.polimi.ingsw.eriantys.model.Color;
 
 import java.util.Set;
 
@@ -16,7 +15,7 @@ import java.util.Set;
 public class BonusInfluence extends CommonInfluence implements InfluenceCalculator {
     private final Player user;
 
-    BonusInfluence(Player user) {
+    public BonusInfluence(Player user) {
         this.user = user;
     }
 

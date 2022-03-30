@@ -37,9 +37,9 @@ public interface CharacterCard {
      * @param targetIsland Island selected for the effect.
      */
     void applyEffect(List<Color> sourceColors,
-                                    List<Color> destinationColors,
-                                    Color targetColor,
-                                    IslandGroup targetIsland)
+                     List<Color> destinationColors,
+                     Color targetColor,
+                     IslandGroup targetIsland)
             throws NoMovementException, ItemNotAvailableException;
 
     /**

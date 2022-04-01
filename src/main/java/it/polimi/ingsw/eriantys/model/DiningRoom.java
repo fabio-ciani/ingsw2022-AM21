@@ -24,15 +24,17 @@ public class DiningRoom extends StudentContainer {
 	 * coin based on the number of students of color {@code color} it contains.
 	 */
 	public boolean checkForCoins(Color color) {
-		return (getQuantity(color) % 3 == 0);
+		return (getQuantity(color) > 0 && getQuantity(color) % 3 == 0);
 	}
 
 	/**
 	 * Returns the remaining capacity of the container for the specified {@link Color}, an integer between 0 and
-	 * {@link DiningRoom#MAX_STUDENTS_PER_COLOR}.
+	 * {@link DiningRoom#MAX_STUDENTS_PER_COLOR}, or {@link DiningRoom#MAX_STUDENTS_PER_COLOR} {@code +1} if
+	 * {@code color} is {@code null}.
 	 * @param color the color whose remaining capacity is returned.
 	 * @return the remaining capacity of the container for the specified {@link Color}, an integer between 0 and
-	 * {@link DiningRoom#MAX_STUDENTS_PER_COLOR}.
+	 * {@link DiningRoom#MAX_STUDENTS_PER_COLOR}, or {@link DiningRoom#MAX_STUDENTS_PER_COLOR} {@code +1} if
+	 * {@code color} is {@code null}.
 	 */
 	@Override
 	protected int remainingCapacity(Color color) {

@@ -2,10 +2,7 @@ package it.polimi.ingsw.eriantys.model;
 
 import it.polimi.ingsw.eriantys.model.characters.Farmer;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -21,6 +18,7 @@ public class ProfessorOwnership {
 
 	public ProfessorOwnership(Supplier<Player> playerSupplier) {
 		this.playerSupplier = playerSupplier;
+		comparator = Integer::compareTo;
 		ownerships = new HashMap<>();
 		for (Color color : Color.values())
 			ownerships.put(color, null);
@@ -32,7 +30,10 @@ public class ProfessorOwnership {
 	 * @return the respective {@link Color} of each professor owned by {@code player}.
 	 */
 	public Set<Color> getProfessors(Player player) {
-		return ownerships.keySet().stream().filter(c -> ownerships.get(c) != null).collect(Collectors.toSet());
+		if (player == null)
+			return new HashSet<>();
+		return ownerships.keySet().stream()
+					.filter(c -> ownerships.get(c) != null && ownerships.get(c).equals(player)).collect(Collectors.toSet());
 	}
 
 	/**
@@ -55,16 +56,19 @@ public class ProfessorOwnership {
 	 */
 	public void update(Set<Color> target) {
 		Player currentPlayer = playerSupplier.get();
-		Player res;
+		boolean changeOwner;
+
+		if (currentPlayer == null)
+			return;
 
 		for (Color color : target) {
 			Player currentOwner = ownerships.get(color);
 			if (!currentPlayer.equals(currentOwner)) {
 				int currAmt = currentPlayer.getDiningRoom().getQuantity(color);
-				int ownerAmt = currentOwner.getDiningRoom().getQuantity(color);
+				int ownerAmt = currentOwner == null ? 0 : currentOwner.getDiningRoom().getQuantity(color);
 
-				res = comparator.compare(currAmt, ownerAmt) > 0 ? currentPlayer : currentOwner;
-				ownerships.put(color, res);
+				changeOwner = currAmt > 0 && comparator.compare(currAmt, ownerAmt) > 0;
+				ownerships.put(color, changeOwner ? currentPlayer : currentOwner);
 			}
 		}
 	}

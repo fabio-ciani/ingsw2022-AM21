@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.model.exceptions.DuplicateNoEntryTileException;
 import it.polimi.ingsw.eriantys.model.exceptions.IncompatibleControllersException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
@@ -15,7 +16,7 @@ import java.util.Stack;
 public class IslandGroup extends StudentContainer {
 	private final String id;
 	private final List<String> islandIds;
-	private final Player controller;
+	private Player controller;
 	private final Stack<Integer> noEntryTiles;
 
 	/**
@@ -57,11 +58,14 @@ public class IslandGroup extends StudentContainer {
 	 * Merges {@code i1} and {@code i2} and returns the resulting {@link IslandGroup}.
 	 * @param i1 the first of the islands to merge.
 	 * @param i2 the second of the islands to merge.
-	 * @return an {@link IslandGroup} containing all and only the single islands previously contained in {@code i1} amd
+	 * @return an {@link IslandGroup} containing all and only the single islands previously contained in {@code i1} and
 	 * {@code i2}, and with the same controller as them.
 	 * @throws IncompatibleControllersException if {@code i1} and {@code i2} are controlled by different {@link Player}s.
 	 */
 	public static IslandGroup merge(IslandGroup i1, IslandGroup i2) throws IncompatibleControllersException {
+		if (i1 == null || i2 == null)
+			return null;
+
 		if (!i1.hasSameController(i2))
 			throw new IncompatibleControllersException("Ids: " + i1.id + ", " + i2.id + ".");
 
@@ -85,6 +89,17 @@ public class IslandGroup extends StudentContainer {
 	}
 
 	/**
+	 * Sets the island's {@code controller} to {@code newController}, unless it is {@code null}, in which case the
+	 * {@code controller} stays the same.
+	 * @param newController the island's new {@code controller}.
+	 */
+	public void setController(Player newController) {
+		if (newController == null)
+			return;
+		controller = newController;
+	}
+
+	/**
 	 * Returns the number of towers on the {@link IslandGroup}.
 	 * @return the number of towers on the {@link IslandGroup}.
 	 */
@@ -96,7 +111,9 @@ public class IslandGroup extends StudentContainer {
 	 * Places a No Entry tile on the {@link IslandGroup}.
 	 * @param id the No Entry tile's identifier.
 	 */
-	public void putNoEntryTile(int id) {
+	public void putNoEntryTile(int id) throws DuplicateNoEntryTileException {
+		if (noEntryTiles.contains(id))
+			throw new DuplicateNoEntryTileException("Id: " + id + ".");
 		noEntryTiles.push(id);
 	}
 
@@ -112,11 +129,17 @@ public class IslandGroup extends StudentContainer {
 		return noEntryTiles.pop();
 	}
 
-	private List<String> getComponents() {
+	/**
+	 * Returns a list of the {@code id}s of the single islands making up this {@link IslandGroup}.
+	 * @return a list of the {@code id}s of the single islands making up this {@link IslandGroup}.
+	 */
+	protected List<String> getComponents() {
 		return new ArrayList<>(islandIds);
 	}
 
 	private boolean hasSameController(IslandGroup that) {
+		if (this.controller == null || that.controller == null)
+			return false;
 		return this.controller.equals(that.controller);
 	}
 

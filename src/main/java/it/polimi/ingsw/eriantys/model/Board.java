@@ -57,6 +57,7 @@ public class Board {
 			islands.add(new IslandGroup(String.format("%02d", i+1)));
 
 		this.bag = new Bag();
+		this.motherNatureIslandIndex = -1;
 
 		// TODO export constant based on number of players for number of cloud tiles
 		this.cloudTiles = new StudentContainer[2];
@@ -77,6 +78,12 @@ public class Board {
 		if (index == -1)
 			throw new IslandNotFoundException("Requested: " + id + ".");
 		return islands.get(index);
+	}
+
+	public IslandGroup getMotherNatureIsland() throws IslandNotFoundException {
+		if (motherNatureIslandIndex == -1)
+			throw new IslandNotFoundException("Mother Nature has not been deployed.");
+		return islands.get(motherNatureIslandIndex);
 	}
 
 	/**
@@ -153,6 +160,9 @@ public class Board {
 	 * island can be found.
 	 */
 	private int getIslandIndex(String id) {
+		if (id == null)
+			return -1;
+
 		for (int i = 0; i < islands.size(); i++)
 			if (islands.get(i).getId().equals(id))
 				return i;

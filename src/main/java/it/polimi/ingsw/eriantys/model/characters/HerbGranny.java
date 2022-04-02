@@ -3,6 +3,7 @@ package it.polimi.ingsw.eriantys.model.characters;
 import it.polimi.ingsw.eriantys.model.Board;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.exceptions.DuplicateNoEntryTileException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
@@ -80,6 +81,11 @@ public class HerbGranny extends BaseCharacterCard {
             throw new ItemNotAvailableException("There are no entry tiles on the HerbGranny character card.");
         }
         super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
-        targetIsland.putNoEntryTile(tiles.pop());
+        try {
+            targetIsland.putNoEntryTile(tiles.pop());
+        } catch (DuplicateNoEntryTileException e) {
+            // TODO handle exception
+            e.printStackTrace();
+        }
     }
 }

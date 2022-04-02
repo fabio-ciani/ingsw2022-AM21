@@ -9,7 +9,9 @@ class DiningRoomTest {
 
 	@Test
 	void checkForCoinsTestEmpty() {
-		assertFalse(new DiningRoom().checkForCoins(Color.RED));
+		DiningRoom diningRoom = new DiningRoom();
+		for (Color color : Color.values())
+			assertFalse(diningRoom.checkForCoins(color));
 	}
 
 	@Test

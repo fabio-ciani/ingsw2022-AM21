@@ -82,6 +82,8 @@ public class StudentContainer {
 	 * @throws NoMovementException if {@code this} is empty or the destination container is full.
 	 */
 	public void moveTo(StudentContainer dest, Color color) throws NoMovementException {
+		if (dest == null || color == null)
+			throw new NoMovementException("Moved 0/1: one or more arguments are null.");
 		if (!dest.hasRemainingCapacity(color))
 			throw new NoMovementException("Moved 0/1: the destination container is full.");
 
@@ -108,6 +110,8 @@ public class StudentContainer {
 	 * can be found.
 	 */
 	public void moveTo(StudentContainer dest, int amount) throws NoMovementException {
+		if (dest == null)
+			throw new NoMovementException("Moved 0/1: the destination container is null.");
 		for (int i = 0; i < amount; i++) {
 			Color color = this.getRandomColor(dest);
 			if (color == null)
@@ -200,8 +204,8 @@ public class StudentContainer {
 	 */
 	private Color getRandomColor(StudentContainer destination) {
 		List<Color> available = students.keySet().stream().filter(c -> students.get(c) > 0).toList();
-		List<Color> destAvailable = destination.students.keySet().stream().filter(this::hasRemainingCapacity).toList();
-		available.retainAll(destAvailable);
+		List<Color> destAvailable = destination.students.keySet().stream().filter(destination::hasRemainingCapacity).toList();
+		available = available.stream().filter(destAvailable::contains).toList();
 
 		if (available.size() == 0)
 			return null;

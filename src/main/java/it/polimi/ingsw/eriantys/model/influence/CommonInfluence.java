@@ -15,6 +15,9 @@ import java.util.Set;
 public class CommonInfluence implements InfluenceCalculator {
     @Override
     public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) {
+        if (player == null || island == null || ownedProfessors == null)
+            throw new IllegalArgumentException("Cannot proceed with null parameter(s).");
+
         int result = 0;
 
         for (Color c : ownedProfessors)

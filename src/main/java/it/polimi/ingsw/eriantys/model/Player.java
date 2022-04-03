@@ -101,6 +101,8 @@ public class Player {
      * @param movements the new internal state for the number of allowed Mother Nature's movements of a {@code Player}
      */
     public void setMotherNatureMovements(int movements) {
+        if (movements < 0)
+            throw new IllegalArgumentException("Parameter should not be negative.");
         motherNatureMovements = movements;
     }
 
@@ -120,6 +122,8 @@ public class Player {
      * @throws NoMovementException if the operation could not be completed
      */
     public void drawStudents(StudentContainer source) throws NoMovementException {
+        if (source == null)
+            throw new IllegalArgumentException("Cannot perform operation with null parameter.");
         source.moveAllTo(schoolBoard.getEntrance());
     }
 

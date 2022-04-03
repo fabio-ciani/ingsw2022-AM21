@@ -1,8 +1,9 @@
 package it.polimi.ingsw.eriantys.model;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A {@link GameManager} helper class to handle the players of the game,
@@ -18,9 +19,23 @@ public class PlayerList {
             players[i] = new Player(nicknames.get(i));
     }
 
-    // TODO: Do we need to pass to setFirst() method a Player or a String? Should we use rotate()?
+    public void setFirst(Player target) {
+        int index = new ArrayList<>(Arrays.asList(players)).indexOf(target);
 
-    // TODO: getTurnOrder() and its test
+        if (index != -1)
+            firstInRound = index;
+    }
+
+    // TODO:    Is this a method which is called by the model or the controller?
+    //          If it is the case for the latter, the return value could be List<Player>, or we could add a getTurnOrder() method in the GameManager class.
+    //          The documentation will follow up.
+    public String[] getTurnOrder() {
+        Collections.rotate(Arrays.asList(players), firstInRound);   // TODO: Should we create another separate (temporary) list?
+
+        return Arrays.stream(players)
+                .map(Player::getNickname)
+                .toArray(String[]::new);
+    }
 
     /**
      * A getter for the {@link Player} object associated to a nickname.

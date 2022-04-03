@@ -1,8 +1,10 @@
 package it.polimi.ingsw.eriantys.model;
 
-import java.util.Objects;
-import java.util.List;
+import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A class which represents a human being playing the game.
@@ -28,6 +30,14 @@ public class Player {
 
         motherNatureMovements = 0;
         coins = 1;
+    }
+
+    /**
+     * A getter for the nickname of a {@code Player}'s object.
+     * @return the internal state for a {@code Player}'s nickname
+     */
+    public String getNickname() {
+        return nickname;
     }
 
     /**
@@ -102,8 +112,15 @@ public class Player {
         return coins;
     }
 
-    public void drawStudents() {
-        // TODO: The implementation of GameManager and its handleSelectedCloud(...) method is required
+    /**
+     * A method to represent the end of {@code Player}'s action phase,
+     * which consists in moving all the student on a cloud tile to the
+     * {@link SchoolBoard} entrance of the {@code Player} itself.
+     * @param source the target cloud tile
+     * @throws NoMovementException if the operation could not be completed
+     */
+    public void drawStudents(StudentContainer source) throws NoMovementException {
+        source.moveAllTo(schoolBoard.getEntrance());
     }
 
     /**

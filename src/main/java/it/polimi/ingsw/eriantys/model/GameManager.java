@@ -48,9 +48,15 @@ public class GameManager {
         return false;
     }
 
-    public void handleSelectedCloud(String nickname, int cloudIndex) {
-
-    }
+	public void handleSelectedCloud(String nickname, int cloudIndex) {
+		Player recipient = players.get(nickname);
+		try {
+			board.drawStudents(cloudIndex, recipient);
+		} catch (NoMovementException e) {
+			// TODO handle exception
+			e.printStackTrace();
+		}
+	}
 
     public void changeInfluenceState(InfluenceCalculator calculator) {
 

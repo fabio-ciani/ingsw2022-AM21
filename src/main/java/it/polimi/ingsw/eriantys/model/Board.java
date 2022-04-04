@@ -152,6 +152,10 @@ public class Board {
 			islands.add(startIndex, newIslandPrev);
 	}
 
+	public void drawStudents(int cloudIndex, Player recipient) throws NoMovementException {
+		cloudTiles[cloudIndex].moveAllTo(recipient.getEntrance());
+	}
+
 	/**
 	 * Returns the index of the island with the specified {@code id} within the {@code islands} list, or -1 if no such
 	 * island can be found.

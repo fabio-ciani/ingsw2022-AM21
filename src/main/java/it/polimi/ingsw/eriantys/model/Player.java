@@ -115,19 +115,6 @@ public class Player {
     }
 
     /**
-     * A method to represent the end of {@code Player}'s action phase,
-     * which consists in moving all the student on a cloud tile to the
-     * {@link SchoolBoard} entrance of the {@code Player} itself.
-     * @param source the target cloud tile
-     * @throws NoMovementException if the operation could not be completed
-     */
-    public void drawStudents(StudentContainer source) throws NoMovementException {
-        if (source == null)
-            throw new IllegalArgumentException("Cannot perform operation with null parameter.");
-        source.moveAllTo(schoolBoard.getEntrance());
-    }
-
-    /**
      * A method to assign a variable quantity of coins to a {@code Player}.
      * @param amount the number of coins (could be negative) to be assigned to the {@code Player}
      */

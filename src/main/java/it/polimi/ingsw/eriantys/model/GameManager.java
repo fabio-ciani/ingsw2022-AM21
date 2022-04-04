@@ -1,8 +1,13 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
+import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
+import it.polimi.ingsw.eriantys.model.influence.CommonInfluence;
 import it.polimi.ingsw.eriantys.model.influence.InfluenceCalculator;
 import it.polimi.ingsw.eriantys.model.characters.CharacterCard;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class GameManager {

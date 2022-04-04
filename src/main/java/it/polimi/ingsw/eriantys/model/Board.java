@@ -153,11 +153,9 @@ public class Board {
 	}
 
 	/**
-	 * A method to represent the end of {@code Player}'s action phase,
-	 * which consists in moving all the student on a cloud tile to the
-	 * {@link SchoolBoard} entrance of the {@code Player} itself.
-	 * @param cloudIndex the target cloud tile
-	 * @param recipient the target {@code Player}
+	 * Moves all the students on a cloud tile to the {@link SchoolBoard} entrance of the {@code recipient}.
+	 * @param cloudIndex the target cloud tile's index.
+	 * @param recipient the target {@link Player}.
 	 * @throws NoMovementException if the operation could not be completed
 	 */
 	public void drawStudents(int cloudIndex, Player recipient) throws NoMovementException {

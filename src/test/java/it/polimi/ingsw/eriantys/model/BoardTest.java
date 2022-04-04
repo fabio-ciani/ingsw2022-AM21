@@ -103,4 +103,8 @@ class BoardTest {
 	@Test
 	void unifyIslands() {
 	}
+
+	@Test
+	void drawStudents() {
+	}
 }

@@ -30,7 +30,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void getQuantity_OverflowStudents_Return12() throws NoMovementException {
+	void getQuantity_StudentsOverflow_Return12() throws NoMovementException {
 		StudentContainer container = new StudentContainer(12);
 		Bag bag = new Bag();
 
@@ -47,7 +47,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void getQuantity_OverflowStudentsDiningRoom_Return10() throws NoMovementException {
+	void getQuantity_StudentsDiningRoomOverflow_Return10() throws NoMovementException {
 		StudentContainer container = new DiningRoom();
 		Bag bag = new Bag();
 
@@ -64,14 +64,14 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveColorTo_PassNullDest_ThrowsException() {
+	void moveColorTo_PassNullDest_ThrowException() {
 		StudentContainer src = new StudentContainer();
 
 		assertThrowsExactly(NoMovementException.class, () -> src.moveTo(null, Color.YELLOW));
 	}
 
 	@Test
-	void moveColorTo_PassNullColor_ThrowsException() {
+	void moveColorTo_PassNullColor_ThrowException() {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer();
 
@@ -79,7 +79,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveColorTo_EmptySource_ThrowsException() {
+	void moveColorTo_EmptySource_ThrowException() {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer();
 
@@ -87,7 +87,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveColorTo_FullDestination_ThrowsException() {
+	void moveColorTo_FullDestination_ThrowException() {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new Bag();
 
@@ -95,7 +95,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveColorTo_FullDestinationDiningRoom_ThrowsException() throws NoMovementException {
+	void moveColorTo_FullDestinationDiningRoom_ThrowException() throws NoMovementException {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new DiningRoom();
 
@@ -106,7 +106,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveColorTo_NormalConditions_MovesStudent() throws NoMovementException {
+	void moveColorTo_NormalConditions_MoveStudent() throws NoMovementException {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer();
 		Bag bag = new Bag();
@@ -127,7 +127,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveAmtTo_PassNullDest_ThrowsException() {
+	void moveAmtTo_PassNullDest_ThrowException() {
 		StudentContainer src = new StudentContainer();
 
 		assertThrowsExactly(NoMovementException.class, () -> src.moveTo(null, 4));
@@ -164,7 +164,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveAmtTo_EmptySource_ThrowsException() {
+	void moveAmtTo_EmptySource_ThrowException() {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer();
 
@@ -172,7 +172,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveAmtTo_FullDestination_ThrowsException() {
+	void moveAmtTo_FullDestination_ThrowException() {
 		StudentContainer src = new Bag();
 		StudentContainer dest = new Bag();
 

@@ -7,9 +7,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class IslandGroupTest {
-
 	@Test
-	void merge_PassSameControllerIslands_ReturnValidIsland() {
+	void merge_PassIslandsWithSameController_ReturnValidIsland() {
 		IslandGroup i1 = new IslandGroup("01");
 		IslandGroup i2 = new IslandGroup("02");
 		Player p = new Player("p");
@@ -26,7 +25,7 @@ class IslandGroupTest {
 	}
 
 	@Test
-	void merge_PassDifferentControllerIslands_ThrowException() {
+	void merge_PassIslandsWithDifferentControllers_ThrowException() {
 		IslandGroup i1 = new IslandGroup("01");
 		IslandGroup i2 = new IslandGroup("02");
 

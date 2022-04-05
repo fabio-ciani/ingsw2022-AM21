@@ -11,7 +11,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
-
 	@Test
 	void getIsland_PassNull_ThrowException() {
 		assertThrowsExactly(IslandNotFoundException.class, () -> new Board().getIsland(null));
@@ -97,14 +96,14 @@ class BoardTest {
 	}
 
 	@Test
+	void drawStudents() {
+	}
+
+	@Test
 	void refillClouds() {
 	}
 
 	@Test
 	void unifyIslands() {
-	}
-
-	@Test
-	void drawStudents() {
 	}
 }

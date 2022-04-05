@@ -106,6 +106,17 @@ public class Board {
 				}
 	}
 
+
+	/**
+	 * Moves all the students on a cloud tile to the {@link SchoolBoard} entrance of the {@code recipient}.
+	 * @param cloudIndex the target cloud tile's index.
+	 * @param recipient the target {@link Player}.
+	 * @throws NoMovementException if the operation could not be completed
+	 */
+	public void drawStudents(int cloudIndex, Player recipient) throws NoMovementException {
+		cloudTiles[cloudIndex].moveAllTo(recipient.getEntrance());
+	}
+
 	/**
 	 * Refills the cloud tiles by taking the necessary amount of students from the {@code bag}.
 	 */
@@ -150,16 +161,6 @@ public class Board {
 			islands.add(startIndex, newIslandNext);
 		else
 			islands.add(startIndex, newIslandPrev);
-	}
-
-	/**
-	 * Moves all the students on a cloud tile to the {@link SchoolBoard} entrance of the {@code recipient}.
-	 * @param cloudIndex the target cloud tile's index.
-	 * @param recipient the target {@link Player}.
-	 * @throws NoMovementException if the operation could not be completed
-	 */
-	public void drawStudents(int cloudIndex, Player recipient) throws NoMovementException {
-		cloudTiles[cloudIndex].moveAllTo(recipient.getEntrance());
 	}
 
 	/**

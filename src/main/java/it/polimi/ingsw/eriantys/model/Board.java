@@ -87,6 +87,14 @@ public class Board {
 	}
 
 	/**
+	 * Returns the {@link Bag} containing the student discs.
+	 * @return the {@link Bag} containing the student discs.
+	 */
+	public Bag getBag() {
+		return bag;
+	}
+
+	/**
 	 * Sets up the game by placing Mother Nature on a random island and placing a random student on each island, excluding
 	 * the one with Mother Nature on it and the one opposite to it.
 	 * @see Bag#setupDraw()
@@ -117,6 +125,16 @@ public class Board {
 		cloudTiles[cloudIndex].moveAllTo(recipient.getEntrance());
 	}
 
+	public boolean moveMotherNature(IslandGroup destination) {
+		int destinationIndex = islands.indexOf(destination);
+
+		if (destinationIndex == -1)
+			return false;
+
+		motherNatureIslandIndex = destinationIndex;
+		return true;
+	}
+
 	/**
 	 * Refills the cloud tiles by taking the necessary amount of students from the {@code bag}.
 	 */
@@ -134,29 +152,28 @@ public class Board {
 	/**
 	 * Checks if the island whose id matches {@code target} can be unified with any of the neighboring islands, and if so
 	 * unifies them. This method should be called every time the player controlling an island changes.
-	 * @param target the target island's identifier.
-	 * @throws IslandNotFoundException if no island matching the specified {@code id} can be found.
+	 * @param target the target island.
+	 * @throws IslandNotFoundException if the specified {@code target} cannot be found.
 	 */
-	public void unifyIslands(String target) throws IslandNotFoundException {
-		int targetIndex = getIslandIndex(target);
+	public void unifyIslands(IslandGroup target) throws IslandNotFoundException {
+		int targetIndex = islands.indexOf(target);
 		if (targetIndex == -1)
-			throw new IslandNotFoundException("Requested: " + target + ".");
+			throw new IslandNotFoundException("Requested id: " + target.getId() + ".");
 
-		IslandGroup targetIsland = islands.get(targetIndex);
-		IslandGroup prevIsland = islands.get(targetIndex - 1);
-		IslandGroup nextIsland = islands.get(targetIndex + 1);
+		IslandGroup prev = islands.get(targetIndex - 1);
+		IslandGroup next = islands.get(targetIndex + 1);
 
 		int startIndex = targetIndex;
 		IslandGroup newIslandPrev;
 		IslandGroup newIslandNext;
 
-		newIslandPrev = tryMerge(prevIsland, targetIsland);
+		newIslandPrev = tryMerge(prev, target);
 		if (newIslandPrev != null)
 			startIndex--;
 		else
-			newIslandPrev = targetIsland;
+			newIslandPrev = target;
 
-		newIslandNext = tryMerge(newIslandPrev, nextIsland);
+		newIslandNext = tryMerge(newIslandPrev, next);
 		if (newIslandNext != null)
 			islands.add(startIndex, newIslandNext);
 		else

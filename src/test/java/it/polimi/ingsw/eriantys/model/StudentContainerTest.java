@@ -189,11 +189,81 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveAllTo() {
+	void moveAllTo_EmptySource_NoChange() throws NoMovementException {
+		StudentContainer dest = new StudentContainer();
+		new Bag().moveTo(dest, 4);
+		assertEquals(4, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
+		new StudentContainer().moveAllTo(dest);
+		assertEquals(4, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
 	}
 
 	@Test
-	void refillFrom() {
+	void moveAllTo_FullDestination_NoChangeAndThrowException() throws NoMovementException {
+		StudentContainer src = new StudentContainer();
+		StudentContainer dest = new Bag();
+		new Bag().moveTo(src, 7);
+		assertThrowsExactly(NoMovementException.class, () -> src.moveAllTo(dest));
+		assertEquals(7, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
+		assertEquals(130, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
+	}
+
+	@Test
+	void moveAllTo_Move4DestinationCapacity2_Move2AndThrowException() throws NoMovementException {
+		StudentContainer src = new StudentContainer();
+		StudentContainer dest = new Bag();
+		new Bag().moveTo(src, 4);
+		dest.moveTo(new StudentContainer(), 2);
+
+		assertEquals(4, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
+		assertEquals(128, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
+		assertThrowsExactly(NoMovementException.class, () -> src.moveAllTo(dest));
+		assertEquals(2, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
+		assertEquals(130, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
+	}
+
+	@Test
+	void moveAllTo_Move4DestinationCapacity6_Move4() throws NoMovementException {
+		StudentContainer src = new StudentContainer();
+		StudentContainer dest = new Bag();
+		new Bag().moveTo(src, 4);
+		dest.moveTo(new StudentContainer(), 6);
+
+		assertEquals(4, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
+		assertEquals(124, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
+		src.moveAllTo(dest);
+		assertEquals(0, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
+		assertEquals(128, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
+	}
+
+	@Test
+	void refillFrom_NullSource_ThrowException() {
+		assertThrowsExactly(NoMovementException.class, () -> new StudentContainer().refillFrom(null));
+	}
+
+	@Test
+	void refillFrom_EmptySource_ThrowException() {
+		StudentContainer dest = new StudentContainer();
+		assertThrowsExactly(NoMovementException.class, () -> dest.refillFrom(new StudentContainer()));
+	}
+
+	@Test
+	void refillFrom_SourceHasLessThanEnough_MoveAllInSourceAndThrowException() throws NoMovementException {
+		StudentContainer src = new StudentContainer();
+		StudentContainer dest = new StudentContainer();
+		new Bag().moveTo(src, 10);
+		assertThrowsExactly(NoMovementException.class, () -> dest.refillFrom(src));
+		assertEquals(0, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
+		assertEquals(10, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
+	}
+
+	@Test
+	void refillFrom_SourceHasEnough_DestinationFull() throws NoMovementException {
+		StudentContainer src = new StudentContainer();
+		StudentContainer dest = new StudentContainer(20);
+		new Bag().moveTo(src, 30);
+		dest.refillFrom(src);
+		assertEquals(10, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
+		assertEquals(20, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
 	}
 
 	@Test
@@ -201,10 +271,41 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void remainingCapacity() {
+	void remainingCapacity_EmptyContainer_ReturnMaxSize() {
+		assertEquals(130, new StudentContainer().remainingCapacity(Color.PINK));
 	}
 
 	@Test
-	void fill() {
+	void remainingCapacity_FullContainer_Return0() {
+		assertEquals(0, new Bag().remainingCapacity(Color.GREEN));
+	}
+
+	@Test
+	void remainingCapacity_Contains50_Return80() throws NoMovementException {
+		StudentContainer container = new StudentContainer();
+		new Bag().moveTo(container, 50);
+		assertEquals(80, container.remainingCapacity(Color.YELLOW));
+	}
+
+	@Test
+	void remainingCapacity_OverflowContainer_ThrowExceptionAndReturn0() {
+		StudentContainer container = new StudentContainer(30);
+		assertThrowsExactly(NoMovementException.class, () -> new Bag().moveTo(container, 50));
+		assertEquals(0, container.remainingCapacity(Color.BLUE));
+	}
+
+	@Test
+	void remainingCapacity_PassNullAndContains30_Return100() throws NoMovementException {
+		StudentContainer container = new StudentContainer();
+		new Bag().moveTo(container, 30);
+		assertEquals(100, container.remainingCapacity(Color.RED));
+	}
+
+	@Test
+	void fill_NoMaxSize_FillTo130() {
+		StudentContainer container = new StudentContainer();
+		container.fill();
+		assertEquals(130,
+					Arrays.stream(Color.values()).mapToInt(container::getQuantity).reduce(0, Integer::sum));
 	}
 }

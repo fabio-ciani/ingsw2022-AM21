@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SchoolBoardTest {
+
 	@Test
 	void construct_NormalPostConditions() {
 		SchoolBoard schoolBoard = new SchoolBoard();

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BagTest {
+
 	@Test
 	void construct() {
 		Bag bag = new Bag();

@@ -108,14 +108,142 @@ class BoardTest {
 	}
 
 	@Test
-	void drawStudents() {
+	void drawStudents_NullPlayer_ThrowException() {
+		assertThrowsExactly(NoMovementException.class,
+					() -> new Board(2, 3).drawStudents(0, null));
 	}
 
 	@Test
-	void refillClouds() {
+	void drawStudents_IndexOutOfBounds_ThrowException() {
+		Player p = new Player("p");
+		assertThrowsExactly(NoMovementException.class,
+					() -> new Board(2, 3).drawStudents(-1, p));
+		assertThrowsExactly(NoMovementException.class,
+					() -> new Board(2, 3).drawStudents(2, p));
 	}
 
 	@Test
-	void unifyIslands() {
+	void drawStudents_EmptyCloud_ThrowException() {
+		Board board = new Board(2, 3);
+		Player p = new Player("p");
+		assertThrowsExactly(NoMovementException.class, () -> board.drawStudents(0, p));
+	}
+
+	@Test
+	void drawStudents_IndexAndPlayerOk_MoveStudents() throws NoMovementException {
+		Board board = new Board(2, 3);
+		Player p = new Player("p");
+		board.refillClouds();
+		board.drawStudents(0, p);
+		assertEquals(3,
+					Arrays.stream(Color.values()).mapToInt(p.getEntrance()::getQuantity).reduce(0, Integer::sum));
+	}
+
+	@Test
+	void moveMotherNature_NonexistentIsland_ReturnFalse() {
+		Board board = new Board(2, 3);
+		assertFalse(board.moveMotherNature(new IslandGroup("99")));
+	}
+
+	@Test
+	void moveMotherNature_ExistingIsland_ReturnTrueAndMoveMotherNature() throws IslandNotFoundException {
+		Board board = new Board(2, 3);
+		IslandGroup dest = board.getIsland("02");
+		assertTrue(board.moveMotherNature(dest));
+		assertEquals(dest, board.getMotherNatureIsland());
+	}
+
+	@Test
+	void refillClouds_EmptyClouds_FillClouds() {
+		Board board = new Board(2, 3);
+		Player p = new Player("p");
+		board.refillClouds();
+		assertDoesNotThrow(() -> board.drawStudents(0, p));
+		assertDoesNotThrow(() -> board.drawStudents(1, p));
+	}
+
+	@Test
+	void unifyIslands_NullTarget_ThrowException() {
+		assertThrowsExactly(IslandNotFoundException.class,
+					() -> new Board(2, 3).unifyIslands(null));
+	}
+
+	@Test
+	void unifyIslands_NonexistentTarget_ThrowException() {
+		assertThrowsExactly(IslandNotFoundException.class,
+					() -> new Board(2, 3).unifyIslands(new IslandGroup("89")));
+	}
+
+	@Test
+	void unifyIslands_DifferentControllers_NoEffect() throws IslandNotFoundException {
+		Board board = new Board(2, 3);
+		Player p1 = new Player("p1");
+		Player p2 = new Player("p2");
+
+		board.getIsland("01").setController(p1);
+		board.getIsland("02").setController(p2);
+		board.getIsland("03").setController(p1);
+
+		board.unifyIslands(board.getIsland("02"));
+
+		assertDoesNotThrow(() -> board.getIsland("01"));
+		assertDoesNotThrow(() -> board.getIsland("02"));
+		assertDoesNotThrow(() -> board.getIsland("03"));
+	}
+
+	@Test
+	void unifyIslands_TargetAndPrevSameController_MergeTargetAndPrev() throws IslandNotFoundException {
+		Board board = new Board(2, 3);
+		Player p1 = new Player("p1");
+		Player p2 = new Player("p2");
+
+		board.getIsland("01").setController(p1);
+		board.getIsland("02").setController(p1);
+		board.getIsland("03").setController(p2);
+
+		board.unifyIslands(board.getIsland("02"));
+
+		assertDoesNotThrow(() -> board.getIsland("03"));
+		assertThrowsExactly(IslandNotFoundException.class, () -> board.getIsland("01"));
+		assertThrowsExactly(IslandNotFoundException.class, () -> board.getIsland("02"));
+
+		assertDoesNotThrow(() -> board.getIsland("01-02"));
+	}
+
+	@Test
+	void unifyIslands_TargetAndNextSameController_MergeTargetAndNext() throws IslandNotFoundException {
+		Board board = new Board(2, 3);
+		Player p1 = new Player("p1");
+		Player p2 = new Player("p2");
+
+		board.getIsland("01").setController(p2);
+		board.getIsland("02").setController(p1);
+		board.getIsland("03").setController(p1);
+
+		board.unifyIslands(board.getIsland("02"));
+
+		assertDoesNotThrow(() -> board.getIsland("01"));
+		assertThrowsExactly(IslandNotFoundException.class, () -> board.getIsland("02"));
+		assertThrowsExactly(IslandNotFoundException.class, () -> board.getIsland("03"));
+
+		assertDoesNotThrow(() -> board.getIsland("02-03"));
+	}
+
+	@Test
+	void unifyIslands_TargetPrevAndNextSameController_MergeTargetPrevAndNext() throws IslandNotFoundException {
+		Board board = new Board(2, 3);
+		Player p1 = new Player("p1");
+
+		board.getIsland("01").setController(p1);
+		board.getIsland("02").setController(p1);
+		board.getIsland("03").setController(p1);
+
+		board.unifyIslands(board.getIsland("02"));
+
+		assertThrowsExactly(IslandNotFoundException.class, () -> board.getIsland("01"));
+		assertThrowsExactly(IslandNotFoundException.class, () -> board.getIsland("02"));
+		assertThrowsExactly(IslandNotFoundException.class, () -> board.getIsland("03"));
+
+		assertDoesNotThrow(() -> board.getIsland("01-02-03"));
 	}
 }

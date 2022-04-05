@@ -15,12 +15,17 @@ class ProfessorOwnershipTest {
 	Player currentPlayer;
 
 	@Test
-	void getProfessorsTestEmpty() {
+	void getProfessors_PassNull_ReturnEmptySet() {
+		assertEquals(0, new ProfessorOwnership(this::supplyPlayer).getProfessors(null).size());
+	}
+
+	@Test
+	void getProfessors_PlayerWithNoProfessors_ReturnEmptySet() {
 		assertEquals(0, new ProfessorOwnership(this::supplyPlayer).getProfessors(new Player("p1")).size());
 	}
 
 	@Test
-	void getProfessorsTest() throws NoMovementException {
+	void getProfessors_PlayerWithSomeProfessors_ReturnNonEmptySet() throws NoMovementException {
 		Player p1 = new Player("p1");
 		this.currentPlayer = p1;
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
@@ -32,12 +37,7 @@ class ProfessorOwnershipTest {
 	}
 
 	@Test
-	void getProfessorsTestNull() {
-		assertEquals(0, new ProfessorOwnership(this::supplyPlayer).getProfessors(null).size());
-	}
-
-	@Test
-	void updateTestTieEffectActive() throws NoMovementException {
+	void update_TieEffectActive_ChangeProfessorsWithWinOrTie() throws NoMovementException {
 		Player p1 = new Player("p1");
 		Player p2 = new Player("p2");
 		Bag bag = new Bag();
@@ -58,11 +58,14 @@ class ProfessorOwnershipTest {
 	}
 
 	@Test
-	void updateTestTieEffectInactive() throws NoMovementException {
+	void update_TieEffectInactive_NoChangeProfessorsWithTie() throws NoMovementException {
 		Player p1 = new Player("p1");
 		Player p2 = new Player("p2");
 		Bag bag = new Bag();
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
+
+		ownership.activateEffect();
+		ownership.deactivateEffect();
 
 		this.currentPlayer = p1;
 		bag.moveTo(p1.getDiningRoom(), Color.RED);
@@ -77,7 +80,7 @@ class ProfessorOwnershipTest {
 	}
 
 	@Test
-	void updateTestWinEffectActive() throws NoMovementException {
+	void update_TieEffectActive_ChangeProfessorsWithWin() throws NoMovementException {
 		Player p1 = new Player("p1");
 		Player p2 = new Player("p2");
 		Bag bag = new Bag();
@@ -99,7 +102,7 @@ class ProfessorOwnershipTest {
 	}
 
 	@Test
-	void updateTestWinEffectInactive() throws NoMovementException {
+	void update_TieEffectInactive_ChangeProfessorsWithWin() throws NoMovementException {
 		Player p1 = new Player("p1");
 		Player p2 = new Player("p2");
 		Bag bag = new Bag();
@@ -119,7 +122,7 @@ class ProfessorOwnershipTest {
 	}
 
 	@Test
-	void updateTestTieWithNoStudentsEffectActive() {
+	void update_TieEffectActive_NoChangeProfessorsWithTieAt0() {
 		Player p1 = new Player("p1");
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
 
@@ -132,7 +135,7 @@ class ProfessorOwnershipTest {
 	}
 
 	@Test
-	void updateTestTieWithNoStudentsEffectInactive() {
+	void update_TieEffectInactive_NoChangeProfessorsWithTieAt0() {
 		Player p1 = new Player("p1");
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
 

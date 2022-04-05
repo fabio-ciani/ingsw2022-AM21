@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class IslandGroupTest {
+
 	@Test
 	void merge_PassIslandsWithSameController_ReturnValidIsland() {
 		IslandGroup i1 = new IslandGroup("01");

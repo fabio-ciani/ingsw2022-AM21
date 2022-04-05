@@ -33,11 +33,13 @@ public class DiningRoom extends StudentContainer {
 	 * {@code color} is {@code null}.
 	 * @param color the color whose remaining capacity is returned.
 	 * @return the remaining capacity of the container for the specified {@link Color}, an integer between 0 and
-	 * {@link DiningRoom#MAX_STUDENTS_PER_COLOR}, or {@link DiningRoom#MAX_STUDENTS_PER_COLOR} {@code +1} if
-	 * {@code color} is {@code null}.
+	 * {@link DiningRoom#MAX_STUDENTS_PER_COLOR}, or {@code -1} if {@code color} is {@code null}.
 	 */
 	@Override
 	protected int remainingCapacity(Color color) {
+		if (color == null)
+			return -1;
+
 		return MAX_STUDENTS_PER_COLOR - getQuantity(color);
 	}
 }

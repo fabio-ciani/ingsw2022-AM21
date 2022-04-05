@@ -1,59 +1,71 @@
 package it.polimi.ingsw.eriantys.model;
 
 import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
+import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
+
 	@Test
 	void getIsland_PassNull_ThrowException() {
-		assertThrowsExactly(IslandNotFoundException.class, () -> new Board().getIsland(null));
+		assertThrowsExactly(IslandNotFoundException.class, () -> new Board(2, 3).getIsland(null));
 	}
 
 	@Test
 	void getIsland_PassEmptyString_ThrowException() {
-		assertThrowsExactly(IslandNotFoundException.class, () -> new Board().getIsland(""));
+		assertThrowsExactly(IslandNotFoundException.class, () -> new Board(2, 3).getIsland(""));
 	}
 
 	@Test
 	void getIsland_PassValidId_ReturnIsland() throws IslandNotFoundException {
-		Board board = new Board();
+		Board board = new Board(2, 3);
 		IslandGroup res = board.getIsland("02");
 		assertEquals("02", res.getId());
 	}
 
 	@Test
 	void getIsland_PassInvalidIdLow_ThrowException() {
-		assertThrowsExactly(IslandNotFoundException.class, () -> new Board().getIsland("00"));
+		assertThrowsExactly(IslandNotFoundException.class, () -> new Board(2, 3).getIsland("00"));
 	}
 
 	@Test
 	void getIsland_PassInvalidIdHigh_ThrowException() {
-		assertThrowsExactly(IslandNotFoundException.class, () -> new Board().getIsland("13"));
+		assertThrowsExactly(IslandNotFoundException.class, () -> new Board(2, 3).getIsland("13"));
 	}
 
 	@Test
 	void getMotherNatureIsland_BeforeSetup_ThrowException() {
-		assertThrowsExactly(IslandNotFoundException.class, new Board()::getMotherNatureIsland);
+		assertNull(new Board(2, 3).getMotherNatureIsland());
 	}
 
 	@Test
 	void getMotherNatureIsland_AfterSetup_ReturnValidIsland() {
-		Board board = new Board();
+		Board board = new Board(2, 3);
 		board.setup();
 		IslandGroup res = assertDoesNotThrow(board::getMotherNatureIsland);
 		assertDoesNotThrow(() -> board.getIsland(res.getId()));
 	}
 
 	@Test
+	void getMotherNatureIsland_NotDeployed_ReturnNull() {
+		assertNull(new Board(2, 3).getMotherNatureIsland());
+	}
+
+	@Test
+	void getMotherNatureIsland_DeployedIsland01_ReturnIsland01() throws IslandNotFoundException {
+		Board board = new Board(2, 3);
+		IslandGroup dest = board.getIsland("01");
+		board.moveMotherNature(dest);
+		assertEquals(dest, board.getMotherNatureIsland());
+	}
+
+	@Test
 	void setup_NormalPostConditions() throws IslandNotFoundException {
-		Board board = new Board();
+		Board board = new Board(2, 3);
 		board.setup();
 
 		Map<Color, Integer> colors = new HashMap<>();

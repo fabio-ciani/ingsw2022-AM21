@@ -50,8 +50,10 @@ public class Board {
 	/**
 	 * Constructs a {@code Board}, initializing the islands, bag and cloud tiles. The number and capacity of the cloud
 	 * tiles are constants in {@link GameManager}.
+	 * @param cloudNumber the number of cloud tiles to be instantiated.
+	 * @param cloudSize the size of each cloud tile.
 	 */
-	public Board() {
+	public Board(int cloudNumber, int cloudSize) {
 		this.islands = new ArrayList<>();
 		for (int i = 0; i < NUMBER_OF_ISLANDS; i++)
 			islands.add(new IslandGroup(String.format("%02d", i+1)));
@@ -60,10 +62,10 @@ public class Board {
 		this.motherNatureIslandIndex = -1;
 
 		// TODO export constant based on number of players for number of cloud tiles
-		this.cloudTiles = new StudentContainer[2];
+		this.cloudTiles = new StudentContainer[cloudNumber];
 		for (int i = 0; i < 2; i++)
 			// TODO export constant based on number of players for size of cloud tiles
-			cloudTiles[i] = new StudentContainer(3);
+			cloudTiles[i] = new StudentContainer(cloudSize);
 	}
 
 	/**
@@ -80,9 +82,15 @@ public class Board {
 		return islands.get(index);
 	}
 
-	public IslandGroup getMotherNatureIsland() throws IslandNotFoundException {
+	/**
+	 * Returns the {@link IslandGroup} where Mother Nature is currently located, or {@code null} if Mother Nature has not
+	 * been deployed yet.
+	 * @return the {@link IslandGroup} where Mother Nature is currently located, or {@code null} if Mother Nature has not
+	 * been deployed yet.
+	 */
+	public IslandGroup getMotherNatureIsland() {
 		if (motherNatureIslandIndex == -1)
-			throw new IslandNotFoundException("Mother Nature has not been deployed.");
+			return null;
 		return islands.get(motherNatureIslandIndex);
 	}
 
@@ -119,10 +127,22 @@ public class Board {
 	 * Moves all the students on a cloud tile to the {@link SchoolBoard} entrance of the {@code recipient}.
 	 * @param cloudIndex the target cloud tile's index.
 	 * @param recipient the target {@link Player}.
-	 * @throws NoMovementException if the operation could not be completed
+	 * @throws NoMovementException if {@code cloudIndex} is out of bounds or the relative cloud is empty, or if
+	 * {@code recipient} is {@code null}.
 	 */
 	public void drawStudents(int cloudIndex, Player recipient) throws NoMovementException {
-		cloudTiles[cloudIndex].moveAllTo(recipient.getEntrance());
+		if (recipient == null)
+			throw new NoMovementException("Recipient is null");
+
+		if (cloudIndex < 0 || cloudIndex >= cloudTiles.length)
+			throw new NoMovementException("Cloud index out of bounds.");
+
+		StudentContainer cloud = cloudTiles[cloudIndex];
+
+		if (Arrays.stream(Color.values()).mapToInt(cloud::getQuantity).reduce(0, Integer::sum) == 0)
+			throw new NoMovementException("Cloud is empty.");
+
+		cloud.moveAllTo(recipient.getEntrance());
 	}
 
 	public boolean moveMotherNature(IslandGroup destination) {
@@ -156,6 +176,9 @@ public class Board {
 	 * @throws IslandNotFoundException if the specified {@code target} cannot be found.
 	 */
 	public void unifyIslands(IslandGroup target) throws IslandNotFoundException {
+		if (target == null)
+			throw new IslandNotFoundException("Null target.");
+
 		int targetIndex = islands.indexOf(target);
 		if (targetIndex == -1)
 			throw new IslandNotFoundException("Requested id: " + target.getId() + ".");

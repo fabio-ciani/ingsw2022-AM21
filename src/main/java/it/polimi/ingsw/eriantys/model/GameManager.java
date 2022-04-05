@@ -9,12 +9,12 @@ import it.polimi.ingsw.eriantys.model.influence.InfluenceCalculator;
 import java.util.*;
 
 public class GameManager {
-    private final Board board;
-    private final PlayerList players;
-    private Player currPlayer;
-    private final ProfessorOwnership professors;
-    private InfluenceCalculator calc;
-    private final CharacterCard[] characters;
+	private final Board board;
+  private final PlayerList players;
+  private Player currPlayer;
+  private final ProfessorOwnership professors;
+	private InfluenceCalculator calc;
+  private final CharacterCard[] characters;
 	protected final int CLOUD_SIZE;
 	protected final int CLOUD_NUMBER;
 	protected final int ENTRANCE_SIZE;
@@ -22,17 +22,6 @@ public class GameManager {
     // TODO: Will the constants be managed with a GameConfig object or by declaring them as attributes of GameManager?
 
 	public GameManager(String[] nicknames, boolean expertMode) {
-		board = new Board();
-		players = new PlayerList(Arrays.asList(nicknames));
-		professors = new ProfessorOwnership(this::currentPlayer);
-		calc = new CommonInfluence();
-
-		if (expertMode) {
-			characters = new CharacterCard[3];
-			initCharacterCards();
-		} else
-			characters = null;
-
 		int numPlayers = nicknames.length;
 		CLOUD_NUMBER = numPlayers;
 
@@ -45,6 +34,17 @@ public class GameManager {
 			ENTRANCE_SIZE = 7;
 			TOWER_NUMBER = 8;
 		}
+
+		board = new Board(CLOUD_NUMBER, CLOUD_SIZE);
+		players = new PlayerList(Arrays.asList(nicknames));
+		professors = new ProfessorOwnership(this::currentPlayer);
+		calc = new CommonInfluence();
+
+		if (expertMode) {
+			characters = new CharacterCard[3];
+			initCharacterCards();
+		} else
+			characters = null;
 	}
 
     // TODO: Does getCurrPlayer() return a string?

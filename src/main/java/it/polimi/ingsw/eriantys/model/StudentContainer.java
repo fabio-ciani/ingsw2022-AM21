@@ -159,6 +159,9 @@ public class StudentContainer {
 	 * @see StudentContainer#moveTo(StudentContainer, int)
 	 */
 	public void refillFrom(StudentContainer source) throws NoMovementException {
+		if (source == null)
+			throw new NoMovementException("Source is null.");
+
 		source.moveTo(this, this.remainingCapacity());
 	}
 

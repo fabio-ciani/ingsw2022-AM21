@@ -1,6 +1,7 @@
 package it.polimi.ingsw.eriantys.model;
 
 import it.polimi.ingsw.eriantys.model.characters.*;
+import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import it.polimi.ingsw.eriantys.model.influence.CommonInfluence;
@@ -21,8 +22,8 @@ public class GameManager {
 	protected final int TOWER_NUMBER;
     // TODO: Will the constants be managed with a GameConfig object or by declaring them as attributes of GameManager?
 
-	public GameManager(String[] nicknames, boolean expertMode) {
-		int numPlayers = nicknames.length;
+	public GameManager(List<String> nicknames, boolean expertMode) {
+		int numPlayers = nicknames.size();
 		CLOUD_NUMBER = numPlayers;
 
 		if (numPlayers == 3) {
@@ -36,7 +37,7 @@ public class GameManager {
 		}
 
 		board = new Board(CLOUD_NUMBER, CLOUD_SIZE);
-		players = new PlayerList(Arrays.asList(nicknames));
+		players = new PlayerList(nicknames);
 		professors = new ProfessorOwnership(this::currentPlayer);
 		calc = new CommonInfluence();
 
@@ -47,7 +48,6 @@ public class GameManager {
 			characters = null;
 	}
 
-    // TODO: Does getCurrPlayer() return a string?
     public String getCurrPlayer() {
         return currPlayer.getNickname();
     }
@@ -128,10 +128,22 @@ public class GameManager {
     public boolean resolve(IslandGroup island) {
 		List<Player> players = this.players.getTurnOrder();
 	    Player maxInfluencePlayer = players.get(0);
-		int maxInfluence = calc.calculate(maxInfluencePlayer, island, professors.getProfessors(maxInfluencePlayer));
+		int maxInfluence = 0;
+		try {
+			maxInfluence = calc.calculate(maxInfluencePlayer, island, professors.getProfessors(maxInfluencePlayer));
+		} catch (IllegalInfluenceStateException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 
 		for (Player player : players) {
-			int influence = calc.calculate(player, island, professors.getProfessors(player));
+			int influence = 0;
+			try {
+				influence = calc.calculate(player, island, professors.getProfessors(player));
+			} catch (IllegalInfluenceStateException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
 			if (influence > maxInfluence) {
 				maxInfluence = influence;
 				maxInfluencePlayer = player;

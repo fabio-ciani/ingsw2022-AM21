@@ -75,6 +75,6 @@ class DiningRoomTest {
 
 	@Test
 	void remainingCapacityTestNull() {
-		assertEquals(11, new DiningRoom().remainingCapacity(null));
+		assertEquals(-1, new DiningRoom().remainingCapacity(null));
 	}
 }

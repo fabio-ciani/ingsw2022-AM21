@@ -3,6 +3,7 @@ package it.polimi.ingsw.eriantys.model.characters;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.GameManager;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
@@ -39,7 +40,7 @@ public class Herald extends BaseCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException {
+            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
         super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
         gameManager.resolve(targetIsland); // TODO: 30/03/2022 Check for problems calling resolve at any time
     }

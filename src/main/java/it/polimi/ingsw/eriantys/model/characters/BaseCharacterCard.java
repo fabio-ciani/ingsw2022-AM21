@@ -2,6 +2,7 @@ package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
@@ -43,12 +44,12 @@ public abstract class BaseCharacterCard implements CharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException {
+            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
         if (!increaseCost) {
             increaseCost = true;
         }
     }
 
     @Override
-    public void cancelEffect() {}
+    public void cancelEffect() throws IllegalInfluenceStateException {}
 }

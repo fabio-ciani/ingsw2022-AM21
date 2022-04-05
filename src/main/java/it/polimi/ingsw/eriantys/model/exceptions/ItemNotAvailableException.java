@@ -13,8 +13,7 @@ public class ItemNotAvailableException extends Exception {
 
     /**
      * Constructs a new exception with a custom message.
-     *
-     * @param message Message with details about what went wrong.
+     * @param message the detail message
      */
     public ItemNotAvailableException(String message) {
         super(message);

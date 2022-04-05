@@ -1,6 +1,7 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.*;
+import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import it.polimi.ingsw.eriantys.model.influence.CommonInfluence;
@@ -44,7 +45,7 @@ public abstract class InfluenceCharacterCard extends BaseCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException {
+            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
         super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
         if (effectInfluenceCalculator == null) {
             throw new NullPointerException();
@@ -53,7 +54,7 @@ public abstract class InfluenceCharacterCard extends BaseCharacterCard {
     }
 
     @Override
-    public void cancelEffect() {
+    public void cancelEffect() throws IllegalInfluenceStateException {
         super.cancelEffect();
         gameManager.changeInfluenceState(normalInfluenceCalculator);
     }

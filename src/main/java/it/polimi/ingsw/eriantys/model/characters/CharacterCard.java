@@ -2,6 +2,7 @@ package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
@@ -40,11 +41,11 @@ public interface CharacterCard {
                      List<Color> destinationColors,
                      Color targetColor,
                      IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException;
+            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException;
 
     /**
      * Resets the effects of this card that are not intended to persist after the activation turn.
      * It should be called at the end of the turn.
      */
-    void cancelEffect();
+    void cancelEffect() throws IllegalInfluenceStateException;
 }

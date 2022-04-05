@@ -4,6 +4,7 @@ import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.Player;
 import it.polimi.ingsw.eriantys.model.StudentContainer;
+import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
@@ -46,7 +47,7 @@ public class Minstrel extends BaseCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException {
+            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
         super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
         if (sourceColors.size() != destinationColors.size() || sourceColors.size() > MAX_MOVEMENTS) {
             throw new IllegalArgumentException();

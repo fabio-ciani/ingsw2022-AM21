@@ -1,6 +1,7 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.*;
+import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
@@ -50,7 +51,7 @@ public class Farmer extends BaseCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException {
+            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
         super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
         // TODO: 30/03/2022 Change professorOwnership state
         Player currentPlayer = currentPlayerSupplier.get();
@@ -62,7 +63,7 @@ public class Farmer extends BaseCharacterCard {
      *
      */
     @Override
-    public void cancelEffect() {
+    public void cancelEffect() throws IllegalInfluenceStateException {
         super.cancelEffect();
         // TODO: 30/03/2022 Change back professorOwnership state
         // ProfessorUpdater updater = new NoEffectOnTieUpdater();

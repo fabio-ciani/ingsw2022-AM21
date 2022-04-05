@@ -3,6 +3,7 @@ package it.polimi.ingsw.eriantys.model.characters;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.GameManager;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import it.polimi.ingsw.eriantys.model.influence.ExcludeColorInfluence;
@@ -34,7 +35,7 @@ public class MushroomGuy extends InfluenceCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException {
+            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
         effectInfluenceCalculator = new ExcludeColorInfluence(targetColor);
         super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
     }

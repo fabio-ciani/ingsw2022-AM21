@@ -165,9 +165,9 @@ public class GameManager {
 		}
 	}
 
-    public void changeInfluenceState(InfluenceCalculator calculator) {
+    public void changeInfluenceState(InfluenceCalculator calculator) throws IllegalInfluenceStateException {
         if (calculator == null)
-            throw new IllegalArgumentException("Parameter should not be null.");
+            throw new IllegalInfluenceStateException("Parameter should not be null.");
         calc = calculator;
     }
 

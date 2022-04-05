@@ -35,7 +35,7 @@ public class PlayerList {
      * @return the reference to a {@link List} stating the turn order
      */
     public List<Player> getTurnOrder() {
-        Collections.rotate(Arrays.asList(players), firstInRound);   // TODO: Should we create another separate (temporary) list?
+        Collections.rotate(Arrays.asList(players), -firstInRound);   // TODO: Should we create another separate (temporary) list?
 
         return Arrays.asList(players);
     }

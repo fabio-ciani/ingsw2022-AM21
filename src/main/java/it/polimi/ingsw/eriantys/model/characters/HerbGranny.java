@@ -4,6 +4,7 @@ import it.polimi.ingsw.eriantys.model.Board;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.exceptions.DuplicateNoEntryTileException;
+import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
@@ -76,7 +77,7 @@ public class HerbGranny extends BaseCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException {
+            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
         if (tiles.empty()) {
             throw new ItemNotAvailableException("There are no entry tiles on the HerbGranny character card.");
         }

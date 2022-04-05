@@ -19,6 +19,10 @@ public class PlayerList {
             players[i] = new Player(nicknames.get(i));
     }
 
+    /**
+     * A setter for the {@link Player} who is entitled to play as first in the current round.
+     * @param target the {@link Player} which will play as first
+     */
     public void setFirst(Player target) {
         int index = new ArrayList<>(Arrays.asList(players)).indexOf(target);
 
@@ -26,15 +30,14 @@ public class PlayerList {
             firstInRound = index;
     }
 
-    // TODO:    Is this a method which is called by the model or the controller?
-    //          If it is the case for the latter, the return value could be List<Player>, or we could add a getTurnOrder() method in the GameManager class.
-    //          The documentation will follow up.
-    public String[] getTurnOrder() {
+    /**
+     * A getter for a {@link List} containing the turn order referred to the current round.
+     * @return the reference to a {@link List} stating the turn order
+     */
+    public List<Player> getTurnOrder() {
         Collections.rotate(Arrays.asList(players), firstInRound);   // TODO: Should we create another separate (temporary) list?
 
-        return Arrays.stream(players)
-                .map(Player::getNickname)
-                .toArray(String[]::new);
+        return Arrays.asList(players);
     }
 
     /**

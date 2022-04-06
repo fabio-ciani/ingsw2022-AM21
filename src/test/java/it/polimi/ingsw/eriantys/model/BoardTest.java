@@ -64,7 +64,7 @@ class BoardTest {
 	}
 
 	@Test
-	void setup_NormalPostConditions() throws IslandNotFoundException {
+	void setup_NormalConditions_IslandsSetUpCorrectly() throws IslandNotFoundException {
 		Board board = new Board(2, 3);
 		board.setup();
 

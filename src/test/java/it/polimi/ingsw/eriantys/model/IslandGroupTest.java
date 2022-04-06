@@ -46,12 +46,12 @@ class IslandGroupTest {
 	}
 
 	@Test
-	void getId_ReturnValidString() {
+	void getId_NormalConditions_ReturnValidString() {
 		assertEquals("91", new IslandGroup("91").getId());
 	}
 
 	@Test
-	void getController_ReturnValidPlayer() {
+	void getController_NormalConditions_ReturnValidPlayer() {
 		Player p = new Player("p");
 		IslandGroup island = new IslandGroup("02");
 

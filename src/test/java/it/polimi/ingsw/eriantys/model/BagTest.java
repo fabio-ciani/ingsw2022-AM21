@@ -10,14 +10,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class BagTest {
 
 	@Test
-	void construct() {
+	void construct_NormalConditions_ConstructFullBag() {
 		Bag bag = new Bag();
 		for (Color color : Color.values())
 			assertEquals(26, bag.getQuantity(color));
 	}
 
 	@Test
-	void setupDrawTestRemainder() {
+	void setupDraw_NormalConditions_BagUnchanged() {
 		Bag bag = new Bag();
 		bag.setupDraw();
 		for (Color color : Color.values())
@@ -25,7 +25,7 @@ class BagTest {
 	}
 
 	@Test
-	void setupDrawTestResult() {
+	void setupDraw_NormalConditions_ReturnListWithTwoInstancesOfEachColor() {
 		List<Color> res = new Bag().setupDraw();
 		for (Color color : Color.values()) {
 			int n = res.stream().filter(c -> c == color).toList().size();
@@ -49,7 +49,7 @@ class BagTest {
 	}
 
 	@Test
-	void remainingCapacity_NotEmptyNotFull_ReturnActualValue() throws NoMovementException {
+	void remainingCapacity_Has15PinkStudents_Return15() throws NoMovementException {
 		Bag bag = new Bag();
 
 		for (int i = 0; i < 15; i++)

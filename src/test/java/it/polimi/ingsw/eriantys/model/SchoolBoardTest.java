@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SchoolBoardTest {
 
 	@Test
-	void construct_NormalPostConditions() {
+	void construct_NormalConditions_Has8TowersAndEmptyEntranceAndDiningRoom() {
 		SchoolBoard schoolBoard = new SchoolBoard();
 
 		for (int i = 0; i < 8; i++)
@@ -27,12 +27,12 @@ class SchoolBoardTest {
 	}
 
 	@Test
-	void getEntrance_ReturnNonNullStudentContainer() {
+	void getEntrance_NormalConditions_ReturnNonNullStudentContainer() {
 		assertNotNull(new SchoolBoard().getEntrance());
 	}
 
 	@Test
-	void getDiningRoom_ReturnNonNullDiningRoom() {
+	void getDiningRoom_NormalConditions_ReturnNonNullDiningRoom() {
 		assertNotNull(new SchoolBoard().getDiningRoom());
 	}
 

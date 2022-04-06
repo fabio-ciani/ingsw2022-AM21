@@ -11,6 +11,7 @@ import java.util.List;
  * @see StudentContainer
  */
 public class Bag extends StudentContainer {
+	private static final int MAX_STUDENTS_PER_COLOR = 26;
 
 	/**
 	 * Constructs an empty {@code Bag}, then fills it with 26 students for each color, 130 total.
@@ -33,5 +34,20 @@ public class Bag extends StudentContainer {
 		Collections.shuffle(colors);
 
 		return colors;
+	}
+
+	/**
+	 * Returns the remaining capacity of the container for the specified {@link Color}, an integer between 0 and
+	 * {@link Bag#MAX_STUDENTS_PER_COLOR}, or {@code -1} if {@code color} is {@code null}.
+	 * @param color the color whose remaining capacity is returned.
+	 * @return the remaining capacity of the container for the specified {@link Color}, an integer between 0 and
+	 * {@link Bag#MAX_STUDENTS_PER_COLOR}, or {@code -1} if {@code color} is {@code null}.
+	 */
+	@Override
+	protected int remainingCapacity(Color color) {
+		if (color == null)
+			return -1;
+
+		return MAX_STUDENTS_PER_COLOR - getQuantity(color);
 	}
 }

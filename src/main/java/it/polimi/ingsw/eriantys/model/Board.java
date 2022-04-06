@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.model.characters.HerbGranny;
 import it.polimi.ingsw.eriantys.model.exceptions.IncompatibleControllersException;
 import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
@@ -44,7 +45,6 @@ public class Board {
 	 */
 	private final StudentContainer[] cloudTiles;
 
-	// TODO	there needs to be a setter and a resolve() method which calls on the island to remove a tile passing this
 	private Consumer<Integer> returnTile;
 
 	/**
@@ -102,6 +102,10 @@ public class Board {
 		return bag;
 	}
 
+	public void setReturnNoEntryTile(Consumer<Integer> returnTileFunction) {
+		this.returnTile = returnTileFunction;
+	}
+
 	/**
 	 * Sets up the game by placing Mother Nature on a random island and placing a random student on each island, excluding
 	 * the one with Mother Nature on it and the one opposite to it.
@@ -121,7 +125,6 @@ public class Board {
 					e.printStackTrace();
 				}
 	}
-
 
 	/**
 	 * Moves all the students on a cloud tile to the {@link SchoolBoard} entrance of the {@code recipient}.
@@ -167,6 +170,21 @@ public class Board {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Returns {@code true} if and only if the specified island has at least one No Entry tile on it, in which case the
+	 * last added tile is removed and returned to the {@link HerbGranny} character card.
+	 * @param island the {@link IslandGroup} on which the No Entry tile could be placed.
+	 * @return {@code true} if and only if the specified island has at least one No Entry tile on it.
+	 */
+	public boolean noEntryEnforced(IslandGroup island) {
+		Integer tileId = island.popNoEntryTile();
+
+		if (tileId == null)
+			return false;
+		this.returnTile.accept(tileId);
+		return true;
 	}
 
 	/**

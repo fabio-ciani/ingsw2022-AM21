@@ -110,6 +110,8 @@ public class GameManager {
                 .toList();
     }
 
+	// TODO after moving students to the dining room (line 132) SchoolBoard.checkForCoins(student) should be called
+	// TODO professors.update(student) should also be called
 	// TODO: 05/04/2022 DAVIDE - Change (doc and implementation) when moving constants to the Config class
 	/**
 	 * Receives a {@link  List} of pairs,
@@ -160,6 +162,9 @@ public class GameManager {
     }
 
     public boolean resolve(IslandGroup island) {
+		if (board.noEntryEnforced(island))
+			return false;
+
 		List<Player> players = this.players.getTurnOrder();
 	    Player maxInfluencePlayer = players.get(0);
 		int maxInfluence = 0;

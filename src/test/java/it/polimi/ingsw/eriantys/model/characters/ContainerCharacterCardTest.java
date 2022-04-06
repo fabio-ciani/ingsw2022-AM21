@@ -3,7 +3,6 @@ package it.polimi.ingsw.eriantys.model.characters;
 import it.polimi.ingsw.eriantys.model.Bag;
 import it.polimi.ingsw.eriantys.model.Color;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,51 +26,26 @@ class ContainerCharacterCardTest {
 
     @Test
     void getCost_AfterOneActivations_EqualsInitialCostIncremented() {
-        try {
-            card.applyEffect(null, null, null, null);
-            assertEquals(card.getCost(), initialCost + 1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
+        assertDoesNotThrow(() -> card.applyEffect(null, null, null, null));
+        assertEquals(card.getCost(), initialCost + 1);
     }
 
     @Test
     void getCost_AfterMoreActivations_EqualsInitialCostIncremented() {
-        try {
+        assertDoesNotThrow(() -> {
             card.applyEffect(null, null, null, null);
             card.applyEffect(null, null, null, null);
-            assertEquals(card.getCost(), initialCost + 1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
+        });
+        assertEquals(card.getCost(), initialCost + 1);
     }
 
-    // FIXME: 02/04/2022 Test failed
     @Test
-    @Disabled
     void setupEffect_BagNotNull_FullContainerAfterSetup() {
-        try {
-            card.setupEffect();
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
+        assertDoesNotThrow(() -> card.setupEffect());
         int sum = 0;
         for (Color color : Color.values()) {
             sum += card.getQuantity(color);
         }
         assertEquals(sum, size);
-    }
-
-    @Test
-    void applyEffect_AnyArguments_NoExceptionThrown() {
-        try {
-            card.applyEffect(null, null, null, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
     }
 }

@@ -176,6 +176,9 @@ public class StudentContainer {
 	 * @throws NoMovementException if any container does not have enough students or enough capacity to perform the swap.
 	 */
 	public void swap(StudentContainer that, Color thisColor, Color thatColor) throws NoMovementException {
+		if (that == null || thisColor == null || thatColor == null)
+			throw new NoMovementException("Null argument(s).");
+
 		if (thisColor == thatColor)
 			return;
 
@@ -185,14 +188,11 @@ public class StudentContainer {
 		if (thisAmount == null || thisAmount == 0 || thatAmount == null || thatAmount == 0)
 			throw new NoMovementException("No swap: a container is empty.");
 
+		if (!this.hasRemainingCapacity(thatColor) || !that.hasRemainingCapacity(thisColor))
+			throw new NoMovementException("No swap: a container is full.");
+
 		this.students.put(thisColor, thisAmount - 1);
 		that.students.put(thatColor, thatAmount - 1);
-
-		if (!this.hasRemainingCapacity(thatColor) || !that.hasRemainingCapacity(thisColor)) {
-			this.students.put(thisColor, thisAmount);
-			that.students.put(thatColor, thatAmount);
-			throw new NoMovementException("No swap: a container is full.");
-		}
 
 		this.students.put(thatColor, this.students.get(thatColor) + 1);
 		that.students.put(thisColor, that.students.get(thisColor) + 1);

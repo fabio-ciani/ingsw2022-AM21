@@ -89,7 +89,8 @@ class StudentContainerTest {
 	@Test
 	void moveColorTo_FullDestination_ThrowException() {
 		StudentContainer src = new StudentContainer();
-		StudentContainer dest = new Bag();
+		StudentContainer dest = new StudentContainer();
+		dest.fill();
 
 		assertThrowsExactly(NoMovementException.class, () -> src.moveTo(dest, Color.YELLOW));
 	}
@@ -173,10 +174,10 @@ class StudentContainerTest {
 
 	@Test
 	void moveAmtTo_FullDestination_ThrowException() {
-		StudentContainer src = new Bag();
-		StudentContainer dest = new Bag();
+		StudentContainer dest = new StudentContainer();
+		dest.fill();
 
-		assertThrowsExactly(NoMovementException.class, () -> src.moveTo(dest, 1));
+		assertThrowsExactly(NoMovementException.class, () -> new Bag().moveTo(dest, 1));
 	}
 
 	@Test
@@ -200,7 +201,8 @@ class StudentContainerTest {
 	@Test
 	void moveAllTo_FullDestination_NoChangeAndThrowException() throws NoMovementException {
 		StudentContainer src = new StudentContainer();
-		StudentContainer dest = new Bag();
+		StudentContainer dest = new StudentContainer();
+		dest.fill();
 		new Bag().moveTo(src, 7);
 		assertThrowsExactly(NoMovementException.class, () -> src.moveAllTo(dest));
 		assertEquals(7, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
@@ -210,29 +212,27 @@ class StudentContainerTest {
 	@Test
 	void moveAllTo_Move4DestinationCapacity2_Move2AndThrowException() throws NoMovementException {
 		StudentContainer src = new StudentContainer();
-		StudentContainer dest = new Bag();
+		StudentContainer dest = new StudentContainer(2);
 		new Bag().moveTo(src, 4);
-		dest.moveTo(new StudentContainer(), 2);
 
 		assertEquals(4, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
-		assertEquals(128, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
+		assertEquals(0, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
 		assertThrowsExactly(NoMovementException.class, () -> src.moveAllTo(dest));
 		assertEquals(2, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
-		assertEquals(130, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
+		assertEquals(2, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
 	}
 
 	@Test
 	void moveAllTo_Move4DestinationCapacity6_Move4() throws NoMovementException {
 		StudentContainer src = new StudentContainer();
-		StudentContainer dest = new Bag();
+		StudentContainer dest = new StudentContainer(6);
 		new Bag().moveTo(src, 4);
-		dest.moveTo(new StudentContainer(), 6);
 
 		assertEquals(4, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
-		assertEquals(124, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
+		assertEquals(0, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
 		src.moveAllTo(dest);
 		assertEquals(0, Arrays.stream(Color.values()).mapToInt(src::getQuantity).reduce(0, Integer::sum));
-		assertEquals(128, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
+		assertEquals(4, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
 	}
 
 	@Test

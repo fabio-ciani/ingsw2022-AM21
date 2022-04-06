@@ -20,6 +20,12 @@ public class GameManager {
 	protected final int CLOUD_NUMBER;
 	protected final int ENTRANCE_SIZE;
 	protected final int TOWER_NUMBER;
+
+	/**
+	 * Constant used as a possible destination when the player moves students at the beginning of the Action Phase.
+	 */
+	public static final String DINING_ROOM = "dining room";
+
     // TODO: Will the constants be managed with a GameConfig object or by declaring them as attributes of GameManager?
 
 	public GameManager(List<String> nicknames, boolean expertMode) {
@@ -73,8 +79,11 @@ public class GameManager {
 
     }
 
+	/**
+	 * Prepares the board for a new round to be played.
+	 */
     public void setupRound() {
-
+		board.refillClouds();
     }
 
     public void handleAssistantCards(Map<Player, AssistantCard> playedCards) {
@@ -101,8 +110,33 @@ public class GameManager {
                 .toList();
     }
 
-    public void handleMovedStudents(String nickname, Tuple<String, String> movedStudents) {
-
+	// TODO: 05/04/2022 DAVIDE - Change (doc and implementation) when moving constants to the Config class
+	/**
+	 * Receives a {@link  List} of pairs,
+	 * each containing the {@link Color} of the student that the player wants to move and the corresponding destination.
+	 * The destination can be an island (ID of the {@link IslandGroup}) or the dining room of a player ({@code DINING_ROOM} constant).
+	 *
+	 * @param nickname Nickname of the player moving the students.
+	 * @param movedStudents List of pairs [color, destination] representing which students to move and where.
+	 */
+    public void handleMovedStudents(String nickname, List<Pair<String, String>> movedStudents)
+			throws NoMovementException, IslandNotFoundException {
+		Player player = players.get(nickname);
+		StudentContainer entrance = player.getEntrance();
+		StudentContainer diningRoom = player.getDiningRoom();
+		for (Pair<String, String> colorDest : movedStudents) {
+			Color student = Color.valueOf(colorDest.value0());
+			try {
+				if (colorDest.value1().equals(DINING_ROOM)) {
+					entrance.moveTo(diningRoom, student);
+				} else {
+					IslandGroup island = board.getIsland(colorDest.value1());
+					entrance.moveTo(island, student);
+				}
+			} catch (NoMovementException e) {
+				throw new NoMovementException(e.getMessage() + " Trying to move " + colorDest.value0() + " student to " + colorDest.value1(), e);
+			}
+		}
     }
 
     public void handleMotherNatureMovement(String islandDestination) {
@@ -172,10 +206,11 @@ public class GameManager {
     }
 
     public void handleCharacterCard() {
-
+		// TODO: 05/04/2022 DAVIDE
     }
 
     public boolean gameOver() {
+		// TODO: 05/04/2022 DAVIDE 
         return false;
     }
 

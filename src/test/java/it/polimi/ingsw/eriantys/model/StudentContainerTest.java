@@ -267,7 +267,72 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void swap() {
+	void swap_PassNullArguments_ThrowException() {
+		StudentContainer container = new StudentContainer();
+		assertThrowsExactly(NoMovementException.class, () -> container.swap(null, Color.PINK, Color.RED));
+		assertThrowsExactly(NoMovementException.class, () -> container.swap(container, null, Color.RED));
+		assertThrowsExactly(NoMovementException.class, () -> container.swap(container, Color.GREEN, null));
+	}
+
+	@Test
+	void swap_OneOrMoreEmptyContainers_ThrowException() throws NoMovementException {
+		StudentContainer emptyContainer = new StudentContainer();
+		StudentContainer nonEmptyContainer = new StudentContainer();
+		new Bag().moveTo(nonEmptyContainer, 30);
+
+		assertThrowsExactly(NoMovementException.class, () -> emptyContainer.swap(nonEmptyContainer, Color.PINK, Color.RED));
+		assertThrowsExactly(NoMovementException.class, () -> nonEmptyContainer.swap(emptyContainer, Color.BLUE, Color.RED));
+		assertThrowsExactly(NoMovementException.class, () -> emptyContainer.swap(emptyContainer, Color.GREEN, Color.PINK));
+	}
+
+	@Test
+	void swap_OneOrMoreFullContainers_ThrowException() throws NoMovementException {
+		StudentContainer nonFullContainer = new StudentContainer();
+		StudentContainer fullContainer = new StudentContainer();
+		new Bag().moveTo(nonFullContainer, 30);
+		fullContainer.fill();
+
+		assertThrowsExactly(NoMovementException.class, () -> fullContainer.swap(nonFullContainer, Color.GREEN, Color.RED));
+		assertThrowsExactly(NoMovementException.class, () -> nonFullContainer.swap(fullContainer, Color.BLUE, Color.YELLOW));
+		assertThrowsExactly(NoMovementException.class, () -> fullContainer.swap(fullContainer, Color.BLUE, Color.PINK));
+	}
+
+	@Test
+	void swap_FullContainersSwapSameColor_NoChange() {
+		StudentContainer cont1 = new StudentContainer();
+		StudentContainer cont2 = new StudentContainer();
+		cont1.fill();
+		cont2.fill();
+
+		assertDoesNotThrow(() -> cont1.swap(cont2, Color.PINK, Color.PINK));
+		for (Color color : Color.values()) {
+			assertEquals(26, cont1.getQuantity(color));
+			assertEquals(26, cont2.getQuantity(color));
+		}
+	}
+
+	@Test
+	void swap_ContainersHaveEnoughStudentsAndCapacity_SuccessfulSwap() throws NoMovementException {
+		StudentContainer cont1 = new StudentContainer();
+		StudentContainer cont2 = new StudentContainer();
+
+		new Bag().moveTo(cont1, Color.BLUE);
+		new Bag().moveTo(cont2, Color.PINK);
+
+		cont1.swap(cont2, Color.BLUE, Color.PINK);
+
+		for (Color color : Color.values()) {
+			if (color == Color.BLUE) {
+				assertEquals(0, cont1.getQuantity(color));
+				assertEquals(1, cont2.getQuantity(color));
+			} else if (color == Color.PINK) {
+				assertEquals(1, cont1.getQuantity(color));
+				assertEquals(0, cont2.getQuantity(color));
+			} else {
+				assertEquals(0, cont1.getQuantity(color));
+				assertEquals(0, cont2.getQuantity(color));
+			}
+		}
 	}
 
 	@Test

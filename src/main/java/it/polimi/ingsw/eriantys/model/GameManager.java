@@ -170,7 +170,7 @@ public class GameManager {
 		int maxInfluence = 0;
 		try {
 			maxInfluence = calc.calculate(maxInfluencePlayer, island, professors.getProfessors(maxInfluencePlayer));
-		} catch (IllegalInfluenceStateException e) {
+		} catch (InvalidArgumentException e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
@@ -179,7 +179,7 @@ public class GameManager {
 			int influence = 0;
 			try {
 				influence = calc.calculate(player, island, professors.getProfessors(player));
-			} catch (IllegalInfluenceStateException e) {
+			} catch (InvalidArgumentException e) {
 				// TODO: handle exception
 				e.printStackTrace();
 			}

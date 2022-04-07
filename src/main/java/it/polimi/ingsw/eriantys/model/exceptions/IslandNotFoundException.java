@@ -20,7 +20,7 @@ public class IslandNotFoundException extends Exception {
 
 	/**
 	 * Constructs a new exception with the specified detail message.
-	 * @param message the detail message, which is saved for later retrieval by the {@link #getMessage()} method.
+	 * @param message the detail message, which is saved for later retrieval by the {@link #getMessage()} method
 	 */
 	public IslandNotFoundException(String message) {
 		super(message);

@@ -5,7 +5,7 @@ import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.Player;
 import it.polimi.ingsw.eriantys.model.StudentContainer;
 import it.polimi.ingsw.eriantys.model.characters.CharacterCard;
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 
 import java.util.Set;
 
@@ -15,9 +15,9 @@ import java.util.Set;
  */
 public class CommonInfluence implements InfluenceCalculator {
     @Override
-    public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws IllegalInfluenceStateException {
+    public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws InvalidArgumentException {
         if (player == null || island == null || ownedProfessors == null)
-            throw new IllegalInfluenceStateException("Cannot proceed with null parameter(s).");
+            throw new InvalidArgumentException("Cannot proceed with null parameter(s).");
 
         int result = 0;
 

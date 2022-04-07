@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.model.exceptions.IllegalMovementException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.ArrayList;
@@ -100,9 +101,9 @@ public class Player {
      * A setter for the number of allowed Mother Nature's movements for a {@code Player}'s object during the current turn.
      * @param movements the new internal state for the number of allowed Mother Nature's movements of a {@code Player}
      */
-    public void setMotherNatureMovements(int movements) {
+    public void setMotherNatureMovements(int movements) throws IllegalMovementException {
         if (movements < 0)
-            throw new IllegalArgumentException("Parameter should not be negative.");
+            throw new IllegalMovementException("Parameter should not be negative.");
         motherNatureMovements = movements;
     }
 

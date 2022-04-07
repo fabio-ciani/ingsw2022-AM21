@@ -33,7 +33,7 @@ public class Jester extends ContainerCharacterCard {
     /**
      * Maximum number of students that can be selected on this card to swap.
      */
-    private static final int MAX_MOVEMENTS = 3;
+    private static final int MAX_SWAPS = 3;
 
     /**
      * Constructs a new {@link Jester} character card.
@@ -52,8 +52,20 @@ public class Jester extends ContainerCharacterCard {
                             Color targetColor,
                             IslandGroup targetIsland)
             throws NoMovementException, InvalidArgumentException {
-        if (sourceColors.size() != destinationColors.size() || sourceColors.size() > MAX_MOVEMENTS) {
-            throw new InvalidArgumentException(String.format("Invalid amount of students to swap (%d from source and %d from destination).", sourceColors.size(), destinationColors.size()));
+        if (sourceColors == null) {
+            throw new InvalidArgumentException("sourceColors argument is null.");
+        }
+        if (destinationColors == null) {
+            throw new InvalidArgumentException("destinationColors argument is null.");
+        }
+        if (sourceColors.size() != destinationColors.size()) {
+            throw new InvalidArgumentException(String.format("Invalid amount of students to swap: %d from source and %d from destination (should be the same number).", sourceColors.size(), destinationColors.size()));
+        }
+        if (sourceColors.size() > MAX_SWAPS) {
+            throw new InvalidArgumentException(String.format("Invalid amount of students to swap: more than %d students selected.", MAX_SWAPS));
+        }
+        if (sourceColors.size() == 0) {
+            throw new InvalidArgumentException("Invalid amount of students to swap: no students selected.");
         }
         StudentContainer entrance = currentPlayerSupplier.get().getEntrance();
         for (int i = 0; i < sourceColors.size(); i++) {

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.*;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.List;
@@ -35,7 +36,13 @@ public class Monk extends ContainerCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException {
+            throws NoMovementException, InvalidArgumentException {
+        if (targetColor == null) {
+            throw new InvalidArgumentException("targetColor argument is null.");
+        }
+        if (targetIsland == null) {
+            throw new InvalidArgumentException("targetIsland argument is null.");
+        }
         moveTo(targetIsland, targetColor);
         bag.moveTo(this, 1);
         increaseCost();

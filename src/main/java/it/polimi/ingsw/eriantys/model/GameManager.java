@@ -1,9 +1,9 @@
 package it.polimi.ingsw.eriantys.model;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.model.characters.*;
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
-import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
-import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
+import it.polimi.ingsw.eriantys.model.exceptions.*;
 import it.polimi.ingsw.eriantys.model.influence.CommonInfluence;
 import it.polimi.ingsw.eriantys.model.influence.InfluenceCalculator;
 
@@ -210,8 +210,41 @@ public class GameManager {
         calc = calculator;
     }
 
-    public void handleCharacterCard() {
-		// TODO: 05/04/2022 DAVIDE
+    public void handleCharacterCard(int index, JsonObject params) throws
+			IllegalInfluenceStateException,
+			ItemNotAvailableException,
+			NoMovementException,
+			IslandNotFoundException,
+			InvalidArgumentException,
+			IllegalMovementException,
+			DuplicateNoEntryTileException {
+		List<Color> sourceColors = null, destinationColors = null;
+		Color targetColor = null;
+		IslandGroup targetIsland = null;
+
+		if (params.has("sourceColors")) {
+			sourceColors = new ArrayList<>();
+			for (JsonElement elm : params.getAsJsonArray("sourceColors")) {
+				sourceColors.add(Color.valueOf(elm.getAsString()));
+			}
+		}
+
+		if (params.has("destinationColors")) {
+			destinationColors = new ArrayList<>();
+			for (JsonElement elm : params.getAsJsonArray("destinationColors")) {
+				destinationColors.add(Color.valueOf(elm.getAsString()));
+			}
+		}
+
+		if (params.has("targetColor")) {
+			targetColor = Color.valueOf(params.get("targetColor").getAsString());
+		}
+
+		if (params.has("targetIsland")) {
+			targetIsland = board.getIsland(params.get("targetIsland").getAsString());
+		}
+
+		characters[index].applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
     }
 
     public boolean gameOver() {

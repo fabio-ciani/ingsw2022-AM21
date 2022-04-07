@@ -188,11 +188,14 @@ public class StudentContainer {
 		if (thisAmount == null || thisAmount == 0 || thatAmount == null || thatAmount == 0)
 			throw new NoMovementException("No swap: a container is empty.");
 
-		if (!this.hasRemainingCapacity(thatColor) || !that.hasRemainingCapacity(thisColor))
-			throw new NoMovementException("No swap: a container is full.");
-
 		this.students.put(thisColor, thisAmount - 1);
 		that.students.put(thatColor, thatAmount - 1);
+
+		if (!this.hasRemainingCapacity(thatColor) || !that.hasRemainingCapacity(thisColor)) {
+			this.students.put(thisColor, thisAmount);
+			that.students.put(thatColor, thatAmount);
+			throw new NoMovementException("No swap: a container is full.");
+		}
 
 		this.students.put(thatColor, this.students.get(thatColor) + 1);
 		that.students.put(thisColor, that.students.get(thisColor) + 1);
@@ -236,13 +239,17 @@ public class StudentContainer {
 	}
 
 	/**
-	 * Returns the container's remaining capacity for the specified {@link Color}.
+	 * Returns the container's remaining capacity for the specified {@link Color}, an integer between 0 and
+	 * {@link StudentContainer#MAX_STUDENTS_PER_COLOR}, or -1 if {@code color} is {@code null}.
 	 * @param color the color whose remaining capacity is returned.
-	 * @return the container's remaining capacity for the specified {@link Color}.
+	 * @return the container's remaining capacity for the specified {@link Color}, an integer between 0 and
+	 * {@link StudentContainer#MAX_STUDENTS_PER_COLOR}, or -1 if {@code color} is {@code null}.
 	 * @see StudentContainer#remainingCapacity()
 	 */
 	protected int remainingCapacity(Color color) {
-		return remainingCapacity();
+		if (color == null)
+			return -1;
+		return Math.min(remainingCapacity(), MAX_STUDENTS_PER_COLOR - getQuantity(color));
 	}
 
 	/**

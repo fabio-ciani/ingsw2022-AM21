@@ -286,15 +286,44 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void swap_OneOrMoreFullContainers_ThrowException() throws NoMovementException {
-		StudentContainer nonFullContainer = new StudentContainer();
-		StudentContainer fullContainer = new StudentContainer();
-		new Bag().moveTo(nonFullContainer, 30);
-		fullContainer.fill();
+	void swap_SourceContainersFullWithMaxSize_SuccessfulSwap() throws NoMovementException {
+		StudentContainer nonFullContainer = new StudentContainer(20);
+		StudentContainer fullContainer = new StudentContainer(20);
+		Bag bag = new Bag();
 
-		assertThrowsExactly(NoMovementException.class, () -> fullContainer.swap(nonFullContainer, Color.GREEN, Color.RED));
-		assertThrowsExactly(NoMovementException.class, () -> nonFullContainer.swap(fullContainer, Color.BLUE, Color.YELLOW));
-		assertThrowsExactly(NoMovementException.class, () -> fullContainer.swap(fullContainer, Color.BLUE, Color.PINK));
+		for (int i = 0; i < 10; i++)
+			bag.moveTo(nonFullContainer, Color.BLUE);
+
+		for (int i = 0; i < 20; i++)
+			bag.moveTo(fullContainer, Color.RED);
+
+		fullContainer.swap(nonFullContainer, Color.RED, Color.BLUE);
+		for (Color color : Color.values()) {
+			if (color == Color.RED) {
+				assertEquals(1, nonFullContainer.getQuantity(color));
+				assertEquals(19, fullContainer.getQuantity(color));
+			} else if (color == Color.BLUE) {
+				assertEquals(9, nonFullContainer.getQuantity(color));
+				assertEquals(1, fullContainer.getQuantity(color));
+			} else {
+				assertEquals(0, nonFullContainer.getQuantity(color));
+				assertEquals(0, fullContainer.getQuantity(color));
+			}
+		}
+	}
+
+	@Test
+	void swap_OneOrMoreFullContainersWithNoMaxSize_ThrowException() throws NoMovementException {
+		StudentContainer nonFullContainer = new StudentContainer();
+		StudentContainer fullCont1 = new StudentContainer();
+		StudentContainer fullCont2 = new StudentContainer();
+		new Bag().moveTo(nonFullContainer, 30);
+		fullCont1.fill();
+		fullCont2.fill();
+
+		assertThrowsExactly(NoMovementException.class, () -> fullCont1.swap(nonFullContainer, Color.GREEN, Color.RED));
+		assertThrowsExactly(NoMovementException.class, () -> nonFullContainer.swap(fullCont1, Color.BLUE, Color.YELLOW));
+		assertThrowsExactly(NoMovementException.class, () -> fullCont1.swap(fullCont2, Color.BLUE, Color.PINK));
 	}
 
 	@Test
@@ -336,8 +365,9 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void remainingCapacity_EmptyContainer_ReturnMaxSize() {
-		assertEquals(130, new StudentContainer().remainingCapacity(Color.PINK));
+	void remainingCapacity_EmptyContainer_ReturnMaxSizePerColor() {
+		for (Color color : Color.values())
+			assertEquals(26, new StudentContainer().remainingCapacity(color));
 	}
 
 	@Test
@@ -346,24 +376,26 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void remainingCapacity_Contains50_Return80() throws NoMovementException {
+	void remainingCapacity_Contains20_Return6() throws NoMovementException {
 		StudentContainer container = new StudentContainer();
-		new Bag().moveTo(container, 50);
-		assertEquals(80, container.remainingCapacity(Color.YELLOW));
+		Bag bag = new Bag();
+		for (int i = 0; i < 20; i++)
+			bag.moveTo(container, Color.YELLOW);
+		assertEquals(6, container.remainingCapacity(Color.YELLOW));
 	}
 
 	@Test
 	void remainingCapacity_OverflowContainer_ThrowExceptionAndReturn0() {
 		StudentContainer container = new StudentContainer(30);
 		assertThrowsExactly(NoMovementException.class, () -> new Bag().moveTo(container, 50));
-		assertEquals(0, container.remainingCapacity(Color.BLUE));
+		for (Color color : Color.values())
+			assertEquals(0, container.remainingCapacity(color));
 	}
 
 	@Test
-	void remainingCapacity_PassNullAndContains30_Return100() throws NoMovementException {
+	void remainingCapacity_PassNull_ReturnNeg1() {
 		StudentContainer container = new StudentContainer();
-		new Bag().moveTo(container, 30);
-		assertEquals(100, container.remainingCapacity(Color.RED));
+		assertEquals(-1, container.remainingCapacity(null));
 	}
 
 	@Test

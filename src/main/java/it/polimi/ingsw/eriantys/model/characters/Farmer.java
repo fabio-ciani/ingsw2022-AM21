@@ -2,8 +2,6 @@ package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.*;
 import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
-import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
-import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.List;
 
@@ -37,10 +35,9 @@ public class Farmer extends BaseCharacterCard {
     public void applyEffect(List<Color> sourceColors,
                             List<Color> destinationColors,
                             Color targetColor,
-                            IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
-        super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
+                            IslandGroup targetIsland) {
         professorOwnership.activateEffect();
+        increaseCost();
     }
 
     /**

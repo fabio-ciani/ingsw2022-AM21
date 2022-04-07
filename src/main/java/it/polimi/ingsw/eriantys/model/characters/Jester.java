@@ -1,6 +1,7 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.*;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.List;
@@ -50,14 +51,14 @@ public class Jester extends ContainerCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException {
-        super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
+            throws NoMovementException, InvalidArgumentException {
         if (sourceColors.size() != destinationColors.size() || sourceColors.size() > MAX_MOVEMENTS) {
-            throw new IllegalArgumentException();
+            throw new InvalidArgumentException(String.format("Invalid amount of students to swap (%d from source and %d from destination).", sourceColors.size(), destinationColors.size()));
         }
         StudentContainer entrance = currentPlayerSupplier.get().getEntrance();
         for (int i = 0; i < sourceColors.size(); i++) {
             swap(entrance, sourceColors.get(i), destinationColors.get(i));
         }
+        increaseCost();
     }
 }

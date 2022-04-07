@@ -1,12 +1,8 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.Bag;
-import it.polimi.ingsw.eriantys.model.Color;
-import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.StudentContainer;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
-
-import java.util.List;
 
 /**
  * Abstract class that represents the character cards that require to contain students to use when activating the effect.
@@ -20,7 +16,7 @@ public abstract class ContainerCharacterCard extends StudentContainer implements
     /**
      * Whether the cost is incremented by 1 ({@code true} after first activation).
      */
-    private boolean increaseCost = false;
+    private boolean increasedCost = false;
 
     /**
      * Reference to the {@link Bag} from which to draw the students.
@@ -42,23 +38,18 @@ public abstract class ContainerCharacterCard extends StudentContainer implements
 
     @Override
     public int getCost() {
-        return increaseCost ? initialCost + 1 : initialCost;
+        return increasedCost ? initialCost + 1 : initialCost;
+    }
+
+    protected void increaseCost() {
+        if (!increasedCost) {
+            increasedCost = true;
+        }
     }
 
     @Override
     public void setupEffect() throws NoMovementException {
         refillFrom(bag);
-    }
-
-    @Override
-    public void applyEffect(List<Color> sourceColors,
-                            List<Color> destinationColors,
-                            Color targetColor,
-                            IslandGroup targetIsland)
-            throws NoMovementException {
-        if (!increaseCost) {
-            increaseCost = true;
-        }
     }
 
     @Override

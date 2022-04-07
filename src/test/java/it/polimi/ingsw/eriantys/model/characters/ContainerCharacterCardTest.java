@@ -2,8 +2,11 @@ package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.Bag;
 import it.polimi.ingsw.eriantys.model.Color;
+import it.polimi.ingsw.eriantys.model.IslandGroup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +19,12 @@ class ContainerCharacterCardTest {
     @BeforeEach
     void init() {
         bag = new Bag();
-        card = new ContainerCharacterCard(size, initialCost, bag) {};
+        card = new ContainerCharacterCard(size, initialCost, bag) {
+            @Override
+            public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland) {
+                increaseCost();
+            }
+        };
     }
 
     @Test

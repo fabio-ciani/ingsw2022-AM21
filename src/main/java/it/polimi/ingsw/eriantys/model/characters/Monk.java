@@ -36,8 +36,8 @@ public class Monk extends ContainerCharacterCard {
                             Color targetColor,
                             IslandGroup targetIsland)
             throws NoMovementException {
-        super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
         moveTo(targetIsland, targetColor);
         bag.moveTo(this, 1);
+        increaseCost();
     }
 }

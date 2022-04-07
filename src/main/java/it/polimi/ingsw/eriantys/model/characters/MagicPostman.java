@@ -3,9 +3,7 @@ package it.polimi.ingsw.eriantys.model.characters;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.Player;
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 import it.polimi.ingsw.eriantys.model.exceptions.IllegalMovementException;
-import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.List;
@@ -46,15 +44,10 @@ public class MagicPostman extends BaseCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
-        super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
+            throws NoMovementException, IllegalMovementException {
         Player currentPlayer = currentPlayerSupplier.get();
         int MNMovements = currentPlayer.getMotherNatureMovements();
-        try {
-            currentPlayer.setMotherNatureMovements(MNMovements + BONUS_MOVEMENTS);
-        } catch (IllegalMovementException e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
+        currentPlayer.setMotherNatureMovements(MNMovements + BONUS_MOVEMENTS);
+        increaseCost();
     }
 }

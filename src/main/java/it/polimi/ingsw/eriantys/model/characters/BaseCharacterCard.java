@@ -1,12 +1,6 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
-import it.polimi.ingsw.eriantys.model.Color;
-import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
-import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
-import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
-
-import java.util.List;
 
 /**
  * Abstract class that represents character cards that don't hold students.
@@ -20,7 +14,7 @@ public abstract class BaseCharacterCard implements CharacterCard {
     /**
      * Whether the cost is incremented by 1 ({@code true} after first activation).
      */
-    private boolean increaseCost = false;
+    private boolean increasedCost = false;
 
     /**
      * Constructs the character card.
@@ -33,22 +27,17 @@ public abstract class BaseCharacterCard implements CharacterCard {
 
     @Override
     public int getCost() {
-        return increaseCost ? initialCost + 1 : initialCost;
+        return increasedCost ? initialCost + 1 : initialCost;
     }
 
-    @Override
-    public void setupEffect() throws NoMovementException {}
-
-    @Override
-    public void applyEffect(List<Color> sourceColors,
-                            List<Color> destinationColors,
-                            Color targetColor,
-                            IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
-        if (!increaseCost) {
-            increaseCost = true;
+    protected void increaseCost() {
+        if (!increasedCost) {
+            increasedCost = true;
         }
     }
+
+    @Override
+    public void setupEffect() {}
 
     @Override
     public void cancelEffect() throws IllegalInfluenceStateException {}

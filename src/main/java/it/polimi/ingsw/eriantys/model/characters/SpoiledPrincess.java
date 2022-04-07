@@ -46,9 +46,9 @@ public class SpoiledPrincess extends ContainerCharacterCard {
                             Color targetColor,
                             IslandGroup targetIsland)
             throws NoMovementException {
-        super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
         StudentContainer diningRoom = currentPlayerSupplier.get().getDiningRoom();
         moveTo(diningRoom, targetColor);
         bag.moveTo(this, 1);
+        increaseCost();
     }
 }

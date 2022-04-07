@@ -4,9 +4,7 @@ import it.polimi.ingsw.eriantys.model.Board;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.exceptions.DuplicateNoEntryTileException;
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
-import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.List;
 import java.util.Stack;
@@ -63,30 +61,23 @@ public class HerbGranny extends BaseCharacterCard {
     }
 
     @Override
-    public void setupEffect() throws NoMovementException {
+    public void setupEffect() {
         super.setupEffect();
         for (int i = 0; i < MAX_ENTRY_TILES; i++) {
             tiles.push(i);
         }
-        // TODO: 30/03/2022 Give the board (?) a reference to the returnTile method
-        // board.setReturnNoEntryTile(this::returnTile);
+        board.setReturnNoEntryTile(this::returnTile);
     }
 
     @Override
     public void applyEffect(List<Color> sourceColors,
                             List<Color> destinationColors,
                             Color targetColor,
-                            IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
+                            IslandGroup targetIsland) throws ItemNotAvailableException, DuplicateNoEntryTileException {
         if (tiles.empty()) {
             throw new ItemNotAvailableException("There are no entry tiles on the HerbGranny character card.");
         }
-        super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
-        try {
-            targetIsland.putNoEntryTile(tiles.pop());
-        } catch (DuplicateNoEntryTileException e) {
-            // TODO handle exception
-            e.printStackTrace();
-        }
+        targetIsland.putNoEntryTile(tiles.pop());
+        increaseCost();
     }
 }

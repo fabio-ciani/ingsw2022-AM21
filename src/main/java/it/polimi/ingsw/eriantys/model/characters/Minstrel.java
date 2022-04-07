@@ -4,8 +4,7 @@ import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.Player;
 import it.polimi.ingsw.eriantys.model.StudentContainer;
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
-import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.List;
@@ -47,15 +46,15 @@ public class Minstrel extends BaseCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException, ItemNotAvailableException, IllegalInfluenceStateException {
-        super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
+            throws NoMovementException, InvalidArgumentException {
         if (sourceColors.size() != destinationColors.size() || sourceColors.size() > MAX_MOVEMENTS) {
-            throw new IllegalArgumentException();
+            throw new InvalidArgumentException();
         }
         StudentContainer entrance = currentPlayerSupplier.get().getEntrance();
         StudentContainer diningRoom = currentPlayerSupplier.get().getDiningRoom();
         for (int i = 0; i < sourceColors.size(); i++) {
             entrance.swap(diningRoom, sourceColors.get(i), destinationColors.get(i));
         }
+        increaseCost();
     }
 }

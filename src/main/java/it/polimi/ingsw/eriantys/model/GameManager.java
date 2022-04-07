@@ -234,7 +234,7 @@ public class GameManager {
 	private CharacterCard getCharacter(int index) {
 		return switch (index) {
 			case 1 -> new Centaur(this);
-			case 2 -> new Farmer(professors, this::currentPlayer);
+			case 2 -> new Farmer(professors);
 			case 3 -> new Herald(this);
 			case 4 -> new HerbGranny(board);
 			case 5 -> new Jester(board.getBag(), this::currentPlayer);

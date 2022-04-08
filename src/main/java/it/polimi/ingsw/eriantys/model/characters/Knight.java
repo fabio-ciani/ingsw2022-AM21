@@ -1,7 +1,7 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.*;
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.influence.BonusInfluence;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class Knight extends InfluenceCharacterCard {
     public void applyEffect(List<Color> sourceColors,
                             List<Color> destinationColors,
                             Color targetColor,
-                            IslandGroup targetIsland) throws IllegalInfluenceStateException {
+                            IslandGroup targetIsland) throws InvalidArgumentException {
         Player currentPlayer = currentPlayerSupplier.get();
         effectInfluenceCalculator = new BonusInfluence(currentPlayer);
         super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);

@@ -204,14 +204,13 @@ public class GameManager {
 		}
 	}
 
-    public void changeInfluenceState(InfluenceCalculator calculator) throws IllegalInfluenceStateException {
+    public void changeInfluenceState(InfluenceCalculator calculator) throws InvalidArgumentException {
         if (calculator == null)
-            throw new IllegalInfluenceStateException("Parameter should not be null.");
+            throw new InvalidArgumentException("Parameter should not be null.");
         calc = calculator;
     }
 
     public void handleCharacterCard(int index, JsonObject params) throws
-			IllegalInfluenceStateException,
 			ItemNotAvailableException,
 			NoMovementException,
 			IslandNotFoundException,

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.*;
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
 
 import java.util.List;
 
@@ -44,8 +43,7 @@ public class Farmer extends BaseCharacterCard {
      *
      */
     @Override
-    public void cancelEffect() throws IllegalInfluenceStateException {
-        super.cancelEffect();
+    public void cancelEffect() {
         professorOwnership.deactivateEffect();
     }
 }

@@ -41,7 +41,6 @@ public interface CharacterCard {
                      IslandGroup targetIsland) throws
             NoMovementException,
             ItemNotAvailableException,
-            IllegalInfluenceStateException,
             DuplicateNoEntryTileException,
             InvalidArgumentException,
             IllegalMovementException;
@@ -50,5 +49,5 @@ public interface CharacterCard {
      * Resets the effects of this card that are not intended to persist after the activation turn.
      * It should be called at the end of the turn.
      */
-    void cancelEffect() throws IllegalInfluenceStateException;
+    void cancelEffect() throws InvalidArgumentException;
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 
 /**
  * Abstract class that represents character cards that don't hold students.
@@ -40,5 +40,5 @@ public abstract class BaseCharacterCard implements CharacterCard {
     public void setupEffect() {}
 
     @Override
-    public void cancelEffect() throws IllegalInfluenceStateException {}
+    public void cancelEffect() throws InvalidArgumentException {}
 }

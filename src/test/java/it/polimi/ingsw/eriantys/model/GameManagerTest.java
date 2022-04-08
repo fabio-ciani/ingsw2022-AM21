@@ -1,6 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,6 +48,6 @@ class GameManagerTest {
     void changeInfluenceState_PassNull_ThrowException() {
         GameManager gm = new GameManager(players, false);
 
-        assertThrowsExactly(IllegalInfluenceStateException.class, () -> gm.changeInfluenceState(null));
+        assertThrowsExactly(InvalidArgumentException.class, () -> gm.changeInfluenceState(null));
     }
 }

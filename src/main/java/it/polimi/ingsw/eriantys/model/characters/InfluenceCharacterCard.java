@@ -1,7 +1,7 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.*;
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalInfluenceStateException;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.influence.CommonInfluence;
 import it.polimi.ingsw.eriantys.model.influence.InfluenceCalculator;
 
@@ -42,13 +42,13 @@ public abstract class InfluenceCharacterCard extends BaseCharacterCard {
     public void applyEffect(List<Color> sourceColors,
                             List<Color> destinationColors,
                             Color targetColor,
-                            IslandGroup targetIsland) throws IllegalInfluenceStateException {
+                            IslandGroup targetIsland) throws InvalidArgumentException {
         gameManager.changeInfluenceState(effectInfluenceCalculator);
         increaseCost();
     }
 
     @Override
-    public void cancelEffect() throws IllegalInfluenceStateException {
+    public void cancelEffect() throws InvalidArgumentException {
         super.cancelEffect();
         gameManager.changeInfluenceState(normalInfluenceCalculator);
     }

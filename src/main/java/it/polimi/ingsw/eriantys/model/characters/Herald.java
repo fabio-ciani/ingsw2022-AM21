@@ -3,7 +3,9 @@ package it.polimi.ingsw.eriantys.model.characters;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.GameManager;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 /**
@@ -36,8 +38,11 @@ public class Herald extends BaseCharacterCard {
     public void applyEffect(List<Color> sourceColors,
                             List<Color> destinationColors,
                             Color targetColor,
-                            IslandGroup targetIsland) {
-        gameManager.resolve(targetIsland); // TODO: 30/03/2022 Check for problems calling resolve at any time
+                            IslandGroup targetIsland) throws InvalidArgumentException {
+        if (targetIsland == null) {
+            throw new InvalidArgumentException("targetIsland argument is null.");
+        }
+        gameManager.resolve(targetIsland);
         increaseCost();
     }
 }

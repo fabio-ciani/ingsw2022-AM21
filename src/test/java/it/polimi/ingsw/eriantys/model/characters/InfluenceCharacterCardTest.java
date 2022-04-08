@@ -1,8 +1,9 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
-import it.polimi.ingsw.eriantys.model.Bag;
 import it.polimi.ingsw.eriantys.model.Color;
+import it.polimi.ingsw.eriantys.model.GameManager;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,20 +11,23 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ContainerCharacterCardTest {
-    Bag bag;
-    ContainerCharacterCard card;
+class InfluenceCharacterCardTest {
+    GameManager gameManager;
+    InfluenceCharacterCard card;
 
-    final int size = 6;
-    final int initialCost = 3;
+    final int initialCost = 2;
 
     @BeforeEach
     void init() {
-        bag = new Bag();
-        card = new ContainerCharacterCard(size, initialCost, bag) {
+        gameManager = new GameManager(List.of("Nick", "Name"), true);
+        card = new InfluenceCharacterCard(initialCost, gameManager) {
             @Override
-            public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland) {
-                increaseCost();
+            public void applyEffect(List<Color> sourceColors,
+                                    List<Color> destinationColors,
+                                    Color targetColor,
+                                    IslandGroup targetIsland) throws InvalidArgumentException {
+                effectInfluenceCalculator = (player, island, ownedProfessors) -> 0;
+                super.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
             }
         };
     }
@@ -49,12 +53,7 @@ class ContainerCharacterCardTest {
     }
 
     @Test
-    void setupEffect_BagNotNull_FullContainerAfterSetup() {
-        assertDoesNotThrow(() -> card.setupEffect());
-        int sum = 0;
-        for (Color color : Color.values()) {
-            sum += card.getQuantity(color);
-        }
-        assertEquals(sum, size);
+    void cancelEffect_NormalInfluenceCalculatorNotNull_NoExceptionThrown() {
+        assertDoesNotThrow(() -> card.cancelEffect());
     }
 }

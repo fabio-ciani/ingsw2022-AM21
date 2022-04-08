@@ -47,6 +47,9 @@ public class SpoiledPrincess extends ContainerCharacterCard {
                             Color targetColor,
                             IslandGroup targetIsland)
             throws InvalidArgumentException, NoMovementException {
+        if (targetColor == null) {
+            throw new InvalidArgumentException("targetColor argument is null.");
+        }
         StudentContainer diningRoom = currentPlayerSupplier.get().getDiningRoom();
         moveTo(diningRoom, targetColor);
         bag.moveTo(this, 1);

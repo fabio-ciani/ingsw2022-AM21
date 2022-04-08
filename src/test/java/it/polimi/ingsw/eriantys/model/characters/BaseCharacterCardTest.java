@@ -1,6 +1,5 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
-import it.polimi.ingsw.eriantys.model.Bag;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,19 +9,19 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ContainerCharacterCardTest {
-    Bag bag;
-    ContainerCharacterCard card;
+class BaseCharacterCardTest {
+    BaseCharacterCard card;
 
-    final int size = 6;
-    final int initialCost = 3;
+    final int initialCost = 1;
 
     @BeforeEach
     void init() {
-        bag = new Bag();
-        card = new ContainerCharacterCard(size, initialCost, bag) {
+        card = new BaseCharacterCard(initialCost) {
             @Override
-            public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland) {
+            public void applyEffect(List<Color> sourceColors,
+                                    List<Color> destinationColors,
+                                    Color targetColor,
+                                    IslandGroup targetIsland) {
                 increaseCost();
             }
         };
@@ -46,15 +45,5 @@ class ContainerCharacterCardTest {
             card.applyEffect(null, null, null, null);
         });
         assertEquals(card.getCost(), initialCost + 1);
-    }
-
-    @Test
-    void setupEffect_BagNotNull_FullContainerAfterSetup() {
-        assertDoesNotThrow(() -> card.setupEffect());
-        int sum = 0;
-        for (Color color : Color.values()) {
-            sum += card.getQuantity(color);
-        }
-        assertEquals(sum, size);
     }
 }

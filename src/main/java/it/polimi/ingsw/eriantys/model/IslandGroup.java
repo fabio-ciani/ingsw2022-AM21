@@ -2,6 +2,7 @@ package it.polimi.ingsw.eriantys.model;
 
 import it.polimi.ingsw.eriantys.model.exceptions.DuplicateNoEntryTileException;
 import it.polimi.ingsw.eriantys.model.exceptions.IncompatibleControllersException;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class IslandGroup extends StudentContainer {
 		try {
 			i1.moveAllTo(this);
 			i2.moveAllTo(this);
-		} catch (NoMovementException e) {
+		} catch (InvalidArgumentException | NoMovementException e) {
 			// TODO handle exception
 			e.printStackTrace();
 		}
@@ -67,7 +68,7 @@ public class IslandGroup extends StudentContainer {
 			return null;
 
 		if (!i1.hasSameController(i2))
-			throw new IncompatibleControllersException("Ids: " + i1.id + ", " + i2.id + ".");
+			throw new IncompatibleControllersException("Ids: " + i1.id + ", " + i2.id + "."); // TODO this should not happen
 
 		return new IslandGroup(i1, i2);
 	}
@@ -113,7 +114,7 @@ public class IslandGroup extends StudentContainer {
 	 */
 	public void putNoEntryTile(int id) throws DuplicateNoEntryTileException {
 		if (noEntryTiles.contains(id))
-			throw new DuplicateNoEntryTileException("Id: " + id + ".");
+			throw new DuplicateNoEntryTileException("Id: " + id + "."); // TODO this should not happen
 		noEntryTiles.push(id);
 	}
 

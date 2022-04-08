@@ -23,7 +23,7 @@ public interface CharacterCard {
      *
      * @throws NoMovementException If students couldn't be moved correctly.
      */
-    void setupEffect() throws NoMovementException;
+    void setupEffect() throws InvalidArgumentException, NoMovementException;
 
     /**
      * Activates this card and applies the effect.

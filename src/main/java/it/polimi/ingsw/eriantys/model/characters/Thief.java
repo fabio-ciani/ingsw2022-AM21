@@ -1,6 +1,7 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.*;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.Collection;
@@ -51,7 +52,8 @@ public class Thief extends BaseCharacterCard {
     public void applyEffect(List<Color> sourceColors,
                             List<Color> destinationColors,
                             Color targetColor,
-                            IslandGroup targetIsland) {
+                            IslandGroup targetIsland)
+            throws InvalidArgumentException {
         for (Player player : players) {
             boolean emptyColor = false;
             for (int i = 0; i < STUDENTS_TO_REMOVE && !emptyColor; i++) {

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,7 @@ class ProfessorOwnershipTest {
 	}
 
 	@Test
-	void getProfessors_PlayerWithSomeProfessors_ReturnNonEmptySet() throws NoMovementException {
+	void getProfessors_PlayerWithSomeProfessors_ReturnNonEmptySet() throws InvalidArgumentException, NoMovementException {
 		Player p1 = new Player("p1");
 		this.currentPlayer = p1;
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
@@ -37,7 +38,7 @@ class ProfessorOwnershipTest {
 	}
 
 	@Test
-	void update_TieEffectActive_ChangeProfessorsWithWinOrTie() throws NoMovementException {
+	void update_TieEffectActive_ChangeProfessorsWithWinOrTie() throws InvalidArgumentException, NoMovementException {
 		Player p1 = new Player("p1");
 		Player p2 = new Player("p2");
 		Bag bag = new Bag();
@@ -58,7 +59,7 @@ class ProfessorOwnershipTest {
 	}
 
 	@Test
-	void update_TieEffectInactive_NoChangeProfessorsWithTie() throws NoMovementException {
+	void update_TieEffectInactive_NoChangeProfessorsWithTie() throws InvalidArgumentException, NoMovementException {
 		Player p1 = new Player("p1");
 		Player p2 = new Player("p2");
 		Bag bag = new Bag();
@@ -80,7 +81,7 @@ class ProfessorOwnershipTest {
 	}
 
 	@Test
-	void update_TieEffectActive_ChangeProfessorsWithWin() throws NoMovementException {
+	void update_TieEffectActive_ChangeProfessorsWithWin() throws InvalidArgumentException, NoMovementException {
 		Player p1 = new Player("p1");
 		Player p2 = new Player("p2");
 		Bag bag = new Bag();
@@ -102,7 +103,7 @@ class ProfessorOwnershipTest {
 	}
 
 	@Test
-	void update_TieEffectInactive_ChangeProfessorsWithWin() throws NoMovementException {
+	void update_TieEffectInactive_ChangeProfessorsWithWin() throws InvalidArgumentException, NoMovementException {
 		Player p1 = new Player("p1");
 		Player p2 = new Player("p2");
 		Bag bag = new Bag();

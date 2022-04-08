@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.*;
@@ -81,17 +82,19 @@ public class StudentContainer {
 	 * @param color the {@link Color} of the student to be moved.
 	 * @throws NoMovementException if {@code this} is empty or the destination container is full.
 	 */
-	public void moveTo(StudentContainer dest, Color color) throws NoMovementException {
-		if (dest == null || color == null)
-			throw new NoMovementException("Moved 0/1: one or more arguments are null.");
+	public void moveTo(StudentContainer dest, Color color) throws InvalidArgumentException, NoMovementException {
+		if (dest == null)
+			throw new InvalidArgumentException("dest argument is null."); // TODO this should not happen
+		if (color == null)
+			throw new InvalidArgumentException("color argument is null.");  // TODO this should not happen
 		if (!dest.hasRemainingCapacity(color))
-			throw new NoMovementException("Moved 0/1: the destination container is full.");
+			throw new NoMovementException("0/1 - the destination container is full."); // TODO this should not happen
 
 		Integer srcAmount = this.students.putIfAbsent(color, 0);
 		Integer destAmount = dest.students.get(color);
 
 		if (srcAmount == null || srcAmount == 0)
-			throw new NoMovementException("Moved 0/1: the source container is empty.");
+			throw new NoMovementException("0/1 - the source container is empty.");  // TODO this should not happen
 
 		if (destAmount == null)
 			destAmount = 0;
@@ -109,13 +112,13 @@ public class StudentContainer {
 	 * @throws NoMovementException if no colors that can be both removed from {@code this} and added to {@code dest}
 	 * can be found.
 	 */
-	public void moveTo(StudentContainer dest, int amount) throws NoMovementException {
+	public void moveTo(StudentContainer dest, int amount) throws InvalidArgumentException, NoMovementException {
 		if (dest == null)
-			throw new NoMovementException("Moved 0/1: the destination container is null.");
+			throw new InvalidArgumentException("dest argument is null."); // TODO this should not happen
 		for (int i = 0; i < amount; i++) {
 			Color color = this.getRandomColor(dest);
-			if (color == null)
-				throw new NoMovementException("Moved " + i + "/" + amount + ": no matching colors were found.");
+			if (color == null)  // TODO throw IncompleteMovementException
+				throw new NoMovementException(i + "/" + amount + " - no matching colors were found.");  // TODO this could happen
 			moveTo(dest, color);
 		}
 	}
@@ -128,27 +131,32 @@ public class StudentContainer {
 	 * @param dest the destination {@code StudentContainer}.
 	 * @throws NoMovementException if {@code this} contains more students than the destination container can add.
 	 */
-	public void moveAllTo(StudentContainer dest) throws NoMovementException {
+	public void moveAllTo(StudentContainer dest) throws InvalidArgumentException, NoMovementException {
+		if (dest == null)
+			throw new InvalidArgumentException("dest argument is null.");
+
 		boolean destinationFull = false;
 
 		for (Color color : Color.values()) {
-			Integer srcAmount = this.students.get(color);
-			Integer destAmount = dest.students.get(color);
+			if (!destinationFull) {
+				Integer srcAmount = this.students.get(color);
+				Integer destAmount = dest.students.get(color);
 
-			if (srcAmount == null)
-				srcAmount = 0;
-			if (destAmount == null)
-				destAmount = 0;
+				if (srcAmount == null)
+					srcAmount = 0;
+				if (destAmount == null)
+					destAmount = 0;
 
-			int maxMovements = Math.min(dest.remainingCapacity(color), srcAmount);
-			this.students.put(color, srcAmount - maxMovements);
-			dest.students.put(color, destAmount + maxMovements);
-			if (maxMovements < srcAmount)
-				destinationFull = true;
+				int maxMovements = Math.min(dest.remainingCapacity(color), srcAmount);
+				this.students.put(color, srcAmount - maxMovements);
+				dest.students.put(color, destAmount + maxMovements);
+				if (maxMovements < srcAmount)
+					destinationFull = true;
+			}
 		}
 
-		if (destinationFull)
-			throw new NoMovementException("Source not emptied: the destination container is full.");
+		if (destinationFull)  // TODO throw IncompleteMovementException
+			throw new NoMovementException("Source not emptied: the destination container is full.");  // TODO this could happen
 	}
 
 	/**
@@ -158,9 +166,9 @@ public class StudentContainer {
 	 * @throws NoMovementException if {@code source} is emptied before {@code this} can be filled.
 	 * @see StudentContainer#moveTo(StudentContainer, int)
 	 */
-	public void refillFrom(StudentContainer source) throws NoMovementException {
+	public void refillFrom(StudentContainer source) throws InvalidArgumentException, NoMovementException {
 		if (source == null)
-			throw new NoMovementException("Source is null.");
+			throw new InvalidArgumentException("source argument is null."); // TODO this should not happen
 
 		source.moveTo(this, this.remainingCapacity());
 	}
@@ -175,9 +183,14 @@ public class StudentContainer {
 	 * @param thatColor the {@link Color} of the student being moved from {@code that} to {@code this}.
 	 * @throws NoMovementException if any container does not have enough students or enough capacity to perform the swap.
 	 */
-	public void swap(StudentContainer that, Color thisColor, Color thatColor) throws NoMovementException {
-		if (that == null || thisColor == null || thatColor == null)
-			throw new NoMovementException("Null argument(s).");
+	public void swap(StudentContainer that, Color thisColor, Color thatColor)
+				throws InvalidArgumentException, NoMovementException {
+		if (that == null)
+			throw new InvalidArgumentException("that argument is null.");
+		if (thisColor == null)
+			throw new InvalidArgumentException("thisColor argument is null.");
+		if (thatColor == null)
+			throw new InvalidArgumentException("thatColor argument is null.");
 
 		if (thisColor == thatColor)
 			return;
@@ -186,7 +199,7 @@ public class StudentContainer {
 		Integer thatAmount = that.students.putIfAbsent(thatColor, 0);
 
 		if (thisAmount == null || thisAmount == 0 || thatAmount == null || thatAmount == 0)
-			throw new NoMovementException("No swap: a container is empty.");
+			throw new NoMovementException("0/1 - a container is empty."); // TODO this should not happen
 
 		this.students.put(thisColor, thisAmount - 1);
 		that.students.put(thatColor, thatAmount - 1);
@@ -194,7 +207,8 @@ public class StudentContainer {
 		if (!this.hasRemainingCapacity(thatColor) || !that.hasRemainingCapacity(thisColor)) {
 			this.students.put(thisColor, thisAmount);
 			that.students.put(thatColor, thatAmount);
-			throw new NoMovementException("No swap: a container is full.");
+			// TODO throw NoSwapException
+			throw new NoMovementException("0/1 - a container is full.");  // TODO this could happen
 		}
 
 		this.students.put(thatColor, this.students.get(thatColor) + 1);

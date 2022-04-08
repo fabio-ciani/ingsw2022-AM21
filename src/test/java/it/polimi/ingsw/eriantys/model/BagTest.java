@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,7 @@ class BagTest {
 	}
 
 	@Test
-	void remainingCapacity_EmptyBag_Return26() throws NoMovementException {
+	void remainingCapacity_EmptyBag_Return26() throws InvalidArgumentException, NoMovementException {
 		Bag bag = new Bag();
 		bag.moveTo(new StudentContainer(), 130);
 		for (Color color : Color.values())
@@ -49,7 +50,7 @@ class BagTest {
 	}
 
 	@Test
-	void remainingCapacity_Has15PinkStudents_Return15() throws NoMovementException {
+	void remainingCapacity_Has15PinkStudents_Return15() throws InvalidArgumentException, NoMovementException {
 		Bag bag = new Bag();
 
 		for (int i = 0; i < 15; i++)

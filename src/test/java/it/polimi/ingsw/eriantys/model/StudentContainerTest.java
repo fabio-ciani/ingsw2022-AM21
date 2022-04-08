@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void getQuantity_Add4Students_Return4() throws NoMovementException {
+	void getQuantity_Add4Students_Return4() throws InvalidArgumentException, NoMovementException {
 		StudentContainer container = new StudentContainer(12);
 		Bag bag = new Bag();
 
@@ -30,7 +31,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void getQuantity_StudentsOverflow_Return12() throws NoMovementException {
+	void getQuantity_StudentsOverflow_Return12() throws InvalidArgumentException, NoMovementException {
 		StudentContainer container = new StudentContainer(12);
 		Bag bag = new Bag();
 
@@ -47,7 +48,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void getQuantity_StudentsDiningRoomOverflow_Return10() throws NoMovementException {
+	void getQuantity_StudentsDiningRoomOverflow_Return10() throws InvalidArgumentException, NoMovementException {
 		StudentContainer container = new DiningRoom();
 		Bag bag = new Bag();
 
@@ -67,7 +68,7 @@ class StudentContainerTest {
 	void moveColorTo_PassNullDest_ThrowException() {
 		StudentContainer src = new StudentContainer();
 
-		assertThrowsExactly(NoMovementException.class, () -> src.moveTo(null, Color.YELLOW));
+		assertThrowsExactly(InvalidArgumentException.class, () -> src.moveTo(null, Color.YELLOW));
 	}
 
 	@Test
@@ -75,7 +76,7 @@ class StudentContainerTest {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer();
 
-		assertThrowsExactly(NoMovementException.class, () -> src.moveTo(dest, null));
+		assertThrowsExactly(InvalidArgumentException.class, () -> src.moveTo(dest, null));
 	}
 
 	@Test
@@ -96,7 +97,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveColorTo_FullDestinationDiningRoom_ThrowException() throws NoMovementException {
+	void moveColorTo_FullDestinationDiningRoom_ThrowException() throws InvalidArgumentException, NoMovementException {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new DiningRoom();
 
@@ -107,7 +108,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveColorTo_NormalConditions_MoveStudent() throws NoMovementException {
+	void moveColorTo_NormalConditions_MoveStudent() throws InvalidArgumentException, NoMovementException {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer();
 		Bag bag = new Bag();
@@ -131,11 +132,11 @@ class StudentContainerTest {
 	void moveAmtTo_PassNullDest_ThrowException() {
 		StudentContainer src = new StudentContainer();
 
-		assertThrowsExactly(NoMovementException.class, () -> src.moveTo(null, 4));
+		assertThrowsExactly(InvalidArgumentException.class, () -> src.moveTo(null, 4));
 	}
 
 	@Test
-	void moveAmtTo_PassNegative_NoChange() throws NoMovementException {
+	void moveAmtTo_PassNegative_NoChange() throws InvalidArgumentException, NoMovementException {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer();
 		Bag bag = new Bag();
@@ -150,7 +151,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveAmtTo_PassZero_NoChange() throws NoMovementException {
+	void moveAmtTo_PassZero_NoChange() throws InvalidArgumentException, NoMovementException {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer();
 		Bag bag = new Bag();
@@ -181,7 +182,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveAmtTo_Pass3_TotalQuantityIncreasedBy3() throws NoMovementException {
+	void moveAmtTo_Pass3_TotalQuantityIncreasedBy3() throws InvalidArgumentException, NoMovementException {
 		StudentContainer src = new Bag();
 		StudentContainer dest = new StudentContainer();
 
@@ -190,7 +191,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveAllTo_EmptySource_NoChange() throws NoMovementException {
+	void moveAllTo_EmptySource_NoChange() throws InvalidArgumentException, NoMovementException {
 		StudentContainer dest = new StudentContainer();
 		new Bag().moveTo(dest, 4);
 		assertEquals(4, Arrays.stream(Color.values()).mapToInt(dest::getQuantity).reduce(0, Integer::sum));
@@ -199,7 +200,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveAllTo_FullDestination_NoChangeAndThrowException() throws NoMovementException {
+	void moveAllTo_FullDestination_NoChangeAndThrowException() throws InvalidArgumentException, NoMovementException {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer();
 		dest.fill();
@@ -210,7 +211,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveAllTo_Move4DestinationCapacity2_Move2AndThrowException() throws NoMovementException {
+	void moveAllTo_Move4DestinationCapacity2_Move2AndThrowException() throws InvalidArgumentException, NoMovementException {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer(2);
 		new Bag().moveTo(src, 4);
@@ -223,7 +224,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void moveAllTo_Move4DestinationCapacity6_Move4() throws NoMovementException {
+	void moveAllTo_Move4DestinationCapacity6_Move4() throws InvalidArgumentException, NoMovementException {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer(6);
 		new Bag().moveTo(src, 4);
@@ -237,7 +238,7 @@ class StudentContainerTest {
 
 	@Test
 	void refillFrom_NullSource_ThrowException() {
-		assertThrowsExactly(NoMovementException.class, () -> new StudentContainer().refillFrom(null));
+		assertThrowsExactly(InvalidArgumentException.class, () -> new StudentContainer().refillFrom(null));
 	}
 
 	@Test
@@ -247,7 +248,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void refillFrom_SourceHasLessThanEnough_MoveAllInSourceAndThrowException() throws NoMovementException {
+	void refillFrom_SourceHasLessThanEnough_MoveAllInSourceAndThrowException() throws InvalidArgumentException, NoMovementException {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer();
 		new Bag().moveTo(src, 10);
@@ -257,7 +258,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void refillFrom_SourceHasEnough_DestinationFull() throws NoMovementException {
+	void refillFrom_SourceHasEnough_DestinationFull() throws InvalidArgumentException, NoMovementException {
 		StudentContainer src = new StudentContainer();
 		StudentContainer dest = new StudentContainer(20);
 		new Bag().moveTo(src, 30);
@@ -269,13 +270,13 @@ class StudentContainerTest {
 	@Test
 	void swap_PassNullArguments_ThrowException() {
 		StudentContainer container = new StudentContainer();
-		assertThrowsExactly(NoMovementException.class, () -> container.swap(null, Color.PINK, Color.RED));
-		assertThrowsExactly(NoMovementException.class, () -> container.swap(container, null, Color.RED));
-		assertThrowsExactly(NoMovementException.class, () -> container.swap(container, Color.GREEN, null));
+		assertThrowsExactly(InvalidArgumentException.class, () -> container.swap(null, Color.PINK, Color.RED));
+		assertThrowsExactly(InvalidArgumentException.class, () -> container.swap(container, null, Color.RED));
+		assertThrowsExactly(InvalidArgumentException.class, () -> container.swap(container, Color.GREEN, null));
 	}
 
 	@Test
-	void swap_OneOrMoreEmptyContainers_ThrowException() throws NoMovementException {
+	void swap_OneOrMoreEmptyContainers_ThrowException() throws InvalidArgumentException, NoMovementException {
 		StudentContainer emptyContainer = new StudentContainer();
 		StudentContainer nonEmptyContainer = new StudentContainer();
 		new Bag().moveTo(nonEmptyContainer, 30);
@@ -286,7 +287,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void swap_SourceContainersFullWithMaxSize_SuccessfulSwap() throws NoMovementException {
+	void swap_SourceContainersFullWithMaxSize_SuccessfulSwap() throws InvalidArgumentException, NoMovementException {
 		StudentContainer nonFullContainer = new StudentContainer(20);
 		StudentContainer fullContainer = new StudentContainer(20);
 		Bag bag = new Bag();
@@ -313,7 +314,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void swap_OneOrMoreFullContainersWithNoMaxSize_ThrowException() throws NoMovementException {
+	void swap_OneOrMoreFullContainersWithNoMaxSize_ThrowException() throws InvalidArgumentException, NoMovementException {
 		StudentContainer nonFullContainer = new StudentContainer();
 		StudentContainer fullCont1 = new StudentContainer();
 		StudentContainer fullCont2 = new StudentContainer();
@@ -341,7 +342,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void swap_ContainersHaveEnoughStudentsAndCapacity_SuccessfulSwap() throws NoMovementException {
+	void swap_ContainersHaveEnoughStudentsAndCapacity_SuccessfulSwap() throws InvalidArgumentException, NoMovementException {
 		StudentContainer cont1 = new StudentContainer();
 		StudentContainer cont2 = new StudentContainer();
 
@@ -376,7 +377,7 @@ class StudentContainerTest {
 	}
 
 	@Test
-	void remainingCapacity_Contains20_Return6() throws NoMovementException {
+	void remainingCapacity_Contains20_Return6() throws InvalidArgumentException, NoMovementException {
 		StudentContainer container = new StudentContainer();
 		Bag bag = new Bag();
 		for (int i = 0; i < 20; i++)

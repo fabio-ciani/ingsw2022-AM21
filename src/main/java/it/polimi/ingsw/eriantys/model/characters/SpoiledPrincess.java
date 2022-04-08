@@ -1,6 +1,7 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.*;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class SpoiledPrincess extends ContainerCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException {
+            throws InvalidArgumentException, NoMovementException {
         StudentContainer diningRoom = currentPlayerSupplier.get().getDiningRoom();
         moveTo(diningRoom, targetColor);
         bag.moveTo(this, 1);

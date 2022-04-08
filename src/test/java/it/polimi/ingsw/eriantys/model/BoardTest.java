@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import org.junit.jupiter.api.Test;
@@ -130,7 +131,7 @@ class BoardTest {
 	}
 
 	@Test
-	void drawStudents_IndexAndPlayerOk_MoveStudents() throws NoMovementException {
+	void drawStudents_IndexAndPlayerOk_MoveStudents() throws InvalidArgumentException, NoMovementException {
 		Board board = new Board(2, 3);
 		Player p = new Player("p");
 		board.refillClouds();

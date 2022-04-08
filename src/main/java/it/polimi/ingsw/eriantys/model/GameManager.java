@@ -68,7 +68,7 @@ public class GameManager {
 		for (CharacterCard character : characters) {
 			try {
 				character.setupEffect();
-			} catch (NoMovementException e) {
+			} catch (InvalidArgumentException | NoMovementException e) {
 				// TODO handle exception
 				e.printStackTrace();
 			}
@@ -135,7 +135,7 @@ public class GameManager {
 					IslandGroup island = board.getIsland(colorDest.value1());
 					entrance.moveTo(island, student);
 				}
-			} catch (NoMovementException e) {
+			} catch (InvalidArgumentException | NoMovementException e) {
 				throw new NoMovementException(e.getMessage() + " Trying to move " + colorDest.value0() + " student to " + colorDest.value1(), e);
 			}
 		}
@@ -198,7 +198,7 @@ public class GameManager {
 		Player recipient = players.get(nickname);
 		try {
 			board.drawStudents(cloudIndex, recipient);
-		} catch (NoMovementException e) {
+		} catch (InvalidArgumentException | NoMovementException e) {
 			// TODO handle exception
 			e.printStackTrace();
 		}

@@ -2,6 +2,7 @@ package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.Bag;
 import it.polimi.ingsw.eriantys.model.StudentContainer;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 /**
@@ -48,7 +49,7 @@ public abstract class ContainerCharacterCard extends StudentContainer implements
     }
 
     @Override
-    public void setupEffect() throws NoMovementException {
+    public void setupEffect() throws InvalidArgumentException, NoMovementException {
         refillFrom(bag);
     }
 

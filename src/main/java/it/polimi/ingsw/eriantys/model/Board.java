@@ -2,6 +2,7 @@ package it.polimi.ingsw.eriantys.model;
 
 import it.polimi.ingsw.eriantys.model.characters.HerbGranny;
 import it.polimi.ingsw.eriantys.model.exceptions.IncompatibleControllersException;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
@@ -61,10 +62,8 @@ public class Board {
 		this.bag = new Bag();
 		this.motherNatureIslandIndex = -1;
 
-		// TODO export constant based on number of players for number of cloud tiles
 		this.cloudTiles = new StudentContainer[cloudNumber];
-		for (int i = 0; i < 2; i++)
-			// TODO export constant based on number of players for size of cloud tiles
+		for (int i = 0; i < cloudNumber; i++)
 			cloudTiles[i] = new StudentContainer(cloudSize);
 	}
 
@@ -78,7 +77,7 @@ public class Board {
 		int index = getIslandIndex(id);
 
 		if (index == -1)
-			throw new IslandNotFoundException("Requested: " + id + ".");
+			throw new IslandNotFoundException("Requested: " + id + ".");  // TODO this should not happen
 		return islands.get(index);
 	}
 
@@ -120,7 +119,7 @@ public class Board {
 			if (i != motherNatureIslandIndex && i != (motherNatureIslandIndex + 6) % 12)
 				try {
 					bag.moveTo(islands.get(i), colors.remove(0));
-				} catch (NoMovementException e) {
+				} catch (InvalidArgumentException | NoMovementException e) {
 					// TODO handle exception
 					e.printStackTrace();
 				}
@@ -133,17 +132,17 @@ public class Board {
 	 * @throws NoMovementException if {@code cloudIndex} is out of bounds or the relative cloud is empty, or if
 	 * {@code recipient} is {@code null}.
 	 */
-	public void drawStudents(int cloudIndex, Player recipient) throws NoMovementException {
+	public void drawStudents(int cloudIndex, Player recipient) throws InvalidArgumentException, NoMovementException {
 		if (recipient == null)
-			throw new NoMovementException("Recipient is null");
+			throw new NoMovementException("Recipient is null");  // TODO this should not happen
 
 		if (cloudIndex < 0 || cloudIndex >= cloudTiles.length)
-			throw new NoMovementException("Cloud index out of bounds.");
+			throw new NoMovementException("Cloud index out of bounds.");  // TODO this should not happen
 
 		StudentContainer cloud = cloudTiles[cloudIndex];
 
 		if (Arrays.stream(Color.values()).mapToInt(cloud::getQuantity).reduce(0, Integer::sum) == 0)
-			throw new NoMovementException("Cloud is empty.");
+			throw new NoMovementException("Cloud is empty."); // TODO this could happen
 
 		cloud.moveAllTo(recipient.getEntrance());
 	}
@@ -165,7 +164,7 @@ public class Board {
 		for (StudentContainer cloud : cloudTiles) {
 			try {
 				cloud.refillFrom(bag);
-			} catch (NoMovementException e) {
+			} catch (InvalidArgumentException | NoMovementException e) {
 				// TODO handle exception
 				e.printStackTrace();
 			}
@@ -195,11 +194,11 @@ public class Board {
 	 */
 	public void unifyIslands(IslandGroup target) throws IslandNotFoundException {
 		if (target == null)
-			throw new IslandNotFoundException("Null target.");
+			throw new IslandNotFoundException("Null target.");  // TODO this should not happen
 
 		int targetIndex = islands.indexOf(target);
 		if (targetIndex == -1)
-			throw new IslandNotFoundException("Requested id: " + target.getId() + ".");
+			throw new IslandNotFoundException("Requested id: " + target.getId() + "."); // TODO this should not happen
 
 		IslandGroup prev = islands.get(targetIndex - 1);
 		IslandGroup next = islands.get(targetIndex + 1);

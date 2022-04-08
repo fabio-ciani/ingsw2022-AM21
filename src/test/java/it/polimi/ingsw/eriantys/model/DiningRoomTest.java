@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ class DiningRoomTest {
 	}
 
 	@Test
-	void checkForCoins_6GreenStudents_ReturnTrueOnlyForGreen() throws NoMovementException {
+	void checkForCoins_6GreenStudents_ReturnTrueOnlyForGreen() throws InvalidArgumentException, NoMovementException {
 		DiningRoom diningRoom = new DiningRoom();
 		Bag bag = new Bag();
 
@@ -39,7 +40,7 @@ class DiningRoomTest {
 	}
 
 	@Test
-	void remainingCapacity_FullDiningRoom_Return0() throws NoMovementException {
+	void remainingCapacity_FullDiningRoom_Return0() throws InvalidArgumentException, NoMovementException {
 		DiningRoom diningRoom = new DiningRoom();
 		Bag bag = new Bag();
 
@@ -50,7 +51,7 @@ class DiningRoomTest {
 	}
 
 	@Test
-	void remainingCapacity_Has7PinkStudents_Return7() throws NoMovementException {
+	void remainingCapacity_Has7PinkStudents_Return7() throws InvalidArgumentException, NoMovementException {
 		DiningRoom diningRoom = new DiningRoom();
 		Bag bag = new Bag();
 
@@ -61,7 +62,7 @@ class DiningRoomTest {
 	}
 
 	@Test
-	void remainingCapacity_FullDiningRoomWithOverflow_Return0() throws NoMovementException {
+	void remainingCapacity_FullDiningRoomWithOverflow_Return0() throws InvalidArgumentException, NoMovementException {
 		DiningRoom diningRoom = new DiningRoom();
 		Bag bag = new Bag();
 

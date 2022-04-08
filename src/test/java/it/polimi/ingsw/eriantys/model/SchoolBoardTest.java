@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +50,7 @@ class SchoolBoardTest {
 	}
 
 	@Test
-	void checkForCoins_Has4Students_ReturnFalse() throws NoMovementException {
+	void checkForCoins_Has4Students_ReturnFalse() throws InvalidArgumentException, NoMovementException {
 		Bag bag = new Bag();
 		SchoolBoard schoolBoard = new SchoolBoard();
 		DiningRoom diningRoom = schoolBoard.getDiningRoom();
@@ -62,7 +63,7 @@ class SchoolBoardTest {
 	}
 
 	@Test
-	void checkForCoins_Has9Students_ReturnTrue() throws NoMovementException {
+	void checkForCoins_Has9Students_ReturnTrue() throws InvalidArgumentException, NoMovementException {
 		Bag bag = new Bag();
 		SchoolBoard schoolBoard = new SchoolBoard();
 		DiningRoom diningRoom = schoolBoard.getDiningRoom();

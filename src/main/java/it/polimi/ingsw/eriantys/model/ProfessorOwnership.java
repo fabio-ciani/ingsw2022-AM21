@@ -18,10 +18,10 @@ public class ProfessorOwnership {
 
 	public ProfessorOwnership(Supplier<Player> playerSupplier) {
 		this.playerSupplier = playerSupplier;
-		comparator = Integer::compareTo;
-		ownerships = new HashMap<>();
+		this.comparator = Integer::compareTo;
+		this.ownerships = new HashMap<>();
 		for (Color color : Color.values())
-			ownerships.put(color, null);
+			this.ownerships.put(color, null);
 	}
 
 	/**
@@ -40,7 +40,8 @@ public class ProfessorOwnership {
 	 * Activates the {@link Farmer} character card's effect.
 	 */
 	public void activateEffect() {
-		this.comparator = (n1, n2) -> (n1 >= n2 ? 1 : -1);
+		//noinspection ComparatorMethodParameterNotUsed
+		this.comparator = (n1, n2) -> (n1 >= n2) ? 1 : -1;
 	}
 
 	/**

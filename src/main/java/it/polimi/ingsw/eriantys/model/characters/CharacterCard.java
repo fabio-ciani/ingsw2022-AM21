@@ -42,8 +42,7 @@ public interface CharacterCard {
             NoMovementException,
             ItemNotAvailableException,
             DuplicateNoEntryTileException,
-            InvalidArgumentException,
-            IllegalMovementException;
+            InvalidArgumentException;
 
     /**
      * Resets the effects of this card that are not intended to persist after the activation turn.

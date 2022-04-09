@@ -1,7 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalMovementException;
-import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,10 +38,10 @@ class PlayerTest {
     }
 
     @Test
-    void setMotherNatureMovements_PositiveParameter_NormalPostConditions() throws IllegalMovementException {
+    void setMotherNatureMovements_PositiveParameter_NormalPostConditions() {
         Player p = new Player("admin");
 
-        p.setMotherNatureMovements(3);
+        assertDoesNotThrow(() -> p.setMotherNatureMovements(3));
         assertSame(p.getMotherNatureMovements(), 3);
     }
 
@@ -50,7 +49,7 @@ class PlayerTest {
     void setMotherNatureMovements_NegativeParameter_ThrowException() {
         Player p = new Player("admin");
 
-        assertThrowsExactly(IllegalMovementException.class, () -> p.setMotherNatureMovements(-10));
+        assertThrowsExactly(InvalidArgumentException.class, () -> p.setMotherNatureMovements(-10));
     }
 
     @Test

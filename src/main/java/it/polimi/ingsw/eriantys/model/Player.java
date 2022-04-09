@@ -1,7 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
-import it.polimi.ingsw.eriantys.model.exceptions.IllegalMovementException;
-import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ public class Player {
     private final SchoolBoard schoolBoard;
     private TowerColor teamColor;
     private Wizard wizard;
-    private final List<AssistantCard> deck;
+    private final List<AssistantCard> deck; // TODO: 09/04/2022 Check setter?
     private int motherNatureMovements, coins;
 
     public Player(String nickname) {
@@ -101,9 +100,9 @@ public class Player {
      * A setter for the number of allowed Mother Nature's movements for a {@code Player}'s object during the current turn.
      * @param movements the new internal state for the number of allowed Mother Nature's movements of a {@code Player}
      */
-    public void setMotherNatureMovements(int movements) throws IllegalMovementException {
+    public void setMotherNatureMovements(int movements) throws InvalidArgumentException {
         if (movements < 0)
-            throw new IllegalMovementException("Parameter should not be negative.");
+            throw new InvalidArgumentException("Parameter should not be negative.");
         motherNatureMovements = movements;
     }
 

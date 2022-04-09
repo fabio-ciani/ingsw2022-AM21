@@ -215,7 +215,6 @@ public class GameManager {
 			NoMovementException,
 			IslandNotFoundException,
 			InvalidArgumentException,
-			IllegalMovementException,
 			DuplicateNoEntryTileException {
 		List<Color> sourceColors = null, destinationColors = null;
 		Color targetColor = null;

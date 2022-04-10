@@ -21,6 +21,8 @@ public class ExcludeColorInfluence extends CommonInfluence implements InfluenceC
     }
 
     public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws InvalidArgumentException {
+        if (excluded == null)
+            throw new InvalidArgumentException("Cannot proceed with null internal attributes parameter(s).");
         if (player == null || island == null || ownedProfessors == null)
             throw new InvalidArgumentException("Cannot proceed with null parameter(s).");
 

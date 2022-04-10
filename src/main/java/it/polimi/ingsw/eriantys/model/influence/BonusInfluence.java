@@ -22,6 +22,9 @@ public class BonusInfluence extends CommonInfluence implements InfluenceCalculat
 
     @Override
     public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws InvalidArgumentException {
+        if (user == null)
+            throw new InvalidArgumentException("Cannot proceed with null internal attributes parameter(s).");
+
         int result = super.calculate(player, island, ownedProfessors);
 
         return (user.equals(player)) ? result + 2 : result;

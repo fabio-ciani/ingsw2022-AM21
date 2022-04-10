@@ -4,7 +4,6 @@ import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.Player;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
-import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -44,7 +43,7 @@ public class MagicPostman extends BaseCharacterCard {
                             List<Color> destinationColors,
                             Color targetColor,
                             IslandGroup targetIsland)
-            throws NoMovementException, InvalidArgumentException {
+            throws InvalidArgumentException {
         Player currentPlayer = currentPlayerSupplier.get();
         int MNMovements = currentPlayer.getMotherNatureMovements();
         currentPlayer.setMotherNatureMovements(MNMovements + BONUS_MOVEMENTS);

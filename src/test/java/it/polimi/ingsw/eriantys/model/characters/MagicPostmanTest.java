@@ -1,21 +1,21 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.Player;
-import it.polimi.ingsw.eriantys.model.ProfessorOwnership;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FarmerTest {
-    ProfessorOwnership professorOwnership;
+class MagicPostmanTest {
+    Player player;
     BaseCharacterCard card;
+
+    final int BONUS_MOVEMENTS = 2;
 
     @BeforeEach
     void init() {
-        Player player = new Player("Nick Name");
-        professorOwnership = new ProfessorOwnership(() -> player);
-        card = new Farmer(professorOwnership);
+        player = new Player("Nick Name");
+        card = new MagicPostman(() -> player);
     }
 
     @Test
@@ -28,12 +28,9 @@ class FarmerTest {
     }
 
     @Test
-    void applyEffect_NoArguments_NoExceptionThrown() {
+    void applyEffect_NoArguments_IncreasedMotherNatureMovements() {
+        int initialMovements = player.getMotherNatureMovements();
         assertDoesNotThrow(() -> card.applyEffect(null, null, null, null));
-    }
-
-    @Test
-    void cancelEffect_NoArguments_NoExceptionThrown() {
-        assertDoesNotThrow(() -> card.cancelEffect());
+        assertEquals(initialMovements + BONUS_MOVEMENTS, player.getMotherNatureMovements());
     }
 }

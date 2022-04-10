@@ -31,7 +31,7 @@ public class Minstrel extends BaseCharacterCard {
     /**
      * Maximum number of students that can be selected from the entrance and the dining room to swap ({@code MAX_MOVEMENTS} students each).
      */
-    private static final int MAX_MOVEMENTS = 2;
+    private static final int MAX_SWAPS = 2;
 
     /**
      * Constructs a new {@link Minstrel} character card.
@@ -47,8 +47,20 @@ public class Minstrel extends BaseCharacterCard {
                             Color targetColor,
                             IslandGroup targetIsland)
             throws NoMovementException, InvalidArgumentException {
-        if (sourceColors.size() != destinationColors.size() || sourceColors.size() > MAX_MOVEMENTS) {
-            throw new InvalidArgumentException();
+        if (sourceColors == null) {
+            throw new InvalidArgumentException("sourceColors argument is null.");
+        }
+        if (destinationColors == null) {
+            throw new InvalidArgumentException("destinationColors argument is null.");
+        }
+        if (sourceColors.size() != destinationColors.size()) {
+            throw new InvalidArgumentException(String.format("Invalid amount of students to swap: %d from source and %d from destination (should be the same number).", sourceColors.size(), destinationColors.size()));
+        }
+        if (sourceColors.size() > MAX_SWAPS) {
+            throw new InvalidArgumentException(String.format("Invalid amount of students to swap: more than %d students selected.", MAX_SWAPS));
+        }
+        if (sourceColors.size() == 0) {
+            throw new InvalidArgumentException("Invalid amount of students to swap: no students selected.");
         }
         StudentContainer entrance = currentPlayerSupplier.get().getEntrance();
         StudentContainer diningRoom = currentPlayerSupplier.get().getDiningRoom();

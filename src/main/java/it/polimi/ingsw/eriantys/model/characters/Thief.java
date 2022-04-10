@@ -54,6 +54,9 @@ public class Thief extends BaseCharacterCard {
                             Color targetColor,
                             IslandGroup targetIsland)
             throws InvalidArgumentException {
+        if (targetColor == null) {
+            throw new InvalidArgumentException("targetColor argument is null.");
+        }
         for (Player player : players) {
             boolean emptyColor = false;
             for (int i = 0; i < STUDENTS_TO_REMOVE && !emptyColor; i++) {

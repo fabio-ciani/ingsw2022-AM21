@@ -3,6 +3,7 @@ package it.polimi.ingsw.eriantys.model.characters;
 import it.polimi.ingsw.eriantys.model.Bag;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.Player;
+import it.polimi.ingsw.eriantys.model.StudentContainer;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,85 +13,88 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class JesterTest {
-    Bag bag;
+class MinstrelTest {
     Player player;
-    ContainerCharacterCard card;
+    BaseCharacterCard card;
 
     @BeforeEach
     void init() {
-        bag = new Bag();
         player = new Player("Nick Name");
-        card = new Jester(bag, () -> player);
+        card = new Minstrel(() -> player);
     }
 
     @Test
     void getCost_effectAppliedThreeTimes_CostIncreasedOnlyTheFirstTime() {
-        List<Color> src = List.of(Color.BLUE);
-        List<Color> dst = List.of(Color.RED);
-        int initialCost = card.getCost();
+        StudentContainer entrance = player.getEntrance();
+        StudentContainer diningRoom = player.getDiningRoom();
+        Bag bag = new Bag();
+        assertDoesNotThrow(() -> {
+            bag.moveTo(entrance, Color.GREEN);
+            bag.moveTo(diningRoom, Color.GREEN);
+        });
+        final int initialCost = card.getCost();
         for (int i = 0; i < 3; i++) {
-            assertDoesNotThrow(() -> {
-                bag.moveTo(card, Color.BLUE);
-                bag.moveTo(player.getEntrance(), Color.RED);
-                card.applyEffect(src, dst, null, null);
-            });
+            assertDoesNotThrow(() -> card.applyEffect(List.of(Color.GREEN), List.of(Color.GREEN), null, null));
             assertEquals(initialCost + 1, card.getCost());
         }
     }
 
     @Test
     void applyEffect_OnePairOfStudentsToSwap_StudentsSwapped() {
+        StudentContainer entrance = player.getEntrance();
+        StudentContainer diningRoom = player.getDiningRoom();
+        Bag bag = new Bag();
         List<Color> src = List.of(Color.BLUE);
         List<Color> dst = List.of(Color.RED);
         assertDoesNotThrow(() -> {
-            bag.moveTo(card, Color.BLUE);
-            bag.moveTo(player.getEntrance(), Color.RED);
+            bag.moveTo(entrance, Color.BLUE);
+            bag.moveTo(diningRoom, Color.RED);
             card.applyEffect(src, dst, null, null);
         });
         for (Color color : Color.values()) {
-            assertEquals(color.equals(Color.RED) ? 1 : 0, card.getQuantity(color));
-            assertEquals(color.equals(Color.BLUE) ? 1 : 0, player.getEntrance().getQuantity(color));
+            assertEquals(color.equals(Color.RED) ? 1 : 0, entrance.getQuantity(color));
+            assertEquals(color.equals(Color.BLUE) ? 1 : 0, diningRoom.getQuantity(color));
         }
     }
 
     @Test
-    void applyEffect_ThreePairsOfStudentsToSwap_StudentsSwapped() {
-        List<Color> src = List.of(Color.BLUE, Color.BLUE, Color.YELLOW);
-        List<Color> dst = List.of(Color.RED, Color.GREEN, Color.PINK);
+    void applyEffect_TwoPairsOfStudentsToSwap_StudentsSwapped() {
+        StudentContainer entrance = player.getEntrance();
+        StudentContainer diningRoom = player.getDiningRoom();
+        Bag bag = new Bag();
+        List<Color> src = List.of(Color.BLUE, Color.YELLOW);
+        List<Color> dst = List.of(Color.GREEN, Color.PINK);
         assertDoesNotThrow(() -> {
-            bag.moveTo(card, Color.BLUE);
-            bag.moveTo(card, Color.BLUE);
-            bag.moveTo(card, Color.YELLOW);
-            bag.moveTo(player.getEntrance(), Color.RED);
-            bag.moveTo(player.getEntrance(), Color.GREEN);
-            bag.moveTo(player.getEntrance(), Color.PINK);
+            bag.moveTo(entrance, Color.BLUE);
+            bag.moveTo(entrance, Color.YELLOW);
+            bag.moveTo(diningRoom, Color.GREEN);
+            bag.moveTo(diningRoom, Color.PINK);
             card.applyEffect(src, dst, null, null);
         });
         for (Color color : Color.values()) {
-            int inCard = card.getQuantity(color);
-            int inEntrance = player.getEntrance().getQuantity(color);
+            int inEntrance = entrance.getQuantity(color);
+            int inDiningRoom = diningRoom.getQuantity(color);
             switch (color) {
-                case RED, GREEN, PINK -> {
-                    assertEquals(1, inCard);
+                case RED -> {
                     assertEquals(0, inEntrance);
+                    assertEquals(0, inDiningRoom);
                 }
-                case BLUE -> {
-                    assertEquals(0, inCard);
-                    assertEquals(2, inEntrance);
-                }
-                case YELLOW -> {
-                    assertEquals(0, inCard);
+                case GREEN, PINK -> {
                     assertEquals(1, inEntrance);
+                    assertEquals(0, inDiningRoom);
+                }
+                case BLUE, YELLOW -> {
+                    assertEquals(0, inEntrance);
+                    assertEquals(1, inDiningRoom);
                 }
             }
         }
     }
 
     @Test
-    void applyEffect_FourPairsOfStudentsToSwap_InvalidArgumentException() {
-        List<Color> src = List.of(Color.BLUE, Color.BLUE, Color.YELLOW, Color.YELLOW);
-        List<Color> dst = List.of(Color.RED, Color.GREEN, Color.PINK, Color.PINK);
+    void applyEffect_ThreePairsOfStudentsToSwap_InvalidArgumentException() {
+        List<Color> src = List.of(Color.BLUE, Color.BLUE, Color.YELLOW);
+        List<Color> dst = List.of(Color.RED, Color.GREEN, Color.PINK);
         assertThrows(InvalidArgumentException.class, () -> card.applyEffect(src, dst, null, null));
     }
 
@@ -105,8 +109,8 @@ class JesterTest {
 
     @Test
     void applyEffect_DifferentSizeSourceAndDestination_InvalidArgumentException() {
-        List<Color> src = List.of(Color.BLUE, Color.YELLOW);
-        List<Color> dst = List.of(Color.RED, Color.GREEN, Color.PINK);
+        List<Color> src = List.of(Color.YELLOW);
+        List<Color> dst = List.of(Color.GREEN, Color.PINK);
         assertThrows(InvalidArgumentException.class, () -> card.applyEffect(src, dst, null, null));
     }
 
@@ -119,12 +123,15 @@ class JesterTest {
 
     @Test
     void applyEffect_StudentNotOnCard_NoMovementException() {
+        StudentContainer entrance = player.getEntrance();
+        StudentContainer diningRoom = player.getDiningRoom();
+        Bag bag = new Bag();
         List<Color> src = List.of(Color.BLUE);
         List<Color> dst = List.of(Color.RED);
         assertDoesNotThrow(() -> {
-            bag.moveTo(card, Color.YELLOW);
-            bag.moveTo(card, Color.RED);
-            bag.moveTo(player.getEntrance(), Color.BLUE);
+            bag.moveTo(entrance, Color.YELLOW);
+            bag.moveTo(entrance, Color.RED);
+            bag.moveTo(diningRoom, Color.BLUE);
         });
         assertThrows(NoMovementException.class, () -> card.applyEffect(src, dst, null, null));
     }

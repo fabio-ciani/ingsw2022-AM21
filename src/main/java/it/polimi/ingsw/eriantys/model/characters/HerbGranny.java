@@ -4,6 +4,7 @@ import it.polimi.ingsw.eriantys.model.Board;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.exceptions.DuplicateNoEntryTileException;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
 
 import java.util.List;
@@ -64,7 +65,7 @@ public class HerbGranny extends BaseCharacterCard {
     public void setupEffect() {
         super.setupEffect();
         for (int i = 0; i < MAX_ENTRY_TILES; i++) {
-            tiles.push(i);
+            tiles.push(MAX_ENTRY_TILES - i);
         }
         board.setReturnNoEntryTile(this::returnTile);
     }
@@ -73,9 +74,12 @@ public class HerbGranny extends BaseCharacterCard {
     public void applyEffect(List<Color> sourceColors,
                             List<Color> destinationColors,
                             Color targetColor,
-                            IslandGroup targetIsland) throws ItemNotAvailableException, DuplicateNoEntryTileException {
+                            IslandGroup targetIsland) throws ItemNotAvailableException, DuplicateNoEntryTileException, InvalidArgumentException {
+        if (targetIsland == null) {
+            throw new InvalidArgumentException("targetIsland argument is null.");
+        }
         if (tiles.empty()) {
-            throw new ItemNotAvailableException("There are no entry tiles on the HerbGranny character card.");
+            throw new ItemNotAvailableException("There are no NoEntry tiles on the HerbGranny character card.");
         }
         targetIsland.putNoEntryTile(tiles.pop());
         increaseCost();

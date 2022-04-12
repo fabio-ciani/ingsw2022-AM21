@@ -28,6 +28,11 @@ public class GameManager {
 
 	// TODO: Will the constants be managed with a GameConfig object or by declaring them as attributes of GameManager?
 
+	/**
+	 * Constructs a {@code GameManager} that fits the number of players and the selected game mode.
+	 * @param nicknames the nicknames of the players.
+	 * @param expertMode {@code true} if and only if the instantiated game is to be played in expert mode.
+	 */
 	public GameManager(List<String> nicknames, boolean expertMode) {
 		int numPlayers = nicknames.size();
 		CLOUD_NUMBER = numPlayers;
@@ -58,6 +63,11 @@ public class GameManager {
 		return currPlayer.getNickname();
 	}
 
+	/**
+	 * Prepares the game by setting up the board and, if the game is in expert mode, the selected character cards.
+	 * @throws InvalidArgumentException if an error occurs while setting up the board or the character cards.
+	 * @throws NoMovementException if an error occurs while setting up the character cards.
+	 */
 	public void setupBoard() throws InvalidArgumentException, NoMovementException {
 		board.setup();
 
@@ -71,7 +81,9 @@ public class GameManager {
 	}
 
 	/**
-	 * Prepares the board for a new round to be played.
+	 * Prepares the board for a new round to be played by refilling the cloud tiles.
+	 * @throws InvalidArgumentException if an error occurs while refilling the cloud tiles.
+	 * @throws NoMovementException if an error occurs while refilling the cloud tiles.
 	 */
 	public void setupRound() throws InvalidArgumentException, NoMovementException {
 		board.refillClouds();
@@ -132,12 +144,18 @@ public class GameManager {
 		}
 	}
 
+	/**
+	 * Moves the Mother Nature pawn to the specified destination island, then resolves that island.
+	 * @param islandDestination the destination {@link IslandGroup}.
+	 * @throws IslandNotFoundException if no island matching the specified id can be found.
+	 * @throws InvalidArgumentException if an error occurs while resolving the destination island.
+	 */
 	public void handleMotherNatureMovement(String islandDestination)
 			throws IslandNotFoundException, InvalidArgumentException {
 		IslandGroup destination = tryGetIsland(islandDestination);
 
 		if (destination == null)
-			return;
+			throw new IslandNotFoundException("Requested id: " + islandDestination + ".");
 
 		boolean movementSuccessful = board.moveMotherNature(destination);
 		if (movementSuccessful) {
@@ -147,12 +165,19 @@ public class GameManager {
 		}
 	}
 
+	/**
+	 * Sets the specified {@link IslandGroup}'s controller to the player with the most influence on the island, returning
+	 * {@code true} if and only if the island's controller has changed as a result of this method.
+	 * @param island the island whose controller is set.
+	 * @return {@code true} if and only if the island's controller has changed as a result of this method.
+	 * @throws InvalidArgumentException if an error occurs while calculating a player's influence.
+	 */
 	public boolean resolve(IslandGroup island) throws InvalidArgumentException {
 		if (board.noEntryEnforced(island))
 			return false;
 
 		List<Player> players = this.players.getTurnOrder();
-		Player maxInfluencePlayer = players.get(0);
+		Player maxInfluencePlayer = island.getController();
 		int maxInfluence = calc.calculate(maxInfluencePlayer, island, professors.getProfessors(maxInfluencePlayer));
 
 		for (Player player : players) {
@@ -168,6 +193,14 @@ public class GameManager {
 		return res;
 	}
 
+	/**
+	 * Transfers all the students in the specified cloud tile to the specified player's entrance.
+	 * @param nickname the nickname of the player whose entrance will be refilled.
+	 * @param cloudIndex the index of the cloud tile to be emptied.
+	 * @throws InvalidArgumentException if there is no such player with the specified nickname, or if the requested cloud
+	 * tile index is out of bounds.
+	 * @throws NoMovementException if an error occurs while transferring the students.
+	 */
 	public void handleSelectedCloud(String nickname, int cloudIndex)
 			throws InvalidArgumentException, NoMovementException {
 		Player recipient = players.get(nickname);
@@ -220,6 +253,10 @@ public class GameManager {
 		return false;
 	}
 
+	/**
+	 * Returns the game's current {@link ProfessorOwnership}.
+	 * @return the game's current {@link ProfessorOwnership}.
+	 */
 	ProfessorOwnership getOwnerships() {
 		return professors;
 	}

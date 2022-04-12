@@ -23,7 +23,7 @@ class HerbGrannyTest {
     }
 
     @Test
-    void getCost_effectAppliedThreeTimes_CostIncreasedOnlyTheFirstTime() {
+    void getCost_effectAppliedThreeTimes_CostIncreasedOnlyTheFirstTime() throws InvalidArgumentException {
         int initialCost = card.getCost();
         card.setupEffect();
         for (int i = 0; i < 3; i++) {
@@ -34,7 +34,7 @@ class HerbGrannyTest {
     }
 
     @Test
-    void applyEffect_TargetIslandWithNoTiles_OneTileOnIsland() {
+    void applyEffect_TargetIslandWithNoTiles_OneTileOnIsland() throws InvalidArgumentException {
         IslandGroup island = new IslandGroup("01");
         card.setupEffect();
         assertDoesNotThrow(() -> card.applyEffect(null, null, null, island));
@@ -43,7 +43,7 @@ class HerbGrannyTest {
     }
 
     @Test
-    void applyEffect_TargetIslandWithNoTilesApplyMaxTimes_MaxTilesOnIsland() {
+    void applyEffect_TargetIslandWithNoTilesApplyMaxTimes_MaxTilesOnIsland() throws InvalidArgumentException {
         IslandGroup island = new IslandGroup("01");
         card.setupEffect();
         for (int i = 0; i < MAX_ENTRY_TILES; i++) {
@@ -56,7 +56,7 @@ class HerbGrannyTest {
     }
 
     @Test
-    void applyEffect_TargetIslandWithNoTilesApplyMoreThanMaxTimes_ItemNotAvailableException() {
+    void applyEffect_TargetIslandWithNoTilesApplyMoreThanMaxTimes_ItemNotAvailableException() throws InvalidArgumentException {
         IslandGroup island = new IslandGroup("01");
         card.setupEffect();
         for (int i = 0; i < MAX_ENTRY_TILES; i++) {
@@ -66,13 +66,13 @@ class HerbGrannyTest {
     }
 
     @Test
-    void applyEffect_NullTargetIsland_InvalidArgumentException() {
+    void applyEffect_NullTargetIsland_InvalidArgumentException() throws InvalidArgumentException {
         card.setupEffect();
         assertThrows(InvalidArgumentException.class, () -> card.applyEffect(null, null, null, null));
     }
 
     @Test
-    void applyEffect_TargetIslandWithTileWithSameId_DuplicateNoEntryTileException() {
+    void applyEffect_TargetIslandWithTileWithSameId_DuplicateNoEntryTileException() throws InvalidArgumentException {
         IslandGroup island = new IslandGroup("01");
         card.setupEffect();
         assertDoesNotThrow(() -> island.putNoEntryTile(1));
@@ -80,7 +80,7 @@ class HerbGrannyTest {
     }
 
     @Test
-    void returnTile_SetupAndApplyThenBoardCallsReturnTile_TileReturned() {
+    void returnTile_SetupAndApplyThenBoardCallsReturnTile_TileReturned() throws InvalidArgumentException {
         final int tileId = 1; // id of the first tile popped
         IslandGroup island1 = new IslandGroup("01");
         IslandGroup island2 = new IslandGroup("02");

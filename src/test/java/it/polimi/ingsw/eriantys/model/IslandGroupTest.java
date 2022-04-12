@@ -92,8 +92,15 @@ class IslandGroupTest {
 	}
 
 	@Test
+	void getTowers_SingleIslandNoController_Return0() {
+		assertEquals(0, new IslandGroup("01").getTowers());
+	}
+
+	@Test
 	void getTowers_SingleIsland_Return1() {
-		assertEquals(1, new IslandGroup("00").getTowers());
+		IslandGroup i1 = new IslandGroup("01");
+		i1.setController(new Player("p"));
+		assertEquals(1, i1.getTowers());
 	}
 
 	@Test

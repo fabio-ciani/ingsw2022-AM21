@@ -105,12 +105,14 @@ public class IslandGroup extends StudentContainer {
 	 * @return the number of towers on the {@link IslandGroup}.
 	 */
 	public int getTowers() {
-		return islandIds.size();
+		return controller == null ? 0 : islandIds.size();
 	}
 
 	/**
-	 * Places a No Entry tile on the {@link IslandGroup}.
+	 * Places a No Entry tile on the {@link IslandGroup}, unless there already is a NoEntry tile with the same id on it.
 	 * @param id the No Entry tile's identifier.
+	 * @throws DuplicateNoEntryTileException if there already is a NoEntry tile with the specified {@code id} on the
+	 * island.
 	 */
 	public void putNoEntryTile(int id) throws DuplicateNoEntryTileException {
 		if (noEntryTiles.contains(id))

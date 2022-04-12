@@ -101,13 +101,22 @@ public class Board {
 		return bag;
 	}
 
-	public void setReturnNoEntryTile(Consumer<Integer> returnTileFunction) {
+	/**
+	 * Sets the {@code returnTile} attribute to {@code returnTileFunction}.
+	 * @param returnTileFunction the desired {@code returnTile} {@link Consumer<Integer>}.
+	 * @throws InvalidArgumentException if {@code returnTileFunction} is {@code null}.
+	 */
+	public void setReturnNoEntryTile(Consumer<Integer> returnTileFunction) throws InvalidArgumentException {
+		if (returnTileFunction == null)
+			throw new InvalidArgumentException("returnTileFunction argument is null.");
 		this.returnTile = returnTileFunction;
 	}
 
 	/**
 	 * Sets up the game by placing Mother Nature on a random island and placing a random student on each island, excluding
 	 * the one with Mother Nature on it and the one opposite to it.
+	 * @throws InvalidArgumentException if one or more of the islands and colors used are {@code null}.
+	 * @throws NoMovementException if the bag is empty.
 	 * @see Bag#setupDraw()
 	 */
 	public void setup() throws InvalidArgumentException, NoMovementException {
@@ -124,8 +133,8 @@ public class Board {
 	 * Moves all the students on a cloud tile to the {@link SchoolBoard} entrance of the {@code recipient}.
 	 * @param cloudIndex the target cloud tile's index.
 	 * @param recipient the target {@link Player}.
-	 * @throws NoMovementException if {@code cloudIndex} is out of bounds or the relative cloud is empty, or if
-	 * {@code recipient} is {@code null}.
+	 * @throws InvalidArgumentException if {@code recipient} is {@code null} or {@code cloudIndex} is out of bounds.
+	 * @throws NoMovementException if the cloud at index {@code cloudIndex} is empty.
 	 */
 	public void drawStudents(int cloudIndex, Player recipient) throws InvalidArgumentException, NoMovementException {
 		if (recipient == null)
@@ -142,6 +151,12 @@ public class Board {
 		cloud.moveAllTo(recipient.getEntrance());
 	}
 
+	/**
+	 * Returns {@code true} if and only if {@code destination} is a valid island, in which case the Mother Nature pawn is
+	 * placed on the specified island.
+	 * @param destination the desired destination for the Mother Nature pawn.
+	 * @return {@code true} if and only if {@code destination} is a valid island.
+	 */
 	public boolean moveMotherNature(IslandGroup destination) {
 		int destinationIndex = islands.indexOf(destination);
 
@@ -154,6 +169,8 @@ public class Board {
 
 	/**
 	 * Refills the cloud tiles by taking the necessary amount of students from the {@code bag}.
+	 * @throws InvalidArgumentException if the bag is {@code null}.
+	 * @throws NoMovementException if the bag does not contain enough students to fill the clouds.
 	 */
 	public void refillClouds() throws InvalidArgumentException, NoMovementException {
 		for (StudentContainer cloud : cloudTiles) {
@@ -181,6 +198,7 @@ public class Board {
 	 * unifies them. This method should be called every time the player controlling an island changes.
 	 * @param target the target island.
 	 * @throws IslandNotFoundException if the specified {@code target} cannot be found.
+	 * @throws InvalidArgumentException if {@code target} is {@code null}.
 	 */
 	public void unifyIslands(IslandGroup target) throws IslandNotFoundException, InvalidArgumentException {
 		if (target == null)

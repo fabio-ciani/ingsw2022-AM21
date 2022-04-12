@@ -62,7 +62,7 @@ public class HerbGranny extends BaseCharacterCard {
     }
 
     @Override
-    public void setupEffect() {
+    public void setupEffect() throws InvalidArgumentException {
         super.setupEffect();
         for (int i = 0; i < MAX_ENTRY_TILES; i++) {
             tiles.push(MAX_ENTRY_TILES - i);

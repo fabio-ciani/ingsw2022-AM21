@@ -37,7 +37,7 @@ public abstract class BaseCharacterCard implements CharacterCard {
     }
 
     @Override
-    public void setupEffect() {}
+    public void setupEffect() throws InvalidArgumentException {}
 
     @Override
     public void cancelEffect() throws InvalidArgumentException {}

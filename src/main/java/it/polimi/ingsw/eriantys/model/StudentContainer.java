@@ -80,6 +80,7 @@ public class StudentContainer {
 	 * occurs if {@code this} is empty or the destination container has no remaining capacity.
 	 * @param dest the destination {@code StudentContainer}.
 	 * @param color the {@link Color} of the student to be moved.
+	 * @throws InvalidArgumentException if any argument is {@code null}.
 	 * @throws NoMovementException if {@code this} is empty or the destination container is full.
 	 */
 	public void moveTo(StudentContainer dest, Color color) throws InvalidArgumentException, NoMovementException {
@@ -109,6 +110,7 @@ public class StudentContainer {
 	 * {@code this} and added to {@code dest} can be found, at which point no subsequent movements occur.
 	 * @param dest the destination {@code StudentContainer}.
 	 * @param amount the amount of students to be moved.
+	 * @throws InvalidArgumentException if {@code dest} is {@code null}.
 	 * @throws NoMovementException if no colors that can be both removed from {@code this} and added to {@code dest}
 	 * can be found.
 	 */
@@ -129,6 +131,7 @@ public class StudentContainer {
 	 * which point no subsequent movements occur. Generally, the source container {@code this} should be emptied as a
 	 * result of this method.
 	 * @param dest the destination {@code StudentContainer}.
+	 * @throws InvalidArgumentException if {@code dest} is {@code null}.
 	 * @throws NoMovementException if {@code this} contains more students than the destination container can add.
 	 */
 	public void moveAllTo(StudentContainer dest) throws InvalidArgumentException, NoMovementException {
@@ -163,6 +166,7 @@ public class StudentContainer {
 	 * Refills {@code this} to its maximum capacity by picking random students from {@code source}. Students are moved one
 	 * by one until {@code this} is full or {@code source} is empty, at which point no subsequent movements occur.
 	 * @param source the source {@code StudentContainer}.
+	 * @throws InvalidArgumentException if {@code source} is {@code null}.
 	 * @throws NoMovementException if {@code source} is emptied before {@code this} can be filled.
 	 * @see StudentContainer#moveTo(StudentContainer, int)
 	 */
@@ -181,6 +185,7 @@ public class StudentContainer {
 	 * @param that the second {@code StudentContainer}.
 	 * @param thisColor the {@link Color} of the student being moved from {@code this} to {@code that}.
 	 * @param thatColor the {@link Color} of the student being moved from {@code that} to {@code this}.
+	 * @throws InvalidArgumentException if any argument is {@code null}.
 	 * @throws NoMovementException if any container does not have enough students or enough capacity to perform the swap.
 	 */
 	public void swap(StudentContainer that, Color thisColor, Color thatColor)

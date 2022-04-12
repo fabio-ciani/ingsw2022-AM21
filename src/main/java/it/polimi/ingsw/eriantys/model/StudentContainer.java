@@ -117,8 +117,8 @@ public class StudentContainer {
 			throw new InvalidArgumentException("dest argument is null."); // TODO this should not happen
 		for (int i = 0; i < amount; i++) {
 			Color color = this.getRandomColor(dest);
-			if (color == null)  // TODO throw IncompleteMovementException
-				throw new NoMovementException(i + "/" + amount + " - no matching colors were found.");  // TODO this could happen
+			if (color == null)
+				throw new NoMovementException(i + "/" + amount + " - no matching colors were found.");  // TODO this should not happen
 			moveTo(dest, color);
 		}
 	}
@@ -155,8 +155,8 @@ public class StudentContainer {
 			}
 		}
 
-		if (destinationFull)  // TODO throw IncompleteMovementException
-			throw new NoMovementException("Source not emptied: the destination container is full.");  // TODO this could happen
+		if (destinationFull)
+			throw new NoMovementException("Source not emptied: the destination container is full.");  // TODO this should not happen
 	}
 
 	/**

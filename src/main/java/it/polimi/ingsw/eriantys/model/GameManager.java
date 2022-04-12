@@ -11,11 +11,11 @@ import java.util.*;
 
 public class GameManager {
 	private final Board board;
-  private final PlayerList players;
-  private Player currPlayer;
-  private final ProfessorOwnership professors;
+	private final PlayerList players;
+	private Player currPlayer;
+	private final ProfessorOwnership professors;
 	private InfluenceCalculator calc;
-  private final CharacterCard[] characters;
+    private final CharacterCard[] characters;
 	protected final int CLOUD_SIZE;
 	protected final int CLOUD_NUMBER;
 	protected final int ENTRANCE_SIZE;
@@ -58,20 +58,11 @@ public class GameManager {
         return currPlayer.getNickname();
     }
 
-    public ProfessorOwnership getOwnerships() {
-        return professors;
-    }
-
-    public void setupBoard() {
+    public void setupBoard() throws InvalidArgumentException, NoMovementException {
 		board.setup();
 
 		for (CharacterCard character : characters) {
-			try {
-				character.setupEffect();
-			} catch (InvalidArgumentException | NoMovementException e) {
-				// TODO handle exception
-				e.printStackTrace();
-			}
+			character.setupEffect();
 		}
     }
 
@@ -141,7 +132,8 @@ public class GameManager {
 		}
     }
 
-    public void handleMotherNatureMovement(String islandDestination) {
+    public void handleMotherNatureMovement(String islandDestination)
+	        throws IslandNotFoundException, InvalidArgumentException {
 		IslandGroup destination = tryGetIsland(islandDestination);
 
 		if (destination == null)
@@ -150,39 +142,21 @@ public class GameManager {
 		boolean movementSuccessful = board.moveMotherNature(destination);
 		if (movementSuccessful) {
 			boolean controllerChanged = resolve(destination);
-			if (controllerChanged) {
-				try {
-					board.unifyIslands(destination);
-				} catch (IslandNotFoundException e) {
-					// TODO handle exception
-					e.printStackTrace();
-				}
-			}
+			if (controllerChanged)
+				board.unifyIslands(destination);
 		}
     }
 
-    public boolean resolve(IslandGroup island) {
+    public boolean resolve(IslandGroup island) throws InvalidArgumentException {
 		if (board.noEntryEnforced(island))
 			return false;
 
 		List<Player> players = this.players.getTurnOrder();
 	    Player maxInfluencePlayer = players.get(0);
-		int maxInfluence = 0;
-		try {
-			maxInfluence = calc.calculate(maxInfluencePlayer, island, professors.getProfessors(maxInfluencePlayer));
-		} catch (InvalidArgumentException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
+		int maxInfluence = calc.calculate(maxInfluencePlayer, island, professors.getProfessors(maxInfluencePlayer));
 
 		for (Player player : players) {
-			int influence = 0;
-			try {
-				influence = calc.calculate(player, island, professors.getProfessors(player));
-			} catch (InvalidArgumentException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+			int influence = calc.calculate(player, island, professors.getProfessors(player));
 			if (influence > maxInfluence) {
 				maxInfluence = influence;
 				maxInfluencePlayer = player;
@@ -194,14 +168,10 @@ public class GameManager {
 		return res;
     }
 
-	public void handleSelectedCloud(String nickname, int cloudIndex) {
+	public void handleSelectedCloud(String nickname, int cloudIndex)
+		    throws InvalidArgumentException, NoMovementException {
 		Player recipient = players.get(nickname);
-		try {
-			board.drawStudents(cloudIndex, recipient);
-		} catch (InvalidArgumentException | NoMovementException e) {
-			// TODO handle exception
-			e.printStackTrace();
-		}
+		board.drawStudents(cloudIndex, recipient);
 	}
 
     public void changeInfluenceState(InfluenceCalculator calculator) throws InvalidArgumentException {
@@ -239,7 +209,7 @@ public class GameManager {
 		}
 
 		if (params.has("targetIsland")) {
-			targetIsland = board.getIsland(params.get("targetIsland").getAsString());
+			targetIsland = tryGetIsland(params.get("targetIsland").getAsString());
 		}
 
 		characters[index].applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
@@ -249,6 +219,10 @@ public class GameManager {
 		// TODO: 05/04/2022 DAVIDE 
         return false;
     }
+
+	ProfessorOwnership getOwnerships() {
+		return professors;
+	}
 
 	private void initCharacterCards() {
 		List<Integer> indexes = new ArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));

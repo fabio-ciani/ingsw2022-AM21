@@ -134,10 +134,10 @@ public class Board {
 	 */
 	public void drawStudents(int cloudIndex, Player recipient) throws InvalidArgumentException, NoMovementException {
 		if (recipient == null)
-			throw new NoMovementException("Recipient is null");  // TODO this should not happen
+			throw new NoMovementException("Recipient is null");  // this should not happen
 
 		if (cloudIndex < 0 || cloudIndex >= cloudTiles.length)
-			throw new NoMovementException("Cloud index out of bounds.");  // TODO this should not happen
+			throw new NoMovementException("Cloud index out of bounds.");  // this should not happen
 
 		StudentContainer cloud = cloudTiles[cloudIndex];
 
@@ -194,11 +194,11 @@ public class Board {
 	 */
 	public void unifyIslands(IslandGroup target) throws IslandNotFoundException {
 		if (target == null)
-			throw new IslandNotFoundException("Null target.");  // TODO this should not happen
+			throw new IslandNotFoundException("Null target.");  // this should not happen
 
 		int targetIndex = islands.indexOf(target);
 		if (targetIndex == -1)
-			throw new IslandNotFoundException("Requested id: " + target.getId() + "."); // TODO this should not happen
+			throw new IslandNotFoundException("Requested id: " + target.getId() + "."); // this should not happen
 
 		IslandGroup prev = islands.get(targetIndex - 1);
 		IslandGroup next = islands.get(targetIndex + 1);

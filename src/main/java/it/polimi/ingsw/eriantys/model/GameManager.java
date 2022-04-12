@@ -15,7 +15,7 @@ public class GameManager {
 	private Player currPlayer;
 	private final ProfessorOwnership professors;
 	private InfluenceCalculator calc;
-    private final CharacterCard[] characters;
+	private final CharacterCard[] characters;
 	protected final int CLOUD_SIZE;
 	protected final int CLOUD_NUMBER;
 	protected final int ENTRANCE_SIZE;
@@ -26,7 +26,7 @@ public class GameManager {
 	 */
 	public static final String DINING_ROOM = "dining room";
 
-    // TODO: Will the constants be managed with a GameConfig object or by declaring them as attributes of GameManager?
+	// TODO: Will the constants be managed with a GameConfig object or by declaring them as attributes of GameManager?
 
 	public GameManager(List<String> nicknames, boolean expertMode) {
 		int numPlayers = nicknames.size();
@@ -54,52 +54,52 @@ public class GameManager {
 			characters = null;
 	}
 
-    public String getCurrPlayer() {
-        return currPlayer.getNickname();
-    }
+	public String getCurrPlayer() {
+		return currPlayer.getNickname();
+	}
 
-    public void setupBoard() throws InvalidArgumentException, NoMovementException {
+	public void setupBoard() throws InvalidArgumentException, NoMovementException {
 		board.setup();
 
 		for (CharacterCard character : characters) {
 			character.setupEffect();
 		}
-    }
+	}
 
-    public void setupPlayer(String nickname, TowerColor towerColor, Wizard wizard) {
+	public void setupPlayer(String nickname, TowerColor towerColor, Wizard wizard) {
 
-    }
+	}
 
 	/**
 	 * Prepares the board for a new round to be played.
 	 */
-    public void setupRound() {
+	public void setupRound() throws InvalidArgumentException, NoMovementException {
 		board.refillClouds();
-    }
+	}
 
-    public void handleAssistantCards(Map<Player, AssistantCard> playedCards) {
-        Player min = null;
-        for (Player p : playedCards.keySet())
-            if (min == null)
-                min = p;
-            else if (playedCards.get(p).value() < playedCards.get(min).value())
-                min = p;
+	public void handleAssistantCards(Map<Player, AssistantCard> playedCards) {
+		Player min = null;
+		for (Player p : playedCards.keySet())
+			if (min == null)
+			min = p;
+			else if (playedCards.get(p).value() < playedCards.get(min).value())
+			min = p;
+	
+		players.setFirst(min);
+	}
 
-        players.setFirst(min);
-    }
+	/**
+	 * A controller dedicated getter for a {@link List} containing the turn order of the current round.
+	 * @return the reference to a {@link List} containing the nicknames of the players and stating the turn order
+	 */
+	public List<String> getTurnOrder() {
+		List<Player> playerOrder = players.getTurnOrder();
 
-    /**
-     * A controller dedicated getter for a {@link List} containing the turn order of the current round.
-     * @return the reference to a {@link List} containing the nicknames of the players and stating the turn order
-     */
-    public List<String> getTurnOrder() {
-        List<Player> playerOrder = players.getTurnOrder();
-
-        return playerOrder
-                .stream()
-                .map(Player::getNickname)
-                .toList();
-    }
+		return playerOrder
+			.stream()
+			.map(Player::getNickname)
+			.toList();
+	}
 
 	// TODO after moving students to the dining room (line 132) SchoolBoard.checkForCoins(student) should be called
 	// TODO professors.update(student) should also be called
@@ -112,7 +112,7 @@ public class GameManager {
 	 * @param nickname Nickname of the player moving the students.
 	 * @param movedStudents List of pairs [color, destination] representing which students to move and where.
 	 */
-    public void handleMovedStudents(String nickname, List<Pair<String, String>> movedStudents)
+	public void handleMovedStudents(String nickname, List<Pair<String, String>> movedStudents)
 			throws NoMovementException, IslandNotFoundException {
 		Player player = players.get(nickname);
 		StudentContainer entrance = player.getEntrance();
@@ -130,10 +130,10 @@ public class GameManager {
 				throw new NoMovementException(e.getMessage() + " Trying to move " + colorDest.value0() + " student to " + colorDest.value1(), e);
 			}
 		}
-    }
+	}
 
-    public void handleMotherNatureMovement(String islandDestination)
-	        throws IslandNotFoundException, InvalidArgumentException {
+	public void handleMotherNatureMovement(String islandDestination)
+			throws IslandNotFoundException, InvalidArgumentException {
 		IslandGroup destination = tryGetIsland(islandDestination);
 
 		if (destination == null)
@@ -145,14 +145,14 @@ public class GameManager {
 			if (controllerChanged)
 				board.unifyIslands(destination);
 		}
-    }
+	}
 
-    public boolean resolve(IslandGroup island) throws InvalidArgumentException {
+	public boolean resolve(IslandGroup island) throws InvalidArgumentException {
 		if (board.noEntryEnforced(island))
 			return false;
 
 		List<Player> players = this.players.getTurnOrder();
-	    Player maxInfluencePlayer = players.get(0);
+		Player maxInfluencePlayer = players.get(0);
 		int maxInfluence = calc.calculate(maxInfluencePlayer, island, professors.getProfessors(maxInfluencePlayer));
 
 		for (Player player : players) {
@@ -166,21 +166,21 @@ public class GameManager {
 		boolean res = !island.getController().equals(maxInfluencePlayer);
 		island.setController(maxInfluencePlayer);
 		return res;
-    }
+	}
 
 	public void handleSelectedCloud(String nickname, int cloudIndex)
-		    throws InvalidArgumentException, NoMovementException {
+			throws InvalidArgumentException, NoMovementException {
 		Player recipient = players.get(nickname);
 		board.drawStudents(cloudIndex, recipient);
 	}
 
-    public void changeInfluenceState(InfluenceCalculator calculator) throws InvalidArgumentException {
-        if (calculator == null)
-            throw new InvalidArgumentException("Parameter should not be null.");
-        calc = calculator;
-    }
+	public void changeInfluenceState(InfluenceCalculator calculator) throws InvalidArgumentException {
+		if (calculator == null)
+			throw new InvalidArgumentException("Parameter should not be null.");
+		calc = calculator;
+	}
 
-    public void handleCharacterCard(int index, JsonObject params) throws
+	public void handleCharacterCard(int index, JsonObject params) throws
 			ItemNotAvailableException,
 			NoMovementException,
 			IslandNotFoundException,
@@ -213,12 +213,12 @@ public class GameManager {
 		}
 
 		characters[index].applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
-    }
+	}
 
-    public boolean gameOver() {
+	public boolean gameOver() {
 		// TODO: 05/04/2022 DAVIDE 
-        return false;
-    }
+		return false;
+	}
 
 	ProfessorOwnership getOwnerships() {
 		return professors;

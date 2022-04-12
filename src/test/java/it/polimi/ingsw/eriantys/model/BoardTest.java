@@ -44,7 +44,7 @@ class BoardTest {
 	}
 
 	@Test
-	void getMotherNatureIsland_AfterSetup_ReturnValidIsland() {
+	void getMotherNatureIsland_AfterSetup_ReturnValidIsland() throws InvalidArgumentException, NoMovementException {
 		Board board = new Board(2, 3);
 		board.setup();
 		IslandGroup res = assertDoesNotThrow(board::getMotherNatureIsland);
@@ -65,7 +65,8 @@ class BoardTest {
 	}
 
 	@Test
-	void setup_NormalConditions_IslandsSetUpCorrectly() throws IslandNotFoundException {
+	void setup_NormalConditions_IslandsSetUpCorrectly()
+				throws IslandNotFoundException, InvalidArgumentException, NoMovementException {
 		Board board = new Board(2, 3);
 		board.setup();
 
@@ -110,16 +111,16 @@ class BoardTest {
 
 	@Test
 	void drawStudents_NullPlayer_ThrowException() {
-		assertThrowsExactly(NoMovementException.class,
+		assertThrowsExactly(InvalidArgumentException.class,
 					() -> new Board(2, 3).drawStudents(0, null));
 	}
 
 	@Test
 	void drawStudents_IndexOutOfBounds_ThrowException() {
 		Player p = new Player("p");
-		assertThrowsExactly(NoMovementException.class,
+		assertThrowsExactly(InvalidArgumentException.class,
 					() -> new Board(2, 3).drawStudents(-1, p));
-		assertThrowsExactly(NoMovementException.class,
+		assertThrowsExactly(InvalidArgumentException.class,
 					() -> new Board(2, 3).drawStudents(2, p));
 	}
 
@@ -155,7 +156,7 @@ class BoardTest {
 	}
 
 	@Test
-	void refillClouds_EmptyClouds_FillClouds() {
+	void refillClouds_EmptyClouds_FillClouds() throws InvalidArgumentException, NoMovementException {
 		Board board = new Board(2, 3);
 		Player p = new Player("p");
 		board.refillClouds();
@@ -165,7 +166,7 @@ class BoardTest {
 
 	@Test
 	void unifyIslands_NullTarget_ThrowException() {
-		assertThrowsExactly(IslandNotFoundException.class,
+		assertThrowsExactly(InvalidArgumentException.class,
 					() -> new Board(2, 3).unifyIslands(null));
 	}
 
@@ -176,7 +177,7 @@ class BoardTest {
 	}
 
 	@Test
-	void unifyIslands_DifferentControllers_NoEffect() throws IslandNotFoundException {
+	void unifyIslands_DifferentControllers_NoEffect() throws IslandNotFoundException, InvalidArgumentException {
 		Board board = new Board(2, 3);
 		Player p1 = new Player("p1");
 		Player p2 = new Player("p2");
@@ -193,7 +194,7 @@ class BoardTest {
 	}
 
 	@Test
-	void unifyIslands_TargetAndPrevSameController_MergeTargetAndPrev() throws IslandNotFoundException {
+	void unifyIslands_TargetAndPrevSameController_MergeTargetAndPrev() throws IslandNotFoundException, InvalidArgumentException {
 		Board board = new Board(2, 3);
 		Player p1 = new Player("p1");
 		Player p2 = new Player("p2");
@@ -212,7 +213,7 @@ class BoardTest {
 	}
 
 	@Test
-	void unifyIslands_TargetAndNextSameController_MergeTargetAndNext() throws IslandNotFoundException {
+	void unifyIslands_TargetAndNextSameController_MergeTargetAndNext() throws IslandNotFoundException, InvalidArgumentException {
 		Board board = new Board(2, 3);
 		Player p1 = new Player("p1");
 		Player p2 = new Player("p2");
@@ -231,7 +232,7 @@ class BoardTest {
 	}
 
 	@Test
-	void unifyIslands_TargetPrevAndNextSameController_MergeTargetPrevAndNext() throws IslandNotFoundException {
+	void unifyIslands_TargetPrevAndNextSameController_MergeTargetPrevAndNext() throws IslandNotFoundException, InvalidArgumentException {
 		Board board = new Board(2, 3);
 		Player p1 = new Player("p1");
 

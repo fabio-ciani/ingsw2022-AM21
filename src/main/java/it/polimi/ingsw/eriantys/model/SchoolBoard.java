@@ -58,7 +58,6 @@ public class SchoolBoard {
 	 * coin based on the number of students of color {@code color} their {@link DiningRoom} contains.
 	 */
 	public boolean checkForCoins(Color color) {
-		// TODO this should be called automatically after a student is moved into the dining room
 		return diningRoom.checkForCoins(color);
 	}
 

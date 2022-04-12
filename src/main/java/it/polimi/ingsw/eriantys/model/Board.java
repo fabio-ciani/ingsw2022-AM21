@@ -77,7 +77,7 @@ public class Board {
 		int index = getIslandIndex(id);
 
 		if (index == -1)
-			throw new IslandNotFoundException("Requested: " + id + ".");  // TODO this should not happen
+			throw new IslandNotFoundException("Requested: " + id + ".");  // this should not happen
 		return islands.get(index);
 	}
 
@@ -110,19 +110,14 @@ public class Board {
 	 * the one with Mother Nature on it and the one opposite to it.
 	 * @see Bag#setupDraw()
 	 */
-	public void setup() {
+	public void setup() throws InvalidArgumentException, NoMovementException {
 		motherNatureIslandIndex = new Random().nextInt(NUMBER_OF_ISLANDS);
 
 		List<Color> colors = bag.setupDraw();
 
 		for (int i = 0; i < NUMBER_OF_ISLANDS; i++)
 			if (i != motherNatureIslandIndex && i != (motherNatureIslandIndex + 6) % 12)
-				try {
-					bag.moveTo(islands.get(i), colors.remove(0));
-				} catch (InvalidArgumentException | NoMovementException e) {
-					// TODO handle exception
-					e.printStackTrace();
-				}
+				bag.moveTo(islands.get(i), colors.remove(0));
 	}
 
 	/**
@@ -134,15 +129,15 @@ public class Board {
 	 */
 	public void drawStudents(int cloudIndex, Player recipient) throws InvalidArgumentException, NoMovementException {
 		if (recipient == null)
-			throw new NoMovementException("Recipient is null");  // this should not happen
+			throw new InvalidArgumentException("recipient argument is null");  // this should not happen
 
 		if (cloudIndex < 0 || cloudIndex >= cloudTiles.length)
-			throw new NoMovementException("Cloud index out of bounds.");  // this should not happen
+			throw new InvalidArgumentException("cloudIndex argument is out of bounds.");  // this should not happen
 
 		StudentContainer cloud = cloudTiles[cloudIndex];
 
 		if (Arrays.stream(Color.values()).mapToInt(cloud::getQuantity).reduce(0, Integer::sum) == 0)
-			throw new NoMovementException("Cloud is empty."); // TODO this could happen
+			throw new NoMovementException("Cloud is empty."); // TODO this could happen (ReusedCloudException)
 
 		cloud.moveAllTo(recipient.getEntrance());
 	}
@@ -160,14 +155,9 @@ public class Board {
 	/**
 	 * Refills the cloud tiles by taking the necessary amount of students from the {@code bag}.
 	 */
-	public void refillClouds() {
+	public void refillClouds() throws InvalidArgumentException, NoMovementException {
 		for (StudentContainer cloud : cloudTiles) {
-			try {
-				cloud.refillFrom(bag);
-			} catch (InvalidArgumentException | NoMovementException e) {
-				// TODO handle exception
-				e.printStackTrace();
-			}
+			cloud.refillFrom(bag);
 		}
 	}
 
@@ -192,9 +182,9 @@ public class Board {
 	 * @param target the target island.
 	 * @throws IslandNotFoundException if the specified {@code target} cannot be found.
 	 */
-	public void unifyIslands(IslandGroup target) throws IslandNotFoundException {
+	public void unifyIslands(IslandGroup target) throws IslandNotFoundException, InvalidArgumentException {
 		if (target == null)
-			throw new IslandNotFoundException("Null target.");  // this should not happen
+			throw new InvalidArgumentException("target argument is null.");  // this should not happen
 
 		int targetIndex = islands.indexOf(target);
 		if (targetIndex == -1)

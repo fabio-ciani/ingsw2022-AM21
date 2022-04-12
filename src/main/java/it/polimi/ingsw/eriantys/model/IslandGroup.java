@@ -68,7 +68,7 @@ public class IslandGroup extends StudentContainer {
 			return null;
 
 		if (!i1.hasSameController(i2))
-			throw new IncompatibleControllersException("Ids: " + i1.id + ", " + i2.id + "."); // TODO this should not happen
+			throw new IncompatibleControllersException("Ids: " + i1.id + ", " + i2.id + "."); // this should not happen
 
 		return new IslandGroup(i1, i2);
 	}
@@ -114,7 +114,7 @@ public class IslandGroup extends StudentContainer {
 	 */
 	public void putNoEntryTile(int id) throws DuplicateNoEntryTileException {
 		if (noEntryTiles.contains(id))
-			throw new DuplicateNoEntryTileException("Id: " + id + "."); // TODO this should not happen
+			throw new DuplicateNoEntryTileException("Id: " + id + "."); // this should not happen
 		noEntryTiles.push(id);
 	}
 

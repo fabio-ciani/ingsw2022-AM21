@@ -1,0 +1,20 @@
+{
+	"2": {
+		"cloudSize": 3,
+		"cloudNumber": 2,
+		"entranceSize": 7,
+		"towerNumber": 8
+	},
+	"3": {
+		"cloudSize": 4,
+		"cloudNumber": 3,
+		"entranceSize": 9,
+		"towerNumber": 6
+	},
+	"4": {
+		"cloudSize": 3,
+		"cloudNumber": 2,
+		"entranceSize": 7,
+		"towerNumber": 8
+	}
+}

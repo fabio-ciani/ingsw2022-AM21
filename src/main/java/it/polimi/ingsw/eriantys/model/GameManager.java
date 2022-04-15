@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.model.characters.*;
@@ -7,7 +8,11 @@ import it.polimi.ingsw.eriantys.model.exceptions.*;
 import it.polimi.ingsw.eriantys.model.influence.CommonInfluence;
 import it.polimi.ingsw.eriantys.model.influence.InfluenceCalculator;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameManager {
 	private final Board board;
@@ -16,17 +21,7 @@ public class GameManager {
 	private final ProfessorOwnership professors;
 	private InfluenceCalculator calc;
 	private final CharacterCard[] characters;
-	protected final int CLOUD_SIZE;
-	protected final int CLOUD_NUMBER;
-	protected final int ENTRANCE_SIZE;
-	protected final int TOWER_NUMBER;
-
-	/**
-	 * Constant used as a possible destination when the player moves students at the beginning of the Action Phase.
-	 */
-	public static final String DINING_ROOM = "dining room";
-
-	// TODO: Will the constants be managed with a GameConfig object or by declaring them as attributes of GameManager?
+	private final GameConstants constants;
 
 	/**
 	 * Constructs a {@code GameManager} that fits the number of players and the selected game mode.
@@ -35,19 +30,9 @@ public class GameManager {
 	 */
 	public GameManager(List<String> nicknames, boolean expertMode) {
 		int numPlayers = nicknames.size();
-		CLOUD_NUMBER = numPlayers;
+		constants = loadConstants(numPlayers);
 
-		if (numPlayers == 3) {
-			CLOUD_SIZE = 4;
-			ENTRANCE_SIZE = 9;
-			TOWER_NUMBER = 6;
-		} else {
-			CLOUD_SIZE = 3;
-			ENTRANCE_SIZE = 7;
-			TOWER_NUMBER = 8;
-		}
-
-		board = new Board(CLOUD_NUMBER, CLOUD_SIZE);
+		board = new Board(constants.getCloudNumber(), constants.getCloudSize());
 		players = new PlayerList(nicknames);
 		professors = new ProfessorOwnership(this::currentPlayer);
 		calc = new CommonInfluence();
@@ -132,7 +117,7 @@ public class GameManager {
 		for (Pair<String, String> colorDest : movedStudents) {
 			Color student = Color.valueOf(colorDest.value0());
 			try {
-				if (colorDest.value1().equals(DINING_ROOM)) {
+				if (colorDest.value1().equals(constants.getDiningRoom())) {
 					entrance.moveTo(diningRoom, student);
 				} else {
 					IslandGroup island = board.getIsland(colorDest.value1());
@@ -264,13 +249,9 @@ public class GameManager {
 	private void initCharacterCards() {
 		List<Integer> indexes = new ArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
 		Collections.shuffle(indexes);
-		int first = indexes.remove(0);
-		int second = indexes.remove(0);
-		int third = indexes.remove(0);
 
-		characters[0] = getCharacter(first);
-		characters[1] = getCharacter(second);
-		characters[2] = getCharacter(third);
+		for (int i = 0; i < characters.length; i++)
+			characters[i] = getCharacter(indexes.remove(0));
 	}
 
 	private CharacterCard getCharacter(int index) {
@@ -301,5 +282,25 @@ public class GameManager {
 		} catch (IslandNotFoundException e) {
 			return null;
 		}
+	}
+
+	private GameConstants loadConstants(int numPlayers) {
+		Gson gson = new Gson();
+
+		InputStream constantsIn = getClass().getClassLoader().getResourceAsStream("constants.json");
+		InputStream configIn = getClass().getClassLoader().getResourceAsStream("config.json");
+
+		if (constantsIn == null || configIn == null)
+			throw new NullPointerException();
+
+		String constants =
+					new BufferedReader(new InputStreamReader(constantsIn)).lines().collect(Collectors.joining("\n"));
+		String config =
+					gson.fromJson(new InputStreamReader(configIn), JsonObject.class)
+					.get(Integer.toString(numPlayers)).getAsJsonObject().toString();
+
+		String jsonString = constants.substring(0, constants.length()-2) + ",\n\"gameConfig\": " + config + "}";
+
+		return gson.fromJson(jsonString, GameConstants.class);
 	}
 }

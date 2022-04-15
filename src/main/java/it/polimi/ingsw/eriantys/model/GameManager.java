@@ -25,8 +25,8 @@ public class GameManager {
 
 	/**
 	 * Constructs a {@code GameManager} that fits the number of players and the selected game mode.
-	 * @param nicknames the nicknames of the players.
-	 * @param expertMode {@code true} if and only if the instantiated game is to be played in expert mode.
+	 * @param nicknames the nicknames of the players
+	 * @param expertMode {@code true} if and only if the instantiated game is to be played in expert mode
 	 */
 	public GameManager(List<String> nicknames, boolean expertMode) {
 		int numPlayers = nicknames.size();
@@ -44,14 +44,10 @@ public class GameManager {
 			characters = null;
 	}
 
-	public String getCurrPlayer() {
-		return currPlayer.getNickname();
-	}
-
 	/**
 	 * Prepares the game by setting up the board and, if the game is in expert mode, the selected character cards.
-	 * @throws InvalidArgumentException if an error occurs while setting up the board or the character cards.
-	 * @throws NoMovementException if an error occurs while setting up the character cards.
+	 * @throws InvalidArgumentException if an error occurs while setting up the board or the character cards
+	 * @throws NoMovementException if an error occurs while setting up the character cards
 	 */
 	public void setupBoard() throws InvalidArgumentException, NoMovementException {
 		board.setup();
@@ -61,28 +57,42 @@ public class GameManager {
 		}
 	}
 
-	public void setupPlayer(String nickname, TowerColor towerColor, Wizard wizard) {
+	/**
+	 * A method to complete the setup of a {@link Player} in the game.
+	 * @param nickname the {@link Player}'s nickname
+	 * @param teamColor the {@link TowerColor} which the {@link Player} selected
+	 * @param wizard the {@link Wizard} which the {@link Player} selected
+	 */
+	public void setupPlayer(String nickname, TowerColor teamColor, Wizard wizard) {
+		Player p = players.get(nickname);
 
+		p.setTowerColor(teamColor);
+		p.setWizard(wizard);
 	}
 
 	/**
 	 * Prepares the board for a new round to be played by refilling the cloud tiles.
-	 * @throws InvalidArgumentException if an error occurs while refilling the cloud tiles.
-	 * @throws NoMovementException if an error occurs while refilling the cloud tiles.
+	 * @throws InvalidArgumentException if an error occurs while refilling the cloud tiles
+	 * @throws NoMovementException if an error occurs while refilling the cloud tiles
 	 */
 	public void setupRound() throws InvalidArgumentException, NoMovementException {
 		board.refillClouds();
 	}
 
-	public void handleAssistantCards(Map<Player, AssistantCard> playedCards) {
-		Player min = null;
-		for (Player p : playedCards.keySet())
+	// TODO: Add a method to send to the controller a list of available cards to play for a specific player.
+	/**
+	 * A method to process the assistant cards chosen by the players in the current round.
+	 * @param playedCards a {@link Map} which associates a {@link Player} with its played assistant card {@link String}
+	 */
+	public void handleAssistantCards(Map<String, String> playedCards) {
+		String min = null;
+		for (String p : playedCards.keySet())
 			if (min == null)
-			min = p;
-			else if (playedCards.get(p).value() < playedCards.get(min).value())
-			min = p;
-	
-		players.setFirst(min);
+				min = p;
+			else if (AssistantCard.valueOf(playedCards.get(p)).value() < AssistantCard.valueOf(playedCards.get(min)).value())
+				min = p;
+
+		players.setFirst(players.get(min));
 	}
 
 	/**
@@ -104,10 +114,10 @@ public class GameManager {
 	/**
 	 * Receives a {@link  List} of pairs,
 	 * each containing the {@link Color} of the student that the player wants to move and the corresponding destination.
-	 * The destination can be an island (ID of the {@link IslandGroup}) or the dining room of a player ({@code DINING_ROOM} constant).
-	 *
-	 * @param nickname Nickname of the player moving the students.
-	 * @param movedStudents List of pairs [color, destination] representing which students to move and where.
+	 * The destination can be an island (ID of the {@link IslandGroup})
+	 * or the dining room of a player ({@code DINING_ROOM} constant).
+	 * @param nickname the nickname of the {@link Player} moving the students
+	 * @param movedStudents a {@link List} of pairs (an association between color and destination) representing which students to move and where
 	 */
 	public void handleMovedStudents(String nickname, List<Pair<String, String>> movedStudents)
 			throws NoMovementException, IslandNotFoundException {
@@ -131,9 +141,9 @@ public class GameManager {
 
 	/**
 	 * Moves the Mother Nature pawn to the specified destination island, then resolves that island.
-	 * @param islandDestination the destination {@link IslandGroup}.
-	 * @throws IslandNotFoundException if no island matching the specified id can be found.
-	 * @throws InvalidArgumentException if an error occurs while resolving the destination island.
+	 * @param islandDestination the destination {@link IslandGroup}
+	 * @throws IslandNotFoundException if no island matching the specified id can be found
+	 * @throws InvalidArgumentException if an error occurs while resolving the destination island
 	 */
 	public void handleMotherNatureMovement(String islandDestination)
 			throws IslandNotFoundException, InvalidArgumentException {
@@ -153,9 +163,9 @@ public class GameManager {
 	/**
 	 * Sets the specified {@link IslandGroup}'s controller to the player with the most influence on the island, returning
 	 * {@code true} if and only if the island's controller has changed as a result of this method.
-	 * @param island the island whose controller is set.
-	 * @return {@code true} if and only if the island's controller has changed as a result of this method.
-	 * @throws InvalidArgumentException if an error occurs while calculating a player's influence.
+	 * @param island the island whose controller is set
+	 * @return {@code true} if and only if the island's controller has changed as a result of this method
+	 * @throws InvalidArgumentException if an error occurs while calculating a player's influence
 	 */
 	public boolean resolve(IslandGroup island) throws InvalidArgumentException {
 		if (board.noEntryEnforced(island))
@@ -180,11 +190,11 @@ public class GameManager {
 
 	/**
 	 * Transfers all the students in the specified cloud tile to the specified player's entrance.
-	 * @param nickname the nickname of the player whose entrance will be refilled.
-	 * @param cloudIndex the index of the cloud tile to be emptied.
-	 * @throws InvalidArgumentException if there is no such player with the specified nickname, or if the requested cloud
-	 * tile index is out of bounds.
-	 * @throws NoMovementException if an error occurs while transferring the students.
+	 * @param nickname the nickname of the player whose entrance will be refilled
+	 * @param cloudIndex the index of the cloud tile to be emptied
+	 * @throws InvalidArgumentException if there is no such player with the specified nickname,
+	 * or if the requested cloud tile index is out of bounds
+	 * @throws NoMovementException if an error occurs while transferring the students
 	 */
 	public void handleSelectedCloud(String nickname, int cloudIndex)
 			throws InvalidArgumentException, NoMovementException {
@@ -192,6 +202,11 @@ public class GameManager {
 		board.drawStudents(cloudIndex, recipient);
 	}
 
+	/**
+	 * A method to change the internal influence calculation definition for the {@link InfluenceCalculator} state pattern.
+	 * @param calculator the new state (i.e., a concrete instance) for {@link InfluenceCalculator}
+	 * @throws InvalidArgumentException if the passed parameter is {@code null}
+	 */
 	public void changeInfluenceState(InfluenceCalculator calculator) throws InvalidArgumentException {
 		if (calculator == null)
 			throw new InvalidArgumentException("Parameter should not be null.");
@@ -201,7 +216,6 @@ public class GameManager {
 	public void handleCharacterCard(int index, JsonObject params) throws
 			ItemNotAvailableException,
 			NoMovementException,
-			IslandNotFoundException,
 			InvalidArgumentException,
 			DuplicateNoEntryTileException {
 		List<Color> sourceColors = null, destinationColors = null;
@@ -238,12 +252,28 @@ public class GameManager {
 		return false;
 	}
 
-	/**
-	 * Returns the game's current {@link ProfessorOwnership}.
-	 * @return the game's current {@link ProfessorOwnership}.
-	 */
-	ProfessorOwnership getOwnerships() {
-		return professors;
+	private GameConstants loadConstants(int numPlayers) {
+		Gson gson = new Gson();
+
+		InputStream constantsIn = getClass().getClassLoader().getResourceAsStream("constants.json");
+		InputStream configIn = getClass().getClassLoader().getResourceAsStream("config.json");
+
+		if (constantsIn == null || configIn == null)
+			throw new NullPointerException();
+
+		String constants =
+				new BufferedReader(new InputStreamReader(constantsIn)).lines().collect(Collectors.joining("\n"));
+		String config =
+				gson.fromJson(new InputStreamReader(configIn), JsonObject.class)
+						.get(Integer.toString(numPlayers)).getAsJsonObject().toString();
+
+		String jsonString = constants.substring(0, constants.length() - 2) + ",\n\"gameConfig\": " + config + "}";
+
+		return gson.fromJson(jsonString, GameConstants.class);
+	}
+
+	private Player currentPlayer() {
+		return currPlayer;
 	}
 
 	private void initCharacterCards() {
@@ -272,35 +302,11 @@ public class GameManager {
 		};
 	}
 
-	private Player currentPlayer() {
-		return currPlayer;
-	}
-
 	private IslandGroup tryGetIsland(String islandId) {
 		try {
 			return board.getIsland(islandId);
 		} catch (IslandNotFoundException e) {
 			return null;
 		}
-	}
-
-	private GameConstants loadConstants(int numPlayers) {
-		Gson gson = new Gson();
-
-		InputStream constantsIn = getClass().getClassLoader().getResourceAsStream("constants.json");
-		InputStream configIn = getClass().getClassLoader().getResourceAsStream("config.json");
-
-		if (constantsIn == null || configIn == null)
-			throw new NullPointerException();
-
-		String constants =
-					new BufferedReader(new InputStreamReader(constantsIn)).lines().collect(Collectors.joining("\n"));
-		String config =
-					gson.fromJson(new InputStreamReader(configIn), JsonObject.class)
-					.get(Integer.toString(numPlayers)).getAsJsonObject().toString();
-
-		String jsonString = constants.substring(0, constants.length()-2) + ",\n\"gameConfig\": " + config + "}";
-
-		return gson.fromJson(jsonString, GameConstants.class);
 	}
 }

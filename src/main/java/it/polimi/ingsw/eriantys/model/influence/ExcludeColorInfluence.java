@@ -14,25 +14,25 @@ import java.util.Set;
  * defines the {@link MushroomGuy}'s {@link CharacterCard} effect.
  */
 public class ExcludeColorInfluence extends CommonInfluence implements InfluenceCalculator {
-    private final Color excluded;
+	private final Color excluded;
 
-    public ExcludeColorInfluence(Color excluded) {
-        this.excluded = excluded;
-    }
+	public ExcludeColorInfluence(Color excluded) {
+		this.excluded = excluded;
+	}
 
-    public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws InvalidArgumentException {
-        if (excluded == null)
-            throw new InvalidArgumentException("Cannot proceed with null internal attributes parameter(s).");
-        if (player == null || island == null || ownedProfessors == null)
-            throw new InvalidArgumentException("Cannot proceed with null parameter(s).");
+	public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws InvalidArgumentException {
+		if (excluded == null)
+			throw new InvalidArgumentException("Cannot proceed with null internal attributes parameter(s).");
+		if (player == null || island == null || ownedProfessors == null)
+			throw new InvalidArgumentException("Cannot proceed with null parameter(s).");
 
-        int result = 0;
+		int result = 0;
 
-        for (Color c : ownedProfessors)
-            if (c != excluded)
-                result += evaluateColor(island, c);
-        result += evaluateTowers(island, player);
+		for (Color c : ownedProfessors)
+			if (c != excluded)
+				result += evaluateColor(island, c);
+		result += evaluateTowers(island, player);
 
-        return result;
-    }
+		return result;
+	}
 }

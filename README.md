@@ -17,7 +17,7 @@ An implementation of a tabletop game as the _Software Engineering_ final examina
 | CLI                       | :red_circle:      |
 | GUI                       | :red_circle:      |
 | Character Cards           | :green_circle:    |
-| 4-Player Mode             | :red_circle:      |
+| 4-Players Mode            | :red_circle:      |
 | Multiple Games            | :yellow_circle:   |
 | Persistence               | :red_circle:      |
 | Disconnection Handling    | :red_circle:      |

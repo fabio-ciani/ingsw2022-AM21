@@ -14,19 +14,19 @@ import java.util.Set;
  * defines the {@link Knight}'s {@link CharacterCard} effect.
  */
 public class BonusInfluence extends CommonInfluence implements InfluenceCalculator {
-    private final Player user;
+	private final Player user;
 
-    public BonusInfluence(Player user) {
-        this.user = user;
-    }
+	public BonusInfluence(Player user) {
+		this.user = user;
+	}
 
-    @Override
-    public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws InvalidArgumentException {
-        if (user == null)
-            throw new InvalidArgumentException("Cannot proceed with null internal attributes parameter(s).");
+	@Override
+	public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws InvalidArgumentException {
+		if (user == null)
+			throw new InvalidArgumentException("Cannot proceed with null internal attributes parameter(s).");
 
-        int result = super.calculate(player, island, ownedProfessors);
+		int result = super.calculate(player, island, ownedProfessors);
 
-        return (user.equals(player)) ? result + 2 : result;
-    }
+		return (user.equals(player)) ? result + 2 : result;
+	}
 }

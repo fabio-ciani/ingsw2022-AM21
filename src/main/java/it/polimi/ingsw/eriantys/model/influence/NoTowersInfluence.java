@@ -14,15 +14,15 @@ import java.util.Set;
  * defines the {@link Centaur}'s {@link CharacterCard} effect.
  */
 public class NoTowersInfluence extends CommonInfluence implements InfluenceCalculator {
-    public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws InvalidArgumentException {
-        if (player == null || island == null || ownedProfessors == null)
-            throw new InvalidArgumentException("Cannot proceed with null parameter(s).");
+	public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws InvalidArgumentException {
+		if (player == null || island == null || ownedProfessors == null)
+			throw new InvalidArgumentException("Cannot proceed with null parameter(s).");
 
-        int result = 0;
+		int result = 0;
 
-        for (Color c : ownedProfessors)
-            result += evaluateColor(island, c);
+		for (Color c : ownedProfessors)
+			result += evaluateColor(island, c);
 
-        return result;
-    }
+		return result;
+	}
 }

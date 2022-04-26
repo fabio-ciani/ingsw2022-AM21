@@ -14,35 +14,33 @@ import java.util.List;
  * @see CharacterCard
  */
 public class Herald extends BaseCharacterCard {
-    /**
-     * Reference to the {@link GameManager} object for the current game.
-     */
-    private final GameManager gameManager;
-    
-    /**
-     * Initial cost to activate the {@link Herald} effect.
-     */
-    private static final int INITIAL_COST = 3;
+	/**
+	 * Reference to the {@link GameManager} object for the current game.
+	 */
+	private final GameManager gameManager;
 
-    /**
-     * Constructs a new {@link Herald} character card.
-     *
-     * @param gameManager Reference to the {@link GameManager} for the current game.
-     */
-    public Herald(GameManager gameManager) {
-        super(INITIAL_COST);
-        this.gameManager = gameManager;
-    }
+	/**
+	 * Initial cost to activate the {@link Herald} effect.
+	 */
+	private static final int INITIAL_COST = 3;
 
-    @Override
-    public void applyEffect(List<Color> sourceColors,
-                            List<Color> destinationColors,
-                            Color targetColor,
-                            IslandGroup targetIsland) throws InvalidArgumentException {
-        if (targetIsland == null) {
-            throw new InvalidArgumentException("targetIsland argument is null.");
-        }
-        gameManager.resolve(targetIsland);
-        increaseCost();
-    }
+	/**
+	 * Constructs a new {@link Herald} character card.
+	 *
+	 * @param gameManager Reference to the {@link GameManager} for the current game.
+	 */
+	public Herald(GameManager gameManager) {
+		super(INITIAL_COST);
+		this.gameManager = gameManager;
+	}
+
+	@Override
+	public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland)
+			throws InvalidArgumentException {
+		if (targetIsland == null) {
+			throw new InvalidArgumentException("targetIsland argument is null.");
+		}
+		gameManager.resolve(targetIsland);
+		increaseCost();
+	}
 }

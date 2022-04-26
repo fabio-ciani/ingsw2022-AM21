@@ -7,30 +7,30 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MagicPostmanTest {
-    Player player;
-    BaseCharacterCard card;
+	Player player;
+	BaseCharacterCard card;
 
-    final int BONUS_MOVEMENTS = 2;
+	final int BONUS_MOVEMENTS = 2;
 
-    @BeforeEach
-    void init() {
-        player = new Player("Nick Name");
-        card = new MagicPostman(() -> player);
-    }
+	@BeforeEach
+	void init() {
+		player = new Player("Nick Name");
+		card = new MagicPostman(() -> player);
+	}
 
-    @Test
-    void getCost_effectAppliedThreeTimes_CostIncreasedOnlyTheFirstTime() {
-        int initialCost = card.getCost();
-        for (int i = 0; i < 3; i++) {
-            assertDoesNotThrow(() -> card.applyEffect(null, null, null, null));
-            assertEquals(initialCost + 1, card.getCost());
-        }
-    }
+	@Test
+	void getCost_effectAppliedThreeTimes_CostIncreasedOnlyTheFirstTime() {
+		int initialCost = card.getCost();
+		for (int i = 0; i < 3; i++) {
+			assertDoesNotThrow(() -> card.applyEffect(null, null, null, null));
+			assertEquals(initialCost + 1, card.getCost());
+		}
+	}
 
-    @Test
-    void applyEffect_NoArguments_IncreasedMotherNatureMovements() {
-        int initialMovements = player.getMotherNatureMovements();
-        assertDoesNotThrow(() -> card.applyEffect(null, null, null, null));
-        assertEquals(initialMovements + BONUS_MOVEMENTS, player.getMotherNatureMovements());
-    }
+	@Test
+	void applyEffect_NoArguments_IncreasedMotherNatureMovements() {
+		int initialMovements = player.getMotherNatureMovements();
+		assertDoesNotThrow(() -> card.applyEffect(null, null, null, null));
+		assertEquals(initialMovements + BONUS_MOVEMENTS, player.getMotherNatureMovements());
+	}
 }

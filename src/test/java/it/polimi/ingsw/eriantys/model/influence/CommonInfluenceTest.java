@@ -14,28 +14,28 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CommonInfluenceTest {
-    InfluenceCalculator calc = new CommonInfluence();
+	InfluenceCalculator calc = new CommonInfluence();
 
-    @Test
-    void CommonInfluence_PassNull_ThrowException() {
-        assertThrowsExactly(InvalidArgumentException.class, () -> calc.calculate(new Player("Alice"), null, null));
-    }
+	@Test
+	void CommonInfluence_PassNull_ThrowException() {
+		assertThrowsExactly(InvalidArgumentException.class, () -> calc.calculate(new Player("Alice"), null, null));
+	}
 
-    @Test
-    void CommonInfluence_ValidParameters_NormalPostConditions() throws InvalidArgumentException, NoMovementException {
-        Player p = new Player("admin");
-        IslandGroup island = new IslandGroup("03");
-        Set<Color> professors = new HashSet<>();
+	@Test
+	void CommonInfluence_ValidParameters_NormalPostConditions() throws InvalidArgumentException, NoMovementException {
+		Player p = new Player("admin");
+		IslandGroup island = new IslandGroup("03");
+		Set<Color> professors = new HashSet<>();
 
-        island.setController(p);
-        professors.add(Color.PINK);
-        professors.add(Color.BLUE);
+		island.setController(p);
+		professors.add(Color.PINK);
+		professors.add(Color.BLUE);
 
-        Bag b = new Bag();
+		Bag b = new Bag();
 
-        b.moveTo(island, Color.PINK);
-        b.moveTo(island, Color.RED);
+		b.moveTo(island, Color.PINK);
+		b.moveTo(island, Color.RED);
 
-        assertEquals(2, calc.calculate(p, island, professors));
-    }
+		assertEquals(2, calc.calculate(p, island, professors));
+	}
 }

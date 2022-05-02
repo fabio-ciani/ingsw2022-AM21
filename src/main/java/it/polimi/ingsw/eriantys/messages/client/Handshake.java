@@ -1,8 +1,8 @@
 package it.polimi.ingsw.eriantys.messages.client;
 
-import it.polimi.ingsw.eriantys.messages.Message;
+import it.polimi.ingsw.eriantys.messages.ConnectionMessage;
 
-public class Handshake extends Message {
+public class Handshake extends ConnectionMessage {
 	public Handshake(String sender) {
 		super(sender);
 	}

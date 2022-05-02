@@ -109,33 +109,31 @@ public class GameManager {
 	}
 
 	// TODO after moving students to the dining room (line 132) SchoolBoard.checkForCoins(student) should be called
-	// TODO professors.update(student) should also be called
-	// TODO: 05/04/2022 DAVIDE - Change (doc and implementation) when moving constants to the Config class
 	/**
-	 * Receives a {@link  List} of pairs,
-	 * each containing the {@link Color} of the student that the player wants to move and the corresponding destination.
+	 * Receives a {@link String} corresponding to the {@link Color} of the student that the player
+	 * wants to move and a {@link String} representing the destination.
 	 * The destination can be an island (ID of the {@link IslandGroup})
-	 * or the dining room of a player ({@code DINING_ROOM} constant).
-	 * @param nickname the nickname of the {@link Player} moving the students
-	 * @param movedStudents a {@link List} of pairs (an association between color and destination) representing which students to move and where
+	 * or the dining room of a player (constant in {@link #constants}).
+	 * @param nickname the nickname of the {@link Player} moving the student
+	 * @param studentColor the string corresponding to the name of the {@link Color}
+	 * @param destination the string representing the destination
 	 */
-	public void handleMovedStudents(String nickname, List<Pair<String, String>> movedStudents)
+	public void handleMovedStudent(String nickname, String studentColor, String destination)
 			throws NoMovementException, IslandNotFoundException {
 		Player player = players.get(nickname);
 		StudentContainer entrance = player.getEntrance();
 		StudentContainer diningRoom = player.getDiningRoom();
-		for (Pair<String, String> colorDest : movedStudents) {
-			Color student = Color.valueOf(colorDest.value0());
-			try {
-				if (colorDest.value1().equals(constants.getDiningRoom())) {
-					entrance.moveTo(diningRoom, student);
-				} else {
-					IslandGroup island = board.getIsland(colorDest.value1());
-					entrance.moveTo(island, student);
-				}
-			} catch (InvalidArgumentException | NoMovementException e) {
-				throw new NoMovementException(e.getMessage() + " Trying to move " + colorDest.value0() + " student to " + colorDest.value1(), e);
+		Color student = Color.valueOf(studentColor);
+		try {
+			if (destination.equals(constants.getDiningRoom())) {
+				entrance.moveTo(diningRoom, student);
+			} else {
+				IslandGroup island = board.getIsland(destination);
+				entrance.moveTo(island, student);
 			}
+			professors.update(Set.of(student));
+		} catch (InvalidArgumentException | NoMovementException e) {
+			throw new NoMovementException(e.getMessage() + " Trying to move " + studentColor + " student to " + destination, e);
 		}
 	}
 

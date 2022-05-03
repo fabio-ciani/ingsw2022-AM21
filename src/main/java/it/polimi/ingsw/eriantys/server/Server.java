@@ -131,10 +131,8 @@ public class Server extends Thread {
 			System.out.printf("Joined game: %d%n", gameId);
 			connection.write(new Accepted());
 			target.notifyLobbyChange();
-			if (target.meetsStartupCondition()) {
+			if (target.meetsStartupCondition())
 				target.setup();
-				// TODO assign ClientConnection.game
-			}
 		}
 	}
 

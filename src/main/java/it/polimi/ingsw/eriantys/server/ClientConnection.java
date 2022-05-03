@@ -26,6 +26,11 @@ public class ClientConnection {
 		this.socketToClient = socketToClient;
 		this.out = new ObjectOutputStream(socketToClient.getOutputStream());
 		this.in = new ObjectInputStream(socketToClient.getInputStream());
+		this.game = null;
+	}
+
+	public void setGame(Game game) {
+		if (this.game == null) this.game = game;
 	}
 
 	public void read() {

@@ -49,10 +49,15 @@ public class Game {
 		return players.size() == info.getLobbySize();
 	}
 
-	public void setup() {
+	public void setup() throws NoConnectionException {
 		started = true;
 		setGameManager();
 		messageHandler = new GameSetupHandler(this);
+
+		for (String player : players) {
+			ClientConnection connection = server.getConnection(player);
+			connection.setGame(this);
+		}
 	}
 
 	public void start() {

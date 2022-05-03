@@ -1,30 +1,64 @@
 package it.polimi.ingsw.eriantys.controller.phases;
 
+import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.PlayAssistantCard;
+import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This concrete implementation for the state design pattern involving {@link MessageHandler}
  * defines how the planning phase message {@link PlayAssistantCard} should be processed.
  */
 public class PlayAssistantCardHandler implements MessageHandler {
-	private boolean transition;
+	private final Game game;
+	private final Map<String, List<String>> availableCards;
+	private final Map<String, String> playedCards;
+
+	public PlayAssistantCardHandler(Game game) {
+		this.game = game;
+		this.availableCards = game.getAssistantCards();
+		this.playedCards = new HashMap<>();
+	}
 
 	@Override
-	public void handle(GameMessage m) {
-		if (m instanceof PlayAssistantCard)
-			process((PlayAssistantCard) m);
+	public void handle(GameMessage m) throws NoConnectionException {
+		if (m instanceof PlayAssistantCard playAssistantCard)
+			process(playAssistantCard);
 		else
-			// send Refused()
-			return;
+			game.refuseRequest(m, "Unexpected message");
 	}
 
-	public void setTransition() {
-		transition = true;
+	private void process(PlayAssistantCard message) throws NoConnectionException {
+		String sender = message.getSender();
+		String card = message.getAssistantCard();
+
+		if (playedCards.containsKey(sender))
+			game.refuseRequest(message, "Already played assistant card");
+		else if (!isPlayable(sender, card))
+			game.refuseRequest(message, "Cannot play card: " + card);
+		else {
+			playedCards.put(sender, card);
+			game.acceptRequest(message);
+			game.nextPlayer();
+			checkStateTransition();
+		}
 	}
 
-	private void process(PlayAssistantCard m) {
-		// if every player has set an assistant card, then Game (?) must set transition to true
-		// if transition is true, then change state to MoveStudent
+	private boolean isPlayable(String username, String card) {
+		List<String> available = availableCards.get(username);
+		if (!available.contains(card))
+			return false;
+		if (!playedCards.containsValue(card))
+			return true;
+		return available.stream().filter(c -> !playedCards.containsValue(c)).toList().size() == 0;
+	}
+
+	private void checkStateTransition() {
+		if (playedCards.keySet().size() == game.getInfo().getLobbySize())
+			game.newTurn(playedCards);
 	}
 }

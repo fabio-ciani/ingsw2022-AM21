@@ -6,6 +6,7 @@ import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.client.Handshake;
 import it.polimi.ingsw.eriantys.messages.server.Refused;
+import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -47,6 +48,9 @@ public class ClientConnection {
 			}
 		} catch (IOException e) {
 			server.disconnect(this);
+		} catch (NoConnectionException e) {
+			// TODO handle exception?
+			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			// TODO: 02/05/2022 Handle exception?
 			throw new RuntimeException(e);

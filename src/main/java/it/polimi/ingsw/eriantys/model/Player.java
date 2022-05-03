@@ -88,6 +88,10 @@ public class Player {
 		return schoolBoard.getDiningRoom();
 	}
 
+	public List<AssistantCard> getDeck() {
+		return new ArrayList<>(deck);
+	}
+
 	/**
 	 * A getter for the number of allowed Mother Nature's movements for a {@code Player}'s object during the current turn.
 	 * @return the internal state for the number of allowed Mother Nature's movements of a {@code Player}
@@ -120,6 +124,10 @@ public class Player {
 	 */
 	public void updateCoins(int amount) {
 		coins += amount;
+	}
+
+	public void playAssistantCard(AssistantCard playedCard) {
+		deck.remove(playedCard);
 	}
 
 	@Override

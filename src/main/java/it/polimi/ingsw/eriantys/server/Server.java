@@ -3,7 +3,12 @@ package it.polimi.ingsw.eriantys.server;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.ConnectionMessage;
 import it.polimi.ingsw.eriantys.messages.Message;
+import it.polimi.ingsw.eriantys.messages.client.JoinLobby;
+import it.polimi.ingsw.eriantys.messages.client.LeaveLobby;
+import it.polimi.ingsw.eriantys.messages.client.LobbiesRequest;
+import it.polimi.ingsw.eriantys.messages.client.LobbyCreation;
 import it.polimi.ingsw.eriantys.messages.server.Accepted;
+import it.polimi.ingsw.eriantys.messages.server.AvailableLobbies;
 import it.polimi.ingsw.eriantys.messages.server.Refused;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
@@ -20,6 +25,8 @@ public class Server extends Thread {
 	private boolean running;
 	private final Map<Integer, Game> gameById;
 	private final Map<String, ClientConnection> connectionByUsername;
+	private int nextGameId;
+
 	public static final String name = "Server";
 
 	public static void main(String[] args) {
@@ -32,6 +39,7 @@ public class Server extends Thread {
 		this.port = port;
 		this.gameById = new HashMap<>();
 		this.connectionByUsername = new HashMap<>();
+		this.nextGameId = 0;
 	}
 
 	@Override
@@ -83,7 +91,98 @@ public class Server extends Thread {
 		return connection;
 	}
 
-	public void handleMessage(ConnectionMessage message) {
+	public void handleMessage(ConnectionMessage message) throws NoConnectionException {
+		if (message instanceof LobbiesRequest lobbiesRequest)
+			handleLobbiesRequest(lobbiesRequest);
+		else if (message instanceof JoinLobby joinLobby)
+			handleJoinLobby(joinLobby);
+		else if (message instanceof LeaveLobby leaveLobby)
+			handleLeaveLobby(leaveLobby);
+		else if (message instanceof LobbyCreation lobbyCreation)
+			handleLobbyCreation(lobbyCreation);
+		else
+			handleUnexpectedMessage(message);
+	}
 
+	private void handleLobbiesRequest(LobbiesRequest message) throws NoConnectionException {
+		String sender = message.getSender();
+		ClientConnection connection = getConnection(sender);
+
+		Message response = new AvailableLobbies(
+				gameById.values().stream().filter(g -> !g.isStarted()).map(Game::getInfo).toList());
+		System.out.println("Sending lobby list...");
+		connection.write(response);
+	}
+
+	private void handleJoinLobby(JoinLobby message) throws NoConnectionException {
+		String sender = message.getSender();
+		ClientConnection connection = getConnection(sender);
+
+		Integer gameId = message.getGameId();
+		Game target = gameById.get(gameId);
+
+		if (target == null || target.isStarted()) {
+			System.out.printf("Unavailable game: %d%n", gameId);
+			connection.write(new Refused("Unavailable game: " + gameId));
+		} else if (!target.addPlayer(sender)) {
+			System.out.printf("Already participating in game: %d%n", gameId);
+			connection.write(new Refused("Already participating in game: " + gameId));
+		} else {
+			System.out.printf("Joined game: %d%n", gameId);
+			connection.write(new Accepted());
+			target.notifyLobbyChange();
+			if (target.meetsStartupCondition()) {
+				target.setup();
+				// TODO assign ClientConnection.game
+			}
+		}
+	}
+
+	private void handleLeaveLobby(LeaveLobby message) throws NoConnectionException {
+		String sender = message.getSender();
+		ClientConnection connection = getConnection(sender);
+
+		Integer gameId = message.getGameId();
+		Game target = gameById.get(gameId);
+
+		if (target == null || target.isStarted()) {
+			System.out.printf("Cannot leave game: %d%n", gameId);
+			connection.write(new Refused("Cannot leave game: " + gameId));
+		} else if (!target.removePlayer(sender)) {
+			System.out.printf("Not participating in game: %d%n", gameId);
+			connection.write(new Refused("Not participating in game: " + gameId));
+		} else {
+			System.out.printf("Left game: %d%n", gameId);
+			connection.write(new Accepted());
+			target.notifyLobbyChange();
+		}
+	}
+
+	private void handleLobbyCreation(LobbyCreation message) throws NoConnectionException {
+		String sender = message.getSender();
+		ClientConnection connection = getConnection(sender);
+
+		int numPlayers = message.getNumPlayers();
+		boolean expertMode = message.isExpertMode();
+
+		if (numPlayers < 2 || numPlayers > 4) {
+			System.out.printf("Invalid number of players: %d%n", numPlayers);
+			connection.write(new Refused("Invalid number of players: " + numPlayers));
+		} else {
+			String username = message.getSender();
+			Game game = new Game(this, nextGameId, username, numPlayers, expertMode);
+			game.addPlayer(username);
+			gameById.put(nextGameId, game);
+			nextGameId++;
+			System.out.printf("Created game successfully: %d%n", nextGameId);
+			connection.write(new Accepted());
+			game.notifyLobbyChange();
+		}
+	}
+
+	private void handleUnexpectedMessage(ConnectionMessage message) throws NoConnectionException {
+		String sender = message.getSender();
+		ClientConnection connection = getConnection(sender);
+		connection.write(new Refused("Unexpected message"));
 	}
 }

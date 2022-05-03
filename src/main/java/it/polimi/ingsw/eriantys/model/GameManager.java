@@ -21,7 +21,8 @@ public class GameManager {
 	private final ProfessorOwnership professors;
 	private InfluenceCalculator calc;
 	private final CharacterCard[] characters;
-	private final GameConstants constants;
+
+	public final GameConstants constants;
 
 	/**
 	 * Constructs a {@code GameManager} that fits the number of players and the selected game mode.
@@ -60,13 +61,29 @@ public class GameManager {
 	/**
 	 * A method to complete the setup of a {@link Player} in the game.
 	 * @param nickname the {@link Player}'s nickname
-	 * @param teamColor the {@link TowerColor} which the {@link Player} selected
-	 * @param wizard the {@link Wizard} which the {@link Player} selected
+	 * @param towerColorLiteral the string value of the {@link TowerColor} which the {@link Player} selected
+	 * @param wizardLiteral the string value of the {@link Wizard} which the {@link Player} selected
+	 * @throws InvalidArgumentException if at least one of the enum literals is not a legal value.
 	 */
-	public void setupPlayer(String nickname, TowerColor teamColor, Wizard wizard) {
+	public void setupPlayer(String nickname, String towerColorLiteral, String wizardLiteral)
+			throws InvalidArgumentException {
 		Player p = players.get(nickname);
+		TowerColor towerColor;
+		Wizard wizard;
 
-		p.setTowerColor(teamColor);
+		try {
+			towerColor = TowerColor.valueOf(towerColorLiteral);
+		} catch (IllegalArgumentException e) {
+			throw new InvalidArgumentException("Nonexistent tower color: " + towerColorLiteral);
+		}
+
+		try {
+			wizard = Wizard.valueOf(wizardLiteral);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Nonexistent wizard: " + wizardLiteral);
+		}
+
+		p.setTowerColor(towerColor);
 		p.setWizard(wizard);
 	}
 
@@ -79,20 +96,37 @@ public class GameManager {
 		board.refillClouds();
 	}
 
+	public Map<String, List<String>> getAvailableAssistantCards() {
+		Map<String, List<String>> res = new HashMap<>();
+		for (Player player : players.getTurnOrder()) {
+			res.put(
+					player.getNickname(),
+					player.getDeck().stream().map(AssistantCard::toString).toList()
+			);
+		}
+		return res;
+	}
+
 	// TODO: Add a method to send to the controller a list of available cards to play for a specific player.
 	/**
 	 * A method to process the assistant cards chosen by the players in the current round.
 	 * @param playedCards a {@link Map} which associates a {@link Player} with its played assistant card {@link String}
 	 */
 	public void handleAssistantCards(Map<String, String> playedCards) {
-		String min = null;
-		for (String p : playedCards.keySet())
-			if (min == null)
-				min = p;
-			else if (AssistantCard.valueOf(playedCards.get(p)).value() < AssistantCard.valueOf(playedCards.get(min)).value())
-				min = p;
+		Player minPlayer = null;
+		AssistantCard minCard = null;
 
-		players.setFirst(players.get(min));
+		for (String username : playedCards.keySet()) {
+			Player p = players.get(username);
+			AssistantCard playedCard = AssistantCard.valueOf(playedCards.get(username));
+			p.playAssistantCard(playedCard);
+			if (minPlayer == null || playedCard.value() < minCard.value()) {
+				minPlayer = p;
+				minCard = playedCard;
+			}
+		}
+
+		players.setFirst(minPlayer);
 	}
 
 	/**

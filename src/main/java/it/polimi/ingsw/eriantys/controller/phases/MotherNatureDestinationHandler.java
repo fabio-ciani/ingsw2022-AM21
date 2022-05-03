@@ -1,10 +1,9 @@
 package it.polimi.ingsw.eriantys.controller.phases;
 
-import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.MotherNatureDestination;
-import it.polimi.ingsw.eriantys.messages.client.PlayCharacterCard;
+import it.polimi.ingsw.eriantys.messages.server.BoardUpdate;
 import it.polimi.ingsw.eriantys.model.exceptions.*;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
@@ -16,6 +15,13 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 
 	public MotherNatureDestinationHandler(Game game) {
 		super(game);
+
+		try {
+			this.game.sendUpdate(new BoardUpdate());
+		} catch (NoConnectionException e) {
+			// TODO handle exception
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

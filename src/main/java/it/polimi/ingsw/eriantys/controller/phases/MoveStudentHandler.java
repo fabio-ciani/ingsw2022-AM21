@@ -1,14 +1,10 @@
 package it.polimi.ingsw.eriantys.controller.phases;
 
-import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.MoveStudent;
-import it.polimi.ingsw.eriantys.messages.client.PlayCharacterCard;
-import it.polimi.ingsw.eriantys.messages.server.Accepted;
-import it.polimi.ingsw.eriantys.messages.server.Refused;
+import it.polimi.ingsw.eriantys.messages.server.BoardUpdate;
 import it.polimi.ingsw.eriantys.model.exceptions.*;
-import it.polimi.ingsw.eriantys.server.ClientConnection;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
 /**
@@ -21,6 +17,13 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 	public MoveStudentHandler(Game game) {
 		super(game);
 		this.movementCount = 0;
+
+		try {
+			this.game.sendUpdate(new BoardUpdate());
+		} catch (NoConnectionException e) {
+			// TODO handle exception
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -50,7 +53,8 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 		checkStateTransition();
 	}
 
-	private void checkStateTransition() {
+	private void checkStateTransition() throws NoConnectionException {
 		if (movementCount == game.getCloudSize())	game.receiveMotherNatureMovement();
+		else game.sendUpdate(new BoardUpdate());
 	}
 }

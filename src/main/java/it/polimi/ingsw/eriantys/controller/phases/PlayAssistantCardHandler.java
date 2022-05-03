@@ -3,6 +3,7 @@ package it.polimi.ingsw.eriantys.controller.phases;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.PlayAssistantCard;
+import it.polimi.ingsw.eriantys.messages.server.AssistantCardUpdate;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
 import java.util.HashMap;
@@ -22,6 +23,13 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		this.game = game;
 		this.availableCards = game.getAssistantCards();
 		this.playedCards = new HashMap<>();
+
+		try {
+			this.game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
+		} catch (NoConnectionException e) {
+			// TODO handle exception
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -57,8 +65,10 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		return available.stream().filter(c -> !playedCards.containsValue(c)).toList().size() == 0;
 	}
 
-	private void checkStateTransition() {
+	private void checkStateTransition() throws NoConnectionException {
 		if (playedCards.keySet().size() == game.getInfo().getLobbySize())
 			game.newTurn(playedCards);
+		else
+			game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
 	}
 }

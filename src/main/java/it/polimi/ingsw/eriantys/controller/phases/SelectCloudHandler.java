@@ -3,6 +3,7 @@ package it.polimi.ingsw.eriantys.controller.phases;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.SelectCloud;
+import it.polimi.ingsw.eriantys.messages.server.BoardUpdate;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
@@ -16,6 +17,13 @@ public class SelectCloudHandler implements MessageHandler {
 
 	public SelectCloudHandler(Game game) {
 		this.game = game;
+
+		try {
+			this.game.sendUpdate(new BoardUpdate());
+		} catch (NoConnectionException e) {
+			// TODO handle exception
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

@@ -3,9 +3,8 @@ package it.polimi.ingsw.eriantys.controller;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.controller.phases.*;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
-import it.polimi.ingsw.eriantys.messages.server.Accepted;
-import it.polimi.ingsw.eriantys.messages.server.LobbyUpdate;
-import it.polimi.ingsw.eriantys.messages.server.Refused;
+import it.polimi.ingsw.eriantys.messages.Message;
+import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.GameManager;
 import it.polimi.ingsw.eriantys.model.exceptions.*;
 import it.polimi.ingsw.eriantys.server.ClientConnection;
@@ -60,12 +59,14 @@ public class Game {
 		}
 	}
 
-	public void start() {
+	public void start() throws NoConnectionException {
 		try {
 			gameManager.setupBoard();
 		} catch (InvalidArgumentException | NoMovementException e) {
 			e.printStackTrace();
 		}
+
+		broadcast(new InitialBoardStatus());
 		newRound();
 	}
 
@@ -116,10 +117,7 @@ public class Game {
 
 	public void notifyLobbyChange() throws NoConnectionException {
 		LobbyUpdate res = new LobbyUpdate(new ArrayList<>(this.players));
-		for (String player : players) {
-			ClientConnection c = server.getConnection(player);
-			c.write(res);
-		}
+		broadcast(res);
 	}
 
 	public void setupPlayer(String username, String towerColor, String wizard) throws InvalidArgumentException {
@@ -179,7 +177,19 @@ public class Game {
 		currentPlayer = (currentPlayer + 1) % players.size();
 	}
 
-	public void setGameManager() {
+	public void sendUpdate(UserActionUpdate message) throws NoConnectionException {
+		message.setNextPlayer(players.get(currentPlayer));
+		broadcast(message);
+	}
+
+	private void broadcast(Message message) throws NoConnectionException {
+		for (String player : players) {
+			ClientConnection c = server.getConnection(player);
+			c.write(message);
+		}
+	}
+
+	private void setGameManager() {
 		if (gameManager == null)
 			gameManager = new GameManager(players, getInfo().isExpertMode());
 	}

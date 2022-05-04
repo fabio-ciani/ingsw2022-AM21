@@ -26,6 +26,27 @@ class GameManagerTest {
 	}
 
 	@Test
+	void setupPlayer_PassInvalidTowerColor_ThrowException() {
+		GameManager gm = new GameManager(players, false);
+
+		assertThrowsExactly(InvalidArgumentException.class, () -> gm.setupPlayer(Eve.getNickname(), "RED", "DESERT_WIZARD"));
+	}
+
+	@Test
+	void setupPlayer_PassInvalidWizard_ThrowException() {
+		GameManager gm = new GameManager(players, false);
+
+		assertThrowsExactly(InvalidArgumentException.class, () -> gm.setupPlayer(Eve.getNickname(), "BLACK", "SPACE_WIZARD"));
+	}
+
+	@Test
+	void setupPlayer_ValidParameters_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+
+		assertDoesNotThrow(() -> gm.setupPlayer(Eve.getNickname(), "BLACK", "DESERT_WIZARD"));
+	}
+
+	@Test
 	void HandleAssistantCardsAndGetTurnOrder() {
 		GameManager gm = new GameManager(players, false);
 

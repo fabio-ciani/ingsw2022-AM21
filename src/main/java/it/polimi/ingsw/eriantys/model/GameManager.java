@@ -63,7 +63,7 @@ public class GameManager {
 	 * @param nickname the {@link Player}'s nickname
 	 * @param towerColorLiteral the string value of the {@link TowerColor} which the {@link Player} selected
 	 * @param wizardLiteral the string value of the {@link Wizard} which the {@link Player} selected
-	 * @throws InvalidArgumentException if at least one of the enum literals is not a legal value.
+	 * @throws InvalidArgumentException if at least one of the enum literals is not a legal value
 	 */
 	public void setupPlayer(String nickname, String towerColorLiteral, String wizardLiteral)
 			throws InvalidArgumentException {
@@ -80,7 +80,7 @@ public class GameManager {
 		try {
 			wizard = Wizard.valueOf(wizardLiteral);
 		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Nonexistent wizard: " + wizardLiteral);
+			throw new InvalidArgumentException("Nonexistent wizard: " + wizardLiteral);
 		}
 
 		p.setTowerColor(towerColor);

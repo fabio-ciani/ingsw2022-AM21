@@ -3,12 +3,14 @@ package it.polimi.ingsw.eriantys.model;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
 
 	@Test
-	void setTowerColor() {
+	void setTowerColor_NormalPostConditions() {
 		Player p = new Player("admin");
 
 		p.setTowerColor(TowerColor.BLACK);
@@ -16,7 +18,7 @@ class PlayerTest {
 	}
 
 	@Test
-	void setWizard() {
+	void setWizard_NormalPostConditions() {
 		Player p = new Player("admin");
 
 		p.setWizard(Wizard.DESERT_WIZARD);
@@ -24,14 +26,14 @@ class PlayerTest {
 	}
 
 	@Test
-	void getEntrance() {
+	void getEntrance_NormalPostConditions() {
 		Player p = new Player("admin");
 
 		assertNotNull(p.getEntrance());
 	}
 
 	@Test
-	void getDiningRoom() {
+	void getDiningRoom_NormalPostConditions() {
 		Player p = new Player("admin");
 
 		assertNotNull(p.getDiningRoom());
@@ -53,7 +55,20 @@ class PlayerTest {
 	}
 
 	@Test
-	void updateCoins() {
+	void playAssistantCard_NormalPostConditions() {
+		Player p = new Player("admin");
+		List<AssistantCard> oldDeck = p.getDeck();
+
+		p.playAssistantCard(AssistantCard.TURTLE);
+
+		List<AssistantCard> newDeck = p.getDeck();
+
+		assertEquals(9, p.getDeck().size());
+		assertTrue(oldDeck.containsAll(newDeck));
+	}
+
+	@Test
+	void updateCoins_NormalPostConditions() {
 		Player p = new Player("admin");
 
 		p.updateCoins(7);
@@ -64,7 +79,7 @@ class PlayerTest {
 	}
 
 	@Test
-	void equals() {
+	void equals_NormalPostConditions() {
 		Player p1 = new Player("Alice");
 		Player p2 = new Player("Bob");
 

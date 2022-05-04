@@ -3,6 +3,7 @@ package it.polimi.ingsw.eriantys.model;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ public class Player {
 	private final SchoolBoard schoolBoard;
 	private TowerColor teamColor;
 	private Wizard wizard;
-	private final List<AssistantCard> deck; // TODO: 09/04/2022 Check setter?
+	private final List<AssistantCard> deck;
 	private int motherNatureMovements, coins;
 
 	public Player(String nickname) {
@@ -25,8 +26,7 @@ public class Player {
 		wizard = null;
 
 		deck = new ArrayList<>();
-		for (AssistantCard c : AssistantCard.values())
-			deck.add(c);
+		Collections.addAll(deck, AssistantCard.values());
 
 		motherNatureMovements = 0;
 		coins = 1;
@@ -72,6 +72,15 @@ public class Player {
 		this.wizard = wizard;
 	}
 
+	// TODO: Is it correct to return a new reference? (i.e., a new object)
+	/**
+	 * A getter for the {@link AssistantCard} held in the hand by a {@code Player}.
+	 * @return the reference to a {@link List} containing the {@code Player}'s cards
+	 */
+	public List<AssistantCard> getDeck() {
+		return new ArrayList<>(deck);
+	}
+
 	/**
 	 * A getter for the {@link SchoolBoard} entrance of a {@code Player}'s object.
 	 * @return the reference to the {@code Player}'s {@link SchoolBoard} entrance
@@ -86,10 +95,6 @@ public class Player {
 	 */
 	public DiningRoom getDiningRoom() {
 		return schoolBoard.getDiningRoom();
-	}
-
-	public List<AssistantCard> getDeck() {
-		return new ArrayList<>(deck);
 	}
 
 	/**
@@ -119,15 +124,19 @@ public class Player {
 	}
 
 	/**
+	 * A method to implement the act of playing an {@link AssistantCard} from the hand.
+	 * @param playedCard the card which the {@code Player} wants to play
+	 */
+	public void playAssistantCard(AssistantCard playedCard) {
+		deck.remove(playedCard);
+	}
+
+	/**
 	 * A method to assign a variable quantity of coins to a {@code Player}.
 	 * @param amount the number of coins (could be negative) to be assigned to the {@code Player}
 	 */
 	public void updateCoins(int amount) {
 		coins += amount;
-	}
-
-	public void playAssistantCard(AssistantCard playedCard) {
-		deck.remove(playedCard);
 	}
 
 	@Override

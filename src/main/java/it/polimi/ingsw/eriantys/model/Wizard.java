@@ -9,6 +9,10 @@ import java.util.List;
 public enum Wizard {
 	FOREST_WIZARD, DESERT_WIZARD, SKY_WIZARD, SNOW_WIZARD;
 
+	/**
+	 * A method to convert the enumeration values into {@link String}.
+	 * @return a {@link List} containing the enumeration values
+	 */
 	public static List<String> stringLiterals() {
 		return Arrays.stream(Wizard.values()).map(Wizard::toString).toList();
 	}

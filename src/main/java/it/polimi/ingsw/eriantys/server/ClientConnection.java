@@ -5,6 +5,7 @@ import it.polimi.ingsw.eriantys.messages.ConnectionMessage;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.client.Handshake;
+import it.polimi.ingsw.eriantys.messages.client.HelpRequest;
 import it.polimi.ingsw.eriantys.messages.server.Refused;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
@@ -48,6 +49,12 @@ public class ClientConnection {
 						write(response);
 					} else {
 						game.handleMessage(gameMessage);
+					}
+				} else if (message instanceof HelpRequest helpRequest) {
+					if (game == null) {
+						server.sendHelp(helpRequest);
+					} else {
+						game.sendHelp(helpRequest);
 					}
 				}
 			}

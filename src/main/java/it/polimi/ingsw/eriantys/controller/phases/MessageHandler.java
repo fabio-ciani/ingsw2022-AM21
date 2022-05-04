@@ -9,4 +9,9 @@ import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
  */
 public interface MessageHandler {
 	void handle(GameMessage m) throws NoConnectionException;
+
+	// FIXME: 04/05/2022 Implement method in all classes and remove default
+	default String getHelp() {
+		return null;
+	}
 }

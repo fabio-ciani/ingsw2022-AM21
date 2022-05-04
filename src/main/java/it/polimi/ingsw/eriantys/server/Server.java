@@ -3,12 +3,10 @@ package it.polimi.ingsw.eriantys.server;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.ConnectionMessage;
 import it.polimi.ingsw.eriantys.messages.Message;
-import it.polimi.ingsw.eriantys.messages.client.JoinLobby;
-import it.polimi.ingsw.eriantys.messages.client.LeaveLobby;
-import it.polimi.ingsw.eriantys.messages.client.LobbiesRequest;
-import it.polimi.ingsw.eriantys.messages.client.LobbyCreation;
+import it.polimi.ingsw.eriantys.messages.client.*;
 import it.polimi.ingsw.eriantys.messages.server.Accepted;
 import it.polimi.ingsw.eriantys.messages.server.AvailableLobbies;
+import it.polimi.ingsw.eriantys.messages.server.HelpResponse;
 import it.polimi.ingsw.eriantys.messages.server.Refused;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
@@ -182,5 +180,11 @@ public class Server extends Thread {
 		String sender = message.getSender();
 		ClientConnection connection = getConnection(sender);
 		connection.write(new Refused("Unexpected message"));
+	}
+
+	public void sendHelp(HelpRequest helpRequest) throws NoConnectionException {
+		Message response = new HelpResponse(HelpContents.OUT_OF_LOBBY.getContent());
+		ClientConnection connection = getConnection(helpRequest.getSender());
+		connection.write(response);
 	}
 }

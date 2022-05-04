@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.controller.phases.*;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.Message;
+import it.polimi.ingsw.eriantys.messages.client.HelpRequest;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.GameManager;
 import it.polimi.ingsw.eriantys.model.exceptions.*;
@@ -192,5 +193,12 @@ public class Game {
 	private void setGameManager() {
 		if (gameManager == null)
 			gameManager = new GameManager(players, getInfo().isExpertMode());
+	}
+
+	public void sendHelp(HelpRequest helpRequest) throws NoConnectionException {
+		String content = messageHandler.getHelp();
+		Message response = new HelpResponse(content);
+		ClientConnection connection = server.getConnection(helpRequest.getSender());
+		connection.write(response);
 	}
 }

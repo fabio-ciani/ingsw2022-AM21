@@ -294,12 +294,12 @@ public class GameManager {
 			throw new NullPointerException();
 
 		String constants =
-				new BufferedReader(new InputStreamReader(constantsIn)).lines().collect(Collectors.joining("\n"));
+				new BufferedReader(new InputStreamReader(constantsIn)).lines().collect(Collectors.joining("%n"));
 		String config =
 				gson.fromJson(new InputStreamReader(configIn), JsonObject.class)
 						.get(Integer.toString(numPlayers)).getAsJsonObject().toString();
 
-		String jsonString = constants.substring(0, constants.length() - 2) + ",\n\"gameConfig\": " + config + "}";
+		String jsonString = constants.substring(0, constants.length() - 2) + ",%n\"gameConfig\": " + config + "}";
 
 		return gson.fromJson(jsonString, GameConstants.class);
 	}

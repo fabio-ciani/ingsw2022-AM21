@@ -4,6 +4,7 @@ import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.ConnectionMessage;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.Message;
+import it.polimi.ingsw.eriantys.messages.Ping;
 import it.polimi.ingsw.eriantys.messages.client.Handshake;
 import it.polimi.ingsw.eriantys.messages.client.HelpRequest;
 import it.polimi.ingsw.eriantys.messages.server.Refused;
@@ -27,7 +28,12 @@ public class ClientConnection {
 		this.socketToClient = socketToClient;
 		this.out = new ObjectOutputStream(socketToClient.getOutputStream());
 		this.in = new ObjectInputStream(socketToClient.getInputStream());
+		this.running = true;
 		this.game = null;
+	}
+
+	public synchronized void setRunning(boolean running) {
+		this.running = running;
 	}
 
 	public void setGame(Game game) {
@@ -36,7 +42,6 @@ public class ClientConnection {
 
 	public void read() {
 		try (socketToClient) {
-			running = true;
 			while (running) {
 				Message message = (Message) in.readObject();
 				if (message instanceof Handshake) {
@@ -69,10 +74,21 @@ public class ClientConnection {
 		}
 	}
 
-	public void write(Message message) {
+	public synchronized void write(Message message) {
 		try (socketToClient) {
 			out.writeObject(message);
 		} catch (IOException e) {
+			server.disconnect(this);
+		}
+	}
+
+	public void ping() {
+		try {
+			while (running) {
+				write(new Ping());
+				Thread.sleep(30 * 1000);
+			}
+		} catch (InterruptedException e) {
 			server.disconnect(this);
 		}
 	}

@@ -196,9 +196,8 @@ public class Game {
 	}
 
 	public void sendHelp(HelpRequest helpRequest) throws NoConnectionException {
-		String content = messageHandler.getHelp();
-		Message response = new HelpResponse(content);
-		ClientConnection connection = server.getConnection(helpRequest.getSender());
-		connection.write(response);
+		String sender = helpRequest.getSender();
+		ClientConnection connection = server.getConnection(sender);
+		connection.write(new HelpResponse(messageHandler.getHelp()));
 	}
 }

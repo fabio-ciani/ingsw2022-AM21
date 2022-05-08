@@ -293,17 +293,14 @@ public class GameManager {
 		if (constantsIn == null || configIn == null)
 			throw new NullPointerException();
 
-		/* String constants =
-				new BufferedReader(new InputStreamReader(constantsIn)).lines().collect(Collectors.joining("\n")); */
-		String constants = new BufferedReader(new InputStreamReader(constantsIn)).lines()
-				.collect(Collectors.joining(System.getProperty("line.separator")));
+		String constants =
+				new BufferedReader(new InputStreamReader(constantsIn))
+				.lines().collect(Collectors.joining("\n"));
 		String config =
 				gson.fromJson(new InputStreamReader(configIn), JsonObject.class)
-						.get(Integer.toString(numPlayers)).getAsJsonObject().toString();
+				.get(Integer.toString(numPlayers)).getAsJsonObject().toString();
 
-		// String jsonString = constants.substring(0, constants.length() - 2) + ",\n\"gameConfig\": " + config + "}";
-		String jsonString = constants
-				.substring(0, constants.length() - 2) + "," + System.getProperty("line.separator") + "\"gameConfig\": " + config + "}";
+		String jsonString = constants.substring(0, constants.length() - 2) + ",\n\t\"gameConfig\": " + config + "\n}";
 
 		return gson.fromJson(jsonString, GameConstants.class);
 	}

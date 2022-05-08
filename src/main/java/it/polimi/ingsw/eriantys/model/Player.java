@@ -143,6 +143,10 @@ public class Player {
 		deck.remove(playedCard);
 	}
 
+	public boolean checkForCoins(Color color) {
+		return schoolBoard.checkForCoins(color);
+	}
+
 	/**
 	 * A method to assign a variable quantity of coins to a {@code Player}.
 	 * @param amount the number of coins (could be negative) to be assigned to the {@code Player}

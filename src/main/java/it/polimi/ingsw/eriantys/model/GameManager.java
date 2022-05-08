@@ -158,7 +158,6 @@ public class GameManager {
 			.toList();
 	}
 
-	// TODO after moving students to the dining room (line 132) SchoolBoard.checkForCoins(student) should be called
 	/**
 	 * Receives a {@link String} corresponding to the {@link Color} of the student that the player
 	 * wants to move and a {@link String} representing the destination.
@@ -177,6 +176,8 @@ public class GameManager {
 		try {
 			if (destination.equals(constants.getDiningRoom())) {
 				entrance.moveTo(diningRoom, student);
+				if (player.checkForCoins(student))
+					player.updateCoins(1);
 			} else {
 				IslandGroup island = board.getIsland(destination);
 				entrance.moveTo(island, student);

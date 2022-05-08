@@ -109,6 +109,12 @@ public class GameManager {
 		return lastRound();
 	}
 
+	/**
+	 * Returns a map having the nickname of every player as the key set and each player's remaining assistant cards as the
+	 * values.
+	 * @return having the nickname of every player as the key set and each player's remaining assistant cards as the
+	 * values.
+	 */
 	public Map<String, List<String>> getAvailableAssistantCards() {
 		Map<String, List<String>> res = new HashMap<>();
 		for (Player player : players.getTurnOrder()) {

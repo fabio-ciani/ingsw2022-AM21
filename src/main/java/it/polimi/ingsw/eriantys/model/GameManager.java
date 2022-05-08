@@ -48,6 +48,14 @@ public class GameManager {
 	}
 
 	/**
+	 * Sets the current player to the player matching {@code currentPlayerNickname}.
+	 * @param currentPlayerNickname the nickname of the current player.
+	 */
+	public void setCurrentPlayer(String currentPlayerNickname) {
+		currPlayer = players.get(currentPlayerNickname);
+	}
+
+	/**
 	 * Prepares the game by setting up the board and, if the game is in expert mode, the selected character cards.
 	 * @throws InvalidArgumentException if an error occurs while setting up the board or the character cards
 	 * @throws NoMovementException if an error occurs while setting up the character cards

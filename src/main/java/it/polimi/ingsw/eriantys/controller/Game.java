@@ -88,14 +88,17 @@ public class Game {
 		players = gameManager.getTurnOrder();
 		currentPlayer = 0;
 		messageHandler = new MoveStudentHandler(this);
+		updateCurrentPlayer();
 	}
 
 	public void advanceTurn() {
 		nextPlayer();
 		if (currentPlayer == 0)
 			newRound();
-		else
+		else {
 			messageHandler = new MoveStudentHandler(this);
+			updateCurrentPlayer();
+		}
 	}
 
 	public void receiveMotherNatureMovement() {
@@ -206,5 +209,9 @@ public class Game {
 	private void setGameManager() {
 		if (gameManager == null)
 			gameManager = new GameManager(players, getInfo().isExpertMode());
+	}
+
+	private void updateCurrentPlayer() {
+		gameManager.setCurrentPlayer(players.get(currentPlayer));
 	}
 }

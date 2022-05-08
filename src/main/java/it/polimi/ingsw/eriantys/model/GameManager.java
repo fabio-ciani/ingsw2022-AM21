@@ -21,6 +21,7 @@ public class GameManager {
 	private final ProfessorOwnership professors;
 	private InfluenceCalculator calc;
 	private final CharacterCard[] characters;
+	private boolean lastRound;
 
 	public final GameConstants constants;
 
@@ -37,6 +38,7 @@ public class GameManager {
 		players = new PlayerList(nicknames);
 		professors = new ProfessorOwnership(this::currentPlayer);
 		calc = new CommonInfluence();
+		lastRound = false;
 
 		if (expertMode) {
 			characters = new CharacterCard[3];
@@ -88,12 +90,15 @@ public class GameManager {
 	}
 
 	/**
-	 * Prepares the board for a new round to be played by refilling the cloud tiles.
+	 * Prepares the board for a new round to be played by refilling the cloud tiles. Returns {@code true} if and only if
+	 * the current round will be the last in the game.
 	 * @throws InvalidArgumentException if an error occurs while refilling the cloud tiles
 	 * @throws NoMovementException if an error occurs while refilling the cloud tiles
+	 * @return {@code true} if and only if the current round will be the last in the game.
 	 */
-	public void setupRound() throws InvalidArgumentException, NoMovementException {
+	public boolean setupRound() throws InvalidArgumentException, NoMovementException {
 		board.refillClouds();
+		return lastRound();
 	}
 
 	public Map<String, List<String>> getAvailableAssistantCards() {
@@ -107,12 +112,13 @@ public class GameManager {
 		return res;
 	}
 
-	// TODO: Add a method to send to the controller a list of available cards to play for a specific player.
 	/**
-	 * A method to process the assistant cards chosen by the players in the current round.
-	 * @param playedCards a {@link Map} which associates a {@link Player} with its played assistant card {@link String}
+	 * A method to process the assistant cards chosen by the players in the current round. Returns {@code true} if and
+	 * only if the current round will be the last in the game.
+	 * @param playedCards a {@link Map} which associates a {@link Player} with its played assistant card {@link String}.
+	 * @return {@code true} if and only if the current round will be the last in the game.
 	 */
-	public void handleAssistantCards(Map<String, String> playedCards) {
+	public boolean handleAssistantCards(Map<String, String> playedCards) {
 		Player minPlayer = null;
 		AssistantCard minCard = null;
 
@@ -127,6 +133,8 @@ public class GameManager {
 		}
 
 		players.setFirst(minPlayer);
+
+		return lastRound();
 	}
 
 	/**
@@ -172,12 +180,16 @@ public class GameManager {
 	}
 
 	/**
-	 * Moves the Mother Nature pawn to the specified destination island, then resolves that island.
-	 * @param islandDestination the destination {@link IslandGroup}
-	 * @throws IslandNotFoundException if no island matching the specified id can be found
-	 * @throws InvalidArgumentException if an error occurs while resolving the destination island
+	 * Moves the Mother Nature pawn to the specified destination island, then resolves that island. Returns the
+	 * nickname of the winner of the game, if a winner is declared as a result of Mother Nature's movement, or
+	 * {@code null} otherwise.
+	 * @param islandDestination the destination {@link IslandGroup}.
+	 * @throws IslandNotFoundException if no island matching the specified id can be found.
+	 * @throws InvalidArgumentException if an error occurs while resolving the destination island.
+	 * @return the nickname of the winner of the game, if a winner is declared as a result of Mother Nature's movement, or
+	 * {@code null} otherwise.
 	 */
-	public void handleMotherNatureMovement(String islandDestination)
+	public String handleMotherNatureMovement(String islandDestination)
 			throws IslandNotFoundException, InvalidArgumentException {
 		IslandGroup destination = tryGetIsland(islandDestination);
 
@@ -190,6 +202,8 @@ public class GameManager {
 			if (controllerChanged)
 				board.unifyIslands(destination);
 		}
+
+		return gameOver();
 	}
 
 	/**
@@ -245,7 +259,18 @@ public class GameManager {
 		calc = calculator;
 	}
 
-	public void handleCharacterCard(int index, JsonObject params) throws
+	/**
+	 * Applies the effect of the desired character card with the specified {@code params}. Returns {@code true} if and
+	 * only if the current round will be the last in the game.
+	 * @param index the index of the desired character card.
+	 * @param params the parameters for the application of the specified character card's effect.
+	 * @return {@code true} if and only if the current round will be the last in the game.
+	 * @throws ItemNotAvailableException if an error has occurred while removing a No Entry tile from an island.
+	 * @throws NoMovementException if an error has occurred while moving one or more students.
+	 * @throws InvalidArgumentException if an error has occurred while applying the card's effect.
+	 * @throws DuplicateNoEntryTileException if an error has occurred while placing a No Entry tile on an island.
+	 */
+	public boolean handleCharacterCard(int index, JsonObject params) throws
 			ItemNotAvailableException,
 			NoMovementException,
 			InvalidArgumentException,
@@ -277,11 +302,52 @@ public class GameManager {
 		}
 
 		characters[index].applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
+
+		return lastRound();
 	}
 
-	public boolean gameOver() {
-		// TODO: 05/04/2022 DAVIDE 
-		return false;
+	/**
+	 * Returns the nickname of the winner of the game, or {@code null} if no winner has been declared yet.
+	 * @return the nickname of the winner of the game, or {@code null} if no winner has been declared yet.
+	 */
+	public String getWinner() {
+		if (!lastRound) return null;
+
+		List<Player> playersWithMostTowers = mostTowersBuilt(players.getTurnOrder());
+		if (playersWithMostTowers.size() == 1)
+			return playersWithMostTowers.get(0).getNickname();
+
+		List<Player> playersWithMostProfessors = mostProfessorsOwned(playersWithMostTowers);
+		if (playersWithMostProfessors.size() == 1)
+			return playersWithMostProfessors.get(0).getNickname();
+		else
+			return constants.getTie();
+	}
+
+	private String gameOver() {
+		for (Player player : players.getTurnOrder())
+			if (player.getTowerNumber() == 0) {
+				lastRound = true;
+				return player.getNickname();
+			}
+
+		if (board.getIslandNumber() <= 3) {
+			lastRound = true;
+			return getWinner();
+		}
+
+		return null;
+	}
+
+	private boolean lastRound() {
+		for (Player player : players.getTurnOrder())
+			if (player.getDeck().isEmpty()) {
+				lastRound = true;
+				return true;
+			}
+
+		lastRound = board.getBag().isEmpty();
+		return board.getBag().isEmpty();
 	}
 
 	private GameConstants loadConstants(int numPlayers) {
@@ -341,5 +407,41 @@ public class GameManager {
 		} catch (IslandNotFoundException e) {
 			return null;
 		}
+	}
+
+	private List<Player> mostTowersBuilt(List<Player> candidates) {
+		List<Player> potentialWinners = new ArrayList<>();
+		potentialWinners.add(candidates.get(0));
+		int minTowersLeft = candidates.get(0).getTowerNumber();
+
+		for (Player player : candidates) {
+			int numTowersLeft = player.getTowerNumber();
+			if (numTowersLeft < minTowersLeft) {
+				minTowersLeft = numTowersLeft;
+				potentialWinners.clear();
+				potentialWinners.add(player);
+			} else if (numTowersLeft == minTowersLeft)
+				potentialWinners.add(player);
+		}
+
+		return potentialWinners;
+	}
+
+	private List<Player> mostProfessorsOwned(List<Player> candidates) {
+		List<Player> potentialWinners = new ArrayList<>();
+		potentialWinners.add(candidates.get(0));
+		int maxProfessors = professors.getProfessors(candidates.get(0)).size();
+
+		for (Player player : candidates) {
+			int playerProfessors = professors.getProfessors(player).size();
+			if (playerProfessors < maxProfessors) {
+				maxProfessors = playerProfessors;
+				potentialWinners.clear();
+				potentialWinners.add(player);
+			} else if (playerProfessors == maxProfessors)
+				potentialWinners.add(player);
+		}
+
+		return potentialWinners;
 	}
 }

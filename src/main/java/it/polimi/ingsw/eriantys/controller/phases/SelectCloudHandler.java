@@ -19,7 +19,7 @@ public class SelectCloudHandler implements MessageHandler {
 		this.game = game;
 
 		try {
-			this.game.sendUpdate(new BoardUpdate());
+			this.game.sendBoardUpdate();
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);

@@ -73,7 +73,8 @@ public class Game {
 
 	public void newRound() {
 		try {
-			gameManager.setupRound();
+			// TODO do something with this
+			boolean lastRound = gameManager.setupRound();
 		} catch (InvalidArgumentException | NoMovementException e) {
 			e.printStackTrace();
 		}
@@ -82,7 +83,8 @@ public class Game {
 	}
 
 	public void newTurn(Map<String, String> playedCards) {
-		gameManager.handleAssistantCards(playedCards);
+		// TODO do something with this
+		boolean lastRound = gameManager.handleAssistantCards(playedCards);
 		players = gameManager.getTurnOrder();
 		currentPlayer = 0;
 		messageHandler = new MoveStudentHandler(this);
@@ -138,8 +140,8 @@ public class Game {
 		return gameManager.constants.getCloudSize();
 	}
 
-	public void moveMotherNature(String destination) throws InvalidArgumentException, IslandNotFoundException {
-		gameManager.handleMotherNatureMovement(destination);
+	public String moveMotherNature(String destination) throws InvalidArgumentException, IslandNotFoundException {
+		return gameManager.handleMotherNatureMovement(destination);
 	}
 
 	public void selectCloud(String sender, int cloud) throws InvalidArgumentException, NoMovementException {
@@ -148,7 +150,8 @@ public class Game {
 
 	public void playCharacterCard(int card, JsonObject params)
 			throws InvalidArgumentException, ItemNotAvailableException, DuplicateNoEntryTileException, NoMovementException {
-		gameManager.handleCharacterCard(card, params);
+		// TODO do something with this
+		boolean lastRound = gameManager.handleCharacterCard(card, params);
 	}
 
 	public void handleMessage(GameMessage message) throws NoConnectionException {
@@ -183,6 +186,16 @@ public class Game {
 		broadcast(message);
 	}
 
+	public void sendBoardUpdate() throws NoConnectionException {
+		sendUpdate(new BoardUpdate());
+	}
+
+	public void sendHelp(HelpRequest helpRequest) throws NoConnectionException {
+		String sender = helpRequest.getSender();
+		ClientConnection connection = server.getConnection(sender);
+		connection.write(new HelpResponse(messageHandler.getHelp()));
+	}
+
 	private void broadcast(Message message) throws NoConnectionException {
 		for (String player : players) {
 			ClientConnection c = server.getConnection(player);
@@ -193,11 +206,5 @@ public class Game {
 	private void setGameManager() {
 		if (gameManager == null)
 			gameManager = new GameManager(players, getInfo().isExpertMode());
-	}
-
-	public void sendHelp(HelpRequest helpRequest) throws NoConnectionException {
-		String sender = helpRequest.getSender();
-		ClientConnection connection = server.getConnection(sender);
-		connection.write(new HelpResponse(messageHandler.getHelp()));
 	}
 }

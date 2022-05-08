@@ -81,6 +81,10 @@ public class Board {
 		return islands.get(index);
 	}
 
+	public int getIslandNumber() {
+		return islands.size();
+	}
+
 	/**
 	 * Returns the {@link IslandGroup} where Mother Nature is currently located, or {@code null} if Mother Nature has not
 	 * been deployed yet.

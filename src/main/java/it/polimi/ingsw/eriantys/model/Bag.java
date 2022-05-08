@@ -36,6 +36,10 @@ public class Bag extends StudentContainer {
 		return colors;
 	}
 
+	public boolean isEmpty() {
+		return super.empty();
+	}
+
 	/**
 	 * Returns the remaining capacity of the container for the specified {@link Color}, an integer between 0 and
 	 * {@link Bag#MAX_STUDENTS_PER_COLOR}, or {@code -1} if {@code color} is {@code null}.

@@ -97,6 +97,18 @@ public class Player {
 		return schoolBoard.getDiningRoom();
 	}
 
+	public boolean getTower() {
+		return schoolBoard.getTower();
+	}
+
+	public boolean putTower() {
+		return schoolBoard.putTower();
+	}
+
+	public int getTowerNumber() {
+		return schoolBoard.getTowerNumber();
+	}
+
 	/**
 	 * A getter for the number of allowed Mother Nature's movements for a {@code Player}'s object during the current turn.
 	 * @return the internal state for the number of allowed Mother Nature's movements of a {@code Player}

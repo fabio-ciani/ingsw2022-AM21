@@ -4,6 +4,7 @@ import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.MotherNatureDestination;
 import it.polimi.ingsw.eriantys.messages.server.BoardUpdate;
+import it.polimi.ingsw.eriantys.messages.server.GameOverUpdate;
 import it.polimi.ingsw.eriantys.model.exceptions.*;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
@@ -17,7 +18,7 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 		super(game);
 
 		try {
-			this.game.sendUpdate(new BoardUpdate());
+			this.game.sendBoardUpdate();
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);
@@ -33,9 +34,10 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 
 	private void process(MotherNatureDestination message) throws NoConnectionException {
 		String destination = message.getDestination();
+		String winner;
 
 		try {
-			game.moveMotherNature(destination);
+			winner = game.moveMotherNature(destination);
 		} catch (InvalidArgumentException e) {
 			game.refuseRequest(message, "Invalid argument");
 			return;
@@ -45,6 +47,10 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 		}
 
 		game.acceptRequest(message);
-		game.receiveCloudSelection();
+
+		if (winner != null && !winner.isEmpty())
+			game.sendUpdate(new GameOverUpdate(winner));
+		else
+			game.receiveCloudSelection();
 	}
 }

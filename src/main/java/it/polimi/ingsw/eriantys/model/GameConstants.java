@@ -2,15 +2,21 @@ package it.polimi.ingsw.eriantys.model;
 
 public class GameConstants {
 	private final String diningRoom;
+	private final String tie;
 	private final GameConfig gameConfig;
 
 	private GameConstants() {
 		diningRoom = null;
+		tie = null;
 		gameConfig = new GameConfig();
 	}
 
 	public String getDiningRoom() {
 		return diningRoom;
+	}
+
+	public String getTie() {
+		return tie;
 	}
 
 	public int getCloudSize() {

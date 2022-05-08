@@ -278,4 +278,12 @@ public class StudentContainer {
 		for (Color color : Color.values())
 			students.put(color, MAX_STUDENTS_PER_COLOR);
 	}
+
+	protected boolean empty() {
+		for (Color color : Color.values())
+			if (students.get(color) != null && students.get(color) > 0)
+				return false;
+
+		return true;
+	}
 }

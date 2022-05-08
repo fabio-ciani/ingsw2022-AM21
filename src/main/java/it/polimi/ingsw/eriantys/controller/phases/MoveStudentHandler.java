@@ -19,7 +19,7 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 		this.movementCount = 0;
 
 		try {
-			this.game.sendUpdate(new BoardUpdate());
+			this.game.sendBoardUpdate();
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);
@@ -55,6 +55,6 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 
 	private void checkStateTransition() throws NoConnectionException {
 		if (movementCount == game.getCloudSize())	game.receiveMotherNatureMovement();
-		else game.sendUpdate(new BoardUpdate());
+		else game.sendBoardUpdate();
 	}
 }

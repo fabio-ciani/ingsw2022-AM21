@@ -85,4 +85,8 @@ public class SchoolBoard {
 		towers++;
 		return true;
 	}
+
+	public int getTowerNumber() {
+		return towers;
+	}
 }

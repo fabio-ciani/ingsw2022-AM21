@@ -43,4 +43,9 @@ public interface CharacterCard {
 	 * It should be called at the end of the turn.
 	 */
 	void cancelEffect() throws InvalidArgumentException;
+
+	// TODO: Is this allowed? + How to split PascalCase into separate words? (needed to handle characters.json correctly)
+	default String getName() {
+		return this.getClass().getSimpleName();
+	}
 }

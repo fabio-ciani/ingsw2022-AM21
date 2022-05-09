@@ -77,7 +77,7 @@ public class Board {
 		int index = getIslandIndex(id);
 
 		if (index == -1)
-			throw new IslandNotFoundException("Requested: " + id + ".");  // this should not happen
+			throw new IslandNotFoundException("Requested: " + id + ".");	// this should not happen
 		return islands.get(index);
 	}
 
@@ -142,10 +142,10 @@ public class Board {
 	 */
 	public void drawStudents(int cloudIndex, Player recipient) throws InvalidArgumentException, NoMovementException {
 		if (recipient == null)
-			throw new InvalidArgumentException("recipient argument is null");  // this should not happen
+			throw new InvalidArgumentException("recipient argument is null");	// this should not happen
 
 		if (cloudIndex < 0 || cloudIndex >= cloudTiles.length)
-			throw new InvalidArgumentException("cloudIndex argument is out of bounds.");  // this should not happen
+			throw new InvalidArgumentException("cloudIndex argument is out of bounds.");	// this should not happen
 
 		StudentContainer cloud = cloudTiles[cloudIndex];
 
@@ -206,11 +206,11 @@ public class Board {
 	 */
 	public void unifyIslands(IslandGroup target) throws IslandNotFoundException, InvalidArgumentException {
 		if (target == null)
-			throw new InvalidArgumentException("target argument is null.");  // this should not happen
+			throw new InvalidArgumentException("target argument is null.");	// this should not happen
 
 		int targetIndex = islands.indexOf(target);
 		if (targetIndex == -1)
-			throw new IslandNotFoundException("Requested id: " + target.getId() + "."); // this should not happen
+			throw new IslandNotFoundException("Requested id: " + target.getId() + ".");	// this should not happen
 
 		IslandGroup prev = islands.get(targetIndex - 1);
 		IslandGroup next = islands.get(targetIndex + 1);
@@ -230,6 +230,26 @@ public class Board {
 			islands.add(startIndex, newIslandNext);
 		else
 			islands.add(startIndex, newIslandPrev);
+	}
+
+	// TODO: documentation + tests
+	public List<String> getIslandsRepresentation() {
+		List<String> rep = new ArrayList<>();
+
+		for (IslandGroup i : islands)
+			rep.add(i.getId());
+
+		return rep;
+	}
+
+	// TODO: documentation + tests
+	public Map<String, Map<String, Integer>> getCloudTiles() {
+		Map<String, Map<String, Integer>> rep = new LinkedHashMap<>();
+
+		for (int i = 0; i < cloudTiles.length; i++)
+			rep.put(Integer.toString(i), cloudTiles[i].getRepresentation());
+
+		return rep;
 	}
 
 	/**

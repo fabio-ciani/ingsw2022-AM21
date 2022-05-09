@@ -219,6 +219,17 @@ public class StudentContainer {
 		that.students.put(thisColor, that.students.get(thisColor) + 1);
 	}
 
+	// TODO: documentation + tests
+	public Map<String, Integer> getRepresentation() {
+		Map<String, Integer> rep = new LinkedHashMap<>();
+
+		List<String> colorLiterals = Arrays.stream(Color.values()).map(Color::toString).toList();
+		for (String c : colorLiterals)
+			rep.put(c, students.get(Color.valueOf(c)));
+
+		return rep;
+	}
+
 	/**
 	 * Returns a random {@link Color} such that {@code this} contains students of that color and {@code destination} has
 	 * the capacity to contain more, or {@code null} if no such color can be found.

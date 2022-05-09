@@ -132,6 +132,16 @@ public class IslandGroup extends StudentContainer {
 		return noEntryTiles.pop();
 	}
 
+	// TODO: documentation + tests
+	public Integer getSize() {
+		return islandIds.size();
+	}
+
+	// TODO: documentation + tests
+	public Integer getNoEntryTiles() {
+		return noEntryTiles.size();
+	}
+
 	/**
 	 * Returns a list of the {@code id}s of the single islands making up this {@link IslandGroup}.
 	 * @return a list of the {@code id}s of the single islands making up this {@link IslandGroup}.

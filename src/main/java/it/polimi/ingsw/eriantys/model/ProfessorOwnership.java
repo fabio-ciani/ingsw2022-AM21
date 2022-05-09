@@ -73,4 +73,9 @@ public class ProfessorOwnership {
 			}
 		}
 	}
+
+	// TODO: documentation + tests
+	public Player getOwnership(Color c) {
+		return ownerships.get(c);
+	}
 }

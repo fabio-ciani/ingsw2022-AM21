@@ -339,6 +339,132 @@ public class GameManager {
 			return constants.getTie();
 	}
 
+	// TODO: documentation + tests
+	public Map<String, Integer> entranceRepresentation(String username) {
+		Player p = players.get(username);
+		StudentContainer entrance = p.getEntrance();
+
+		return entrance.getRepresentation();
+	}
+
+	// TODO: documentation + tests
+	public Map<String, Integer> diningRoomRepresentation(String username) {
+		Player p = players.get(username);
+		StudentContainer diningRoom = p.getDiningRoom();
+
+		return diningRoom.getRepresentation();
+	}
+
+	// TODO: documentation + tests
+	public Integer towersRepresentation(String username) {
+		return players.get(username).getTowerNumber();
+	}
+
+	// TODO: documentation + tests
+	public Integer coinsRepresentation(String username) {
+		return players.get(username).getCoins();
+	}
+
+	// TODO: documentation + tests
+	public List<String> islandsRepresentation() {
+		return board.getIslandsRepresentation();
+	}
+
+	// TODO: documentation + tests
+	public Integer islandSizeRepresentation(String isle) {
+		Integer rep = null;
+		IslandGroup island = null;
+
+		try {
+			island = board.getIsland(isle);
+			rep = island.getSize();
+		} catch (IslandNotFoundException e) {
+			// TODO: handle exception (?) + catch NullPointerException on rep?
+			e.printStackTrace();
+		}
+
+		return rep;
+	}
+
+	// TODO: documentation + tests
+	public Map<String, Integer> islandStudentsRepresentation(String isle) {
+		Map<String, Integer> rep = new LinkedHashMap<>();
+		IslandGroup island = null;
+
+		try {
+			island = board.getIsland(isle);
+			rep = island.getRepresentation();
+		} catch (IslandNotFoundException e) {
+			// TODO: handle exception (?) + catch NullPointerException on rep?
+			e.printStackTrace();
+		}
+
+		return rep;
+	}
+
+	// TODO: documentation + tests
+	public String islandControllerRepresentation(String isle) {
+		String rep = null;
+		IslandGroup island = null;
+
+		try {
+			island = board.getIsland(isle);
+			rep = island.getController().getNickname();
+		} catch (IslandNotFoundException e) {
+			// TODO: handle exception (?) + catch NullPointerException on rep?
+			e.printStackTrace();
+		}
+
+		return rep;
+	}
+
+	// TODO: documentation + tests
+	public String motherNatureIslandRepresentation() {
+		return board.getMotherNatureIsland().getId();	// TODO: check NullPointerException (?)
+	}
+
+	// TODO: documentation + tests
+	public Integer islandNoEntryTilesRepresentation(String isle) {
+		Integer rep = null;
+		IslandGroup island = null;
+
+		try {
+			island = board.getIsland(isle);
+			rep = island.getNoEntryTiles();
+		} catch (IslandNotFoundException e) {
+			// TODO: handle exception (?) + catch NullPointerException on rep?
+			e.printStackTrace();
+		}
+
+		return rep;
+	}
+
+	// TODO: documentation + tests
+	public Map<String, Map<String, Integer>> cloudTilesRepresentation() {
+		return board.getCloudTiles();
+	}
+
+	// TODO: documentation + tests
+	public Map<String, String> professorsRepresentation() {
+		Map<String, String> rep = new LinkedHashMap<>();
+		Player p = null;
+
+		for (Color c : Color.values()) {
+			p = professors.getOwnership(c);
+			if (p != null)
+				rep.put(c.toString(), p.getNickname());
+			else
+				rep.put(c.toString(), null);
+		}
+
+		return rep;
+	}
+
+	// TODO: documentation + tests
+	public List<String> charactersRepresentation() {
+		return Arrays.stream(characters).map(CharacterCard::getName).toList();
+	}
+
 	private boolean gameOver() {
 		for (Player player : players.getTurnOrder())
 			if (player.getTowerNumber() == 0) {

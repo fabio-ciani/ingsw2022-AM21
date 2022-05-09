@@ -34,10 +34,10 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 
 	private void process(MotherNatureDestination message) throws NoConnectionException {
 		String destination = message.getDestination();
-		String winner;
+		boolean gameOver;
 
 		try {
-			winner = game.moveMotherNature(destination);
+			gameOver = game.moveMotherNature(destination);
 		} catch (InvalidArgumentException e) {
 			game.refuseRequest(message, "Invalid argument");
 			return;
@@ -48,9 +48,7 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 
 		game.acceptRequest(message);
 
-		if (winner != null && !winner.isEmpty())
-			game.sendUpdate(new GameOverUpdate(winner));
-		else
-			game.receiveCloudSelection();
+		if (gameOver) game.gameOver();
+		else game.receiveCloudSelection();
 	}
 }

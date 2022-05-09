@@ -21,6 +21,7 @@ public class Game {
 	private final Server server;
 	private final GameInfo info;
 	private boolean started = false;
+	private boolean lastRound = false;
 	private List<String> players;
 	private int currentPlayer;
 	private Map<String, List<String>> availableAssistantCards;
@@ -103,10 +104,11 @@ public class Game {
 	/**
 	 * Advances to the next round of the game.
 	 */
-	public void newRound() {
+	public void newRound() throws NoConnectionException {
+		if (lastRound) gameOver();
 		try {
-			// TODO do something with this
-			boolean lastRound = gameManager.setupRound();
+			lastRound = gameManager.setupRound();
+			if (lastRound) broadcast(new LastRoundUpdate());
 		} catch (InvalidArgumentException | NoMovementException e) {
 			e.printStackTrace();
 		}
@@ -118,9 +120,9 @@ public class Game {
 	 * Handles the assistant cards played by the players and sets up the new order of the players.
 	 * @param playedCards the assistant card played by each player.
 	 */
-	public void newTurn(Map<String, String> playedCards) {
-		// TODO do something with this
-		boolean lastRound = gameManager.handleAssistantCards(playedCards);
+	public void newTurn(Map<String, String> playedCards) throws NoConnectionException {
+		lastRound = gameManager.handleAssistantCards(playedCards);
+		if (lastRound) broadcast(new LastRoundUpdate());
 		players = gameManager.getTurnOrder();
 		currentPlayer = 0;
 		messageHandler = new MoveStudentHandler(this);
@@ -130,7 +132,7 @@ public class Game {
 	/**
 	 * Advances to the next player's turn in the current round.
 	 */
-	public void advanceTurn() {
+	public void advanceTurn() throws NoConnectionException {
 		nextPlayer();
 		if (currentPlayer == 0)
 			newRound();
@@ -229,7 +231,7 @@ public class Game {
 		return gameManager.constants.getCloudSize();
 	}
 
-	public String moveMotherNature(String destination) throws InvalidArgumentException, IslandNotFoundException {
+	public boolean moveMotherNature(String destination) throws InvalidArgumentException, IslandNotFoundException {
 		return gameManager.handleMotherNatureMovement(destination);
 	}
 
@@ -238,9 +240,10 @@ public class Game {
 	}
 
 	public void playCharacterCard(int card, JsonObject params)
-			throws InvalidArgumentException, ItemNotAvailableException, DuplicateNoEntryTileException, NoMovementException {
-		// TODO do something with this
-		boolean lastRound = gameManager.handleCharacterCard(card, params);
+			throws InvalidArgumentException, ItemNotAvailableException, DuplicateNoEntryTileException, NoMovementException,
+			NoConnectionException {
+		lastRound = gameManager.handleCharacterCard(card, params);
+		if (lastRound) broadcast(new LastRoundUpdate());
 	}
 
 	public void handleMessage(GameMessage message) throws NoConnectionException {
@@ -283,6 +286,13 @@ public class Game {
 		String sender = helpRequest.getSender();
 		ClientConnection connection = server.getConnection(sender);
 		connection.write(new HelpResponse(messageHandler.getHelp()));
+	}
+
+	public void gameOver() throws NoConnectionException {
+		sendUpdate(new GameOverUpdate(gameManager.getWinner()));
+		for (String player : players)
+			server.getConnection(player).setGame(null);
+		server.gameOver(this);
 	}
 
 	private void broadcast(Message message) throws NoConnectionException {

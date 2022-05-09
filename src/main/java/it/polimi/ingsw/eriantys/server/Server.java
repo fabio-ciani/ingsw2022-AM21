@@ -187,4 +187,8 @@ public class Server extends Thread {
 		ClientConnection connection = getConnection(helpRequest.getSender());
 		connection.write(response);
 	}
+
+	public void gameOver(Game game) {
+		gameById.remove(game.getInfo().getGameId(), game);
+	}
 }

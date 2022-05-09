@@ -23,7 +23,7 @@ public abstract class PlayCharacterCardHandler implements MessageHandler {
 
 	@Override
 	public void handle(GameMessage m) throws NoConnectionException {
-		if (m instanceof PlayCharacterCard playCharacterCard)
+		if (game.getInfo().isExpertMode() && m instanceof PlayCharacterCard playCharacterCard)
 			process(playCharacterCard);
 		else
 			game.refuseRequest(m, "Unexpected message");

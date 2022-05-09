@@ -21,6 +21,7 @@ public class GameManager {
 	private final ProfessorOwnership professors;
 	private InfluenceCalculator calc;
 	private final CharacterCard[] characters;
+	private final boolean expertMode;
 	private boolean lastRound;
 
 	public final GameConstants constants;
@@ -40,6 +41,7 @@ public class GameManager {
 		calc = new CommonInfluence();
 		lastRound = false;
 
+		this.expertMode = expertMode;
 		if (expertMode) {
 			characters = new CharacterCard[3];
 			initCharacterCards();
@@ -182,7 +184,7 @@ public class GameManager {
 		try {
 			if (destination.equals(constants.getDiningRoom())) {
 				entrance.moveTo(diningRoom, student);
-				if (player.checkForCoins(student))
+				if (expertMode && player.checkForCoins(student))
 					player.updateCoins(1);
 			} else {
 				IslandGroup island = board.getIsland(destination);
@@ -195,16 +197,14 @@ public class GameManager {
 	}
 
 	/**
-	 * Moves the Mother Nature pawn to the specified destination island, then resolves that island. Returns the
-	 * nickname of the winner of the game, if a winner is declared as a result of Mother Nature's movement, or
-	 * {@code null} otherwise.
+	 * Moves the Mother Nature pawn to the specified destination island, then resolves that island. Returns {@code true}
+	 * if and only if the game ends as a result of Mother Nature's movement.
 	 * @param islandDestination the destination {@link IslandGroup}.
 	 * @throws IslandNotFoundException if no island matching the specified id can be found.
 	 * @throws InvalidArgumentException if an error occurs while resolving the destination island.
-	 * @return the nickname of the winner of the game, if a winner is declared as a result of Mother Nature's movement, or
-	 * {@code null} otherwise.
+	 * @return {@code true} if and only if the game ends as a result of Mother Nature's movement.
 	 */
-	public String handleMotherNatureMovement(String islandDestination)
+	public boolean handleMotherNatureMovement(String islandDestination)
 			throws IslandNotFoundException, InvalidArgumentException {
 		IslandGroup destination = tryGetIsland(islandDestination);
 
@@ -339,19 +339,19 @@ public class GameManager {
 			return constants.getTie();
 	}
 
-	private String gameOver() {
+	private boolean gameOver() {
 		for (Player player : players.getTurnOrder())
 			if (player.getTowerNumber() == 0) {
 				lastRound = true;
-				return player.getNickname();
+				return true;
 			}
 
 		if (board.getIslandNumber() <= 3) {
 			lastRound = true;
-			return getWinner();
+			return true;
 		}
 
-		return null;
+		return false;
 	}
 
 	private boolean lastRound() {

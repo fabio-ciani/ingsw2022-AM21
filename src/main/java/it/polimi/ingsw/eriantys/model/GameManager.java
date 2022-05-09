@@ -138,11 +138,11 @@ public class GameManager {
 
 		for (String username : playedCards.keySet()) {
 			Player p = players.get(username);
-			AssistantCard playedCard = AssistantCard.valueOf(playedCards.get(username));
-			p.playAssistantCard(playedCard);
-			if (minPlayer == null || playedCard.value() < minCard.value()) {
+			AssistantCard card = AssistantCard.valueOf(playedCards.get(username));
+			p.playAssistantCard(card);
+			if (minPlayer == null || card.value() < minCard.value()) {
 				minPlayer = p;
-				minCard = playedCard;
+				minCard = card;
 			}
 		}
 

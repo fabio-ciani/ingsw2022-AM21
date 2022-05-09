@@ -44,7 +44,7 @@ class PlayerTest {
 		Player p = new Player("admin");
 
 		assertDoesNotThrow(() -> p.setMotherNatureMovements(3));
-		assertSame(p.getMotherNatureMovements(), 3);
+		assertSame(3, p.getMotherNatureMovements());
 	}
 
 	@Test
@@ -75,7 +75,7 @@ class PlayerTest {
 		assertSame(p.getCoins(), 1 + 7);
 
 		p.updateCoins(-5);
-		assertSame(p.getCoins(), 3);
+		assertSame(3, p.getCoins());
 	}
 
 	@Test

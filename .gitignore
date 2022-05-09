@@ -1,5 +1,6 @@
 # Compiled source #
 *.class
+target/
 
 # IDE files #
 .idea/

@@ -3,9 +3,9 @@ package it.polimi.ingsw.eriantys.controller.phases;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.SelectCloud;
-import it.polimi.ingsw.eriantys.messages.server.BoardUpdate;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
+import it.polimi.ingsw.eriantys.server.HelpContent;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
 /**
@@ -13,13 +13,13 @@ import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
  * defines how the action phase message {@link SelectCloud} should be processed.
  */
 public class SelectCloudHandler implements MessageHandler {
-	private final Game game;
+	private final Game g;
 
-	public SelectCloudHandler(Game game) {
-		this.game = game;
+	public SelectCloudHandler(Game g) {
+		this.g = g;
 
 		try {
-			this.game.sendBoardUpdate();
+			this.g.sendBoardUpdate();
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);
@@ -31,7 +31,12 @@ public class SelectCloudHandler implements MessageHandler {
 		if (m instanceof SelectCloud selectCloud)
 			process(selectCloud);
 		else
-			game.refuseRequest(m, "Unexpected message");
+			g.refuseRequest(m, "Unexpected message");
+	}
+
+	@Override
+	public String getHelp() {
+		return HelpContent.IN_GAME.getContent();
 	}
 
 	private void process(SelectCloud message) throws NoConnectionException {
@@ -39,16 +44,16 @@ public class SelectCloudHandler implements MessageHandler {
 		int cloud = message.getCloud();
 
 		try {
-			game.selectCloud(sender, cloud);
+			g.selectCloud(sender, cloud);
 		} catch (InvalidArgumentException e) {
-			game.refuseRequest(message, "Nonexistent cloud: " + cloud);
+			g.refuseRequest(message, "Nonexistent cloud: " + cloud);
 			return;
 		} catch (NoMovementException e) {
-			game.refuseRequest(message, "Error");
+			g.refuseRequest(message, "Error");
 			return;
 		}
 
-		game.acceptRequest(message);
-		game.advanceTurn();
+		g.acceptRequest(message);
+		g.advanceTurn();
 	}
 }

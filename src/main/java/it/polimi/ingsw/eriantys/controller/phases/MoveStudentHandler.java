@@ -3,7 +3,6 @@ package it.polimi.ingsw.eriantys.controller.phases;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.MoveStudent;
-import it.polimi.ingsw.eriantys.messages.server.BoardUpdate;
 import it.polimi.ingsw.eriantys.model.exceptions.*;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
@@ -14,12 +13,12 @@ import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 public class MoveStudentHandler extends PlayCharacterCardHandler {
 	private int movementCount;
 
-	public MoveStudentHandler(Game game) {
-		super(game);
+	public MoveStudentHandler(Game g) {
+		super(g);
 		this.movementCount = 0;
 
 		try {
-			this.game.sendBoardUpdate();
+			this.g.sendBoardUpdate();
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);
@@ -33,28 +32,33 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 		else super.handle(m);
 	}
 
+	@Override
+	public String getHelp() {
+		return super.getHelp();
+	}
+
 	private void process(MoveStudent message) throws NoConnectionException {
 		String sender = message.getSender();
 		String color = message.getColor();
 		String destination = message.getDestination();
 
 		try {
-			game.moveStudent(sender, color, destination);
+			g.moveStudent(sender, color, destination);
 		} catch (NoMovementException e) {
-			game.refuseRequest(message, "Invalid movement");
+			g.refuseRequest(message, "Invalid movement");
 			return;
 		} catch (IslandNotFoundException e) {
-			game.refuseRequest(message, "Island not found: " + destination);
+			g.refuseRequest(message, "Island not found: " + destination);
 			return;
 		}
 
-		game.acceptRequest(message);
+		g.acceptRequest(message);
 		movementCount++;
 		checkStateTransition();
 	}
 
 	private void checkStateTransition() throws NoConnectionException {
-		if (movementCount == game.getCloudSize())	game.receiveMotherNatureMovement();
-		else game.sendBoardUpdate();
+		if (movementCount == g.getCloudSize())	g.receiveMotherNatureMovement();
+		else g.sendBoardUpdate();
 	}
 }

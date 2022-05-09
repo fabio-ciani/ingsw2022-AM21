@@ -10,9 +10,9 @@ public class GameInfo implements Serializable {
 
 	public GameInfo(int gameId, String creator, int lobbySize, boolean expertMode) {
 		this.gameId = gameId;
+		this.creator = creator;
 		this.lobbySize = lobbySize;
 		this.expertMode = expertMode;
-		this.creator = creator;
 	}
 
 	public int getGameId() {

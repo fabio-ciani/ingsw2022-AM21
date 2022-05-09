@@ -7,26 +7,27 @@ import it.polimi.ingsw.eriantys.messages.server.UserSelectionUpdate;
 import it.polimi.ingsw.eriantys.model.TowerColor;
 import it.polimi.ingsw.eriantys.model.Wizard;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
+import it.polimi.ingsw.eriantys.server.HelpContent;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
 import java.util.*;
 
 public class GameSetupHandler implements MessageHandler {
-	private final Game game;
+	private final Game g;
 	private final Map<String, String> towerColors;
 	private final Map<String, String> wizards;
 	private final List<String> availableTowerColors;
 	private final List<String> availableWizards;
 
-	public GameSetupHandler(Game game) {
-		this.game = game;
+	public GameSetupHandler(Game g) {
+		this.g = g;
 		this.towerColors = new HashMap<>();
 		this.wizards = new HashMap<>();
 		this.availableTowerColors = new ArrayList<>(TowerColor.stringLiterals());
 		this.availableWizards = new ArrayList<>(Wizard.stringLiterals());
 
 		try {
-			this.game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards));
+			this.g.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards));
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);
@@ -38,7 +39,12 @@ public class GameSetupHandler implements MessageHandler {
 		if (m instanceof GameSetupSelection gameSetupSelection)
 			process(gameSetupSelection);
 		else
-			game.refuseRequest(m, "Unexpected message");
+			g.refuseRequest(m, "Unexpected message");
+	}
+
+	@Override
+	public String getHelp() {
+		return HelpContent.GAME_SETUP.getContent();
 	}
 
 	private void process(GameSetupSelection message) throws NoConnectionException {
@@ -47,16 +53,16 @@ public class GameSetupHandler implements MessageHandler {
 		String wizard = message.getWizard();
 
 		if (towerColors.containsKey(sender) || wizards.containsKey(sender))
-			game.refuseRequest(message, "Already completed game setup");
+			g.refuseRequest(message, "Already completed game setup");
 		else if (!availableTowerColors.contains(towerColor))
-			game.refuseRequest(message, "Unavailable tower color: " + towerColor);
+			g.refuseRequest(message, "Unavailable tower color: " + towerColor);
 		else if (!availableWizards.contains(wizard))
-			game.refuseRequest(message, "Unavailable wizard: " + wizard);
+			g.refuseRequest(message, "Unavailable wizard: " + wizard);
 		else {
 			try {
-				game.setupPlayer(sender, towerColor, wizard);
+				g.setupPlayer(sender, towerColor, wizard);
 			} catch (InvalidArgumentException e) {
-				game.refuseRequest(message, e.getMessage());
+				g.refuseRequest(message, e.getMessage());
 				return;
 			}
 
@@ -65,18 +71,18 @@ public class GameSetupHandler implements MessageHandler {
 			availableTowerColors.remove(towerColor);
 			availableWizards.remove(wizard);
 			System.out.println("Confirmed: tower color " + towerColor + ", wizard " + wizard);
-			game.acceptRequest(message);
+			g.acceptRequest(message);
 
-			game.nextPlayer();
+			g.nextPlayer();
 			checkStateTransition();
 		}
 	}
 
 	private void checkStateTransition() throws NoConnectionException {
-		int numPlayers = game.getInfo().getLobbySize();
+		int numPlayers = g.getInfo().getLobbySize();
 		if (towerColors.keySet().size() == numPlayers || wizards.keySet().size() == numPlayers)
-			game.start();
+			g.start();
 		else
-			game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards));
+			g.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards));
 	}
 }

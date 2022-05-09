@@ -35,6 +35,7 @@ public class Server extends Thread {
 
 	public Server(int port) {
 		this.port = port;
+		this.running = true;
 		this.gameById = new HashMap<>();
 		this.connectionByUsername = new HashMap<>();
 		this.nextGameId = 0;
@@ -50,11 +51,16 @@ public class Server extends Thread {
 				ClientConnection connection = new ClientConnection(this, socketToClient);
 				System.out.println("Client connected at " + socketToClient.getRemoteSocketAddress());
 				new Thread(connection::read).start();
+				new Thread(connection::ping).start();
 			}
 		} catch (IOException e) {
 			// TODO: 02/05/2022 Handle exception
 			throw new RuntimeException(e);
 		}
+	}
+
+	public synchronized void setRunning(boolean running) {
+		this.running = running;
 	}
 
 	public synchronized void connect(String username, ClientConnection connection) {
@@ -183,8 +189,8 @@ public class Server extends Thread {
 	}
 
 	public void sendHelp(HelpRequest helpRequest) throws NoConnectionException {
-		Message response = new HelpResponse(HelpContents.OUT_OF_LOBBY.getContent());
-		ClientConnection connection = getConnection(helpRequest.getSender());
-		connection.write(response);
+		String sender = helpRequest.getSender();
+		ClientConnection connection = getConnection(sender);
+		connection.write(new HelpResponse(HelpContent.NO_GAME.getContent()));
 	}
 }

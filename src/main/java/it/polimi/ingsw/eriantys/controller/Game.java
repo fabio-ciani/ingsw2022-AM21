@@ -231,14 +231,39 @@ public class Game {
 		return gameManager.constants.getCloudSize();
 	}
 
+	/**
+	 * Handles Mother Nature's movement to the specified destination.
+	 * @param destination the destination of the movement, which could be an island or the player's dining room.
+	 * @return {@code true} if and only if the game ends as a result of Mother Nature's movement.
+	 * @throws InvalidArgumentException if an error occurs while resolving the destination island.
+	 * @throws IslandNotFoundException if no island matching the specified id can be found.
+	 */
 	public boolean moveMotherNature(String destination) throws InvalidArgumentException, IslandNotFoundException {
 		return gameManager.handleMotherNatureMovement(destination);
 	}
 
+	/**
+	 * Handles the choice of a cloud tile from which the player takes new student discs.
+	 * @param sender the username of the player performing this action.
+	 * @param cloud the index of the chosen cloud tile.
+	 * @throws InvalidArgumentException if there is an error while retrieving the player, or if the {@code cloud} index is
+	 * out of bounds.
+	 * @throws NoMovementException if an error occurs while transferring the students.
+	 */
 	public void selectCloud(String sender, int cloud) throws InvalidArgumentException, NoMovementException {
 		gameManager.handleSelectedCloud(sender, cloud);
 	}
 
+	/**
+	 * Handles the selection of a character card to play.
+	 * @param card the index of the desired character card.
+	 * @param params the parameters for the application of the specified character card's effect.
+	 * @throws InvalidArgumentException if an error has occurred while applying the card's effect.
+	 * @throws ItemNotAvailableException if an error has occurred while removing a No Entry tile from an island.
+	 * @throws DuplicateNoEntryTileException if an error has occurred while placing a No Entry tile on an island.
+	 * @throws NoMovementException if an error has occurred while moving one or more students.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
+	 */
 	public void playCharacterCard(int card, JsonObject params)
 			throws InvalidArgumentException, ItemNotAvailableException, DuplicateNoEntryTileException, NoMovementException,
 			NoConnectionException {
@@ -246,6 +271,11 @@ public class Game {
 		if (lastRound) broadcast(new LastRoundUpdate());
 	}
 
+	/**
+	 * Handles a {@link GameMessage} sent by a client through the current phase's message handler.
+	 * @param message the received message.
+	 * @throws NoConnectionException if no connection can be retrieved for the sender of the message.
+	 */
 	public void handleMessage(GameMessage message) throws NoConnectionException {
 		String sender = message.getSender();
 		if (!players.contains(sender))
@@ -256,6 +286,12 @@ public class Game {
 			messageHandler.handle(message);
 	}
 
+	/**
+	 * Responds to a {@link GameMessage} sent by a client with a {@link Refused} message with the specified detail string.
+	 * @param message the client request to refuse.
+	 * @param details a detail message explaining the reason why the request was refused.
+	 * @throws NoConnectionException if no connection can be retrieved for the sender of the message.
+	 */
 	public void refuseRequest(GameMessage message, String details) throws NoConnectionException {
 		String sender = message.getSender();
 		ClientConnection connection = server.getConnection(sender);
@@ -263,31 +299,58 @@ public class Game {
 		connection.write(new Refused(details));
 	}
 
+	/**
+	 * Responds to a {@link GameMessage} sent by a client with an {@link Accepted} message.
+	 * @param message the client request to accept.
+	 * @throws NoConnectionException if no connection can be retrieved for the sender of the message.
+	 */
 	public void acceptRequest(GameMessage message) throws NoConnectionException {
 		String sender = message.getSender();
 		ClientConnection connection = server.getConnection(sender);
 		connection.write(new Accepted());
 	}
 
+	/**
+	 * Advances the current player to the next player in the current turn order.
+	 */
 	public void nextPlayer() {
 		currentPlayer = (currentPlayer + 1) % players.size();
 	}
 
+	/**
+	 * Sends the specified {@link UserActionUpdate} message to every player.
+	 * @param message the message to be sent to the players.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
+	 */
 	public void sendUpdate(UserActionUpdate message) throws NoConnectionException {
 		message.setNextPlayer(players.get(currentPlayer));
 		broadcast(message);
 	}
 
+	/**
+	 * Sends a {@link BoardUpdate} message to every player.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
+	 * @see Game#sendUpdate(UserActionUpdate)
+	 */
 	public void sendBoardUpdate() throws NoConnectionException {
 		sendUpdate(new BoardUpdate());
 	}
 
+	/**
+	 * Sends a {@link HelpResponse} detailing the possible user actions to the client which sent the {@link HelpRequest}.
+	 * @param helpRequest the help request being handled.
+	 * @throws NoConnectionException if no connection can be retrieved for the sender of the help request.
+	 */
 	public void sendHelp(HelpRequest helpRequest) throws NoConnectionException {
 		String sender = helpRequest.getSender();
 		ClientConnection connection = server.getConnection(sender);
 		connection.write(new HelpResponse(messageHandler.getHelp()));
 	}
 
+	/**
+	 * Ends the game by notifying every player and deleting every reference to {@code this}.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
+	 */
 	public void gameOver() throws NoConnectionException {
 		sendUpdate(new GameOverUpdate(gameManager.getWinner()));
 		for (String player : players)

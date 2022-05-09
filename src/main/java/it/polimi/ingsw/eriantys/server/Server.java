@@ -193,4 +193,8 @@ public class Server extends Thread {
 		ClientConnection connection = getConnection(sender);
 		connection.write(new HelpResponse(HelpContent.NO_GAME.getContent()));
 	}
+
+	public void gameOver(Game game) {
+		gameById.remove(game.getInfo().getGameId(), game);
+	}
 }

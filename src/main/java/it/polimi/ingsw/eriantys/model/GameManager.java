@@ -234,7 +234,7 @@ public class GameManager {
 
 		List<Player> players = this.players.getTurnOrder();
 		Player maxInfluencePlayer = island.getController();
-		int maxInfluence = calc.calculate(maxInfluencePlayer, island, professors.getProfessors(maxInfluencePlayer));
+		int maxInfluence = maxInfluencePlayer == null ? 0 : calc.calculate(maxInfluencePlayer, island, professors.getProfessors(maxInfluencePlayer));
 
 		for (Player player : players) {
 			int influence = calc.calculate(player, island, professors.getProfessors(player));
@@ -244,7 +244,7 @@ public class GameManager {
 			}
 		}
 
-		boolean res = !island.getController().equals(maxInfluencePlayer);
+		boolean res = !Objects.equals(island.getController(), maxInfluencePlayer);
 		island.setController(maxInfluencePlayer);
 		return res;
 	}

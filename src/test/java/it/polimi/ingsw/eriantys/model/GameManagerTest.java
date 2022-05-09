@@ -56,13 +56,13 @@ class GameManagerTest {
 		playedCards.put(Bob.getNickname(), AssistantCard.TURTLE.toString());
 		playedCards.put(Eve.getNickname(), AssistantCard.CHEETAH.toString());
 
-		gm.handleAssistantCards(playedCards);
+		gm.handleAssistantCards(playedCards);	// ignore return statement
 
 		List<String> turnOrder = gm.getTurnOrder();
 
-		assertEquals(turnOrder.get(0), Eve.getNickname());
-		assertEquals(turnOrder.get(1), Alice.getNickname());
-		assertEquals(turnOrder.get(2), Bob.getNickname());
+		assertEquals(Eve.getNickname(), turnOrder.get(0));
+		assertEquals(Alice.getNickname(), turnOrder.get(1));
+		assertEquals(Bob.getNickname(), turnOrder.get(2));
 	}
 
 	@Test

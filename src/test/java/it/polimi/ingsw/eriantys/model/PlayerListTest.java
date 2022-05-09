@@ -31,9 +31,9 @@ class PlayerListTest {
 
 		List<Player> turnOrder = l.getTurnOrder();
 
-		assertEquals(turnOrder.get(0), Alice);
-		assertEquals(turnOrder.get(1), Bob);
-		assertEquals(turnOrder.get(2), Eve);
+		assertEquals(Alice, turnOrder.get(0));
+		assertEquals(Bob, turnOrder.get(1));
+		assertEquals(Eve, turnOrder.get(2));
 	}
 
 	@Test
@@ -42,21 +42,21 @@ class PlayerListTest {
 
 		List<Player> turnOrder = l.getTurnOrder();
 
-		assertEquals(turnOrder.get(0), Eve);
-		assertEquals(turnOrder.get(1), Alice);
-		assertEquals(turnOrder.get(2), Bob);
+		assertEquals(Eve, turnOrder.get(0));
+		assertEquals(Alice, turnOrder.get(1));
+		assertEquals(Bob, turnOrder.get(2));
 	}
 
 	@Test
 	void get_NicknameFound_NormalPostConditions() {
-		Player ans = l.get(new String("Eve"));
+		Player ans = l.get("Eve");
 
 		assertEquals(ans, Eve);
 	}
 
 	@Test
 	void get_NicknameNotFound_ReturnNull() {
-		Player ans = l.get(new String("admin"));
+		Player ans = l.get("admin");
 
 		assertNull(ans);
 	}

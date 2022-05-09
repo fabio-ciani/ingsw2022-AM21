@@ -23,7 +23,6 @@ class HeraldTest {
 
     // TODO: 08/04/2022 Disabled test: error in CommonInfluence
     @Test
-    @Disabled
     void getCost_effectAppliedThreeTimes_CostIncreasedOnlyTheFirstTime() {
         int initialCost = card.getCost();
         IslandGroup island = new IslandGroup("01"); // should be taken from the board
@@ -35,7 +34,6 @@ class HeraldTest {
 
     // TODO: 08/04/2022 Disabled test: error in CommonInfluence
     @Test
-    @Disabled
     void applyEffect_TargetIsland_NoExceptionThrown() {
         IslandGroup island = new IslandGroup("01");
         assertDoesNotThrow(() -> card.applyEffect(null, null, null, island));

@@ -16,17 +16,22 @@ import java.util.Map;
  * defines how the planning phase message {@link PlayAssistantCard} should be processed.
  */
 public class PlayAssistantCardHandler implements MessageHandler {
-	private final Game g;
+	private final Game game;
 	private final Map<String, List<String>> availableCards;
 	private final Map<String, String> playedCards;
 
-	public PlayAssistantCardHandler(Game g) {
-		this.g = g;
-		this.availableCards = g.getAssistantCards();
+	/**
+	 * Constructs a new {@link PlayAssistantCardHandler} for the specified game and notifies the players about the current
+	 * state of the game.
+	 * @param game the {@link Game} this message handler refers to.
+	 */
+	public PlayAssistantCardHandler(Game game) {
+		this.game = game;
+		this.availableCards = game.getAssistantCards();
 		this.playedCards = new HashMap<>();
 
 		try {
-			this.g.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
+			this.game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);
@@ -38,7 +43,7 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		if (m instanceof PlayAssistantCard playAssistantCard)
 			process(playAssistantCard);
 		else
-			g.refuseRequest(m, "Unexpected message");
+			game.refuseRequest(m, "Unexpected message");
 	}
 
 	@Override
@@ -51,13 +56,13 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		String card = message.getAssistantCard();
 
 		if (playedCards.containsKey(sender))
-			g.refuseRequest(message, "Already played assistant card");
+			game.refuseRequest(message, "Already played assistant card");
 		else if (!isPlayable(sender, card))
-			g.refuseRequest(message, "Cannot play card: " + card);
+			game.refuseRequest(message, "Cannot play card: " + card);
 		else {
 			playedCards.put(sender, card);
-			g.acceptRequest(message);
-			g.nextPlayer();
+			game.acceptRequest(message);
+			game.nextPlayer();
 			checkStateTransition();
 		}
 	}
@@ -72,9 +77,9 @@ public class PlayAssistantCardHandler implements MessageHandler {
 	}
 
 	private void checkStateTransition() throws NoConnectionException {
-		if (playedCards.keySet().size() == g.getInfo().getLobbySize())
-			g.newTurn(playedCards);
+		if (playedCards.keySet().size() == game.getInfo().getLobbySize())
+			game.newTurn(playedCards);
 		else
-			g.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
+			game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
 	}
 }

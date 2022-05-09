@@ -13,13 +13,18 @@ import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
  * defines how the action phase message {@link SelectCloud} should be processed.
  */
 public class SelectCloudHandler implements MessageHandler {
-	private final Game g;
+	private final Game game;
 
-	public SelectCloudHandler(Game g) {
-		this.g = g;
+	/**
+	 * Constructs a new {@link SelectCloudHandler} for the specified game and notifies the players about the current state
+	 * of the game.
+	 * @param game the {@link Game} this message handler refers to.
+	 */
+	public SelectCloudHandler(Game game) {
+		this.game = game;
 
 		try {
-			this.g.sendBoardUpdate();
+			this.game.sendBoardUpdate();
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);
@@ -31,7 +36,7 @@ public class SelectCloudHandler implements MessageHandler {
 		if (m instanceof SelectCloud selectCloud)
 			process(selectCloud);
 		else
-			g.refuseRequest(m, "Unexpected message");
+			game.refuseRequest(m, "Unexpected message");
 	}
 
 	@Override
@@ -44,16 +49,16 @@ public class SelectCloudHandler implements MessageHandler {
 		int cloud = message.getCloud();
 
 		try {
-			g.selectCloud(sender, cloud);
+			game.selectCloud(sender, cloud);
 		} catch (InvalidArgumentException e) {
-			g.refuseRequest(message, "Nonexistent cloud: " + cloud);
+			game.refuseRequest(message, "Nonexistent cloud: " + cloud);
 			return;
 		} catch (NoMovementException e) {
-			g.refuseRequest(message, "Error");
+			game.refuseRequest(message, "Error");
 			return;
 		}
 
-		g.acceptRequest(message);
-		g.advanceTurn();
+		game.acceptRequest(message);
+		game.advanceTurn();
 	}
 }

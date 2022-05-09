@@ -7,7 +7,7 @@ import it.polimi.ingsw.eriantys.model.StudentContainer;
  * that a movement of students between two containers was not completed.
  * @see StudentContainer
  */
-public class NoMovementException extends Exception {	// TODO: rename the exception to FailedMovementException?
+public class NoMovementException extends Exception {
 
 	/**
 	 * Constructs a new exception with {@code null} as its detail message.

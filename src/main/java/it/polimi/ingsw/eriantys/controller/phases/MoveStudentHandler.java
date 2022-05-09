@@ -13,12 +13,17 @@ import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 public class MoveStudentHandler extends PlayCharacterCardHandler {
 	private int movementCount;
 
-	public MoveStudentHandler(Game g) {
-		super(g);
+	/**
+	 * Constructs a new {@link MoveStudentHandler} for the specified game and notifies the players about the current state
+	 * of the game.
+	 * @param game the {@link Game} this message handler refers to.
+	 */
+	public MoveStudentHandler(Game game) {
+		super(game);
 		this.movementCount = 0;
 
 		try {
-			this.g.sendBoardUpdate();
+			this.game.sendBoardUpdate();
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);
@@ -43,22 +48,22 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 		String destination = message.getDestination();
 
 		try {
-			g.moveStudent(sender, color, destination);
+			game.moveStudent(sender, color, destination);
 		} catch (NoMovementException e) {
-			g.refuseRequest(message, "Invalid movement");
+			game.refuseRequest(message, "Invalid movement");
 			return;
 		} catch (IslandNotFoundException e) {
-			g.refuseRequest(message, "Island not found: " + destination);
+			game.refuseRequest(message, "Island not found: " + destination);
 			return;
 		}
 
-		g.acceptRequest(message);
+		game.acceptRequest(message);
 		movementCount++;
 		checkStateTransition();
 	}
 
 	private void checkStateTransition() throws NoConnectionException {
-		if (movementCount == g.getCloudSize())	g.receiveMotherNatureMovement();
-		else g.sendBoardUpdate();
+		if (movementCount == game.getCloudSize())	game.receiveMotherNatureMovement();
+		else game.sendBoardUpdate();
 	}
 }

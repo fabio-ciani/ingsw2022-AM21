@@ -16,18 +16,22 @@ import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
  * defines how the action phase message {@link PlayCharacterCard} should be processed.
  */
 public abstract class PlayCharacterCardHandler implements MessageHandler {
-	protected final Game g;
+	protected final Game game;  // che fai, tocchi? NON SI TOCCA
 
-	public PlayCharacterCardHandler(Game g) {
-		this.g = g;
+	/**
+	 * Constructs a new {@link PlayCharacterCardHandler} for the specified game.
+	 * @param game the {@link Game} this message handler refers to.
+	 */
+	public PlayCharacterCardHandler(Game game) {
+		this.game = game;
 	}
 
 	@Override
 	public void handle(GameMessage m) throws NoConnectionException {
-		if (g.getInfo().isExpertMode() && m instanceof PlayCharacterCard playCharacterCard)
+		if (game.getInfo().isExpertMode() && m instanceof PlayCharacterCard playCharacterCard)
 			process(playCharacterCard);
 		else
-			g.refuseRequest(m, "Unexpected message");
+			game.refuseRequest(m, "Unexpected message");
 	}
 
 	@Override
@@ -35,26 +39,26 @@ public abstract class PlayCharacterCardHandler implements MessageHandler {
 		return HelpContent.IN_GAME.getContent();
 	}
 
-	public void process(PlayCharacterCard message) throws NoConnectionException {
+	private void process(PlayCharacterCard message) throws NoConnectionException {
 		int card = message.getCharacterCard();
 		JsonObject params = message.getParams();
 
 		try {
-			g.playCharacterCard(card, params);
+			game.playCharacterCard(card, params);
 		} catch (ItemNotAvailableException e) {
-			g.refuseRequest(message, "Item not available");
+			game.refuseRequest(message, "Item not available");
 			return;
 		} catch (NoMovementException e) {
-			g.refuseRequest(message, "No movement");
+			game.refuseRequest(message, "No movement");
 			return;
 		} catch (InvalidArgumentException e) {
-			g.refuseRequest(message, "Invalid argument");
+			game.refuseRequest(message, "Invalid argument");
 			return;
 		} catch (DuplicateNoEntryTileException e) {
-			g.refuseRequest(message, "Duplicate no entry tile");
+			game.refuseRequest(message, "Duplicate no entry tile");
 			return;
 		}
 
-		g.acceptRequest(message);
+		game.acceptRequest(message);
 	}
 }

@@ -13,10 +13,10 @@ public class PlayerList {
 	private final Player[] players;
 	private int firstInRound;
 
-	public PlayerList(List<String> nicknames) {
+	public PlayerList(List<String> nicknames, int entranceSize, int towerNumber) {
 		players = new Player[nicknames.size()];
 		for (int i = 0; i < nicknames.size(); i++)
-			players[i] = new Player(nicknames.get(i));
+			players[i] = new Player(nicknames.get(i), entranceSize, towerNumber);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class PlayerList {
 	 * @return the {@link Player} corresponding to the given nickname if it exists, {@code null} otherwise
 	 */
 	public Player get(String nickname) {
-		Player temp = new Player(nickname);
+		Player temp = new Player(nickname, 0, 0);
 		int index = new ArrayList<>(Arrays.asList(players)).indexOf(temp);
 
 		if (index != -1)

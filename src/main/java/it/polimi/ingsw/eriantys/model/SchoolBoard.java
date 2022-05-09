@@ -23,15 +23,17 @@ public class SchoolBoard {
 	 */
 	private int towers;
 
+	private final int towerNumber;
+
 	/**
 	 * Constructs a {@code SchoolBoard} initially containing 8 towers, with an empty {@code entrance} of maximum size 7
 	 * and an empty {@code diningRoom}.
 	 */
-	public SchoolBoard() {
-		// TODO use constants based on number of players for entrance.maxSize and towers
-		entrance = new StudentContainer(7);
+	public SchoolBoard(int entranceSize, int towerNumber) {
+		this.towerNumber = towerNumber;
+		entrance = new StudentContainer(entranceSize);
 		diningRoom = new DiningRoom();
-		towers = 8;
+		towers = towerNumber;
 	}
 
 	/**
@@ -79,8 +81,7 @@ public class SchoolBoard {
 	 * @return {@code true} if and only if this {@code SchoolBoard} can contain an additional tower.
 	 */
 	public boolean putTower() {
-		// TODO use constants based on number of players for entrance.maxSize and towers
-		if (towers == 8)
+		if (towers == towerNumber)
 			return false;
 		towers++;
 		return true;

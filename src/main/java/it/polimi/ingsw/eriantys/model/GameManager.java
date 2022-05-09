@@ -36,7 +36,7 @@ public class GameManager {
 		constants = loadConstants(numPlayers);
 
 		board = new Board(constants.getCloudNumber(), constants.getCloudSize());
-		players = new PlayerList(nicknames);
+		players = new PlayerList(nicknames, constants.getEntranceSize(), constants.getTowerNumber());
 		professors = new ProfessorOwnership(this::currentPlayer);
 		calc = new CommonInfluence();
 		lastRound = false;
@@ -244,8 +244,13 @@ public class GameManager {
 			}
 		}
 
-		boolean res = !Objects.equals(island.getController(), maxInfluencePlayer);
+		Player oldController = island.getController();
+		boolean res = !Objects.equals(oldController, maxInfluencePlayer);
 		island.setController(maxInfluencePlayer);
+		if (res) {
+			if (oldController != null && !oldController.getTower()) throw new RuntimeException();
+			if (maxInfluencePlayer != null &&	!maxInfluencePlayer.putTower()) throw new RuntimeException();
+		}
 		return res;
 	}
 
@@ -373,7 +378,7 @@ public class GameManager {
 	// TODO: documentation + tests
 	public Integer islandSizeRepresentation(String isle) {
 		Integer rep = null;
-		IslandGroup island = null;
+		IslandGroup island;
 
 		try {
 			island = board.getIsland(isle);
@@ -389,7 +394,7 @@ public class GameManager {
 	// TODO: documentation + tests
 	public Map<String, Integer> islandStudentsRepresentation(String isle) {
 		Map<String, Integer> rep = new LinkedHashMap<>();
-		IslandGroup island = null;
+		IslandGroup island;
 
 		try {
 			island = board.getIsland(isle);
@@ -405,7 +410,7 @@ public class GameManager {
 	// TODO: documentation + tests
 	public String islandControllerRepresentation(String isle) {
 		String rep = null;
-		IslandGroup island = null;
+		IslandGroup island;
 
 		try {
 			island = board.getIsland(isle);
@@ -426,7 +431,7 @@ public class GameManager {
 	// TODO: documentation + tests
 	public Integer islandNoEntryTilesRepresentation(String isle) {
 		Integer rep = null;
-		IslandGroup island = null;
+		IslandGroup island;
 
 		try {
 			island = board.getIsland(isle);
@@ -447,7 +452,7 @@ public class GameManager {
 	// TODO: documentation + tests
 	public Map<String, String> professorsRepresentation() {
 		Map<String, String> rep = new LinkedHashMap<>();
-		Player p = null;
+		Player p;
 
 		for (Color c : Color.values()) {
 			p = professors.getOwnership(c);

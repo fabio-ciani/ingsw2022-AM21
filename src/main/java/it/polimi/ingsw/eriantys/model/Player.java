@@ -19,9 +19,9 @@ public class Player {
 	private final List<AssistantCard> deck;
 	private int motherNatureMovements, coins;
 
-	public Player(String nickname) {
+	public Player(String nickname, int entranceSize, int towerNumber) {
 		this.nickname = nickname;
-		schoolBoard = new SchoolBoard();
+		schoolBoard = new SchoolBoard(entranceSize, towerNumber);
 		teamColor = null;
 		wizard = null;
 

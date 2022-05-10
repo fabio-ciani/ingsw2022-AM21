@@ -33,11 +33,9 @@ public class GameInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		return "GameInfo{" +
-				"gameId=" + gameId +
-				", creator='" + creator + '\'' +
-				", lobbySize=" + lobbySize +
-				", expertMode=" + expertMode +
-				'}';
+		return "[id: " + gameId +"] \u2192 " +
+				lobbySize + " players, expert mode " +
+				(expertMode ? "enabled" : "disabled") +
+				", created by " + creator;
 	}
 }

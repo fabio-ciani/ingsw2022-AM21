@@ -43,7 +43,7 @@ public class ClientConnection {
 
 	public void read() {
 		try (socketToClient) {
-			while (running) {
+			while (running) { // TODO: try {} catch(NoConnectionException e) {}
 				Message message = (Message) in.readObject();
 				if (message instanceof Reconnect reconnect) {
 					String sender = reconnect.getSender();
@@ -53,7 +53,12 @@ public class ClientConnection {
 				} else if (message instanceof Handshake) {
 					server.connect(message.getSender(), this);
 				} else if (message instanceof ConnectionMessage connectionMessage) {
-					server.handleMessage(connectionMessage);
+					if (game != null) {
+						Message response = new Refused("Already participating in a game");
+						write(response);
+					} else {
+						server.handleMessage(connectionMessage);
+					}
 				} else if (message instanceof GameMessage gameMessage) {
 					if (game == null) {
 						Message response = new Refused("Not in a lobby yet");
@@ -81,7 +86,7 @@ public class ClientConnection {
 	}
 
 	public synchronized void write(Message message) {
-		try (socketToClient) {
+		try {
 			out.writeObject(message);
 		} catch (IOException e) {
 			server.disconnect(this);

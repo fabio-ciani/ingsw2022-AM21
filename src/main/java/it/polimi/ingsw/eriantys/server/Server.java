@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class Server extends Thread {
 	private final int port;
-	private ServerSocket serverSocket;
+	private final ServerSocket serverSocket;
 	private boolean running;
 	private final Map<Integer, Game> gameById;
 	private final Map<String, ClientConnection> connectionByUsername;
@@ -27,21 +27,26 @@ public class Server extends Thread {
 
 	public static void main(String[] args) {
 		// TODO: 02/05/2022 Get port number from args
-		Server server = new Server(12345);
-		server.start();
+		try {
+			Server server = new Server(12345);
+			server.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public Server(int port) {
+	public Server(int port) throws IOException {
 		this.port = port;
 		this.running = true;
 		this.gameById = new HashMap<>();
 		this.connectionByUsername = new HashMap<>();
 		this.nextGameId = 0;
+		this.serverSocket = new ServerSocket(port);
 	}
 
 	@Override
 	public void run() {
-		try (ServerSocket socket = new ServerSocket(port)) {
+		try (serverSocket) {
 			System.out.println("Accepting connections on port " + port);
 			running = true;
 			while (running) {
@@ -49,7 +54,7 @@ public class Server extends Thread {
 				ClientConnection connection = new ClientConnection(this, socketToClient);
 				System.out.println("Client connected at " + socketToClient.getRemoteSocketAddress());
 				new Thread(connection::read).start();
-				new Thread(connection::ping).start();
+				//new Thread(connection::ping).start();
 			}
 		} catch (IOException e) {
 			// TODO: 02/05/2022 Handle exception
@@ -75,7 +80,7 @@ public class Server extends Thread {
 			response = new Refused(details);
 		} else {
 			connectionByUsername.put(username, connection);
-			response = new Accepted();
+			response = new AcceptedUsername(username);
 		}
 		connection.write(response);
 	}

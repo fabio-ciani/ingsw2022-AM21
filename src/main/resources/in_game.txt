@@ -1,8 +1,9 @@
 usage: eriantys <cmd>
 Available commands
- /a, /assistant <id>           play an assistant card
- /sd, /dining c=<color>        move a student to dining room
- /si, /island <id> c=<color>   move a student to an island
- /m, /mother <id>              move Mother Nature to an island
- /cl, /cloud <id>              choose a cloud tile
- /ch, /character <id>          play an assistant card
+ /a, /assistant <id>                                                 play an assistant card
+ /sd, /dining <color>                                                move a student to dining room
+ /si, /island <id> <color>                                           move a student to an island
+ /m, /mother <id>                                                    move Mother Nature to an island
+ /cl, /cloud <id>                                                    choose a cloud tile
+ /ch, /character <id>                                                play a character card
+ /ccargs, /ccarguments [<srccols> <destcols> <targetcol> <island>]   set character card arguments

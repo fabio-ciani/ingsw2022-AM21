@@ -1,42 +1,50 @@
 {
 	"Monk": {
 		"setup": "In setup, draw 4 students and place them on this card.",
-		"effect": "Take 1 student from this card and place it on an island of your choice. Then, draw a new student from the bag and place it on this card."
+		"effect": "Take 1 student from this card and place it on an island of your choice. Then, draw a new student from the bag and place it on this card.",
+		"cmd": "/ccargs, /ccarguments \u003ctargetcol\u003e \u003cisland\u003e"
 	},
 	"Farmer": {
 		"effect": "During this turn, you take control of any number of professors even if you have the same number of students as the player who currently controls them."
 	},
 	"Herald": {
-		"effect": "Choose an island and resolve it as if Mother Nature has ended her movement here. Mother Nature will still move and the island where she ends her movement will also be resolved."
+		"effect": "Choose an island and resolve it as if Mother Nature has ended her movement here. Mother Nature will still move and the island where she ends her movement will also be resolved.",
+		"cmd": "/ccargs, /ccarguments \u003cisland\u003e"
 	},
 	"Magic Postman": {
 		"effect": "You may move Mother Nature up to 2 additional islands than is indicated by the assistant card you have played."
 	},
 	"Herb Granny": {
 		"setup": "In setup, put the 4 no-entry tiles on this card.",
-		"effect": "Place a no-entry tile on an island of your choice. The first time Mother Nature ends her movement there, put the no-entry tile back onto this card and do not calculate influence or place any towers on that island."
+		"effect": "Place a no-entry tile on an island of your choice. The first time Mother Nature ends her movement there, put the no-entry tile back onto this card and do not calculate influence or place any towers on that island.",
+		"cmd": "/ccargs, /ccarguments \u003cisland\u003e"
 	},
 	"Centaur": {
 		"effect": "When resolving a conquering on an island, towers do not count towards influence."
 	},
 	"Jester": {
 		"setup": "In setup, draw 6 students and place them on this card.",
-		"effect": "You may take up to 3 students from this card and replace them with the same number of students from your entrance."
+		"effect": "You may take up to 3 students from this card and replace them with the same number of students from your entrance.",
+		"cmd": "/ccargs, /ccarguments \u003csrccols\u003e \u003cdestcols\u003e"
 	},
 	"Knight": {
 		"effect": "During the influence calculation this turn, you count as having 2 more influence."
 	},
 	"Mushroom Guy": {
-		"effect": "Choose a color. During the influence calculation this turn, the students of that color add no influence."
+		"effect": "Choose a color. During the influence calculation this turn, the students of that color add no influence.",
+		"cmd": "/ccargs, /ccarguments \u003ctargetcol\u003e"
 	},
 	"Minstrel": {
-		"effect": "You may exchange up to 2 students between your entrance and your dining room."
+		"effect": "You may exchange up to 2 students between your entrance and your dining room.",
+		"cmd": "/ccargs, /ccarguments \u003csrccols\u003e \u003cdestcols\u003e"
 	},
 	"Spoiled Princess": {
 		"setup": "In setup, draw 4 students and place them on this card.",
-		"effect": "Take 1 student from this card and place it in your dining room. Then, draw a new student from the bag and place it on this card."
+		"effect": "Take 1 student from this card and place it in your dining room. Then, draw a new student from the bag and place it on this card.",
+		"cmd": "/ccargs, /ccarguments \u003ctargetcol\u003e"
 	},
 	"Thief": {
-		"effect": "Choose a color: every player (including yourself) must return 3 students of that type from their dining room to the bag. If any player has fewer than 3 students of that type, return as many students as they have."
+		"effect": "Choose a color: every player (including yourself) must return 3 students of that type from their dining room to the bag. If any player has fewer than 3 students of that type, return as many students as they have.",
+		"cmd": "/ccargs, /ccarguments \u003ctargetcol\u003e"
 	}
 }

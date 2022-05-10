@@ -1,6 +1,6 @@
 usage: eriantys <cmd>
 Available commands
- /u, /user <username>                      set username
- /l, /lobbies                              retrieve available lobbies
- /j, /join <id>                            enter a game
- /cr, /create <players> [expert=<bool>]    create a game, set player number and toggle expert mode
+ /u, /user <username>              set username
+ /l, /lobbies                      retrieve available lobbies
+ /j, /join <id>                    enter a game
+ /cr, /create <players> <expert>   create a game, set player number and toggle expert mode

@@ -4,16 +4,14 @@ import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.ConnectionMessage;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.client.*;
-import it.polimi.ingsw.eriantys.messages.server.Accepted;
-import it.polimi.ingsw.eriantys.messages.server.AvailableLobbies;
-import it.polimi.ingsw.eriantys.messages.server.HelpResponse;
-import it.polimi.ingsw.eriantys.messages.server.Refused;
+import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -82,6 +80,29 @@ public class Server extends Thread {
 		connection.write(response);
 	}
 
+	public synchronized void reconnect(String username, int gameId, String passcode, ClientConnection connection) {
+		Message response;
+		if (connectionByUsername.containsKey(username) && connectionByUsername.get(username) == null) {
+			if (!gameById.containsKey(gameId) || gameById.get(gameId) == null)
+				response = new Refused("Game " + gameId + " does not exist");
+			else {
+				Game game = gameById.get(gameId);
+				if (game.checkCredentials(username, passcode))
+					response = new Accepted();
+				else
+					response = new Refused("Incorrect passcode");
+			}
+		} else if (!connectionByUsername.containsKey(username)) {
+			response = new Refused("Username \"" + username + "\" does not exist");
+		} else if (connectionByUsername.get(username) != null) {
+			response = new Refused("Game " + gameId + " has ended");
+		} else {
+			response = new Refused("Unable to reconnect to game " + gameId);
+		}
+
+		connection.write(response);
+	}
+
 	public synchronized void disconnect(ClientConnection connection) {
 		connectionByUsername.keySet().stream()
 				.filter(k -> connectionByUsername.get(k) == connection)
@@ -128,15 +149,18 @@ public class Server extends Thread {
 		if (target == null || target.isStarted()) {
 			System.out.printf("Unavailable game: %d%n", gameId);
 			connection.write(new Refused("Unavailable game: " + gameId));
-		} else if (!target.addPlayer(sender)) {
-			System.out.printf("Already participating in game: %d%n", gameId);
-			connection.write(new Refused("Already participating in game: " + gameId));
 		} else {
-			System.out.printf("Joined game: %d%n", gameId);
-			connection.write(new Accepted());
-			target.notifyLobbyChange();
-			if (target.meetsStartupCondition())
-				target.setup();
+			String passcode = target.addPlayer(sender);
+			if (passcode == null) {
+				System.out.printf("Already participating in game: %d%n", gameId);
+				connection.write(new Refused("Already participating in game: " + gameId));
+			} else {
+				System.out.printf("Joined game: %d%n", gameId);
+				connection.write(new AcceptedJoinLobby(gameId, passcode));
+				target.notifyLobbyChange();
+				if (target.meetsStartupCondition())
+					target.setup();
+			}
 		}
 	}
 
@@ -173,12 +197,12 @@ public class Server extends Thread {
 		} else {
 			String username = message.getSender();
 			Game game = new Game(this, nextGameId, username, numPlayers, expertMode);
-			game.addPlayer(username);
+			String passcode = game.addPlayer(username);
 			gameById.put(nextGameId, game);
-			nextGameId++;
 			System.out.printf("Created game successfully: %d%n", nextGameId);
-			connection.write(new Accepted());
+			connection.write(new AcceptedJoinLobby(nextGameId, passcode));
 			game.notifyLobbyChange();
+			nextGameId++;
 		}
 	}
 
@@ -194,7 +218,11 @@ public class Server extends Thread {
 		connection.write(new HelpResponse(HelpContent.NO_GAME.getContent()));
 	}
 
-	public void gameOver(Game game) {
+	public void gameOver(Game game, List<String> players) throws NoConnectionException {
+		for (String player : players) {
+			getConnection(player).setGame(null);
+			connectionByUsername.remove(player);
+		}
 		gameById.remove(game.getInfo().getGameId(), game);
 	}
 }

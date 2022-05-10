@@ -7,6 +7,7 @@ import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.Ping;
 import it.polimi.ingsw.eriantys.messages.client.Handshake;
 import it.polimi.ingsw.eriantys.messages.client.HelpRequest;
+import it.polimi.ingsw.eriantys.messages.client.Reconnect;
 import it.polimi.ingsw.eriantys.messages.server.Refused;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
@@ -44,7 +45,12 @@ public class ClientConnection {
 		try (socketToClient) {
 			while (running) {
 				Message message = (Message) in.readObject();
-				if (message instanceof Handshake) {
+				if (message instanceof Reconnect reconnect) {
+					String sender = reconnect.getSender();
+					int gameId = reconnect.getGameId();
+					String passcode = reconnect.getPasscode();
+					server.reconnect(sender, gameId, passcode, this);
+				} else if (message instanceof Handshake) {
 					server.connect(message.getSender(), this);
 				} else if (message instanceof ConnectionMessage connectionMessage) {
 					server.handleMessage(connectionMessage);

@@ -23,6 +23,7 @@ public class Game {
 	private boolean started = false;
 	private boolean lastRound = false;
 	private List<String> players;
+	private final Map<String, String> playerPasscodes;
 	private int currentPlayer;
 	private Map<String, List<String>> availableAssistantCards;
 	private MessageHandler messageHandler;
@@ -39,6 +40,7 @@ public class Game {
 		this.server = server;
 		this.info = new GameInfo(gameId, creator, lobbySize, expertMode);
 		this.players = new ArrayList<>();
+		this.playerPasscodes = new HashMap<>();
 		this.currentPlayer = 0;
 		this.availableAssistantCards = new HashMap<>();
 		this.messageHandler = null;
@@ -53,6 +55,21 @@ public class Game {
 	 */
 	public GameInfo getInfo() {
 		return info;
+	}
+
+	/**
+	 * Returns {@code true} if and only if the specified credentials are valid and the player in question is allowed to
+	 * reconnect to the game.
+	 * @param username the username of the player trying to reconnect to the game.
+	 * @param passcode the passcode sent by the player, to be checked against the one stored in the game.
+	 * @return {@code true} if and only if the specified credentials are valid and the player in question is allowed to
+	 * reconnect to the game.
+	 */
+	public boolean checkCredentials(String username, String passcode) {
+		return
+				players.contains(username) &&
+				playerPasscodes.containsKey(username) &&
+				playerPasscodes.get(username).equals(passcode);
 	}
 
 	/**
@@ -157,15 +174,18 @@ public class Game {
 	}
 
 	/**
-	 * If the specified username is already in the game returns {@code false}, otherwise adds the username to the players
-	 * and returns {@code true}.
+	 * If the specified username is already in the game returns {@code null}, otherwise adds the username to the players
+	 * and returns the passcode which the player can use to reconnect to the game.
 	 * @param username the username of the player to add to the game.
-	 * @return {@code true} if and only if the specified username was not already a player of this game.
+	 * @return the passcode which the player can use to reconnect to the game, or {@code null} if the specified username
+	 * is already in the game.
 	 */
-	public boolean addPlayer(String username) {
-		if (players.contains(username)) return false;
+	public String addPlayer(String username) {
+		if (players.contains(username)) return null;
 		players.add(username);
-		return true;
+		String passcode = Integer.toHexString((int) (Math.random() * 65536));
+		playerPasscodes.put(username, passcode);
+		return passcode;
 	}
 
 	/**
@@ -177,6 +197,7 @@ public class Game {
 	public boolean removePlayer(String username) {
 		if (!players.contains(username)) return false;
 		players.remove(username);
+		playerPasscodes.remove(username);
 		return true;
 	}
 
@@ -352,10 +373,8 @@ public class Game {
 	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
 	public void gameOver() throws NoConnectionException {
-		sendUpdate(new GameOverUpdate(gameManager.getWinner()));
-		for (String player : players)
-			server.getConnection(player).setGame(null);
-		server.gameOver(this);
+		sendUpdate(new GameOverUpdate(gameManager.getWinner()));  // TODO client should clear reconnect.json
+		server.gameOver(this, players);
 	}
 
 	private void broadcast(Message message) throws NoConnectionException {

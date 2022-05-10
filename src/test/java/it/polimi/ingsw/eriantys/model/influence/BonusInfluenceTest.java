@@ -14,16 +14,16 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BonusInfluenceTest {
-	InfluenceCalculator calc = new BonusInfluence(new Player("admin"));
+	InfluenceCalculator calc = new BonusInfluence(new Player("admin", 9, 6));
 
 	@Test
 	void BonusInfluence_PassNull_ThrowException() {
-		assertThrowsExactly(InvalidArgumentException.class, () -> calc.calculate(new Player("Eve"), null, null));
+		assertThrowsExactly(InvalidArgumentException.class, () -> calc.calculate(new Player("Eve", 9, 6), null, null));
 	}
 
 	@Test
 	void BonusInfluence_ValidParameters_NormalPostConditions() throws InvalidArgumentException, NoMovementException {
-		Player p = new Player("admin");
+		Player p = new Player("admin", 9, 6);
 		IslandGroup island = new IslandGroup("03");
 		Set<Color> professors = new HashSet<>();
 

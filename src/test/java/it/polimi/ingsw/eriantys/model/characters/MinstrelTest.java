@@ -19,7 +19,7 @@ class MinstrelTest {
 
 	@BeforeEach
 	void init() {
-		player = new Player("Nick Name");
+		player = new Player("Nick Name", 9, 6);
 		card = new Minstrel(() -> player);
 	}
 

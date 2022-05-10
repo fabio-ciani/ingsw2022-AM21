@@ -22,25 +22,25 @@ class ProfessorOwnershipTest {
 
 	@Test
 	void getProfessors_PlayerWithNoProfessors_ReturnEmptySet() {
-		assertEquals(0, new ProfessorOwnership(this::supplyPlayer).getProfessors(new Player("p1")).size());
+		assertEquals(0, new ProfessorOwnership(this::supplyPlayer).getProfessors(new Player("p", 9, 6)).size());
 	}
 
 	@Test
 	void getProfessors_PlayerWithSomeProfessors_ReturnNonEmptySet() throws InvalidArgumentException, NoMovementException {
-		Player p1 = new Player("p1");
-		this.currentPlayer = p1;
+		Player p = new Player("p", 9, 6);
+		this.currentPlayer = p;
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
 		Bag bag = new Bag();
 
-		bag.moveTo(p1.getDiningRoom(), Color.PINK);
+		bag.moveTo(p.getDiningRoom(), Color.PINK);
 		ownership.update(new HashSet<>(List.of(Color.PINK)));
-		assertTrue(ownership.getProfessors(p1).contains(Color.PINK));
+		assertTrue(ownership.getProfessors(p).contains(Color.PINK));
 	}
 
 	@Test
 	void update_TieEffectActive_ChangeProfessorsWithWinOrTie() throws InvalidArgumentException, NoMovementException {
-		Player p1 = new Player("p1");
-		Player p2 = new Player("p2");
+		Player p1 = new Player("p1", 7, 8);
+		Player p2 = new Player("p2", 7, 8);
 		Bag bag = new Bag();
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
 
@@ -60,8 +60,8 @@ class ProfessorOwnershipTest {
 
 	@Test
 	void update_TieEffectInactive_NoChangeProfessorsWithTie() throws InvalidArgumentException, NoMovementException {
-		Player p1 = new Player("p1");
-		Player p2 = new Player("p2");
+		Player p1 = new Player("p1", 7, 8);
+		Player p2 = new Player("p2", 7, 8);
 		Bag bag = new Bag();
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
 
@@ -82,8 +82,8 @@ class ProfessorOwnershipTest {
 
 	@Test
 	void update_TieEffectActive_ChangeProfessorsWithWin() throws InvalidArgumentException, NoMovementException {
-		Player p1 = new Player("p1");
-		Player p2 = new Player("p2");
+		Player p1 = new Player("p1", 7, 8);
+		Player p2 = new Player("p2", 7, 8);
 		Bag bag = new Bag();
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
 
@@ -104,8 +104,8 @@ class ProfessorOwnershipTest {
 
 	@Test
 	void update_TieEffectInactive_ChangeProfessorsWithWin() throws InvalidArgumentException, NoMovementException {
-		Player p1 = new Player("p1");
-		Player p2 = new Player("p2");
+		Player p1 = new Player("p1", 7, 8);
+		Player p2 = new Player("p2", 7, 8);
 		Bag bag = new Bag();
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
 
@@ -124,27 +124,27 @@ class ProfessorOwnershipTest {
 
 	@Test
 	void update_TieEffectActive_NoChangeProfessorsWithTieAt0() {
-		Player p1 = new Player("p1");
+		Player p = new Player("p", 9, 6);
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
 
-		this.currentPlayer = p1;
+		this.currentPlayer = p;
 
-		assertEquals(0, ownership.getProfessors(p1).size());
+		assertEquals(0, ownership.getProfessors(p).size());
 		ownership.activateEffect();
 		ownership.update(Arrays.stream(Color.values()).collect(Collectors.toSet()));
-		assertEquals(0, ownership.getProfessors(p1).size());
+		assertEquals(0, ownership.getProfessors(p).size());
 	}
 
 	@Test
 	void update_TieEffectInactive_NoChangeProfessorsWithTieAt0() {
-		Player p1 = new Player("p1");
+		Player p = new Player("p", 9, 6);
 		ProfessorOwnership ownership = new ProfessorOwnership(this::supplyPlayer);
 
-		this.currentPlayer = p1;
+		this.currentPlayer = p;
 
-		assertEquals(0, ownership.getProfessors(p1).size());
+		assertEquals(0, ownership.getProfessors(p).size());
 		ownership.update(Arrays.stream(Color.values()).collect(Collectors.toSet()));
-		assertEquals(0, ownership.getProfessors(p1).size());
+		assertEquals(0, ownership.getProfessors(p).size());
 	}
 
 	Player supplyPlayer() {

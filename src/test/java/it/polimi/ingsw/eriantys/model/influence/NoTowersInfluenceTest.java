@@ -18,12 +18,12 @@ class NoTowersInfluenceTest {
 
 	@Test
 	void NoTowersInfluence_PassNull_ThrowException() {
-		assertThrowsExactly(InvalidArgumentException.class, () -> calc.calculate(new Player("Bob"), null, null));
+		assertThrowsExactly(InvalidArgumentException.class, () -> calc.calculate(new Player("Bob", 9, 6), null, null));
 	}
 
 	@Test
 	void NoTowersInfluence_ValidParameters_NormalPostConditions() throws InvalidArgumentException, NoMovementException {
-		Player p = new Player("admin");
+		Player p = new Player("admin", 9, 6);
 		IslandGroup island = new IslandGroup("03");
 		Set<Color> professors = new HashSet<>();
 

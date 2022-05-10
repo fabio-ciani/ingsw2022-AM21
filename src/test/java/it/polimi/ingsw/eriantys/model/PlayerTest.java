@@ -11,7 +11,7 @@ class PlayerTest {
 
 	@Test
 	void setTowerColor_NormalPostConditions() {
-		Player p = new Player("admin");
+		Player p = new Player("admin", 9, 6);
 
 		p.setTowerColor(TowerColor.BLACK);
 		assertSame(p.getTowerColor(), TowerColor.BLACK);
@@ -19,7 +19,7 @@ class PlayerTest {
 
 	@Test
 	void setWizard_NormalPostConditions() {
-		Player p = new Player("admin");
+		Player p = new Player("admin", 9, 6);
 
 		p.setWizard(Wizard.DESERT_WIZARD);
 		assertSame(p.getWizard(), Wizard.DESERT_WIZARD);
@@ -27,21 +27,21 @@ class PlayerTest {
 
 	@Test
 	void getEntrance_NormalPostConditions() {
-		Player p = new Player("admin");
+		Player p = new Player("admin", 9, 6);
 
 		assertNotNull(p.getEntrance());
 	}
 
 	@Test
 	void getDiningRoom_NormalPostConditions() {
-		Player p = new Player("admin");
+		Player p = new Player("admin", 9, 6);
 
 		assertNotNull(p.getDiningRoom());
 	}
 
 	@Test
 	void setMotherNatureMovements_PositiveParameter_NormalPostConditions() {
-		Player p = new Player("admin");
+		Player p = new Player("admin", 9, 6);
 
 		assertDoesNotThrow(() -> p.setMotherNatureMovements(3));
 		assertSame(3, p.getMotherNatureMovements());
@@ -49,14 +49,14 @@ class PlayerTest {
 
 	@Test
 	void setMotherNatureMovements_NegativeParameter_ThrowException() {
-		Player p = new Player("admin");
+		Player p = new Player("admin", 9, 6);
 
 		assertThrowsExactly(InvalidArgumentException.class, () -> p.setMotherNatureMovements(-10));
 	}
 
 	@Test
 	void playAssistantCard_NormalPostConditions() {
-		Player p = new Player("admin");
+		Player p = new Player("admin", 9, 6);
 		List<AssistantCard> oldDeck = p.getDeck();
 
 		p.playAssistantCard(AssistantCard.TURTLE);
@@ -69,7 +69,7 @@ class PlayerTest {
 
 	@Test
 	void updateCoins_NormalPostConditions() {
-		Player p = new Player("admin");
+		Player p = new Player("admin", 9, 6);
 
 		p.updateCoins(7);
 		assertSame(p.getCoins(), 1 + 7);
@@ -80,12 +80,13 @@ class PlayerTest {
 
 	@Test
 	void equals_NormalPostConditions() {
-		Player p1 = new Player("Alice");
-		Player p2 = new Player("Bob");
+		Player p1 = new Player("Alice", 7, 8);
+		Player p2 = new Player("Bob", 7, 8);
 
 		assertNotEquals(p1, p2);
 
-		Player p3 = new Player("Alice");
+		// TODO: Should we add entranceSize and towerNumber to the calculation of hashCode() and equals()?
+		Player p3 = new Player("Alice", 7, 8);	// Note: a player with same username, but different parameters, cannot exist in the app
 
 		assertEquals(p1, p3);
 	}

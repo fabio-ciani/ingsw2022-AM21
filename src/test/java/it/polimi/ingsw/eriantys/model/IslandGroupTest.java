@@ -12,7 +12,7 @@ class IslandGroupTest {
 	void merge_PassIslandsWithSameController_ReturnValidIsland() {
 		IslandGroup i1 = new IslandGroup("01");
 		IslandGroup i2 = new IslandGroup("02");
-		Player p = new Player("p");
+		Player p = new Player("p", 9, 6);
 
 		i1.setController(p);
 		i2.setController(p);
@@ -30,8 +30,8 @@ class IslandGroupTest {
 		IslandGroup i1 = new IslandGroup("01");
 		IslandGroup i2 = new IslandGroup("02");
 
-		i1.setController(new Player("p1"));
-		i2.setController(new Player("p2"));
+		i1.setController(new Player("p1", 7, 8));
+		i2.setController(new Player("p2", 7, 8));
 
 		assertThrowsExactly(IncompatibleControllersException.class, () -> IslandGroup.merge(i1, i2));
 	}
@@ -52,7 +52,7 @@ class IslandGroupTest {
 
 	@Test
 	void getController_NormalConditions_ReturnValidPlayer() {
-		Player p = new Player("p");
+		Player p = new Player("p", 9, 6);
 		IslandGroup island = new IslandGroup("02");
 
 		island.setController(p);
@@ -62,7 +62,7 @@ class IslandGroupTest {
 	@Test
 	void setController_PassNull_NoChange() {
 		IslandGroup island = new IslandGroup("09");
-		Player p = new Player("p");
+		Player p = new Player("p", 9, 6);
 
 		island.setController(p);
 		island.setController(null);
@@ -72,18 +72,18 @@ class IslandGroupTest {
 	@Test
 	void setController_PassPlayer_SetFromNull() {
 		IslandGroup island = new IslandGroup("09");
-		Player p1 = new Player("p1");
+		Player p = new Player("p1", 9, 6);
 
 		assertNull(island.getController());
-		island.setController(p1);
-		assertEquals(p1, island.getController());
+		island.setController(p);
+		assertEquals(p, island.getController());
 	}
 
 	@Test
 	void setController_PassPlayer_SetFromPrevious() {
 		IslandGroup island = new IslandGroup("09");
-		Player p1 = new Player("p1");
-		Player p2 = new Player("p2");
+		Player p1 = new Player("p1", 7, 8);
+		Player p2 = new Player("p2", 7, 8);
 
 		island.setController(p1);
 		assertEquals(p1, island.getController());
@@ -99,7 +99,7 @@ class IslandGroupTest {
 	@Test
 	void getTowers_SingleIsland_Return1() {
 		IslandGroup i1 = new IslandGroup("01");
-		i1.setController(new Player("p"));
+		i1.setController(new Player("p", 9, 6));
 		assertEquals(1, i1.getTowers());
 	}
 
@@ -107,7 +107,7 @@ class IslandGroupTest {
 	void getTowers_TwoIslands_Return2() throws IncompatibleControllersException {
 		IslandGroup i1 = new IslandGroup("01");
 		IslandGroup i2 = new IslandGroup("02");
-		Player p = new Player("p");
+		Player p = new Player("p", 9, 6);
 
 		i1.setController(p);
 		i2.setController(p);

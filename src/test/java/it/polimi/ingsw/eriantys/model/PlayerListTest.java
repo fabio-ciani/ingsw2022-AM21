@@ -9,9 +9,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerListTest {
-	Player Alice = new Player("Alice");
-	Player Bob = new Player("Bob");
-	Player Eve = new Player("Eve");
+	Player Alice = new Player("Alice", 9, 6);
+	Player Bob = new Player("Bob", 9, 6);
+	Player Eve = new Player("Eve", 9, 6);
 
 	List<String> players = new ArrayList<>();
 	PlayerList l;
@@ -22,12 +22,12 @@ class PlayerListTest {
 		players.add(Bob.getNickname());
 		players.add(Eve.getNickname());
 
-		l = new PlayerList(players);
+		l = new PlayerList(players, 9, 6);
 	}
 
 	@Test
 	void setFirst_NicknameNotFound_NoChange() {
-		l.setFirst(new Player("admin"));
+		l.setFirst(new Player("admin", 9, 6));
 
 		List<Player> turnOrder = l.getTurnOrder();
 

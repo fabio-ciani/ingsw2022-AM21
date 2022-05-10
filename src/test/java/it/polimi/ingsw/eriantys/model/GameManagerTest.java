@@ -12,9 +12,9 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameManagerTest {
-	Player Alice = new Player("Alice");
-	Player Bob = new Player("Bob");
-	Player Eve = new Player("Eve");
+	Player Alice = new Player("Alice", 9, 6);
+	Player Bob = new Player("Bob", 9, 6);
+	Player Eve = new Player("Eve", 9, 6);
 
 	List<String> players = new ArrayList<>();
 

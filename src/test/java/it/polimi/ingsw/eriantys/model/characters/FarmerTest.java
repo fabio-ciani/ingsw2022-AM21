@@ -13,7 +13,7 @@ class FarmerTest {
 
     @BeforeEach
     void init() {
-        Player player = new Player("Nick Name");
+        Player player = new Player("Nick Name", 9, 6);
         professorOwnership = new ProfessorOwnership(() -> player);
         card = new Farmer(professorOwnership);
     }

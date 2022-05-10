@@ -117,7 +117,7 @@ class BoardTest {
 
 	@Test
 	void drawStudents_IndexOutOfBounds_ThrowException() {
-		Player p = new Player("p");
+		Player p = new Player("p", 9, 6);
 		assertThrowsExactly(InvalidArgumentException.class,
 					() -> new Board(2, 3).drawStudents(-1, p));
 		assertThrowsExactly(InvalidArgumentException.class,
@@ -127,14 +127,14 @@ class BoardTest {
 	@Test
 	void drawStudents_EmptyCloud_ThrowException() {
 		Board board = new Board(2, 3);
-		Player p = new Player("p");
+		Player p = new Player("p", 9, 6);
 		assertThrowsExactly(NoMovementException.class, () -> board.drawStudents(0, p));
 	}
 
 	@Test
 	void drawStudents_IndexAndPlayerOk_MoveStudents() throws InvalidArgumentException, NoMovementException {
 		Board board = new Board(2, 3);
-		Player p = new Player("p");
+		Player p = new Player("p", 9, 6);
 		board.refillClouds();
 		board.drawStudents(0, p);
 		assertEquals(3,
@@ -158,7 +158,7 @@ class BoardTest {
 	@Test
 	void refillClouds_EmptyClouds_FillClouds() throws InvalidArgumentException, NoMovementException {
 		Board board = new Board(2, 3);
-		Player p = new Player("p");
+		Player p = new Player("p", 9, 6);
 		board.refillClouds();
 		assertDoesNotThrow(() -> board.drawStudents(0, p));
 		assertDoesNotThrow(() -> board.drawStudents(1, p));
@@ -179,8 +179,8 @@ class BoardTest {
 	@Test
 	void unifyIslands_DifferentControllers_NoEffect() throws IslandNotFoundException, InvalidArgumentException {
 		Board board = new Board(2, 3);
-		Player p1 = new Player("p1");
-		Player p2 = new Player("p2");
+		Player p1 = new Player("p1", 7, 8);
+		Player p2 = new Player("p2", 7, 8);
 
 		board.getIsland("01").setController(p1);
 		board.getIsland("02").setController(p2);
@@ -196,8 +196,8 @@ class BoardTest {
 	@Test
 	void unifyIslands_TargetAndPrevSameController_MergeTargetAndPrev() throws IslandNotFoundException, InvalidArgumentException {
 		Board board = new Board(2, 3);
-		Player p1 = new Player("p1");
-		Player p2 = new Player("p2");
+		Player p1 = new Player("p1", 7, 8);
+		Player p2 = new Player("p2", 7, 8);
 
 		board.getIsland("01").setController(p1);
 		board.getIsland("02").setController(p1);
@@ -215,8 +215,8 @@ class BoardTest {
 	@Test
 	void unifyIslands_TargetAndNextSameController_MergeTargetAndNext() throws IslandNotFoundException, InvalidArgumentException {
 		Board board = new Board(2, 3);
-		Player p1 = new Player("p1");
-		Player p2 = new Player("p2");
+		Player p1 = new Player("p1", 7, 8);
+		Player p2 = new Player("p2", 7, 8);
 
 		board.getIsland("01").setController(p2);
 		board.getIsland("02").setController(p1);
@@ -234,7 +234,7 @@ class BoardTest {
 	@Test
 	void unifyIslands_TargetPrevAndNextSameController_MergeTargetPrevAndNext() throws IslandNotFoundException, InvalidArgumentException {
 		Board board = new Board(2, 3);
-		Player p1 = new Player("p1");
+		Player p1 = new Player("p1", 9, 6);
 
 		board.getIsland("01").setController(p1);
 		board.getIsland("02").setController(p1);

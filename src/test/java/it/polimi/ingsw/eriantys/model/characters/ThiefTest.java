@@ -19,10 +19,10 @@ class ThiefTest {
 
 	@BeforeEach
 	void init() {
-		testPlayer = new Player("Nick");
+		testPlayer = new Player("Nick", 9, 6);
 		players = List.of(
 				testPlayer,
-				new Player("Name")
+				new Player("Name", 9, 6)
 		);
 		bag = new Bag();
 		card = new Thief(players, bag);

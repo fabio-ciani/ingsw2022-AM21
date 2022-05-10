@@ -14,7 +14,7 @@ class MagicPostmanTest {
 
 	@BeforeEach
 	void init() {
-		player = new Player("Nick Name");
+		player = new Player("Nick Name", 9, 6);
 		card = new MagicPostman(() -> player);
 	}
 

@@ -16,7 +16,7 @@ class KnightTest {
 	@BeforeEach
 	void init() {
 		gameManager = new GameManager(List.of("Nick", "Name"), true);
-		Player player = new Player("Nick");
+		Player player = new Player("Nick", 9, 6);
 		card = new Knight(gameManager, () -> player);
 	}
 

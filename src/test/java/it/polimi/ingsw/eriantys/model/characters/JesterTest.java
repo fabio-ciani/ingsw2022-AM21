@@ -20,7 +20,7 @@ class JesterTest {
 	@BeforeEach
 	void init() {
 		bag = new Bag();
-		player = new Player("Nick Name");
+		player = new Player("Nick Name", 9, 6);
 		card = new Jester(bag, () -> player);
 	}
 

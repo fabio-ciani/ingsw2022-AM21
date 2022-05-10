@@ -20,7 +20,7 @@ class SpoiledPrincessTest {
 	@BeforeEach
 	void init() {
 		bag = new Bag();
-		player = new Player("Nick Name");
+		player = new Player("Nick Name", 9, 6);
 		card = new SpoiledPrincess(bag, () -> player);
 	}
 

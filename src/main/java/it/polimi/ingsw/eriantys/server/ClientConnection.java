@@ -22,6 +22,7 @@ public class ClientConnection {
 	private final ObjectOutputStream out;
 	private final ObjectInputStream in;
 	private boolean running;
+	private boolean joinedLobby;
 	private Game game;
 
 	public ClientConnection(Server server, Socket socketToClient) throws IOException {
@@ -30,6 +31,7 @@ public class ClientConnection {
 		this.out = new ObjectOutputStream(socketToClient.getOutputStream());
 		this.in = new ObjectInputStream(socketToClient.getInputStream());
 		this.running = true;
+		this.joinedLobby = false;
 		this.game = null;
 	}
 
@@ -39,6 +41,14 @@ public class ClientConnection {
 
 	public void setGame(Game game) {
 		if (this.game == null) this.game = game;
+	}
+
+	public boolean hasJoinedLobby() {
+		return joinedLobby;
+	}
+
+	public void setJoinedLobby(boolean joinedLobby) {
+		this.joinedLobby = joinedLobby;
 	}
 
 	public void read() {

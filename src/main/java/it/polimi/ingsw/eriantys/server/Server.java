@@ -23,6 +23,9 @@ public class Server extends Thread {
 	private final Map<String, ClientConnection> connectionByUsername;
 	private int nextGameId;
 
+	private static final int MIN_NUM_PLAYERS = 2;
+	private static final int MAX_NUM_PLAYERS = 4;
+
 	public static final String name = "Server";
 
 	public static void main(String[] args) {
@@ -151,7 +154,10 @@ public class Server extends Thread {
 		Integer gameId = message.getGameId();
 		Game target = gameById.get(gameId);
 
-		if (target == null || target.isStarted()) {
+		if (connection.hasJoinedLobby()) {
+			System.out.println("Already joined a lobby");
+			connection.write(new Refused("Already joined a lobby"));
+		}	else if (target == null || target.isStarted()) {
 			System.out.printf("Unavailable game: %d%n", gameId);
 			connection.write(new Refused("Unavailable game: " + gameId));
 		} else {
@@ -162,6 +168,7 @@ public class Server extends Thread {
 			} else {
 				System.out.printf("Joined game: %d%n", gameId);
 				connection.write(new AcceptedJoinLobby(gameId, passcode));
+				connection.setJoinedLobby(true);
 				target.notifyLobbyChange();
 				if (target.meetsStartupCondition())
 					target.setup();
@@ -176,7 +183,10 @@ public class Server extends Thread {
 		Integer gameId = message.getGameId();
 		Game target = gameById.get(gameId);
 
-		if (target == null || target.isStarted()) {
+		if (!connection.hasJoinedLobby()) {
+			System.out.println("Not part of a lobby");
+			connection.write(new Refused("Not part of a lobby"));
+		} else if (target == null || target.isStarted()) {
 			System.out.printf("Cannot leave game: %d%n", gameId);
 			connection.write(new Refused("Cannot leave game: " + gameId));
 		} else if (!target.removePlayer(sender)) {
@@ -185,6 +195,7 @@ public class Server extends Thread {
 		} else {
 			System.out.printf("Left game: %d%n", gameId);
 			connection.write(new Accepted());
+			connection.setJoinedLobby(false);
 			target.notifyLobbyChange();
 		}
 	}
@@ -196,7 +207,10 @@ public class Server extends Thread {
 		int numPlayers = message.getNumPlayers();
 		boolean expertMode = message.isExpertMode();
 
-		if (numPlayers < 2 || numPlayers > 4) {
+		if (connection.hasJoinedLobby()) {
+			System.out.println("Already joined a lobby");
+			connection.write(new Refused("Already joined a lobby"));
+		} else if (numPlayers < MIN_NUM_PLAYERS || numPlayers > MAX_NUM_PLAYERS) {
 			System.out.printf("Invalid number of players: %d%n", numPlayers);
 			connection.write(new Refused("Invalid number of players: " + numPlayers));
 		} else {
@@ -206,6 +220,7 @@ public class Server extends Thread {
 			gameById.put(nextGameId, game);
 			System.out.printf("Created game successfully: %d%n", nextGameId);
 			connection.write(new AcceptedJoinLobby(nextGameId, passcode));
+			connection.setJoinedLobby(true);
 			game.notifyLobbyChange();
 			nextGameId++;
 		}

@@ -95,7 +95,7 @@ public class StudentContainer {
 		Integer destAmount = dest.students.get(color);
 
 		if (srcAmount == null || srcAmount == 0)
-			throw new NoMovementException("0/1 - the source container is empty.");  // TODO this could happen (Thief)
+			throw new NoMovementException("0/1 - the source container is empty.");	// TODO this could happen (Thief)
 
 		if (destAmount == null)
 			destAmount = 0;
@@ -212,14 +212,17 @@ public class StudentContainer {
 		if (!this.hasRemainingCapacity(thatColor) || !that.hasRemainingCapacity(thisColor)) {
 			this.students.put(thisColor, thisAmount);
 			that.students.put(thatColor, thatAmount);
-			throw new NoMovementException("0/1 - a container is full.");  // TODO this could happen (NoSwapException)
+			throw new NoMovementException("0/1 - a container is full.");	// TODO this could happen (NoSwapException)
 		}
 
 		this.students.put(thatColor, this.students.get(thatColor) + 1);
 		that.students.put(thisColor, that.students.get(thisColor) + 1);
 	}
 
-	// TODO: documentation + tests
+	/**
+	 * An helper-getter method to fulfill the {@link BoardStatus} creation process.
+	 * @return a representation of the object, ordered by {@link Color} enum declarations
+	 */
 	public Map<String, Integer> getRepresentation() {
 		Map<String, Integer> rep = new LinkedHashMap<>();
 

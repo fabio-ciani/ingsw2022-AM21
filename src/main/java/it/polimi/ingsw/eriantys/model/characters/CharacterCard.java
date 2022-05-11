@@ -45,6 +45,11 @@ public interface CharacterCard {
 	void cancelEffect() throws InvalidArgumentException;
 
 	// TODO: Is this allowed? + How to split PascalCase into separate words? (needed to handle characters.json correctly)
+	// SOLUTION: We could maintain PascalCase and let the user insert the card name with spaces. Then, we could use string replace in order to match the JSON values.
+	/**
+	 * A getter for the name of the class, representing the character name.
+	 * @return the simple name of the card
+	 */
 	default String getName() {
 		return this.getClass().getSimpleName();
 	}

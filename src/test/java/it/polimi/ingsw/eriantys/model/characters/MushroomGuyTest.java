@@ -31,4 +31,9 @@ class MushroomGuyTest {
 	void applyEffect_NoArguments_NoExceptionThrown() {
 		assertDoesNotThrow(() -> card.applyEffect(null, null, null, null));
 	}
+
+	@Test
+	void getName_NormalPostConditions() {
+		assertEquals("MushroomGuy", card.getName());
+	}
 }

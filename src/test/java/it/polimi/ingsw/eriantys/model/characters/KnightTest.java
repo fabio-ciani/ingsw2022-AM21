@@ -33,4 +33,9 @@ class KnightTest {
 	void applyEffect_NoArguments_NoExceptionThrown() {
 		assertDoesNotThrow(() -> card.applyEffect(null, null, null, null));
 	}
+
+	@Test
+	void getName_NormalPostConditions() {
+		assertEquals("Knight", card.getName());
+	}
 }

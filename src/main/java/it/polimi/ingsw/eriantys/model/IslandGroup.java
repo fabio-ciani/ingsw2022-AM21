@@ -132,12 +132,18 @@ public class IslandGroup extends StudentContainer {
 		return noEntryTiles.pop();
 	}
 
-	// TODO: documentation + tests
+	/**
+	 * An helper-getter method to fulfill the {@link BoardStatus} creation process.
+	 * @return a representation of the number of islands which form the aggregate
+	 */
 	public Integer getSize() {
 		return islandIds.size();
 	}
 
-	// TODO: documentation + tests
+	/**
+	 * An helper-getter method to fulfill the {@link BoardStatus} creation process.
+	 * @return a representation of the number of no-entry tiles placed on the aggregate
+	 */
 	public Integer getNoEntryTiles() {
 		return noEntryTiles.size();
 	}

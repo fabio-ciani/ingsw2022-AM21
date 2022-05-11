@@ -21,7 +21,6 @@ class HeraldTest {
         card = new Herald(gameManager);
     }
 
-    // TODO: 08/04/2022 Disabled test: error in CommonInfluence
     @Test
     void getCost_effectAppliedThreeTimes_CostIncreasedOnlyTheFirstTime() {
         int initialCost = card.getCost();
@@ -32,7 +31,6 @@ class HeraldTest {
         }
     }
 
-    // TODO: 08/04/2022 Disabled test: error in CommonInfluence
     @Test
     void applyEffect_TargetIsland_NoExceptionThrown() {
         IslandGroup island = new IslandGroup("01");
@@ -42,5 +40,10 @@ class HeraldTest {
     @Test
     void applyEffect_NullTargetIsland_InvalidArgumentException() {
         assertThrows(InvalidArgumentException.class, () -> card.applyEffect(null, null, null, null));
+    }
+
+    @Test
+    void getName_NormalPostConditions() {
+        assertEquals("Herald", card.getName());
     }
 }

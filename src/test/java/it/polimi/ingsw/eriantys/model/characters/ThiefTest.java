@@ -83,4 +83,9 @@ class ThiefTest {
 	void applyEffect_NullTargetColor_InvalidArgumentException() {
 		assertThrows(InvalidArgumentException.class, () -> card.applyEffect(null, null, null, null));
 	}
+
+	@Test
+	void getName_NormalPostConditions() {
+		assertEquals("Thief", card.getName());
+	}
 }

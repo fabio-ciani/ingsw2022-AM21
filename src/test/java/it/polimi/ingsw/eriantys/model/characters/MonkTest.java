@@ -78,4 +78,9 @@ class MonkTest {
 		assertDoesNotThrow(() -> bag.moveTo(card, Color.BLUE));
 		assertThrows(NoMovementException.class, () -> card.applyEffect(null, null, student, island));
 	}
+
+	@Test
+	void getName_NormalPostConditions() {
+		assertEquals("Monk", card.getName());
+	}
 }

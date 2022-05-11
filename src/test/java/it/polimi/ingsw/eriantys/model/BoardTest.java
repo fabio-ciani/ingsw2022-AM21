@@ -3,6 +3,7 @@ package it.polimi.ingsw.eriantys.model;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -234,11 +235,11 @@ class BoardTest {
 	@Test
 	void unifyIslands_TargetPrevAndNextSameController_MergeTargetPrevAndNext() throws IslandNotFoundException, InvalidArgumentException {
 		Board board = new Board(2, 3);
-		Player p1 = new Player("p1", 9, 6);
+		Player p = new Player("p", 9, 6);
 
-		board.getIsland("01").setController(p1);
-		board.getIsland("02").setController(p1);
-		board.getIsland("03").setController(p1);
+		board.getIsland("01").setController(p);
+		board.getIsland("02").setController(p);
+		board.getIsland("03").setController(p);
 
 		board.unifyIslands(board.getIsland("02"));
 
@@ -247,5 +248,47 @@ class BoardTest {
 		assertThrowsExactly(IslandNotFoundException.class, () -> board.getIsland("03"));
 
 		assertDoesNotThrow(() -> board.getIsland("01-02-03"));
+	}
+
+	@Test
+	void getIslandsRepresentation_NoAggregates_NormalPostConditions() {
+		Board b = new Board(2, 3);
+
+		List<String> rep = b.getIslandsRepresentation();
+
+		assertEquals(12, b.getIslandNumber());
+		assertEquals(b.getIslandNumber(), rep.size());
+		for (String isle : rep)
+			assertDoesNotThrow(() -> b.getIsland(isle));
+	}
+
+	@Disabled
+	@Test
+	void getIslandsRepresentation_WithAggregates_NormalPostConditions() throws IslandNotFoundException, InvalidArgumentException {
+		Board b = new Board(2, 3);
+		Player p = new Player("p", 9, 6);
+
+		b.getIsland("01").setController(p);
+		b.getIsland("02").setController(p);
+		b.getIsland("03").setController(p);
+
+		b.unifyIslands(b.getIsland("03"));
+
+		List<String> rep = b.getIslandsRepresentation();
+
+		assertEquals(10, b.getIslandNumber());
+		assertEquals(b.getIslandNumber(), rep.size());
+		for (String isle : rep)
+			assertDoesNotThrow(() -> b.getIsland(isle));
+	}
+
+	@Test
+	void getCloudTilesRepresentation_NormalPostConditions() {
+		Board b = new Board(2, 3);
+
+		Map<String, Map<String, Integer>> rep = b.getCloudTiles();
+
+		assertEquals(2, rep.keySet().size());
+		// TODO: Check if every cloud has three students? (at the moment, this is impossible due to lack of getters)
 	}
 }

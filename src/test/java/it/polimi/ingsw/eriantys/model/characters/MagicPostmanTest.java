@@ -33,4 +33,9 @@ class MagicPostmanTest {
 		assertDoesNotThrow(() -> card.applyEffect(null, null, null, null));
 		assertEquals(initialMovements + BONUS_MOVEMENTS, player.getMotherNatureMovements());
 	}
+
+	@Test
+	void getName_NormalPostConditions() {
+		assertEquals("MagicPostman", card.getName());
+	}
 }

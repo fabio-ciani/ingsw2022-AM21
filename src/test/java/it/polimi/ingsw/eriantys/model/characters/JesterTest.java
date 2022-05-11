@@ -128,4 +128,9 @@ class JesterTest {
 		});
 		assertThrows(NoMovementException.class, () -> card.applyEffect(src, dst, null, null));
 	}
+
+	@Test
+	void getName_NormalPostConditions() {
+		assertEquals("Jester", card.getName());
+	}
 }

@@ -11,10 +11,10 @@
 		"effect": "Choose an island and resolve it as if Mother Nature has ended her movement here. Mother Nature will still move and the island where she ends her movement will also be resolved.",
 		"cmd": "/ccargs, /ccarguments \u003cisland\u003e"
 	},
-	"Magic Postman": {
+	"MagicPostman": {
 		"effect": "You may move Mother Nature up to 2 additional islands than is indicated by the assistant card you have played."
 	},
-	"Herb Granny": {
+	"HerbGranny": {
 		"setup": "In setup, put the 4 no-entry tiles on this card.",
 		"effect": "Place a no-entry tile on an island of your choice. The first time Mother Nature ends her movement there, put the no-entry tile back onto this card and do not calculate influence or place any towers on that island.",
 		"cmd": "/ccargs, /ccarguments \u003cisland\u003e"
@@ -30,7 +30,7 @@
 	"Knight": {
 		"effect": "During the influence calculation this turn, you count as having 2 more influence."
 	},
-	"Mushroom Guy": {
+	"MushroomGuy": {
 		"effect": "Choose a color. During the influence calculation this turn, the students of that color add no influence.",
 		"cmd": "/ccargs, /ccarguments \u003ctargetcol\u003e"
 	},
@@ -38,7 +38,7 @@
 		"effect": "You may exchange up to 2 students between your entrance and your dining room.",
 		"cmd": "/ccargs, /ccarguments \u003csrccols\u003e \u003cdestcols\u003e"
 	},
-	"Spoiled Princess": {
+	"SpoiledPrincess": {
 		"setup": "In setup, draw 4 students and place them on this card.",
 		"effect": "Take 1 student from this card and place it in your dining room. Then, draw a new student from the bag and place it on this card.",
 		"cmd": "/ccargs, /ccarguments \u003ctargetcol\u003e"

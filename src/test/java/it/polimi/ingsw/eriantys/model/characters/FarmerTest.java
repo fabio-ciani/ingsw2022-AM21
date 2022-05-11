@@ -36,4 +36,9 @@ class FarmerTest {
     void cancelEffect_NoArguments_NoExceptionThrown() {
         assertDoesNotThrow(() -> card.cancelEffect());
     }
+
+    @Test
+    void getName_NormalPostConditions() {
+        assertEquals("Farmer", card.getName());
+    }
 }

@@ -75,4 +75,9 @@ class SpoiledPrincessTest {
 		});
 		assertThrows(NoMovementException.class, () -> card.applyEffect(null, null, student, null));
 	}
+
+	@Test
+	void getName_NormalPostConditions() {
+		assertEquals("SpoiledPrincess", card.getName());
+	}
 }

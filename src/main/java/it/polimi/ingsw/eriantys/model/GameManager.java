@@ -154,7 +154,7 @@ public class GameManager {
 	}
 
 	/**
-	 * A controller dedicated getter for a {@link List} containing the turn order of the current round.
+	 * A controller-dedicated getter for a {@link List} containing the turn order of the current round.
 	 * @return the reference to a {@link List} containing the nicknames of the players and stating the turn order
 	 */
 	public List<String> getTurnOrder() {
@@ -345,6 +345,12 @@ public class GameManager {
 	}
 
 	// TODO: documentation + tests
+	/**
+	 *
+	 * @param username
+	 * @return
+	 * @see StudentContainer#getRepresentation() StudentContainer.getRepresentation()
+	 */
 	public Map<String, Integer> entranceRepresentation(String username) {
 		Player p = players.get(username);
 		StudentContainer entrance = p.getEntrance();
@@ -353,6 +359,12 @@ public class GameManager {
 	}
 
 	// TODO: documentation + tests
+	/**
+	 *
+	 * @param username
+	 * @return
+	 * @see StudentContainer#getRepresentation() StudentContainer.getRepresentation()
+	 */
 	public Map<String, Integer> diningRoomRepresentation(String username) {
 		Player p = players.get(username);
 		StudentContainer diningRoom = p.getDiningRoom();
@@ -371,11 +383,22 @@ public class GameManager {
 	}
 
 	// TODO: documentation + tests
+	/**
+	 *
+	 * @return
+	 * @see Board#getIslandsRepresentation() Board.getIslandsRepresentation()
+	 */
 	public List<String> islandsRepresentation() {
 		return board.getIslandsRepresentation();
 	}
 
 	// TODO: documentation + tests
+	/**
+	 *
+	 * @param isle
+	 * @return
+	 * @see IslandGroup#getSize() IslandGroup.getSize()
+	 */
 	public Integer islandSizeRepresentation(String isle) {
 		Integer rep = null;
 		IslandGroup island;
@@ -392,6 +415,12 @@ public class GameManager {
 	}
 
 	// TODO: documentation + tests
+	/**
+	 *
+	 * @param isle
+	 * @return
+	 * StudentContainer#getRepresentation() StudentContainer.getRepresentation()
+	 */
 	public Map<String, Integer> islandStudentsRepresentation(String isle) {
 		Map<String, Integer> rep = new LinkedHashMap<>();
 		IslandGroup island;
@@ -429,6 +458,12 @@ public class GameManager {
 	}
 
 	// TODO: documentation + tests
+	/**
+	 *
+	 * @param isle
+	 * @return
+	 * @see IslandGroup#getNoEntryTiles() IslandGroup.getNoEntryTiles()
+	 */
 	public Integer islandNoEntryTilesRepresentation(String isle) {
 		Integer rep = null;
 		IslandGroup island;
@@ -445,11 +480,21 @@ public class GameManager {
 	}
 
 	// TODO: documentation + tests
+	/**
+	 *
+	 * @return
+	 * @see Board#getCloudTiles() Board.getCloudTiles()
+	 */
 	public Map<String, Map<String, Integer>> cloudTilesRepresentation() {
 		return board.getCloudTiles();
 	}
 
 	// TODO: documentation + tests
+	/**
+	 *
+	 * @return
+	 * @see ProfessorOwnership#getOwnership(Color) ProfessorOwnership.getOwnership(Color)
+	 */
 	public Map<String, String> professorsRepresentation() {
 		Map<String, String> rep = new LinkedHashMap<>();
 		Player p;

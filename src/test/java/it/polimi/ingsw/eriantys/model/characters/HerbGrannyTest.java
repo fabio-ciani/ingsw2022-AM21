@@ -90,4 +90,9 @@ class HerbGrannyTest {
 		assertDoesNotThrow(() -> card.applyEffect(null, null, null, island2));
 		assertEquals(tileId, island2.popNoEntryTile());
 	}
+
+	@Test
+	void getName_NormalPostConditions() {
+		assertEquals("HerbGranny", card.getName());
+	}
 }

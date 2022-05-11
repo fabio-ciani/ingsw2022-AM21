@@ -17,7 +17,8 @@ import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
  * defines how the action phase message {@link PlayCharacterCard} should be processed.
  */
 public abstract class PlayCharacterCardHandler implements MessageHandler {
-	protected final Game game;  // che fai, tocchi? NON SI TOCCA
+	protected final Game game;
+	// TODO: hasPlayedCard flag on Player (only one card can be played by a user in the turn)
 
 	/**
 	 * Constructs a new {@link PlayCharacterCardHandler} for the specified game.

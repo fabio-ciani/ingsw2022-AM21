@@ -5,6 +5,8 @@ import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -405,5 +407,22 @@ class StudentContainerTest {
 		container.fill();
 		assertEquals(130,
 					Arrays.stream(Color.values()).mapToInt(container::getQuantity).reduce(0, Integer::sum));
+	}
+
+	@Test
+	void getRepresentation_NormalPostConditions() {
+		StudentContainer container = new StudentContainer();
+		List<String> colors = Arrays.stream(Color.values()).map(Color::toString).toList();
+
+		container.fill();
+
+		Map<String, Integer> rep = container.getRepresentation();
+
+		assertEquals(5, rep.keySet().size());
+		assertTrue(rep.keySet().stream().toList().containsAll(colors));
+		assertTrue(colors.containsAll(rep.keySet()));
+
+		for (Color c : Color.values())
+			assertEquals(26, rep.get(c.toString()));
 	}
 }

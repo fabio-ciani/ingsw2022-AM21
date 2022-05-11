@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.PlayCharacterCard;
+import it.polimi.ingsw.eriantys.messages.server.CharacterCardUpdate;
 import it.polimi.ingsw.eriantys.model.exceptions.DuplicateNoEntryTileException;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.ItemNotAvailableException;
@@ -60,5 +61,6 @@ public abstract class PlayCharacterCardHandler implements MessageHandler {
 		}
 
 		game.acceptRequest(message);
+		game.sendUpdate(new CharacterCardUpdate(card));
 	}
 }

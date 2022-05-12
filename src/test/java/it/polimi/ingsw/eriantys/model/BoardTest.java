@@ -251,6 +251,22 @@ class BoardTest {
 	}
 
 	@Test
+	void unifyIslands_MoreThanTwoIslandsSameController_MergeOnlyTwoIslands() throws IslandNotFoundException, InvalidArgumentException {
+		Board b = new Board(2, 3);
+		Player p = new Player("p", 9, 6);
+
+		b.getIsland("01").setController(p);
+		b.getIsland("02").setController(p);
+		b.getIsland("03").setController(p);
+
+		b.unifyIslands(b.getIsland("03"));	// does not recursively call unifyIslands(), hence only "02" and "03" islands are merged
+
+		assertEquals(11, b.getIslandNumber());
+		assertDoesNotThrow(() -> b.getIsland("02-03"));
+		assertThrowsExactly(IslandNotFoundException.class, () -> b.getIsland("01-02-03"));
+	}
+
+	@Test
 	void getIslandsRepresentation_NoAggregates_NormalPostConditions() {
 		Board b = new Board(2, 3);
 
@@ -262,7 +278,6 @@ class BoardTest {
 			assertDoesNotThrow(() -> b.getIsland(isle));
 	}
 
-	@Disabled
 	@Test
 	void getIslandsRepresentation_WithAggregates_NormalPostConditions() throws IslandNotFoundException, InvalidArgumentException {
 		Board b = new Board(2, 3);
@@ -272,7 +287,7 @@ class BoardTest {
 		b.getIsland("02").setController(p);
 		b.getIsland("03").setController(p);
 
-		b.unifyIslands(b.getIsland("03"));
+		b.unifyIslands(b.getIsland("02"));
 
 		List<String> rep = b.getIslandsRepresentation();
 

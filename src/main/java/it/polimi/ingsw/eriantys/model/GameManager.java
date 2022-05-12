@@ -327,7 +327,7 @@ public class GameManager {
 	}
 
 	/**
-	 * Returns the nickname of the winner of the game, or {@code null} if no winner has been declared yet.
+	 * A getter for the winner of the game.
 	 * @return the nickname of the winner of the game, or {@code null} if no winner has been declared yet.
 	 */
 	public String getWinner() {
@@ -344,11 +344,12 @@ public class GameManager {
 			return constants.getTie();
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
 	/**
-	 *
-	 * @param username
-	 * @return
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param username the username of the target player
+	 * @return a representation for the entrance of the specified player
 	 * @see StudentContainer#getRepresentation() StudentContainer.getRepresentation()
 	 */
 	public Map<String, Integer> entranceRepresentation(String username) {
@@ -358,11 +359,12 @@ public class GameManager {
 		return entrance.getRepresentation();
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
 	/**
-	 *
-	 * @param username
-	 * @return
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param username the username of the target player
+	 * @return a representation for the dining room of the specified player
 	 * @see StudentContainer#getRepresentation() StudentContainer.getRepresentation()
 	 */
 	public Map<String, Integer> diningRoomRepresentation(String username) {
@@ -372,31 +374,45 @@ public class GameManager {
 		return diningRoom.getRepresentation();
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
+	/**
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param username the username of the target player
+	 * @return a representation for the number of towers on the school board of the specified player
+	 */
 	public Integer towersRepresentation(String username) {
 		return players.get(username).getTowerNumber();
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
+	/**
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param username the username of the target player
+	 * @return a representation for the number of coins owned by the specified player
+	 */
 	public Integer coinsRepresentation(String username) {
 		return players.get(username).getCoins();
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
 	/**
-	 *
-	 * @return
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @return a representation for the islands on the game board
 	 * @see Board#getIslandsRepresentation() Board.getIslandsRepresentation()
 	 */
 	public List<String> islandsRepresentation() {
 		return board.getIslandsRepresentation();
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
 	/**
-	 *
-	 * @param isle
-	 * @return
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param isle the identificator of the target isle
+	 * @return a representation for the aggregate size
 	 * @see IslandGroup#getSize() IslandGroup.getSize()
 	 */
 	public Integer islandSizeRepresentation(String isle) {
@@ -414,11 +430,12 @@ public class GameManager {
 		return rep;
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
 	/**
-	 *
-	 * @param isle
-	 * @return
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param isle the identificator of the target isle
+	 * @return a representation for the students on the specified aggregate
 	 * StudentContainer#getRepresentation() StudentContainer.getRepresentation()
 	 */
 	public Map<String, Integer> islandStudentsRepresentation(String isle) {
@@ -436,7 +453,13 @@ public class GameManager {
 		return rep;
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
+	/**
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param isle the identificator of the target isle
+	 * @return a representation for the username of the controller of the specified aggregate
+	 */
 	public String islandControllerRepresentation(String isle) {
 		String rep = null;
 		IslandGroup island;
@@ -452,16 +475,22 @@ public class GameManager {
 		return rep;
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
+	/**
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @return a representation for the identificator of the aggregate on which Mother Nature is currently placed
+	 */
 	public String motherNatureIslandRepresentation() {
 		return board.getMotherNatureIsland().getId();	// TODO: check NullPointerException (?)
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
 	/**
-	 *
-	 * @param isle
-	 * @return
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param isle the identificator of the target isle
+	 * @return a representation for the number of no-entry tiles placed on the specified aggregate
 	 * @see IslandGroup#getNoEntryTiles() IslandGroup.getNoEntryTiles()
 	 */
 	public Integer islandNoEntryTilesRepresentation(String isle) {
@@ -479,20 +508,22 @@ public class GameManager {
 		return rep;
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
 	/**
-	 *
-	 * @return
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @return a representation for the cloud tiles on the game board
 	 * @see Board#getCloudTiles() Board.getCloudTiles()
 	 */
 	public Map<String, Map<String, Integer>> cloudTilesRepresentation() {
 		return board.getCloudTiles();
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
 	/**
-	 *
-	 * @return
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @return a representation for the username of the owner, when existent, of the game professors
 	 * @see ProfessorOwnership#getOwnership(Color) ProfessorOwnership.getOwnership(Color)
 	 */
 	public Map<String, String> professorsRepresentation() {
@@ -510,7 +541,12 @@ public class GameManager {
 		return rep;
 	}
 
-	// TODO: documentation + tests
+	// TODO: tests
+	/**
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @return a representation for the character cards of the game
+	 */
 	public List<String> charactersRepresentation() {
 		return Arrays.stream(characters).map(CharacterCard::getName).toList();
 	}

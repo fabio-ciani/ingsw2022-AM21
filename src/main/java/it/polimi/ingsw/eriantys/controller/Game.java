@@ -201,6 +201,14 @@ public class Game {
 		return true;
 	}
 
+	public void disconnect(String username) throws NoConnectionException {
+		removePlayer(username);
+		if (players.get(currentPlayer).equals(username)) {
+			nextPlayer();
+			sendBoardUpdate();
+		}
+	}
+
 	/**
 	 * Notifies every player in the game about the players currently waiting for the game to start.
 	 * @throws NoConnectionException if no connection can be retrieved for one or more players.

@@ -120,7 +120,11 @@ public class Server extends Thread {
 					if (game == null)
 						connectionByUsername.remove(user);
 					else {
-						game.removePlayer(user);
+						try {
+							game.disconnect(user);
+						} catch (NoConnectionException e) {
+							throw new RuntimeException(e);
+						}
 						if (game.isStarted())
 							connectionByUsername.put(user, null);
 						else

@@ -1,5 +1,5 @@
-usage: eriantys <cmd>
 Available commands
+ /h, /help                                                           print help page
  /a, /assistant <id>                                                 play an assistant card
  /sd, /dining <color>                                                move a student to dining room
  /si, /island <id> <color>                                           move a student to an island
@@ -7,3 +7,13 @@ Available commands
  /cl, /cloud <id>                                                    choose a cloud tile
  /ch, /character <id>                                                play a character card
  /ccargs, /ccarguments [<srccols> <destcols> <targetcol> <island>]   set character card arguments
+
+Utility commands
+ /bs, /bstat            print board status
+ /es, /estat            print entrance status
+ /drs, /dstat           print dining room status
+ /cs, /coins            print coins status
+ /ac, /acard            print assistant card list
+ /cl, /ccard            print character card list
+ /cc, /cdesc <name>     receive character card description
+ /ccs, /ccstat <name>   receive character card status

@@ -362,7 +362,7 @@ public class Game {
 	 * @see Game#sendUpdate(UserActionUpdate)
 	 */
 	public void sendBoardUpdate() throws NoConnectionException {
-		sendUpdate(new BoardUpdate(this::getGameManager));
+		sendUpdate(new BoardUpdate(gameManager));
 	}
 
 	/**
@@ -399,9 +399,5 @@ public class Game {
 
 	private void updateCurrentPlayer() {
 		gameManager.setCurrentPlayer(players.get(currentPlayer));
-	}
-
-	private GameManager getGameManager() {
-		return gameManager;
 	}
 }

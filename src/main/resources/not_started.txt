@@ -1,0 +1,3 @@
+Available commands
+ /h, /help    print help page
+ /e, /leave   exit a game

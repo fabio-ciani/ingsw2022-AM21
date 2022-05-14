@@ -6,9 +6,9 @@ import java.nio.charset.StandardCharsets;
 
 public enum HelpContent {
 	NO_GAME("no_game.txt"),
+	NOT_STARTED("not_started.txt"),
 	GAME_SETUP("game_setup.txt"),
-	IN_GAME("in_game.txt"),
-	UTILITY("utility.txt");
+	IN_GAME("in_game.txt");
 
 	private final String file;
 

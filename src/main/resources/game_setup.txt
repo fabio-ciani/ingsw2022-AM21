@@ -1,5 +1,4 @@
-usage: eriantys <cmd>
 Available commands
- /e, /leave         exit a game
+ /h, /help          print help page
  /w, /wizard <id>   choose a wizard
  /t, /tower <id>    choose a tower color

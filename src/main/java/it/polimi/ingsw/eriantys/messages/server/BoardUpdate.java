@@ -8,8 +8,8 @@ import java.util.function.Supplier;
 public class BoardUpdate extends UserActionUpdate {
 	private final BoardStatus status;
 
-	public BoardUpdate(Supplier<GameManager> s) {
+	public BoardUpdate(GameManager gm) {
 		super();
-		this.status = new BoardStatus(s.get());
+		this.status = new BoardStatus(gm);
 	}
 }

@@ -12,4 +12,8 @@ public class BoardUpdate extends UserActionUpdate {
 		super();
 		this.status = new BoardStatus(gm);
 	}
+
+	public BoardStatus getStatus() {
+		return status;
+	}
 }

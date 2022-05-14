@@ -2,6 +2,7 @@ package it.polimi.ingsw.eriantys.model;
 
 import it.polimi.ingsw.eriantys.messages.server.BoardUpdate;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +11,8 @@ import java.util.Map;
  * A class which contains the representation of a game and its objects,
  * used as a payload for the {@link BoardUpdate} message.
  */
-public class BoardStatus {
-	private final GameManager gm;
+public class BoardStatus implements Serializable {
+	private transient final GameManager gm;
 	private final PlayersInfo playersInfo;
 	private final IslandsInfo islandsInfo;
 	private final Map<String, Map<String, Integer>> cloudTiles;
@@ -30,7 +31,7 @@ public class BoardStatus {
 	/**
 	 * An inner class which holds player-related information.
 	 */
-	private class PlayersInfo {
+	private class PlayersInfo implements Serializable {
 		private final List<String> players;
 		private final Map<String, Map<String, Integer>> playersEntrances, playersDiningRooms;
 		private final Map<String, Integer> playersTowers;
@@ -56,7 +57,7 @@ public class BoardStatus {
 	/**
 	 * An inner class which holds island-related information.
 	 */
-	private class IslandsInfo {
+	private class IslandsInfo implements Serializable {
 		private final List<String> islands;
 		private final Map<String, Integer> islandsSizes;
 		private final Map<String, Map<String, Integer>> islandsStudents;

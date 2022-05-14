@@ -114,7 +114,7 @@ public class Game {
 			e.printStackTrace();
 		}
 
-		broadcast(new InitialBoardStatus());
+		broadcast(new InitialBoardStatus(gameManager));
 		newRound();
 	}
 
@@ -185,6 +185,7 @@ public class Game {
 		players.add(username);
 		String passcode = Integer.toHexString((int) (Math.random() * 65536));
 		playerPasscodes.put(username, passcode);
+		info.setCurrentPlayers(info.getCurrentPlayers() + 1);
 		return passcode;
 	}
 
@@ -198,6 +199,7 @@ public class Game {
 		if (!players.contains(username)) return false;
 		players.remove(username);
 		playerPasscodes.remove(username);
+		info.setCurrentPlayers(info.getCurrentPlayers() - 1);
 		return true;
 	}
 

@@ -14,4 +14,8 @@ public class UserActionUpdate extends Message {
 	public void setNextPlayer(String nextPlayer) {
 		if (this.nextPlayer == null) this.nextPlayer = nextPlayer;
 	}
+
+	public String getNextPlayer() {
+		return nextPlayer;
+	}
 }

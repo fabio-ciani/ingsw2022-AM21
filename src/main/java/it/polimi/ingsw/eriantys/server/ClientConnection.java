@@ -39,6 +39,10 @@ public class ClientConnection {
 		this.running = running;
 	}
 
+	public Game getGame() {
+		return game;
+	}
+
 	public void setGame(Game game) {
 		if (this.game == null) this.game = game;
 	}

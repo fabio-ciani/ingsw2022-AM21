@@ -115,7 +115,18 @@ public class Server extends Thread {
 		connectionByUsername.keySet().stream()
 				.filter(k -> connectionByUsername.get(k) == connection)
 				.toList()
-				.forEach(connectionByUsername::remove);
+				.forEach(user -> {
+					Game game = connection.getGame();
+					if (game == null)
+						connectionByUsername.remove(user);
+					else {
+						game.removePlayer(user);
+						if (game.isStarted())
+							connectionByUsername.put(user, null);
+						else
+							connectionByUsername.remove(user);
+					}
+				});
 	}
 
 	public ClientConnection getConnection(String username) throws NoConnectionException {

@@ -40,6 +40,31 @@ public class Player {
 		return nickname;
 	}
 
+	// TODO: Is it correct to return a new reference? (i.e., a new object)
+	/**
+	 * A getter for the {@link AssistantCard} held in the hand by a {@code Player}.
+	 * @return the reference to a {@link List} containing the {@code Player}'s cards
+	 */
+	public List<AssistantCard> getDeck() {
+		return new ArrayList<>(deck);
+	}
+
+	/**
+	 * A getter for the {@link SchoolBoard} entrance of a {@code Player}'s object.
+	 * @return the reference to the {@code Player}'s {@link SchoolBoard} entrance
+	 */
+	public StudentContainer getEntrance() {
+		return schoolBoard.getEntrance();
+	}
+
+	/**
+	 * A getter for the {@link SchoolBoard} dining room of a {@code Player}'s object.
+	 * @return the reference to the {@code Player}'s {@link SchoolBoard} dining room
+	 */
+	public DiningRoom getDiningRoom() {
+		return schoolBoard.getDiningRoom();
+	}
+
 	/**
 	 * A getter for the {@link TowerColor} of a {@code Player}'s object.
 	 * @return the internal state for a {@code Player}'s {@link TowerColor}
@@ -72,41 +97,28 @@ public class Player {
 		this.wizard = wizard;
 	}
 
-	// TODO: Is it correct to return a new reference? (i.e., a new object)
 	/**
-	 * A getter for the {@link AssistantCard} held in the hand by a {@code Player}.
-	 * @return the reference to a {@link List} containing the {@code Player}'s cards
+	 * @see SchoolBoard#getTower() SchoolBoard.getTower()
+	 * @return {@code true} if and only if this {@code SchoolBoard} can deploy an additional tower
 	 */
-	public List<AssistantCard> getDeck() {
-		return new ArrayList<>(deck);
-	}
-
-	/**
-	 * A getter for the {@link SchoolBoard} entrance of a {@code Player}'s object.
-	 * @return the reference to the {@code Player}'s {@link SchoolBoard} entrance
-	 */
-	public StudentContainer getEntrance() {
-		return schoolBoard.getEntrance();
-	}
-
-	/**
-	 * A getter for the {@link SchoolBoard} dining room of a {@code Player}'s object.
-	 * @return the reference to the {@code Player}'s {@link SchoolBoard} dining room
-	 */
-	public DiningRoom getDiningRoom() {
-		return schoolBoard.getDiningRoom();
-	}
-
 	public boolean getTower() {
 		return schoolBoard.getTower();
 	}
 
+	/**
+	 * @see SchoolBoard#putTower() SchoolBoard.putTower()
+	 * @return {@code true} if and only if this {@code SchoolBoard} can contain an additional tower
+	 */
 	public boolean putTower() {
 		return schoolBoard.putTower();
 	}
 
-	public int getTowerNumber() {
-		return schoolBoard.getTowerNumber();
+	/**
+	 * @see SchoolBoard#getTowerQuantity() () SchoolBoard.getTowerQuantity()
+	 * @return the number of towers which the {@link Player} owns in the {@link SchoolBoard}
+	 */
+	public int getTowerQuantity() {
+		return schoolBoard.getTowerQuantity();
 	}
 
 	/**
@@ -143,6 +155,13 @@ public class Player {
 		deck.remove(playedCard);
 	}
 
+	// TODO: tests (?)
+	/**
+	 * @see SchoolBoard#checkForCoins(Color) SchoolBoard.checkForCoins(Color)
+	 * @param color the {@link Color} whose amount of students is checked
+	 * @return {@code true} if and only if the {@link Player} who owns this {@code DiningRoom} is entitled
+	 * to receive a coin based on the number of students of color {@code color} their {@link DiningRoom} contains
+	 */
 	public boolean checkForCoins(Color color) {
 		return schoolBoard.checkForCoins(color);
 	}

@@ -7,7 +7,7 @@ import java.util.List;
  * An enumeration which defines the available card backs.
  */
 public enum Wizard {
-	FOREST_WIZARD, DESERT_WIZARD, SKY_WIZARD, SNOW_WIZARD;
+	FOREST, DESERT, SKY, SNOW;
 
 	/**
 	 * A method to convert the enumeration values into {@link String}.

@@ -144,4 +144,47 @@ class IslandGroupTest {
 		assertEquals(3, island.popNoEntryTile());
 		assertNull(island.popNoEntryTile());
 	}
+
+	@Test
+	void getSize_SingleIsland_NormalPostConditions() {
+		IslandGroup isle = new IslandGroup("03");
+
+		assertEquals(1, isle.getSize());
+	}
+
+	@Test
+	void getSize_Aggregate_NormalPostConditions() throws IncompatibleControllersException {
+		IslandGroup i1 = new IslandGroup("01");
+		IslandGroup i2 = new IslandGroup("02");
+		IslandGroup i3 = new IslandGroup("03");
+
+		Player p = new Player("admin", 9, 6);
+
+		i1.setController(p);
+		i2.setController(p);
+		i3.setController(p);
+
+		IslandGroup aggregate = IslandGroup.merge(i1, i2);
+		aggregate = IslandGroup.merge(aggregate, i3);
+
+		assertEquals(3, aggregate.getSize());
+	}
+
+	@Test
+	void getNoEntryTiles_NormalPostConditions() throws DuplicateNoEntryTileException {
+		IslandGroup isle = new IslandGroup("03");
+
+		assertEquals(0, isle.getNoEntryTiles());
+
+		isle.putNoEntryTile(1);
+		assertEquals(1, isle.getNoEntryTiles());
+
+		// Note: the actual limitation of 4 no-entry tiles is coded in the HerbGranny class
+		for (int i = 2; i <= 4; i++)
+			isle.putNoEntryTile(i);
+		assertEquals(4, isle.getNoEntryTiles());
+
+		isle.popNoEntryTile();
+		assertEquals(3, isle.getNoEntryTiles());
+	}
 }

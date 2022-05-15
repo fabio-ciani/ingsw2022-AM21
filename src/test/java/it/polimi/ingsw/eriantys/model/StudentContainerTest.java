@@ -412,7 +412,7 @@ class StudentContainerTest {
 	@Test
 	void getRepresentation_NormalPostConditions() {
 		StudentContainer container = new StudentContainer();
-		List<String> colors = Arrays.stream(Color.values()).map(Color::toString).toList();
+		List<String> colors = Color.stringLiterals();
 
 		container.fill();
 

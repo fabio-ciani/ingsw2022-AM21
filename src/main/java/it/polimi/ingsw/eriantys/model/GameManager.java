@@ -51,7 +51,7 @@ public class GameManager {
 
 	/**
 	 * Sets the current player to the player matching {@code currentPlayerNickname}.
-	 * @param currentPlayerNickname the nickname of the current player.
+	 * @param currentPlayerNickname the nickname of the current player
 	 */
 	public void setCurrentPlayer(String currentPlayerNickname) {
 		currPlayer = players.get(currentPlayerNickname);
@@ -65,9 +65,10 @@ public class GameManager {
 	public void setupBoard() throws InvalidArgumentException, NoMovementException {
 		board.setup();
 
-		for (CharacterCard character : characters) {
-			character.setupEffect();
-		}
+		if (expertMode)
+			for (CharacterCard character : characters) {
+				character.setupEffect();
+			}
 	}
 
 	/**
@@ -100,11 +101,10 @@ public class GameManager {
 	}
 
 	/**
-	 * Prepares the board for a new round to be played by refilling the cloud tiles. Returns {@code true} if and only if
-	 * the current round will be the last in the game.
+	 * Prepares the board for a new round to be played by refilling the cloud tiles.
 	 * @throws InvalidArgumentException if an error occurs while refilling the cloud tiles
 	 * @throws NoMovementException if an error occurs while refilling the cloud tiles
-	 * @return {@code true} if and only if the current round will be the last in the game.
+	 * @return {@code true} if and only if the current round will be the last in the game
 	 */
 	public boolean setupRound() throws InvalidArgumentException, NoMovementException {
 		board.refillClouds();
@@ -112,10 +112,9 @@ public class GameManager {
 	}
 
 	/**
-	 * Returns a map having the nickname of every player as the key set and each player's remaining assistant cards as the
-	 * values.
-	 * @return having the nickname of every player as the key set and each player's remaining assistant cards as the
-	 * values.
+	 * A getter for each player's remaining assistant cards.
+	 * @return a {@link Map} having the nickname of every player as key set and
+	 * each player's remaining assistant cards as values
 	 */
 	public Map<String, List<String>> getAvailableAssistantCards() {
 		Map<String, List<String>> res = new HashMap<>();
@@ -129,10 +128,9 @@ public class GameManager {
 	}
 
 	/**
-	 * A method to process the assistant cards chosen by the players in the current round. Returns {@code true} if and
-	 * only if the current round will be the last in the game.
-	 * @param playedCards a {@link Map} which associates a {@link Player} with its played assistant card {@link String}.
-	 * @return {@code true} if and only if the current round will be the last in the game.
+	 * A method to process the assistant cards chosen by the players in the current round.
+	 * @param playedCards a {@link Map} which associates a {@link Player} with its played assistant card {@link String}
+	 * @return {@code true} if and only if the current round will be the last in the game
 	 */
 	public boolean handleAssistantCards(Map<String, String> playedCards) {
 		Player minPlayer = null;
@@ -167,8 +165,8 @@ public class GameManager {
 	}
 
 	/**
-	 * Receives a {@link String} corresponding to the {@link Color} of the student that the player
-	 * wants to move and a {@link String} representing the destination.
+	 * Receives a {@link String} corresponding to the {@link Color} of the student that
+	 * the player wants to move and a {@link String} representing the destination.
 	 * The destination can be an island (ID of the {@link IslandGroup})
 	 * or the dining room of a player (constant in {@link #constants}).
 	 * @param nickname the nickname of the {@link Player} moving the student
@@ -197,19 +195,18 @@ public class GameManager {
 	}
 
 	/**
-	 * Moves the Mother Nature pawn to the specified destination island, then resolves that island. Returns {@code true}
-	 * if and only if the game ends as a result of Mother Nature's movement.
-	 * @param islandDestination the destination {@link IslandGroup}.
-	 * @throws IslandNotFoundException if no island matching the specified id can be found.
-	 * @throws InvalidArgumentException if an error occurs while resolving the destination island.
-	 * @return {@code true} if and only if the game ends as a result of Mother Nature's movement.
+	 * Moves the Mother Nature pawn to the specified destination island, then resolves that island.
+	 * @param islandDestination the destination {@link IslandGroup}
+	 * @throws IslandNotFoundException if no island matching the specified id can be found
+	 * @throws InvalidArgumentException if an error occurs while resolving the destination island
+	 * @return {@code true} if and only if the game ends as a result of Mother Nature's movement
 	 */
 	public boolean handleMotherNatureMovement(String islandDestination)
 			throws IslandNotFoundException, InvalidArgumentException {
 		IslandGroup destination = tryGetIsland(islandDestination);
 
 		if (destination == null)
-			throw new IslandNotFoundException("Requested id: " + islandDestination + ".");
+			throw new IslandNotFoundException("Requested id: " + islandDestination);
 
 		boolean movementSuccessful = board.moveMotherNature(destination);
 		if (movementSuccessful) {
@@ -222,8 +219,7 @@ public class GameManager {
 	}
 
 	/**
-	 * Sets the specified {@link IslandGroup}'s controller to the player with the most influence on the island, returning
-	 * {@code true} if and only if the island's controller has changed as a result of this method.
+	 * Sets the specified {@link IslandGroup}'s controller to the player with the most influence on the island.
 	 * @param island the island whose controller is set
 	 * @return {@code true} if and only if the island's controller has changed as a result of this method
 	 * @throws InvalidArgumentException if an error occurs while calculating a player's influence
@@ -285,10 +281,10 @@ public class GameManager {
 	 * @param index the index of the desired character card.
 	 * @param params the parameters for the application of the specified character card's effect.
 	 * @return {@code true} if and only if the current round will be the last in the game.
-	 * @throws ItemNotAvailableException if an error has occurred while removing a No Entry tile from an island.
+	 * @throws ItemNotAvailableException if an error has occurred while removing a no-entry tile from an island.
 	 * @throws NoMovementException if an error has occurred while moving one or more students.
 	 * @throws InvalidArgumentException if an error has occurred while applying the card's effect.
-	 * @throws DuplicateNoEntryTileException if an error has occurred while placing a No Entry tile on an island.
+	 * @throws DuplicateNoEntryTileException if an error has occurred while placing a no-entry tile on an island.
 	 */
 	public boolean handleCharacterCard(int index, JsonObject params) throws
 			ItemNotAvailableException,
@@ -344,7 +340,6 @@ public class GameManager {
 			return constants.getTie();
 	}
 
-	// TODO: tests
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -354,12 +349,11 @@ public class GameManager {
 	 */
 	public Map<String, Integer> entranceRepresentation(String username) {
 		Player p = players.get(username);
-		StudentContainer entrance = p.getEntrance();
+		StudentContainer entrance = p.getEntrance();	// TODO: check NullPointerException? (RuntimeException, thus unchecked)
 
 		return entrance.getRepresentation();
 	}
 
-	// TODO: tests
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -369,12 +363,12 @@ public class GameManager {
 	 */
 	public Map<String, Integer> diningRoomRepresentation(String username) {
 		Player p = players.get(username);
-		StudentContainer diningRoom = p.getDiningRoom();
+		StudentContainer diningRoom = p.getDiningRoom();	// TODO: check NullPointerException? (RuntimeException, thus unchecked)
 
 		return diningRoom.getRepresentation();
 	}
 
-	// TODO: tests
+	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -382,10 +376,10 @@ public class GameManager {
 	 * @return a representation for the number of towers on the school board of the specified player
 	 */
 	public Integer towersRepresentation(String username) {
-		return players.get(username).getTowerNumber();
+		return players.get(username).getTowerQuantity();	// TODO: check NullPointerException?
 	}
 
-	// TODO: tests
+	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -393,10 +387,9 @@ public class GameManager {
 	 * @return a representation for the number of coins owned by the specified player
 	 */
 	public Integer coinsRepresentation(String username) {
-		return players.get(username).getCoins();
+		return players.get(username).getCoins();	// TODO: check NullPointerException?
 	}
 
-	// TODO: tests
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -407,7 +400,7 @@ public class GameManager {
 		return board.getIslandsRepresentation();
 	}
 
-	// TODO: tests
+	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -423,14 +416,14 @@ public class GameManager {
 			island = board.getIsland(isle);
 			rep = island.getSize();
 		} catch (IslandNotFoundException e) {
-			// TODO: handle exception (?) + catch NullPointerException on rep?
-			e.printStackTrace();
+			// TODO: handle exception (?) + check NullPointerException on rep?
+			// e.printStackTrace();
 		}
 
 		return rep;
 	}
 
-	// TODO: tests
+	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -439,21 +432,22 @@ public class GameManager {
 	 * StudentContainer#getRepresentation() StudentContainer.getRepresentation()
 	 */
 	public Map<String, Integer> islandStudentsRepresentation(String isle) {
-		Map<String, Integer> rep = new LinkedHashMap<>();
+		Map<String, Integer> rep = null;
 		IslandGroup island;
 
 		try {
 			island = board.getIsland(isle);
+			rep = new LinkedHashMap<>();
 			rep = island.getRepresentation();
 		} catch (IslandNotFoundException e) {
-			// TODO: handle exception (?) + catch NullPointerException on rep?
-			e.printStackTrace();
+			// TODO: handle exception (?) + check NullPointerException on rep?
+			// e.printStackTrace();
 		}
 
 		return rep;
 	}
 
-	// TODO: tests
+	// TODO: more tests (?) (e.g., resolve() method)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -466,16 +460,17 @@ public class GameManager {
 
 		try {
 			island = board.getIsland(isle);
-			rep = island.getController().getNickname();
+			if (island.getController() != null)
+				rep = island.getController().getNickname();
 		} catch (IslandNotFoundException e) {
-			// TODO: handle exception (?) + catch NullPointerException on rep?
-			e.printStackTrace();
+			// TODO: handle exception (?) + check NullPointerException on rep?
+			// e.printStackTrace();
 		}
 
 		return rep;
 	}
 
-	// TODO: tests
+	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -485,7 +480,7 @@ public class GameManager {
 		return board.getMotherNatureIsland().getId();	// TODO: check NullPointerException (?)
 	}
 
-	// TODO: tests
+	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -501,14 +496,14 @@ public class GameManager {
 			island = board.getIsland(isle);
 			rep = island.getNoEntryTiles();
 		} catch (IslandNotFoundException e) {
-			// TODO: handle exception (?) + catch NullPointerException on rep?
-			e.printStackTrace();
+			// TODO: handle exception (?) + check NullPointerException on rep?
+			// e.printStackTrace();
 		}
 
 		return rep;
 	}
 
-	// TODO: tests
+	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -519,7 +514,7 @@ public class GameManager {
 		return board.getCloudTiles();
 	}
 
-	// TODO: tests
+	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -541,19 +536,21 @@ public class GameManager {
 		return rep;
 	}
 
-	// TODO: tests
+	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
-	 * @return a representation for the character cards of the game
+	 * @return a representation for the character cards of the game if and only if expert mode is enabled
 	 */
 	public List<String> charactersRepresentation() {
+		if (!expertMode)
+			return null;
 		return Arrays.stream(characters).map(CharacterCard::getName).toList();
 	}
 
 	private boolean gameOver() {
 		for (Player player : players.getTurnOrder())
-			if (player.getTowerNumber() == 0) {
+			if (player.getTowerQuantity() == 0) {
 				lastRound = true;
 				return true;
 			}
@@ -639,10 +636,10 @@ public class GameManager {
 	private List<Player> mostTowersBuilt(List<Player> candidates) {
 		List<Player> potentialWinners = new ArrayList<>();
 		potentialWinners.add(candidates.get(0));
-		int minTowersLeft = candidates.get(0).getTowerNumber();
+		int minTowersLeft = candidates.get(0).getTowerQuantity();
 
 		for (Player player : candidates) {
-			int numTowersLeft = player.getTowerNumber();
+			int numTowersLeft = player.getTowerQuantity();
 			if (numTowersLeft < minTowersLeft) {
 				minTowersLeft = numTowersLeft;
 				potentialWinners.clear();

@@ -10,22 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerTest {
 
 	@Test
-	void setTowerColor_NormalPostConditions() {
-		Player p = new Player("admin", 9, 6);
-
-		p.setTowerColor(TowerColor.BLACK);
-		assertSame(p.getTowerColor(), TowerColor.BLACK);
-	}
-
-	@Test
-	void setWizard_NormalPostConditions() {
-		Player p = new Player("admin", 9, 6);
-
-		p.setWizard(Wizard.DESERT_WIZARD);
-		assertSame(p.getWizard(), Wizard.DESERT_WIZARD);
-	}
-
-	@Test
 	void getEntrance_NormalPostConditions() {
 		Player p = new Player("admin", 9, 6);
 
@@ -37,6 +21,49 @@ class PlayerTest {
 		Player p = new Player("admin", 9, 6);
 
 		assertNotNull(p.getDiningRoom());
+	}
+
+	@Test
+	void setTowerColor_NormalPostConditions() {
+		Player p = new Player("admin", 9, 6);
+
+		p.setTowerColor(TowerColor.BLACK);
+		assertSame(p.getTowerColor(), TowerColor.BLACK);
+	}
+
+	@Test
+	void setWizard_NormalPostConditions() {
+		Player p = new Player("admin", 9, 6);
+
+		p.setWizard(Wizard.DESERT);
+		assertSame(p.getWizard(), Wizard.DESERT);
+	}
+
+	@Test
+	void GetTowerAndPutTower_NormalPostConditions() {
+		Player Alice = new Player("Alice", 7, 8);
+		Player Bob = new Player("Bob", 7, 8);
+
+		Alice.getTower();
+		Bob.getTower();
+		Bob.getTower();
+
+		assertEquals(7, Alice.getTowerQuantity());
+		assertEquals(6, Bob.getTowerQuantity());
+	}
+
+	@Test
+	void GetTowerAndPutTower_BoundaryConditions() {
+		Player Alice = new Player("Alice", 7, 8);
+		Player Bob = new Player("Bob", 7, 8);
+
+		assertFalse(Alice.putTower());
+		assertEquals(8, Alice.getTowerQuantity());
+
+		for (int i = 0; i < 8; i++)
+			assertTrue(Bob.getTower());
+		assertFalse(Bob.getTower());
+		assertEquals(0, Bob.getTowerQuantity());
 	}
 
 	@Test

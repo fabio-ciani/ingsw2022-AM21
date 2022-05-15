@@ -12,6 +12,7 @@ import java.util.Map;
  * used as a payload for the {@link BoardUpdate} message.
  */
 public class BoardStatus implements Serializable {
+	// Note: transient modifier neutralizes final keyword.
 	private transient final GameManager gm;
 	private final PlayersInfo playersInfo;
 	private final IslandsInfo islandsInfo;

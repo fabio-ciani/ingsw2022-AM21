@@ -85,11 +85,11 @@ public class StudentContainer {
 	 */
 	public void moveTo(StudentContainer dest, Color color) throws InvalidArgumentException, NoMovementException {
 		if (dest == null)
-			throw new InvalidArgumentException("dest argument is null."); // this should not happen
+			throw new InvalidArgumentException("dest argument is null");	// this should not happen
 		if (color == null)
-			throw new InvalidArgumentException("color argument is null.");  // this should not happen
+			throw new InvalidArgumentException("color argument is null");	// this should not happen
 		if (!dest.hasRemainingCapacity(color))
-			throw new NoMovementException("0/1 - the destination container is full."); // this should not happen
+			throw new NoMovementException("0/1 - the destination container is full");	// this should not happen
 
 		Integer srcAmount = this.students.putIfAbsent(color, 0);
 		Integer destAmount = dest.students.get(color);
@@ -116,11 +116,11 @@ public class StudentContainer {
 	 */
 	public void moveTo(StudentContainer dest, int amount) throws InvalidArgumentException, NoMovementException {
 		if (dest == null)
-			throw new InvalidArgumentException("dest argument is null."); // this should not happen
+			throw new InvalidArgumentException("dest argument is null");	// this should not happen
 		for (int i = 0; i < amount; i++) {
 			Color color = this.getRandomColor(dest);
 			if (color == null)
-				throw new NoMovementException(i + "/" + amount + " - no matching colors were found.");  // this should not happen
+				throw new NoMovementException(i + "/" + amount + " - no matching colors were found");	// this should not happen
 			moveTo(dest, color);
 		}
 	}
@@ -159,7 +159,7 @@ public class StudentContainer {
 		}
 
 		if (destinationFull)
-			throw new NoMovementException("?/? - the destination container is full.");  // this should not happen
+			throw new NoMovementException("?/? - the destination container is full");	// this should not happen
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class StudentContainer {
 	 */
 	public void refillFrom(StudentContainer source) throws InvalidArgumentException, NoMovementException {
 		if (source == null)
-			throw new InvalidArgumentException("source argument is null."); // this should not happen
+			throw new InvalidArgumentException("source argument is null");	// this should not happen
 
 		source.moveTo(this, this.remainingCapacity());
 	}
@@ -204,7 +204,7 @@ public class StudentContainer {
 		Integer thatAmount = that.students.putIfAbsent(thatColor, 0);
 
 		if (thisAmount == null || thisAmount == 0 || thatAmount == null || thatAmount == 0)
-			throw new NoMovementException("0/1 - a container is empty."); // this should not happen
+			throw new NoMovementException("0/1 - a container is empty");	// this should not happen
 
 		this.students.put(thisColor, thisAmount - 1);
 		that.students.put(thatColor, thatAmount - 1);
@@ -220,7 +220,7 @@ public class StudentContainer {
 	}
 
 	/**
-	 * An helper-getter method to fulfill the {@link BoardStatus} creation process.
+	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
 	 * @return a representation of the object, ordered by {@link Color} enum declarations
 	 */
 	public Map<String, Integer> getRepresentation() {

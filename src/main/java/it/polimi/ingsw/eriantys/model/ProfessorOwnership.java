@@ -7,9 +7,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
- * This class represents the association between each {@link Color}'s professor and its respective owner. It exposes a
- * method to get all the professors owned by a {@link Player}, two methods to activate and deactivate the effect of the
- * {@link Farmer} character card, and a method to update the professors owners after a movement of students.
+ * This class represents the association between each {@link Color}'s professor and its respective owner.
+ * It exposes a method to get all the professors owned by a {@link Player},
+ * two methods to activate and deactivate the effect of the {@link Farmer} character card,
+ * and a method to update the professors owners after a movement of students.
  */
 public class ProfessorOwnership {
 	private final Map<Color, Player> ownerships;
@@ -25,9 +26,9 @@ public class ProfessorOwnership {
 	}
 
 	/**
-	 * Returns the respective {@link Color} of each professor owned by {@code player}.
-	 * @param player the {@link Player} whose professors' colors are returned.
-	 * @return the respective {@link Color} of each professor owned by {@code player}.
+	 * Returns the {@link Color} of the professors owned by {@code player}.
+	 * @param player the {@link Player} whose professors' colors are returned
+	 * @return the respective {@link Color} of each professor owned by {@code player}
 	 */
 	public Set<Color> getProfessors(Player player) {
 		if (player == null)
@@ -53,7 +54,7 @@ public class ProfessorOwnership {
 
 	/**
 	 * Updates the owner for each professor whose respective {@link Color} is contained in {@code target}.
-	 * @param target the {@link Set} of {@link Color}s whose respective professors' owners are updated.
+	 * @param target the {@link Set} of {@link Color}s whose respective professors' owners are updated
 	 */
 	public void update(Set<Color> target) {
 		Player currentPlayer = playerSupplier.get();
@@ -75,7 +76,7 @@ public class ProfessorOwnership {
 	}
 
 	/**
-	 * An helper-getter method to fulfill the {@link BoardStatus} creation process.
+	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
 	 * @param c the target {@link Color}
 	 * @return a representation of the {@link Player} owning the professor of the specified {@link Color}
 	 */

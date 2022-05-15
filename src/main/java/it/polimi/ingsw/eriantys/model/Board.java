@@ -10,49 +10,49 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * This class contains the game objects that every player can interact with. It exposes methods which should generally
- * be called by the {@link GameManager}, including one to handle the setup of the game, one to refill the cloud tiles
- * and one to automatically check and unify islands.
+ * This class contains the game objects that every player can interact with.
+ * It exposes methods which should generally be called by the {@link GameManager},
+ * including one to handle the setup of the game, one to refill the cloud tiles and one to automatically check and unify islands.
  */
 public class Board {
 
 	/**
-	 * The number of single islands in the game. Initially there are 12 isolated island groups, but that number decreases
-	 * as the game proceeds and islands are unified.
+	 * The number of single islands in the game. Initially there are 12 isolated island groups,
+	 * but that number decreases as the game proceeds and islands are unified.
 	 */
 	private static final int NUMBER_OF_ISLANDS = 12;
 
 	/**
-	 * The list containing all the current {@link IslandGroup} objects. This list will change as a result of islands being
-	 * unified, but the order of the islands will be maintained throughout the game.
+	 * The list containing all the current {@link IslandGroup} objects.
+	 * This list will change as a result of islands being unified, but the order of the islands will be maintained throughout the game.
 	 */
 	private final List<IslandGroup> islands;
 
 	/**
-	 * The index of the island where the Mother Nature pawn is currently located. It should always be an integer between 0
-	 * and the current value of {@code islands.size()}.
+	 * The index of the island where the Mother Nature pawn is currently located.
+	 * It should always be an integer between 0 and the current value of {@code islands.size()}.
 	 */
 	private int motherNatureIslandIndex;
 
 	/**
-	 * The bag initially containing all the student discs, which are then moved around between the islands, the cloud
-	 * tiles and each player's school board.
+	 * The bag initially containing all the student discs, which are then moved around between the islands, the cloud tiles
+	 * and each player's school board.
 	 */
 	private final Bag bag;
 
 	/**
-	 * The cloud tiles, which are refilled at the beginning of every round and later on used by players to add students to
-	 * their school board's entrance.
+	 * The cloud tiles, which are refilled at the beginning of every round and
+	 * later on used by players to add students to their school board's entrance.
 	 */
 	private final StudentContainer[] cloudTiles;
 
 	private Consumer<Integer> returnTile;
 
 	/**
-	 * Constructs a {@code Board}, initializing the islands, bag and cloud tiles. The number and capacity of the cloud
-	 * tiles are constants in {@link GameManager}.
-	 * @param cloudNumber the number of cloud tiles to be instantiated.
-	 * @param cloudSize the size of each cloud tile.
+	 * Constructs a {@code Board}, initializing the islands, bag and cloud tiles.
+	 * The number and capacity of the cloud tiles are constants in {@link GameManager}.
+	 * @param cloudNumber the number of cloud tiles to be instantiated
+	 * @param cloudSize the size of each cloud tile
 	 */
 	public Board(int cloudNumber, int cloudSize) {
 		this.islands = new ArrayList<>();
@@ -69,15 +69,15 @@ public class Board {
 
 	/**
 	 * Returns the {@link IslandGroup} whose {@code id} matches the specified one.
-	 * @param id the requested island's identifier.
-	 * @return the {@link IslandGroup} whose {@code id} matches the specified one.
-	 * @throws IslandNotFoundException if no island matching the specified {@code id} can be found.
+	 * @param id the requested island's identifier
+	 * @return the {@link IslandGroup} whose {@code id} matches the specified one
+	 * @throws IslandNotFoundException if no island matching the specified {@code id} can be found
 	 */
 	public IslandGroup getIsland(String id) throws IslandNotFoundException {
 		int index = getIslandIndex(id);
 
 		if (index == -1)
-			throw new IslandNotFoundException("Requested: " + id + ".");	// this should not happen
+			throw new IslandNotFoundException("Requested: " + id);	// this should not happen
 		return islands.get(index);
 	}
 
@@ -86,10 +86,9 @@ public class Board {
 	}
 
 	/**
-	 * Returns the {@link IslandGroup} where Mother Nature is currently located, or {@code null} if Mother Nature has not
-	 * been deployed yet.
-	 * @return the {@link IslandGroup} where Mother Nature is currently located, or {@code null} if Mother Nature has not
-	 * been deployed yet.
+	 * A getter for the {@link IslandGroup} where Mother Nature is currently located.
+	 * @return the {@link IslandGroup} where Mother Nature is currently located,
+	 * or {@code null} if Mother Nature has not been deployed yet
 	 */
 	public IslandGroup getMotherNatureIsland() {
 		if (motherNatureIslandIndex == -1)
@@ -98,8 +97,8 @@ public class Board {
 	}
 
 	/**
-	 * Returns the {@link Bag} containing the student discs.
-	 * @return the {@link Bag} containing the student discs.
+	 * A getter for the {@link Bag} of this game object.
+	 * @return the {@link Bag} containing the student discs
 	 */
 	public Bag getBag() {
 		return bag;
@@ -107,8 +106,8 @@ public class Board {
 
 	/**
 	 * Sets the {@code returnTile} attribute to {@code returnTileFunction}.
-	 * @param returnTileFunction the desired {@code returnTile} {@link Consumer<Integer>}.
-	 * @throws InvalidArgumentException if {@code returnTileFunction} is {@code null}.
+	 * @param returnTileFunction the desired {@code returnTile} {@link Consumer<Integer>}
+	 * @throws InvalidArgumentException if {@code returnTileFunction} is {@code null}
 	 */
 	public void setReturnNoEntryTile(Consumer<Integer> returnTileFunction) throws InvalidArgumentException {
 		if (returnTileFunction == null)
@@ -117,10 +116,10 @@ public class Board {
 	}
 
 	/**
-	 * Sets up the game by placing Mother Nature on a random island and placing a random student on each island, excluding
-	 * the one with Mother Nature on it and the one opposite to it.
-	 * @throws InvalidArgumentException if one or more of the islands and colors used are {@code null}.
-	 * @throws NoMovementException if the bag is empty.
+	 * Sets up the game by placing Mother Nature on a random island and placing a random student on each island,
+	 * excluding the one with Mother Nature on it and the one opposite to it.
+	 * @throws InvalidArgumentException if one or more of the islands and colors used are {@code null}
+	 * @throws NoMovementException if the bag is empty
 	 * @see Bag#setupDraw()
 	 */
 	public void setup() throws InvalidArgumentException, NoMovementException {
@@ -135,17 +134,17 @@ public class Board {
 
 	/**
 	 * Moves all the students on a cloud tile to the {@link SchoolBoard} entrance of the {@code recipient}.
-	 * @param cloudIndex the target cloud tile's index.
-	 * @param recipient the target {@link Player}.
-	 * @throws InvalidArgumentException if {@code recipient} is {@code null} or {@code cloudIndex} is out of bounds.
-	 * @throws NoMovementException if the cloud at index {@code cloudIndex} is empty.
+	 * @param cloudIndex the target cloud tile's index
+	 * @param recipient the target {@link Player}
+	 * @throws InvalidArgumentException if {@code recipient} is {@code null} or {@code cloudIndex} is out of bounds
+	 * @throws NoMovementException if the cloud at index {@code cloudIndex} is empty
 	 */
 	public void drawStudents(int cloudIndex, Player recipient) throws InvalidArgumentException, NoMovementException {
 		if (recipient == null)
 			throw new InvalidArgumentException("recipient argument is null");	// this should not happen
 
 		if (cloudIndex < 0 || cloudIndex >= cloudTiles.length)
-			throw new InvalidArgumentException("cloudIndex argument is out of bounds.");	// this should not happen
+			throw new InvalidArgumentException("cloudIndex argument is out of bounds");	// this should not happen
 
 		StudentContainer cloud = cloudTiles[cloudIndex];
 
@@ -156,10 +155,10 @@ public class Board {
 	}
 
 	/**
-	 * Returns {@code true} if and only if {@code destination} is a valid island, in which case the Mother Nature pawn is
-	 * placed on the specified island.
-	 * @param destination the desired destination for the Mother Nature pawn.
-	 * @return {@code true} if and only if {@code destination} is a valid island.
+	 * Returns {@code true} if and only if {@code destination} is a valid island,
+	 * in which case the Mother Nature pawn is placed on the specified island.
+	 * @param destination the desired destination for the Mother Nature pawn
+	 * @return {@code true} if and only if {@code destination} is a valid island
 	 */
 	public boolean moveMotherNature(IslandGroup destination) {
 		int destinationIndex = islands.indexOf(destination);
@@ -173,8 +172,8 @@ public class Board {
 
 	/**
 	 * Refills the cloud tiles by taking the necessary amount of students from the {@code bag}.
-	 * @throws InvalidArgumentException if the bag is {@code null}.
-	 * @throws NoMovementException if the bag does not contain enough students to fill the clouds.
+	 * @throws InvalidArgumentException if the bag is {@code null}
+	 * @throws NoMovementException if the bag does not contain enough students to fill the clouds
 	 */
 	public void refillClouds() throws InvalidArgumentException, NoMovementException {
 		for (StudentContainer cloud : cloudTiles) {
@@ -183,10 +182,10 @@ public class Board {
 	}
 
 	/**
-	 * Returns {@code true} if and only if the specified island has at least one No Entry tile on it, in which case the
-	 * last added tile is removed and returned to the {@link HerbGranny} character card.
-	 * @param island the {@link IslandGroup} on which the No Entry tile could be placed.
-	 * @return {@code true} if and only if the specified island has at least one No Entry tile on it.
+	 * Returns {@code true} if and only if the specified island has at least one no-entry tile on it,
+	 * in which case the last added tile is removed and returned to the {@link HerbGranny} character card.
+	 * @param island the {@link IslandGroup} on which the no-entry tile could be placed
+	 * @return {@code true} if and only if the specified island has at least one no-entry tile on it
 	 */
 	public boolean noEntryEnforced(IslandGroup island) {
 		Integer tileId = island.popNoEntryTile();
@@ -198,19 +197,19 @@ public class Board {
 	}
 
 	/**
-	 * Checks if the island whose id matches {@code target} can be unified with any of the neighboring islands, and if so
-	 * unifies them. This method should be called every time the player controlling an island changes.
-	 * @param target the target island.
-	 * @throws IslandNotFoundException if the specified {@code target} cannot be found.
-	 * @throws InvalidArgumentException if {@code target} is {@code null}.
+	 * Checks if the island whose id matches {@code target} can be unified with any of the neighboring islands,
+	 * and if so unifies them. This method should be called every time the player controlling an island changes.
+	 * @param target the target island
+	 * @throws IslandNotFoundException if the specified {@code target} cannot be found
+	 * @throws InvalidArgumentException if {@code target} is {@code null}
 	 */
 	public void unifyIslands(IslandGroup target) throws IslandNotFoundException, InvalidArgumentException {
 		if (target == null)
-			throw new InvalidArgumentException("target argument is null.");	// this should not happen
+			throw new InvalidArgumentException("target argument is null");	// this should not happen
 
 		int targetIndex = islands.indexOf(target);
 		if (targetIndex == -1)
-			throw new IslandNotFoundException("Requested id: " + target.getId() + ".");	// this should not happen
+			throw new IslandNotFoundException("Requested id: " + target.getId());	// this should not happen
 
 		IslandGroup prev = islands.get(targetIndex - 1);
 		IslandGroup next = islands.get(targetIndex + 1);
@@ -233,7 +232,7 @@ public class Board {
 	}
 
 	/**
-	 * An helper-getter method to fulfill the {@link BoardStatus} creation process.
+	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
 	 * @return a representation of the islands on the game field
 	 */
 	public List<String> getIslandsRepresentation() {
@@ -246,7 +245,7 @@ public class Board {
 	}
 
 	/**
-	 * An helper-getter method to fulfill the {@link BoardStatus} creation process.
+	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
 	 * @return a representation of the cloud tiles on the game field
 	 */
 	public Map<String, Map<String, Integer>> getCloudTiles() {
@@ -259,11 +258,10 @@ public class Board {
 	}
 
 	/**
-	 * Returns the index of the island with the specified {@code id} within the {@code islands} list, or -1 if no such
-	 * island can be found.
-	 * @param id the requested island's identifier.
-	 * @return the index of the island with the specified {@code id} within the {@code islands} list, or -1 if no such
-	 * island can be found.
+	 * A getter for the index of the island with the specified {@code id} within the {@code islands} list.
+	 * @param id the requested island's identifier
+	 * @return the index of the island with the specified {@code id} within the {@code islands} list,
+	 * or -1 if no such island can be found
 	 */
 	private int getIslandIndex(String id) {
 		if (id == null)
@@ -277,12 +275,12 @@ public class Board {
 	}
 
 	/**
-	 * Merges {@code target} and {@code neighbor} and returns the resulting {@link IslandGroup}, or returns {@code null}
-	 * if the islands are controlled by different players and cannot be merged.
-	 * @param target the first of the islands to merge.
-	 * @param neighbor the second of the islands to merge.
+	 * Merges {@code target} and {@code neighbor} and returns the resulting {@link IslandGroup},
+	 * or returns {@code null} if the islands are controlled by different players and cannot be merged.
+	 * @param target the first of the islands to merge
+	 * @param neighbor the second of the islands to merge
 	 * @return the {@link IslandGroup} resulting from merging {@code target} and {@code neighbor}, or {@code null} if the
-	 * operation cannot be completed.
+	 * operation cannot be completed
 	 */
 	private IslandGroup tryMerge(IslandGroup target, IslandGroup neighbor) {
 		IslandGroup newIsland;

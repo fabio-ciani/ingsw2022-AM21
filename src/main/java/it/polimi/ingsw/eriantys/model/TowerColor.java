@@ -14,6 +14,6 @@ public enum TowerColor {
 	 * @return a {@link List} containing the enumeration values
 	 */
 	public static List<String> stringLiterals() {
-		return Arrays.stream(TowerColor.values()).map(TowerColor::toString).toList();
+		return Arrays.stream(values()).map(Enum::toString).toList();
 	}
 }

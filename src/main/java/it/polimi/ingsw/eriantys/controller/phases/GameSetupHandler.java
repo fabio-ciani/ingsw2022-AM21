@@ -47,6 +47,26 @@ public class GameSetupHandler implements MessageHandler {
 		return HelpContent.GAME_SETUP.getContent();
 	}
 
+	@Override
+	public void handleDisconnectedUser(String username) throws NoConnectionException {
+		String towerColor = availableTowerColors.get(0);
+		String wizard = availableWizards.get(0);
+
+		try {
+			game.setupPlayer(username, towerColor, wizard);
+		} catch (InvalidArgumentException e) {
+			throw new RuntimeException(e);
+		}
+
+		towerColors.put(username, towerColor);
+		wizards.put(username, wizard);
+		availableTowerColors.remove(towerColor);
+		availableWizards.remove(wizard);
+		System.out.println("Confirmed: tower color " + towerColor + ", wizard " + wizard);
+		game.nextPlayer();
+		checkStateTransition();
+	}
+
 	private void process(GameSetupSelection message) throws NoConnectionException {
 		String sender = message.getSender();
 		String towerColor = message.getTowerColor();

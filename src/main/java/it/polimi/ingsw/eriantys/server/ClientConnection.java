@@ -7,6 +7,7 @@ import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.Ping;
 import it.polimi.ingsw.eriantys.messages.client.Handshake;
 import it.polimi.ingsw.eriantys.messages.client.HelpRequest;
+import it.polimi.ingsw.eriantys.messages.client.LeaveLobby;
 import it.polimi.ingsw.eriantys.messages.client.Reconnect;
 import it.polimi.ingsw.eriantys.messages.server.Refused;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class ClientConnection {
 	private final Server server;
@@ -28,6 +30,7 @@ public class ClientConnection {
 	public ClientConnection(Server server, Socket socketToClient) throws IOException {
 		this.server = server;
 		this.socketToClient = socketToClient;
+		this.socketToClient.setSoTimeout(5000);
 		this.out = new ObjectOutputStream(socketToClient.getOutputStream());
 		this.in = new ObjectInputStream(socketToClient.getInputStream());
 		this.running = true;
@@ -86,8 +89,13 @@ public class ClientConnection {
 					} else {
 						game.sendHelp(helpRequest);
 					}
-				}
+				} /*else if (message instanceof Ping) {
+					System.out.println("Ping - " + socketToClient.getPort());
+				}*/
 			}
+		} catch (SocketTimeoutException e) {
+			System.out.println("Timeout");
+			server.disconnect(this);
 		} catch (IOException e) {
 			server.disconnect(this);
 		} catch (NoConnectionException e) {
@@ -112,7 +120,7 @@ public class ClientConnection {
 		try {
 			while (running) {
 				write(new Ping());
-				Thread.sleep(30 * 1000);
+				Thread.sleep(2500);
 			}
 		} catch (InterruptedException e) {
 			server.disconnect(this);

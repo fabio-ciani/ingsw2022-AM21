@@ -40,6 +40,11 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 		return super.getHelp();
 	}
 
+	@Override
+	public void handleDisconnectedUser(String username) throws NoConnectionException {
+		game.receiveCloudSelection();
+	}
+
 	private void process(MotherNatureDestination message) throws NoConnectionException {
 		String destination = message.getDestination();
 		boolean gameOver;

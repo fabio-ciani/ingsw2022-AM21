@@ -44,6 +44,11 @@ public class SelectCloudHandler implements MessageHandler {
 		return HelpContent.IN_GAME.getContent();
 	}
 
+	@Override
+	public void handleDisconnectedUser(String username) throws NoConnectionException {
+		game.advanceTurn();
+	}
+
 	private void process(SelectCloud message) throws NoConnectionException {
 		String sender = message.getSender();
 		int cloud = message.getCloud();

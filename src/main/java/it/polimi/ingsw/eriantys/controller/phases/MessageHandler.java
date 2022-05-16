@@ -1,8 +1,6 @@
 package it.polimi.ingsw.eriantys.controller.phases;
 
 import it.polimi.ingsw.eriantys.messages.GameMessage;
-import it.polimi.ingsw.eriantys.messages.client.HelpRequest;
-import it.polimi.ingsw.eriantys.messages.server.HelpResponse;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
 /**
@@ -23,4 +21,6 @@ public interface MessageHandler {
 	 * @return a help message which lists the possible user actions for the current phase of the game.
 	 */
 	String getHelp();
+
+	void handleDisconnectedUser(String username) throws NoConnectionException;
 }

@@ -42,6 +42,15 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 		return super.getHelp();
 	}
 
+	@Override
+	public void handleDisconnectedUser(String username) throws NoConnectionException {
+		while (movementCount < 3) {
+			// TODO move students at random?
+			movementCount++;
+			checkStateTransition();
+		}
+	}
+
 	private void process(MoveStudent message) throws NoConnectionException {
 		String sender = message.getSender();
 		String color = message.getColor();

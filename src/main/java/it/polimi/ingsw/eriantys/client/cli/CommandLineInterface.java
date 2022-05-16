@@ -5,6 +5,7 @@ import it.polimi.ingsw.eriantys.client.GameStatus;
 import it.polimi.ingsw.eriantys.client.UserInterface;
 import it.polimi.ingsw.eriantys.controller.GameInfo;
 import it.polimi.ingsw.eriantys.messages.Message;
+import it.polimi.ingsw.eriantys.messages.Ping;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.AssistantCard;
 
@@ -222,6 +223,8 @@ public class CommandLineInterface implements UserInterface {
 		} else if (message instanceof InitialBoardStatus m) {
 			showInfo("The game has begun!");
 			// TODO: 13/05/2022 Print initial board status
+		} else if (message instanceof Ping) {
+			client.write(new Ping());
 		} else {
 			showInfo("Received " + message.getClass());
 		}

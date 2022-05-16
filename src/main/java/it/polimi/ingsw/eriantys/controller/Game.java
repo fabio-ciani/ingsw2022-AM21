@@ -203,11 +203,19 @@ public class Game {
 		return true;
 	}
 
+	/**
+	 * Disconnects the specified player from the game.
+	 * @param username the username of the player which has disconnected.
+	 * @throws NoConnectionException if no connection can be retrieved for the specified player.
+	 */
 	public void disconnect(String username) throws NoConnectionException {
-		removePlayer(username);
-		if (players.get(currentPlayer).equals(username)) {
-			nextPlayer();
-			sendBoardUpdate();
+		if (!isStarted()) {
+			removePlayer(username);
+			notifyLobbyChange();
+		} else {
+			if (players.get(currentPlayer).equals(username)) {
+				messageHandler.handleDisconnectedUser(username);  // e.g. select random tower color
+			}
 		}
 	}
 

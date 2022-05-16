@@ -1,19 +1,27 @@
 package it.polimi.ingsw.eriantys.client;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.client.cli.CommandLineInterface;
 import it.polimi.ingsw.eriantys.controller.GameInfo;
 import it.polimi.ingsw.eriantys.messages.Message;
+import it.polimi.ingsw.eriantys.messages.Ping;
+import it.polimi.ingsw.eriantys.messages.client.Handshake;
+import it.polimi.ingsw.eriantys.messages.client.JoinLobby;
+import it.polimi.ingsw.eriantys.messages.client.LobbiesRequest;
+import it.polimi.ingsw.eriantys.messages.client.LobbyCreation;
+import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.messages.client.*;
 import it.polimi.ingsw.eriantys.messages.server.Accepted;
 import it.polimi.ingsw.eriantys.messages.server.AcceptedUsername;
 import it.polimi.ingsw.eriantys.messages.server.AvailableLobbies;
 import it.polimi.ingsw.eriantys.messages.server.Refused;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 public class Client extends Thread {
 	private final Socket socket;
@@ -45,6 +53,7 @@ public class Client extends Thread {
 
 	public Client(String serverAddress, int serverPort, UserInterface ui) throws IOException {
 		this.socket = new Socket(serverAddress, serverPort);
+		this.socket.setSoTimeout(5000);
 		this.out = new ObjectOutputStream(this.socket.getOutputStream());
 		this.in = new ObjectInputStream(this.socket.getInputStream());
 		this.ui = ui;
@@ -61,9 +70,15 @@ public class Client extends Thread {
 				Message message = (Message) in.readObject();
 				ui.handleMessage(message);
 			}
+		} catch (SocketTimeoutException e) {
+			System.out.println("Timeout");
+			e.printStackTrace();
+			setRunning(false);
+			System.out.println("Stopped");
 		} catch (IOException e) {
 			// TODO: 03/05/2022 Handle exception
 			setRunning(false);
+			System.out.println("Stopped");
 		} catch (ClassNotFoundException e) {
 			// TODO: 03/05/2022 Handle exception?
 			throw new RuntimeException(e);
@@ -88,11 +103,6 @@ public class Client extends Thread {
 		}
 		return false;
 	}
-
-	// ???
-	// BoardStatus is the content of BoardUpdate messages
-	// public synchronized void updateGameStatus(BoardStatus boardStatus) {}
-	// ???
 
 	public synchronized void setRunning(boolean running) {
 		this.running = running;

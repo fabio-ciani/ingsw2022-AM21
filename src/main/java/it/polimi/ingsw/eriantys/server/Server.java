@@ -57,7 +57,7 @@ public class Server extends Thread {
 				ClientConnection connection = new ClientConnection(this, socketToClient);
 				System.out.println("Client connected at " + socketToClient.getRemoteSocketAddress());
 				new Thread(connection::read).start();
-				//new Thread(connection::ping).start();
+				new Thread(connection::ping).start();
 			}
 		} catch (IOException e) {
 			// TODO: 02/05/2022 Handle exception

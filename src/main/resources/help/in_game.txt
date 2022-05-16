@@ -13,7 +13,7 @@ Utility commands
  /es, /estat            print entrance status
  /drs, /dstat           print dining room status
  /cs, /coins            print coins status
- /ac, /acard            print assistant card list
- /cl, /ccard            print character card list
+ /acl, /acards          print assistant card list
+ /ccl, /ccards          print character card list
  /cc, /cdesc <name>     receive character card description
  /ccs, /ccstat <name>   receive character card status

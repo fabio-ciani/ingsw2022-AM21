@@ -5,10 +5,10 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public enum HelpContent {
-	NO_GAME("no_game.txt"),
-	NOT_STARTED("not_started.txt"),
-	GAME_SETUP("game_setup.txt"),
-	IN_GAME("in_game.txt");
+	NO_GAME("help/no_game.txt"),
+	NOT_STARTED("help/not_started.txt"),
+	GAME_SETUP("help/game_setup.txt"),
+	IN_GAME("help/in_game.txt");
 
 	private final String file;
 

@@ -26,6 +26,9 @@ public class GameSetupHandler implements MessageHandler {
 		this.availableTowerColors = new ArrayList<>(TowerColor.stringLiterals());
 		this.availableWizards = new ArrayList<>(Wizard.stringLiterals());
 
+		if (this.game.getInfo().getLobbySize() != 3)
+			this.availableTowerColors.remove("GREY");
+
 		try {
 			this.game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards));
 		} catch (NoConnectionException e) {

@@ -47,7 +47,7 @@ public class ClientConnection {
 	}
 
 	public void setGame(Game game) {
-		if (this.game == null) this.game = game;
+		this.game = game;
 	}
 
 	public boolean hasJoinedLobby() {
@@ -70,7 +70,7 @@ public class ClientConnection {
 				} else if (message instanceof Handshake) {
 					server.connect(message.getSender(), this);
 				} else if (message instanceof ConnectionMessage connectionMessage) {
-					if (game != null) {
+					if (game != null && !(message instanceof LeaveLobby)) {
 						Message response = new Refused("Already participating in a game");
 						write(response);
 					} else {

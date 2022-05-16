@@ -9,11 +9,12 @@ Available commands
  /ccargs, /ccarguments [<srccols> <destcols> <targetcol> <island>]   set character card arguments
 
 Utility commands
- /bs, /bstat            print board status
- /es, /estat            print entrance status
- /drs, /dstat           print dining room status
- /cs, /coins            print coins status
- /acl, /acards          print assistant card list
- /ccl, /ccards          print character card list
- /cc, /cdesc <name>     receive character card description
- /ccs, /ccstat <name>   receive character card status
+ /bs, /bstat              print board status
+ /es, /estat              print entrance status
+ /drs, /dstat             print dining room status
+ /cs, /coins              print coins status
+ /acl, /acards            print held assistant card list
+ /ccl, /ccards            print character card list
+ /cc, /cdesc <name>       retrieve a character card description
+ /ccs, /ccstat <name>     retrieve a character card status
+ /ps, /pstat <username>   retrieve school board status of a player

@@ -3,10 +3,7 @@ package it.polimi.ingsw.eriantys.client;
 import it.polimi.ingsw.eriantys.client.cli.CommandLineInterface;
 import it.polimi.ingsw.eriantys.controller.GameInfo;
 import it.polimi.ingsw.eriantys.messages.Message;
-import it.polimi.ingsw.eriantys.messages.client.Handshake;
-import it.polimi.ingsw.eriantys.messages.client.JoinLobby;
-import it.polimi.ingsw.eriantys.messages.client.LobbiesRequest;
-import it.polimi.ingsw.eriantys.messages.client.LobbyCreation;
+import it.polimi.ingsw.eriantys.messages.client.*;
 import it.polimi.ingsw.eriantys.messages.server.Accepted;
 import it.polimi.ingsw.eriantys.messages.server.AcceptedUsername;
 import it.polimi.ingsw.eriantys.messages.server.AvailableLobbies;
@@ -25,6 +22,10 @@ public class Client extends Thread {
 	private boolean running;
 	private final UserInterface ui;
 	private String username;
+	private Integer gameId;
+	private String passcode; // TODO: 16/05/2022 save on file
+	private String towerColor;
+	private String wizard;
 	private final GameStatus gameStatus;
 
 	public static void main(String[] args) {
@@ -58,7 +59,7 @@ public class Client extends Thread {
 		try (socket) {
 			while (running) {
 				Message message = (Message) in.readObject();
-				handleMessage(message);
+				ui.handleMessage(message);
 			}
 		} catch (IOException e) {
 			// TODO: 03/05/2022 Handle exception
@@ -82,36 +83,60 @@ public class Client extends Thread {
 
 	private boolean usernameNotSet() {
 		if (username == null) {
-			ui.showError("Set a username first");
+			ui.showError("Set a username first using\n /u, /user <username>");
 			return true;
 		}
 		return false;
 	}
 
-	public void handleMessage(Message message) {
-		if (message instanceof Accepted) {
-			ui.showInfo("Ok");
-			if (message instanceof AcceptedUsername m) {
-				username = m.getUsername();
-			}
-		} else if (message instanceof Refused refused) {
-			ui.showError(refused.getDetails());
-		} else if (message instanceof AvailableLobbies availableLobbies) {
-			List<GameInfo> lobbies = availableLobbies.getLobbies();
-			if (lobbies.isEmpty()) {
-				ui.showInfo("No available lobbies");
-			} else {
-				for (GameInfo lobby : availableLobbies.getLobbies()) {
-					ui.showInfo(lobby.toString());
-				}
-			}
-		} else {
-			ui.showInfo("Received " + message.getClass());
-		}
-	}
+	// ???
+	// BoardStatus is the content of BoardUpdate messages
+	// public synchronized void updateGameStatus(BoardStatus boardStatus) {}
+	// ???
 
 	public synchronized void setRunning(boolean running) {
 		this.running = running;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setGameId(int gameId) {
+		this.gameId = gameId;
+	}
+
+	public void setPasscode(String passcode) {
+		this.passcode = passcode;
+	}
+
+	public String getTowerColor() {
+		return towerColor;
+	}
+
+	public void setTowerColor(String towerColor) {
+		this.towerColor = towerColor;
+		ui.showInfo(String.format("Tower color set to: %s", this.towerColor));
+		trySendSetupSelection();
+	}
+
+	public String getWizard() {
+		return wizard;
+	}
+
+	public void setWizard(String wizard) {
+		this.wizard = wizard;
+		ui.showInfo(String.format("Wizard set to: %s", this.wizard));
+		trySendSetupSelection();
+	}
+
+	public void askHelp() {
+		if (usernameNotSet()) return;
+		write(new HelpRequest(username));
 	}
 
 	public void sendHandshake(String username) {
@@ -152,8 +177,37 @@ public class Client extends Thread {
 		}
 	}
 
-	// ???
-	// BoardStatus is the content of BoardUpdate messages
-	// public synchronized void updateGameStatus(BoardStatus boardStatus) {}
-	// ???
+	public void leaveLobby() {
+		if (gameId == null) {
+			ui.showError("Not in a lobby");
+			return;
+		}
+		write(new LeaveLobby(username, gameId));
+	}
+
+	private void trySendSetupSelection() {
+		if (wizard != null && towerColor != null) {
+			write(new GameSetupSelection(username, towerColor, wizard));
+		}
+	}
+
+	public void playAssistantCard(String card) {
+		write(new PlayAssistantCard(username, card));
+	}
+
+	public void moveStudent(String color, String destination) {
+		write(new MoveStudent(username, color, destination));
+	}
+
+	public void moveMotherNature(String island) {
+		write(new MotherNatureDestination(username, island));
+	}
+
+	public void chooseCloud(int cloud) {
+		write(new SelectCloud(username, cloud));
+	}
+
+	public void playCharacterCard(int card) {
+		// TODO: 16/05/2022
+	}
 }

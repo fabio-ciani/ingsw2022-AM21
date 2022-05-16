@@ -101,6 +101,7 @@ public class ClientConnection {
 
 	public synchronized void write(Message message) {
 		try {
+			out.reset();
 			out.writeObject(message);
 		} catch (IOException e) {
 			server.disconnect(this);

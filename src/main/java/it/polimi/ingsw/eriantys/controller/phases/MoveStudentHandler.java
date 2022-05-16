@@ -64,6 +64,9 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 		} catch (IslandNotFoundException e) {
 			game.refuseRequest(message, "Island not found: " + destination);
 			return;
+		} catch (InvalidArgumentException e) {
+			game.refuseRequest(message, "Invalid color: " + color);
+			return;
 		}
 
 		game.acceptRequest(message);

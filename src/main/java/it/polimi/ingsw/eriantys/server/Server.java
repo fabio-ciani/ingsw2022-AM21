@@ -117,18 +117,21 @@ public class Server extends Thread {
 				.toList()
 				.forEach(user -> {
 					Game game = connection.getGame();
-					if (game == null)
+					if (game == null) {
 						connectionByUsername.remove(user);
-					else {
+					} else {
+						if (game.isStarted())
+							connectionByUsername.put(user, null);
+						else {
+							connectionByUsername.remove(user);
+							if (game.isEmpty())
+								gameById.remove(game.getInfo().getGameId());
+						}
 						try {
 							game.disconnect(user);
 						} catch (NoConnectionException e) {
-							throw new RuntimeException(e);
+							e.printStackTrace();
 						}
-						if (game.isStarted())
-							connectionByUsername.put(user, null);
-						else
-							connectionByUsername.remove(user);
 					}
 				});
 	}
@@ -182,6 +185,7 @@ public class Server extends Thread {
 				connection.write(new Refused("Already participating in game: " + gameId));
 			} else {
 				System.out.printf("Joined game: %d%n", gameId);
+				connection.setGame(target);
 				connection.write(new AcceptedJoinLobby(gameId, passcode));
 				connection.setJoinedLobby(true);
 				target.notifyLobbyChange();
@@ -209,9 +213,12 @@ public class Server extends Thread {
 			connection.write(new Refused("Not participating in game: " + gameId));
 		} else {
 			System.out.printf("Left game: %d%n", gameId);
+			connection.setGame(null);
 			connection.write(new Accepted());
 			connection.setJoinedLobby(false);
 			target.notifyLobbyChange();
+			if (target.isEmpty())
+				gameById.remove(gameId);
 		}
 	}
 
@@ -234,6 +241,7 @@ public class Server extends Thread {
 			String passcode = game.addPlayer(username);
 			gameById.put(nextGameId, game);
 			System.out.printf("Created game successfully: %d%n", nextGameId);
+			connection.setGame(game);
 			connection.write(new AcceptedJoinLobby(nextGameId, passcode));
 			connection.setJoinedLobby(true);
 			game.notifyLobbyChange();

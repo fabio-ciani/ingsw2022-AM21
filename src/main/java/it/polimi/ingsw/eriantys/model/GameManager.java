@@ -174,11 +174,18 @@ public class GameManager {
 	 * @param destination the string representing the destination
 	 */
 	public void handleMovedStudent(String nickname, String studentColor, String destination)
-			throws NoMovementException, IslandNotFoundException {
+			throws NoMovementException, IslandNotFoundException, InvalidArgumentException {
 		Player player = players.get(nickname);
 		StudentContainer entrance = player.getEntrance();
 		StudentContainer diningRoom = player.getDiningRoom();
-		Color student = Color.valueOf(studentColor);
+		Color student;
+
+		try {
+			student = Color.valueOf(studentColor);
+		} catch (IllegalArgumentException e) {
+			throw new InvalidArgumentException();
+		}
+
 		try {
 			if (destination.equals(constants.getDiningRoom())) {
 				entrance.moveTo(diningRoom, student);

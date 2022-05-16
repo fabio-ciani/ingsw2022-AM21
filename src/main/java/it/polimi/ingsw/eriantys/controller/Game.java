@@ -9,6 +9,7 @@ import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.GameManager;
 import it.polimi.ingsw.eriantys.model.exceptions.*;
 import it.polimi.ingsw.eriantys.server.ClientConnection;
+import it.polimi.ingsw.eriantys.server.HelpContent;
 import it.polimi.ingsw.eriantys.server.Server;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
@@ -89,18 +90,12 @@ public class Game {
 	}
 
 	/**
-	 * Sets up the game and each player's {@link ClientConnection}.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
+	 * Sets up the game.
 	 */
-	public void setup() throws NoConnectionException {
+	public void setup() {
 		started = true;
 		setGameManager();
 		messageHandler = new GameSetupHandler(this);
-
-		for (String player : players) {
-			ClientConnection connection = server.getConnection(player);
-			connection.setGame(this);
-		}
 	}
 
 	/**
@@ -229,6 +224,14 @@ public class Game {
 	}
 
 	/**
+	 * Returns {@code true} if and only if no players are currently participating in the game.
+	 * @return {@code true} if and only if no players are currently participating in the game.
+	 */
+	public boolean isEmpty() {
+		return players.size() == 0;
+	}
+
+	/**
 	 * Sets up a player with the specified parameters.
 	 * @param username the player's username.
 	 * @param towerColor the player's tower color.
@@ -258,7 +261,7 @@ public class Game {
 	 * @throws NoMovementException if an error occurs during the student movement.
 	 */
 	public void moveStudent(String username, String color, String destination)
-			throws IslandNotFoundException, NoMovementException {
+			throws IslandNotFoundException, NoMovementException, InvalidArgumentException {
 		gameManager.handleMovedStudent(username, color, destination);
 	}
 
@@ -383,7 +386,12 @@ public class Game {
 	public void sendHelp(HelpRequest helpRequest) throws NoConnectionException {
 		String sender = helpRequest.getSender();
 		ClientConnection connection = server.getConnection(sender);
-		connection.write(new HelpResponse(messageHandler.getHelp()));
+		String responseContent;
+		if (messageHandler == null)
+			responseContent = HelpContent.IN_GAME.getContent();
+		else
+			responseContent = messageHandler.getHelp();
+		connection.write(new HelpResponse(responseContent));
 	}
 
 	/**
@@ -398,7 +406,7 @@ public class Game {
 	private void broadcast(Message message) throws NoConnectionException {
 		for (String player : players) {
 			ClientConnection c = server.getConnection(player);
-			c.write(message);
+			if (c != null) c.write(message);
 		}
 	}
 

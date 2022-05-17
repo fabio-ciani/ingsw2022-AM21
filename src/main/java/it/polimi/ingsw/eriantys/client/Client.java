@@ -16,6 +16,7 @@ import it.polimi.ingsw.eriantys.messages.server.Accepted;
 import it.polimi.ingsw.eriantys.messages.server.AcceptedUsername;
 import it.polimi.ingsw.eriantys.messages.server.AvailableLobbies;
 import it.polimi.ingsw.eriantys.messages.server.Refused;
+import it.polimi.ingsw.eriantys.model.BoardStatus;
 
 import java.io.*;
 import java.net.Socket;
@@ -34,9 +35,10 @@ public class Client extends Thread {
 	private String passcode; // TODO: 16/05/2022 save on file
 	private String towerColor;
 	private String wizard;
-	private final GameStatus gameStatus;
+	private Integer characterCard;
+	private BoardStatus boardStatus;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// TODO: 03/05/2022 Get user interface type from args
 		UserInterface ui = new CommandLineInterface();
 		// TODO: 03/05/2022 Get server address and port from args
@@ -57,7 +59,6 @@ public class Client extends Thread {
 		this.out = new ObjectOutputStream(this.socket.getOutputStream());
 		this.in = new ObjectInputStream(this.socket.getInputStream());
 		this.ui = ui;
-		this.gameStatus = new GameStatus();
 		this.running = true;
 	}
 
@@ -144,6 +145,15 @@ public class Client extends Thread {
 		trySendSetupSelection();
 	}
 
+	public BoardStatus getBoardStatus() {
+		if (boardStatus == null) ui.showError("Nothing to show");
+		return boardStatus;
+	}
+
+	public void setBoardStatus(BoardStatus boardStatus) {
+		this.boardStatus = boardStatus;
+	}
+
 	public void askHelp() {
 		if (usernameNotSet()) return;
 		write(new HelpRequest(username));
@@ -217,7 +227,7 @@ public class Client extends Thread {
 		write(new SelectCloud(username, cloud));
 	}
 
-	public void playCharacterCard(int card) {
-		// TODO: 16/05/2022
+	public void selectCharacterCard(int card) {
+		characterCard = card;
 	}
 }

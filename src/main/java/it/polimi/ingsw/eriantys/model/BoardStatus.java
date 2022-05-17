@@ -85,4 +85,32 @@ public class BoardStatus implements Serializable {
 			}
 		}
 	}
+
+	public List<String> getCharacterCards() {
+		return characterCards;
+	}
+
+	public List<String> getIslands() {
+		return islandsInfo.islands;
+	}
+
+	public Map<String, Integer> getIslandsSizes() {
+		return islandsInfo.islandsSizes;
+	}
+
+	public Map<String, Map<String, Integer>> getIslandsStudents() {
+		return islandsInfo.islandsStudents;
+	}
+
+	public Map<String, String> getIslandsControllers() {
+		return islandsInfo.islandsControllers;
+	}
+
+	public String getMotherNatureIsland() {
+		return islandsInfo.motherNatureIsland;
+	}
+
+	public Map<String, Integer> getIslandsNoEntryTiles() {
+		return islandsInfo.islandsNoEntryTiles;
+	}
 }

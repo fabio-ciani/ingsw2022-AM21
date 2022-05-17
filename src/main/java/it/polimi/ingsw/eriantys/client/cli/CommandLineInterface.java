@@ -1,5 +1,7 @@
 package it.polimi.ingsw.eriantys.client.cli;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.client.Client;
 import it.polimi.ingsw.eriantys.client.GameStatus;
 import it.polimi.ingsw.eriantys.client.UserInterface;
@@ -8,18 +10,31 @@ import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.Ping;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.AssistantCard;
+import it.polimi.ingsw.eriantys.model.BoardStatus;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class CommandLineInterface implements UserInterface {
 	private Client client;
 	private final Scanner scanner;
 	private boolean running; // TODO: 10/05/2022 Set to false when "quit" command is typed, also handle client.running
+	private final JsonObject characterCardInfo;
 
-	public CommandLineInterface() {
+	public CommandLineInterface() throws IOException {
 		this.scanner = new Scanner(System.in);
+		try (InputStream in = getClass().getClassLoader().getResourceAsStream("help/characters.json")) {
+			if (in == null) throw new FileNotFoundException();
+			InputStreamReader reader = new InputStreamReader(in);
+			Gson gson = new Gson();
+			characterCardInfo = gson.fromJson(reader, JsonObject.class);
+		}
 	}
 
 	@Override
@@ -43,22 +58,22 @@ public class CommandLineInterface implements UserInterface {
 		System.out.println(ConsoleColors.ANSI_RED + "Not implemented yet" + ConsoleColors.ANSI_RESET);
 	}
 
-	private boolean checkArgsNumber(String[] tokens, int expected) {
+	private boolean wrongArgNumber(String[] tokens, int expected) {
 		int argsNumber = tokens.length - 1;
 		if (argsNumber != expected) {
 			showError(String.format("Expected %d argument(s), received %d", expected, argsNumber));
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
-	private boolean checkArgsNumber(String[] tokens, int min, int max) {
+	private boolean wrongArgNumber(String[] tokens, int min, int max) {
 		int argsNumber = tokens.length - 1;
 		if (argsNumber < min || argsNumber > max) {
 			showError(String.format("Expected between %d and %d arguments, received %d", min, max, argsNumber));
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override
@@ -70,55 +85,74 @@ public class CommandLineInterface implements UserInterface {
 			try {
 				switch (tokens[0].toLowerCase()) {
 					case "help", "h" -> {
-						if (checkArgsNumber(tokens, 0)) client.askHelp();
+						if (wrongArgNumber(tokens, 0)) return;
+						client.askHelp();
 					}
 					case "user", "u" -> {
-						if (checkArgsNumber(tokens, 1)) client.sendHandshake(tokens[1]);
+						if (wrongArgNumber(tokens, 1)) return;
+						client.sendHandshake(tokens[1]);
 					}
 					case "lobbies", "l" -> {
-						if (checkArgsNumber(tokens, 0)) client.askLobbies();
+						if (wrongArgNumber(tokens, 0)) return;
+						client.askLobbies();
 					}
 					case "join", "j" -> {
-						if (checkArgsNumber(tokens, 1)) client.joinLobby(tokens[1]);
+						if (wrongArgNumber(tokens, 1)) return;
+						client.joinLobby(tokens[1]);
 					}
 					case "create", "cr" -> {
-						if (checkArgsNumber(tokens, 1, 2))
-							client.createLobby(tokens[1], tokens.length == 3 ? tokens[2] : "true");
+						if (wrongArgNumber(tokens, 1, 2)) return;
+						client.createLobby(tokens[1], tokens.length == 3 ? tokens[2] : "true");
 					}
 					case "leave", "e" -> {
-						if (checkArgsNumber(tokens, 0)) client.leaveLobby();
+						if (wrongArgNumber(tokens, 0)) return;
+						client.leaveLobby();
 					}
 					case "wizard", "w" -> {
-						if (checkArgsNumber(tokens, 1)) client.setWizard(tokens[1].toUpperCase());
+						if (wrongArgNumber(tokens, 1)) return;
+						client.setWizard(tokens[1].toUpperCase());
 					}
 					case "tower", "t" -> {
-						if (checkArgsNumber(tokens, 1)) client.setTowerColor(tokens[1].toUpperCase());
+						if (wrongArgNumber(tokens, 1)) return;
+						client.setTowerColor(tokens[1].toUpperCase());
 					}
 					case "assistant", "a" -> {
-						if (checkArgsNumber(tokens, 1)) client.playAssistantCard(tokens[1].toUpperCase());
+						if (wrongArgNumber(tokens, 1)) return;
+						client.playAssistantCard(tokens[1].toUpperCase());
 					}
 					case "dining", "sd" -> {
 						// TODO: 13/05/2022 Replace "dining room" with GameConstants
-						if (checkArgsNumber(tokens, 1)) client.moveStudent(tokens[1], "dining room");
+						if (wrongArgNumber(tokens, 1)) return;
+						client.moveStudent(tokens[1], "dining room");
 					}
 					case "island", "si" -> {
-						if (checkArgsNumber(tokens, 2)) client.moveStudent(tokens[1], tokens[2]);
+						if (wrongArgNumber(tokens, 2)) return;
+						client.moveStudent(tokens[1], tokens[2]);
 					}
 					case "mother", "m" -> {
-						if (checkArgsNumber(tokens, 1)) client.moveMotherNature(tokens[1]);
+						if (wrongArgNumber(tokens, 1)) return;
+						client.moveMotherNature(tokens[1]);
 					}
 					case "cloud", "cl" -> {
-						if (checkArgsNumber(tokens, 1)) client.chooseCloud(Integer.parseInt(tokens[1]));
+						if (wrongArgNumber(tokens, 1)) return;
+						client.chooseCloud(Integer.parseInt(tokens[1]));
 					}
 					case "character", "ch" -> {
-						if (checkArgsNumber(tokens, 1)) client.playCharacterCard(Integer.parseInt(tokens[1]));
-						// TODO: 16/05/2022
+						if (wrongArgNumber(tokens, 1)) return;
+						int id = Integer.parseInt(tokens[1]);
+						client.selectCharacterCard(id);
+						showCharacterCardArgs(id);
 					}
 					case "ccarguments", "ccargs" -> {
 						// TODO: 16/05/2022
 					}
 					case "bstat", "bs" -> {
-
+						if (wrongArgNumber(tokens, 0)) return;
+						showBoard();
+					}
+					case "ccard", "ccl" -> {
+						if (wrongArgNumber(tokens, 0)) return;
+						showCharacterCards();
 					}
 					// TODO: 16/05/2022 printAssistantCards() called by command /acard and message handlers?
 					default -> showError("Invalid command");
@@ -217,16 +251,70 @@ public class CommandLineInterface implements UserInterface {
 							.append(")");
 				}
 				showInfo(output.toString());
+			} else if (message instanceof BoardUpdate m) {
+				showInfo("It's your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
+				client.setBoardStatus(m.getStatus());
 			} else {
 				showInfo("Received " + message.getClass());
 			}
 		} else if (message instanceof InitialBoardStatus m) {
 			showInfo("The game has begun!");
-			// TODO: 13/05/2022 Print initial board status
+			client.setBoardStatus(m.getStatus());
 		} else if (message instanceof Ping) {
 			client.write(new Ping());
 		} else {
 			showInfo("Received " + message.getClass());
 		}
+	}
+
+	private void showCharacterCards() {
+		BoardStatus boardStatus = client.getBoardStatus();
+		if (boardStatus == null) return;
+		StringBuilder output = new StringBuilder("Available character cards for this game:");
+		List<String> cards = boardStatus.getCharacterCards();
+		for (int i = 0; i < cards.size(); i++) {
+			String card = cards.get(i);
+			output.append("\n[").append(i).append("] ").append(card);
+		}
+		showInfo(output.toString());
+	}
+
+	private void showCharacterCardArgs(int id) {
+		BoardStatus boardStatus = client.getBoardStatus();
+		if (boardStatus == null) return;
+		String card = boardStatus.getCharacterCards().get(id);
+		String cmd = characterCardInfo.getAsJsonObject(card).get("cmd").getAsString();
+		showInfo("Set the arguments for the " + card + " character card using:\n " + cmd);
+	}
+
+	private void showBoard() {
+		BoardStatus boardStatus = client.getBoardStatus();
+		if (boardStatus == null) return;
+		StringBuilder output = new StringBuilder("Islands:");
+		final List<String> islands = boardStatus.getIslands();
+		final Map<String, Integer> islandsSizes = boardStatus.getIslandsSizes();
+		final Map<String, Map<String, Integer>> islandsStudents = boardStatus.getIslandsStudents();
+		final Map<String, String> islandsControllers = boardStatus.getIslandsControllers();
+		final String motherNatureIsland = boardStatus.getMotherNatureIsland();
+		final Map<String, Integer> islandsNoEntryTiles = boardStatus.getIslandsNoEntryTiles();
+		for (String island : islands) {
+			String controller = Optional.ofNullable(islandsControllers.get(island)).orElse("none");
+			output.append("\n\n[").append(island).append("]")
+					.append("\ngroup of ").append(islandsSizes.get(island)).append(" islands")
+					.append("\ncontroller: ").append(controller)
+					.append("\nstudents:");
+			Map<String, Integer> students = islandsStudents.get(island);
+			for (String color : students.keySet()) {
+				output.append("\n\t").append(students.get(color)).append(" ").append(color);
+			}
+			if (island.equals(motherNatureIsland)) {
+				output.append("\nhas Mother Nature");
+			}
+			Integer noEntryTiles = islandsNoEntryTiles.get(island);
+			if (noEntryTiles != null && noEntryTiles > 0) {
+				output.append("\nhas ").append(noEntryTiles).append(" no entry tiles");
+			}
+		}
+		showInfo(output.toString());
 	}
 }

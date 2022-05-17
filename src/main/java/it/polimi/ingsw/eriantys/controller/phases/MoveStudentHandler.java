@@ -3,6 +3,8 @@ package it.polimi.ingsw.eriantys.controller.phases;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.MoveStudent;
+import it.polimi.ingsw.eriantys.messages.server.BoardUpdate;
+import it.polimi.ingsw.eriantys.messages.server.UserActionUpdate;
 import it.polimi.ingsw.eriantys.model.exceptions.*;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
@@ -43,12 +45,13 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 	}
 
 	@Override
-	public void handleDisconnectedUser(String username) throws NoConnectionException {
-		while (movementCount < 3) {
-			// TODO move students at random?
-			movementCount++;
-			checkStateTransition();
-		}
+	public void handleDisconnectedUser(String username) {
+		game.receiveMotherNatureMovement();
+	}
+
+	@Override
+	public void sendReconnectUpdate(String username) throws NoConnectionException {
+		game.sendBoardUpdate();
 	}
 
 	private void process(MoveStudent message) throws NoConnectionException {

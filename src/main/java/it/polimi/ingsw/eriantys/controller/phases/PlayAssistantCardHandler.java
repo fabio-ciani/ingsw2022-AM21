@@ -4,6 +4,7 @@ import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.PlayAssistantCard;
 import it.polimi.ingsw.eriantys.messages.server.AssistantCardUpdate;
+import it.polimi.ingsw.eriantys.messages.server.UserActionUpdate;
 import it.polimi.ingsw.eriantys.server.HelpContent;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
@@ -63,6 +64,11 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		playedCards.put(username, card);
 		game.nextPlayer();
 		checkStateTransition();
+	}
+
+	@Override
+	public void sendReconnectUpdate(String username) throws NoConnectionException {
+		game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
 	}
 
 	private void process(PlayAssistantCard message) throws NoConnectionException {

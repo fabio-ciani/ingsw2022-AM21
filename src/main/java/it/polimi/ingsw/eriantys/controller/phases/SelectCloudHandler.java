@@ -49,6 +49,11 @@ public class SelectCloudHandler implements MessageHandler {
 		game.advanceTurn();
 	}
 
+	@Override
+	public void sendReconnectUpdate(String username) throws NoConnectionException {
+		game.sendBoardUpdate();
+	}
+
 	private void process(SelectCloud message) throws NoConnectionException {
 		String sender = message.getSender();
 		int cloud = message.getCloud();

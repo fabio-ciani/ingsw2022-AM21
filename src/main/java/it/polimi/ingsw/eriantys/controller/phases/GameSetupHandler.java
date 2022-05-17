@@ -3,6 +3,7 @@ package it.polimi.ingsw.eriantys.controller.phases;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.GameSetupSelection;
+import it.polimi.ingsw.eriantys.messages.server.UserActionUpdate;
 import it.polimi.ingsw.eriantys.messages.server.UserSelectionUpdate;
 import it.polimi.ingsw.eriantys.model.TowerColor;
 import it.polimi.ingsw.eriantys.model.Wizard;
@@ -51,7 +52,7 @@ public class GameSetupHandler implements MessageHandler {
 	}
 
 	@Override
-	public void handleDisconnectedUser(String username) throws NoConnectionException {
+	public void handleDisconnectedUser(String username) {
 		String towerColor = availableTowerColors.get(0);
 		String wizard = availableWizards.get(0);
 
@@ -67,7 +68,11 @@ public class GameSetupHandler implements MessageHandler {
 		availableWizards.remove(wizard);
 		System.out.println("Confirmed: tower color " + towerColor + ", wizard " + wizard);
 		game.nextPlayer();
-		checkStateTransition();
+	}
+
+	@Override
+	public void sendReconnectUpdate(String username) throws NoConnectionException {
+		game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards));
 	}
 
 	private void process(GameSetupSelection message) throws NoConnectionException {

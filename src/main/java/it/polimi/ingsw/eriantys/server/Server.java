@@ -21,6 +21,7 @@ public class Server extends Thread {
 	private boolean running;
 	private final Map<Integer, Game> gameById;
 	private final Map<String, ClientConnection> connectionByUsername;
+	private final Map<String, Boolean> reconnectionSettings;
 	private int nextGameId;
 
 	private static final int MIN_NUM_PLAYERS = 2;
@@ -43,6 +44,7 @@ public class Server extends Thread {
 		this.running = true;
 		this.gameById = new HashMap<>();
 		this.connectionByUsername = new HashMap<>();
+		this.reconnectionSettings = new HashMap<>();
 		this.nextGameId = 0;
 		this.serverSocket = new ServerSocket(port);
 	}
@@ -83,29 +85,31 @@ public class Server extends Thread {
 			response = new Refused(details);
 		} else {
 			connectionByUsername.put(username, connection);
+			reconnectionSettings.putIfAbsent(username, false);
 			response = new AcceptedUsername(username);
 		}
 		connection.write(response);
 	}
 
-	public synchronized void reconnect(String username, int gameId, String passcode, ClientConnection connection) {
+	public synchronized void reconnect(String username, int gameId, String passcode, ClientConnection connection)
+			throws NoConnectionException {
 		Message response;
-		if (connectionByUsername.containsKey(username) && connectionByUsername.get(username) == null) {
+		if (reconnectionSettings.get(username) != null && reconnectionSettings.get(username)) {
 			if (!gameById.containsKey(gameId) || gameById.get(gameId) == null)
-				response = new Refused("Game " + gameId + " does not exist");
+				response = new RefusedReconnect("Game " + gameId + " does not exist");
 			else {
 				Game game = gameById.get(gameId);
-				if (game.checkCredentials(username, passcode))
-					response = new Accepted();
-				else
-					response = new Refused("Incorrect passcode");
+				if (game.checkCredentials(username, passcode)) {
+					response = new AcceptedJoinLobby(gameId, passcode);
+					connection.setGame(game);
+					game.reconnect(username);
+				} else
+					response = new RefusedReconnect("Incorrect credentials");
 			}
 		} else if (!connectionByUsername.containsKey(username)) {
-			response = new Refused("Username \"" + username + "\" does not exist");
-		} else if (connectionByUsername.get(username) != null) {
-			response = new Refused("Game " + gameId + " has ended");
+			response = new RefusedReconnect("Username \"" + username + "\" does not exist");
 		} else {
-			response = new Refused("Unable to reconnect to game " + gameId);
+			response = new RefusedReconnect("Unable to reconnect to game " + gameId);
 		}
 
 		connection.write(response);
@@ -117,23 +121,21 @@ public class Server extends Thread {
 				.toList()
 				.forEach(user -> {
 					Game game = connection.getGame();
-					if (game == null) {
-						connectionByUsername.remove(user);
-					} else {
-						if (game.isStarted())
-							connectionByUsername.put(user, null);
-						else {
-							connectionByUsername.remove(user);
-							if (game.isEmpty())
-								gameById.remove(game.getInfo().getGameId());
-						}
+					connectionByUsername.remove(user);
+					if (game != null) {
+						reconnectionSettings.put(user, game.isStarted());
 						try {
 							game.disconnect(user);
 						} catch (NoConnectionException e) {
 							e.printStackTrace();
 						}
+						if (game.isEmpty()) gameById.remove(game.getInfo().getGameId());
 					}
 				});
+	}
+
+	public boolean isConnected(String username) {
+		return connectionByUsername.get(username) != null;
 	}
 
 	public ClientConnection getConnection(String username) throws NoConnectionException {
@@ -188,6 +190,7 @@ public class Server extends Thread {
 				connection.setGame(target);
 				connection.write(new AcceptedJoinLobby(gameId, passcode));
 				connection.setJoinedLobby(true);
+				reconnectionSettings.put(sender, true);
 				target.notifyLobbyChange();
 				if (target.meetsStartupCondition())
 					target.setup();
@@ -214,8 +217,9 @@ public class Server extends Thread {
 		} else {
 			System.out.printf("Left game: %d%n", gameId);
 			connection.setGame(null);
-			connection.write(new Accepted());
+			connection.write(new AcceptedLeaveLobby());
 			connection.setJoinedLobby(false);
+			reconnectionSettings.put(sender, false);
 			target.notifyLobbyChange();
 			if (target.isEmpty())
 				gameById.remove(gameId);
@@ -244,6 +248,7 @@ public class Server extends Thread {
 			connection.setGame(game);
 			connection.write(new AcceptedJoinLobby(nextGameId, passcode));
 			connection.setJoinedLobby(true);
+			reconnectionSettings.put(sender, true);
 			game.notifyLobbyChange();
 			nextGameId++;
 		}
@@ -261,9 +266,14 @@ public class Server extends Thread {
 		connection.write(new HelpResponse(HelpContent.NO_GAME.getContent()));
 	}
 
-	public void gameOver(Game game, List<String> players) throws NoConnectionException {
+	public void gameOver(Game game, List<String> players) {
 		for (String player : players) {
-			getConnection(player).setGame(null);
+			try {
+				getConnection(player).setGame(null);
+			} catch (NoConnectionException e) {
+				System.out.println("this is a printstacktrace");
+				e.printStackTrace();
+			}
 			connectionByUsername.remove(player);
 		}
 		gameById.remove(game.getInfo().getGameId(), game);

@@ -71,6 +71,11 @@ public class GameManager {
 			}
 	}
 
+	public void setupEntrances() throws InvalidArgumentException, NoMovementException {
+		for (Player player : players.getTurnOrder())
+			player.getEntrance().refillFrom(board.getBag());
+	}
+
 	/**
 	 * A method to complete the setup of a {@link Player} in the game.
 	 * @param nickname the {@link Player}'s nickname

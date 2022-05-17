@@ -1,6 +1,7 @@
 package it.polimi.ingsw.eriantys.controller.phases;
 
 import it.polimi.ingsw.eriantys.messages.GameMessage;
+import it.polimi.ingsw.eriantys.messages.server.UserActionUpdate;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
 /**
@@ -23,4 +24,6 @@ public interface MessageHandler {
 	String getHelp();
 
 	void handleDisconnectedUser(String username) throws NoConnectionException;
+
+	void sendReconnectUpdate(String username) throws NoConnectionException;
 }

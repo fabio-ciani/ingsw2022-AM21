@@ -166,6 +166,10 @@ public class CommandLineInterface implements UserInterface {
 						if (wrongArgNumber(tokens, 1)) return;
 						showSchoolBoard(tokens[1]);
 					}
+					case "reconnect", "r" -> {
+						if (wrongArgNumber(tokens, 0)) return;
+						client.sendReconnect();
+					}
 					// TODO: 16/05/2022 printAssistantCards() called by command /acard and message handlers?
 					default -> showError("Invalid command");
 				}
@@ -183,12 +187,17 @@ public class CommandLineInterface implements UserInterface {
 			showInfo("Ok");
 			if (message instanceof AcceptedUsername m) {
 				client.setUsername(m.getUsername());
+				if (client.hasReconnectSettings())
+					showInfo("Reconnection available, type /r or /reconnect to join");
 			} else if (message instanceof AcceptedJoinLobby m) {
 				client.setGameId(m.getGameId());
-				client.setPasscode(m.getPasscode());
+				client.putReconnectSettings(m);
+			} else if (message instanceof AcceptedLeaveLobby) {
+				client.removeReconnectSettings();
 			}
 		} else if (message instanceof Refused refused) {
 			showError(refused.getDetails());
+			if (message instanceof RefusedReconnect) client.removeReconnectSettings();
 		} else if (message instanceof HelpResponse m) {
 			showInfo(m.getContent());
 		} else if (message instanceof AvailableLobbies availableLobbies) {
@@ -257,12 +266,28 @@ public class CommandLineInterface implements UserInterface {
 				showAssistantCards();
 			} else if (message instanceof BoardUpdate m) {
 				showInfo("It's your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
+				client.setBoardStatus(m.getStatus());
+			} else if (message instanceof GameOverUpdate m) {
+				client.removeReconnectSettings();
+				showInfo("Game over: the winner is " + m.getWinner());
 			} else {
 				showInfo("Received " + message.getClass());
 			}
 		} else if (message instanceof InitialBoardStatus m) {
 			showInfo("The game has begun!");
 			client.setBoardStatus(m.getStatus());
+		} else if (message instanceof DisconnectionUpdate m) {
+			String subject = m.getSubject();
+			int numPlayers = m.getNumPlayers();
+			boolean gameIdle = m.isGameIdle();
+			showInfo(subject + " has disconnected, " + numPlayers + " players currently connected"
+					+ (gameIdle ? "\nGame idle" : ""));
+		} else if (message instanceof ReconnectionUpdate m) {
+			String subject = m.getSubject();
+			int numPlayers = m.getNumPlayers();
+			boolean gameResumed = m.isGameResumed();
+			showInfo(subject + " has reconnected, " + numPlayers + " players currently connected"
+					+ (gameResumed ? "\nGame resumed" : ""));
 		} else if (message instanceof Ping) {
 			client.write(new Ping());
 		} else {

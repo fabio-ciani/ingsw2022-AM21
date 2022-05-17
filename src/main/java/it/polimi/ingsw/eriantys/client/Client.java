@@ -33,7 +33,6 @@ public class Client extends Thread {
 	private final UserInterface ui;
 	private String username;
 	private Integer gameId;
-	private String passcode; // TODO: 16/05/2022 save on file
 	private String towerColor;
 	private String wizard;
 	private Integer characterCard;
@@ -123,10 +122,6 @@ public class Client extends Thread {
 		this.gameId = gameId;
 	}
 
-	public void setPasscode(String passcode) {
-		this.passcode = passcode;
-	}
-
 	public String getTowerColor() {
 		return towerColor;
 	}
@@ -178,6 +173,17 @@ public class Client extends Thread {
 		}
 	}
 
+	public void sendReconnect() {
+		JsonObject reconnectSettings = getReconnectSettings();
+		if (reconnectSettings == null) {
+			ui.showError("Reconnection unavailable");
+			return;
+		}
+		int gameId = reconnectSettings.get("gameId").getAsInt();
+		String passcode = reconnectSettings.get("passcode").getAsString();
+		write(new Reconnect(username, gameId, passcode));
+	}
+
 	public void askLobbies() {
 		if (usernameNotSet()) return;
 		write(new LobbiesRequest(username));
@@ -208,6 +214,36 @@ public class Client extends Thread {
 		}
 	}
 
+	public void putReconnectSettings(AcceptedJoinLobby message) {
+		int gameId = message.getGameId();
+		String passcode = message.getPasscode();
+		JsonObject reconnectInfo = new JsonObject();
+		reconnectInfo.addProperty("gameId", gameId);
+		reconnectInfo.addProperty("passcode", passcode);
+
+		Preferences prefs = Preferences.userRoot();
+		prefs.put("reconnect_" + username, new Gson().toJson(reconnectInfo));
+	}
+
+	public void removeReconnectSettings() {
+		Preferences prefs = Preferences.userRoot();
+		prefs.remove("reconnect_" + username);
+	}
+
+	public boolean hasReconnectSettings() {
+		return getReconnectSettings() != null;
+	}
+
+	private JsonObject getReconnectSettings() {
+		Preferences prefs = Preferences.userRoot();
+		String prefValue = prefs.get("reconnect_" + username, null);
+		return new Gson().fromJson(prefValue, JsonObject.class);
+	}
+
+	// ???
+	// BoardStatus is the content of BoardUpdate messages
+	// public synchronized void updateGameStatus(BoardStatus boardStatus) {}
+	// ???
 	public void leaveLobby() {
 		if (gameId == null) {
 			ui.showError("Not in a lobby");

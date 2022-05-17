@@ -23,6 +23,8 @@ public class Game {
 	private final GameInfo info;
 	private boolean started = false;
 	private boolean lastRound = false;
+	private boolean idle = false;
+	private Thread idleThread = null;
 	private List<String> players;
 	private final Map<String, String> playerPasscodes;
 	private int currentPlayer;
@@ -56,6 +58,14 @@ public class Game {
 	 */
 	public GameInfo getInfo() {
 		return info;
+	}
+
+	/**
+	 * Returns the username of the current player.
+	 * @return the username of the current player.
+	 */
+	public String getCurrentPlayer() {
+		return players.get(currentPlayer);
 	}
 
 	/**
@@ -96,6 +106,7 @@ public class Game {
 		started = true;
 		setGameManager();
 		messageHandler = new GameSetupHandler(this);
+		checkDisconnection();
 	}
 
 	/**
@@ -105,6 +116,7 @@ public class Game {
 	public void start() throws NoConnectionException {
 		try {
 			gameManager.setupBoard();
+			gameManager.setupEntrances();
 		} catch (InvalidArgumentException | NoMovementException e) {
 			e.printStackTrace();
 		}
@@ -126,19 +138,21 @@ public class Game {
 		}
 		availableAssistantCards = gameManager.getAvailableAssistantCards();
 		messageHandler = new PlayAssistantCardHandler(this);
+		checkDisconnection();
 	}
 
 	/**
 	 * Handles the assistant cards played by the players and sets up the new order of the players.
 	 * @param playedCards the assistant card played by each player.
 	 */
-	public void newTurn(Map<String, String> playedCards) throws NoConnectionException {
+	public void newTurn(Map<String, String> playedCards) {
 		lastRound = gameManager.handleAssistantCards(playedCards);
 		if (lastRound) broadcast(new LastRoundUpdate());
 		players = gameManager.getTurnOrder();
 		currentPlayer = 0;
 		messageHandler = new MoveStudentHandler(this);
 		updateCurrentPlayer();
+		checkDisconnection();
 	}
 
 	/**
@@ -151,6 +165,7 @@ public class Game {
 		else {
 			messageHandler = new MoveStudentHandler(this);
 			updateCurrentPlayer();
+			checkDisconnection();
 		}
 	}
 
@@ -159,6 +174,7 @@ public class Game {
 	 */
 	public void receiveMotherNatureMovement() {
 		messageHandler = new MotherNatureDestinationHandler(this);
+		checkDisconnection();
 	}
 
 	/**
@@ -166,6 +182,7 @@ public class Game {
 	 */
 	public void receiveCloudSelection() {
 		messageHandler = new SelectCloudHandler(this);
+		checkDisconnection();
 	}
 
 	/**
@@ -208,17 +225,34 @@ public class Game {
 			removePlayer(username);
 			notifyLobbyChange();
 		} else {
-			if (players.get(currentPlayer).equals(username)) {
-				messageHandler.handleDisconnectedUser(username);  // e.g. select random tower color
+			List<String> connectedPlayers = players.stream().filter(server::isConnected).toList();
+			if (connectedPlayers.size() == 1)
+				pause(connectedPlayers.get(0));
+			else if (connectedPlayers.size() == 0)
+				gameOver();
+			broadcast(new DisconnectionUpdate(username, connectedPlayers.size(), idle));
+			if (!idle && players.get(currentPlayer).equals(username)) {
+				messageHandler.handleDisconnectedUser(username);
 			}
 		}
 	}
 
 	/**
-	 * Notifies every player in the game about the players currently waiting for the game to start.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
+	 * Handles the reconnection of the specified player.
+	 * @param username the username of the player who has reconnected to the game.
+	 * @throws NoConnectionException if no connection can be retrieved for the specified player.
 	 */
-	public void notifyLobbyChange() throws NoConnectionException {
+	public void reconnect(String username) throws NoConnectionException {
+		int connectedPlayers =
+				players.stream().mapToInt(p -> server.isConnected(p) ? 1 : 0).reduce(0, Integer::sum);
+		broadcast(new ReconnectionUpdate(username, connectedPlayers, resume()));
+		messageHandler.sendReconnectUpdate(username);
+	}
+
+	/**
+	 * Notifies every player in the game about the players currently waiting for the game to start.
+	 */
+	public void notifyLobbyChange() {
 		LobbyUpdate res = new LobbyUpdate(new ArrayList<>(this.players));
 		broadcast(res);
 	}
@@ -304,11 +338,9 @@ public class Game {
 	 * @throws ItemNotAvailableException if an error has occurred while removing a No Entry tile from an island.
 	 * @throws DuplicateNoEntryTileException if an error has occurred while placing a No Entry tile on an island.
 	 * @throws NoMovementException if an error has occurred while moving one or more students.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
 	public void playCharacterCard(int card, JsonObject params)
-			throws InvalidArgumentException, ItemNotAvailableException, DuplicateNoEntryTileException, NoMovementException,
-			NoConnectionException {
+			throws InvalidArgumentException, ItemNotAvailableException, DuplicateNoEntryTileException, NoMovementException {
 		lastRound = gameManager.handleCharacterCard(card, params);
 		if (lastRound) broadcast(new LastRoundUpdate());
 	}
@@ -324,6 +356,8 @@ public class Game {
 			refuseRequest(message, "Access denied to game: " + info.getGameId());
 		else if (!sender.equals(players.get(currentPlayer)))
 			refuseRequest(message, "Not your turn");
+		else if (idle)
+			refuseRequest(message, "Game in idle state");
 		else
 			messageHandler.handle(message);
 	}
@@ -357,6 +391,7 @@ public class Game {
 	 */
 	public void nextPlayer() {
 		currentPlayer = (currentPlayer + 1) % players.size();
+		checkDisconnection();
 	}
 
 	/**
@@ -399,14 +434,26 @@ public class Game {
 	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
 	public void gameOver() throws NoConnectionException {
-		sendUpdate(new GameOverUpdate(gameManager.getWinner()));  // TODO client should clear reconnect.json
+		sendUpdate(new GameOverUpdate(gameManager.getWinner()));
 		server.gameOver(this, players);
 	}
 
-	private void broadcast(Message message) throws NoConnectionException {
+	private void gameOver(String winner) {
+		try {
+			sendUpdate(new GameOverUpdate(winner));
+			server.gameOver(this, players);
+		} catch (NoConnectionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void broadcast(Message message) {
 		for (String player : players) {
-			ClientConnection c = server.getConnection(player);
-			if (c != null) c.write(message);
+			try {
+				server.getConnection(player).write(message);
+			} catch (NoConnectionException e) {
+				System.out.println(player + " disconnected");
+			}
 		}
 	}
 
@@ -417,5 +464,37 @@ public class Game {
 
 	private void updateCurrentPlayer() {
 		gameManager.setCurrentPlayer(players.get(currentPlayer));
+	}
+
+	private void checkDisconnection() {
+		if (!server.isConnected(getCurrentPlayer())) {
+			try {
+				messageHandler.handleDisconnectedUser(getCurrentPlayer());
+			} catch (NoConnectionException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void pause(String connectedPlayer) {
+		idle = true;
+		idleThread = new Thread(() -> {
+			try {
+				Thread.sleep(60000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				return;
+			}
+			if (idle) gameOver(connectedPlayer);
+		});
+		idleThread.start();
+	}
+
+	private boolean resume() {
+		if (!idle) return false;
+
+		idle = false;
+		idleThread.interrupt();
+		return true;
 	}
 }

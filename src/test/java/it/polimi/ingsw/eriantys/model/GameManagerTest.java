@@ -105,9 +105,24 @@ class GameManagerTest {
 	}
 
 	@Test
-	void coinsRepresentation_UsernameNotFound_NormalPostConditions() {
+	void coinsRepresentation_SimplifiedModeAndValidUsername_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+
+		assertNull(gm.coinsRepresentation("Eve"));
+	}
+
+	@Test
+	void coinsRepresentation_SimplifiedModeAndInvalidUsername_NormalPostConditions() {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, false);
+
+		assertDoesNotThrow(() -> gm.coinsRepresentation("admin"));
+	}
+
+	@Test
+	void coinsRepresentation_ExpertModeAndUsernameNotFound_NormalPostConditions() {
+		// Note: the test case will never happen
+		GameManager gm = new GameManager(players, true);
 
 		assertThrowsExactly(NullPointerException.class, () -> gm.coinsRepresentation("admin"));
 	}

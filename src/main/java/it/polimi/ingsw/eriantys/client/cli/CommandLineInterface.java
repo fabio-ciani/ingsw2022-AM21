@@ -298,8 +298,9 @@ public class CommandLineInterface implements UserInterface {
 	private void showCharacterCards() {
 		BoardStatus boardStatus = client.getBoardStatus();
 		if (boardStatus == null) return;
-		StringBuilder output = new StringBuilder("Available character cards for this game:");
 		List<String> cards = boardStatus.getCharacterCards();
+		if (cards == null) return;
+		StringBuilder output = new StringBuilder("Available character cards for this game:");
 		for (int i = 0; i < cards.size(); i++) {
 			String card = cards.get(i);
 			output.append("\n[").append(i).append("] ").append(card);
@@ -362,8 +363,10 @@ public class CommandLineInterface implements UserInterface {
 		final Map<String, Integer> playerEntrance = boardStatus.getPlayerEntrances().get(player);
 		final Map<String, Integer> playerDiningRoom = boardStatus.getPlayerDiningRooms().get(player);
 		final Integer playerTowers = boardStatus.getPlayerTowers().get(player);
-		final Integer playerCoins = boardStatus.getPlayerCoins().get(player);
-		output.append("\ncoins: ").append(playerCoins);
+		if (boardStatus.getPlayerCoins() != null) {
+			final Integer playerCoins = boardStatus.getPlayerCoins().get(player);
+			output.append("\ncoins: ").append(playerCoins);
+		}
 		output.append("\ntowers: ").append(playerTowers);
 		output.append("\nentrance:");
 		for (String color : playerEntrance.keySet()) {

@@ -20,8 +20,8 @@ public class GameManager {
 	private Player currPlayer;
 	private final ProfessorOwnership professors;
 	private InfluenceCalculator calc;
-	private final CharacterCard[] characters;
 	private final boolean expertMode;
+	private final CharacterCard[] characters;
 	private boolean lastRound;
 
 	public final GameConstants constants;
@@ -399,6 +399,8 @@ public class GameManager {
 	 * @return a representation for the number of coins owned by the specified player
 	 */
 	public Integer coinsRepresentation(String username) {
+		if (!expertMode)
+			return null;
 		return players.get(username).getCoins();	// TODO: check NullPointerException?
 	}
 

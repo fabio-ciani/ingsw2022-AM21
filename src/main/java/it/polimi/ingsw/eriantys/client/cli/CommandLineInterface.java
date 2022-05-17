@@ -150,9 +150,17 @@ public class CommandLineInterface implements UserInterface {
 						if (wrongArgNumber(tokens, 0)) return;
 						showBoard();
 					}
+					case "sbstat", "sbs" -> {
+						if (wrongArgNumber(tokens, 0)) return;
+						showSchoolBoard();
+					}
 					case "ccard", "ccl" -> {
 						if (wrongArgNumber(tokens, 0)) return;
 						showCharacterCards();
+					}
+					case "pstat", "ps" -> {
+						if (wrongArgNumber(tokens, 1)) return;
+						showSchoolBoard(tokens[1]);
 					}
 					// TODO: 16/05/2022 printAssistantCards() called by command /acard and message handlers?
 					default -> showError("Invalid command");
@@ -292,11 +300,11 @@ public class CommandLineInterface implements UserInterface {
 		if (boardStatus == null) return;
 		StringBuilder output = new StringBuilder("Islands:");
 		final List<String> islands = boardStatus.getIslands();
-		final Map<String, Integer> islandsSizes = boardStatus.getIslandsSizes();
-		final Map<String, Map<String, Integer>> islandsStudents = boardStatus.getIslandsStudents();
-		final Map<String, String> islandsControllers = boardStatus.getIslandsControllers();
+		final Map<String, Integer> islandsSizes = boardStatus.getIslandSizes();
+		final Map<String, Map<String, Integer>> islandsStudents = boardStatus.getIslandStudents();
+		final Map<String, String> islandsControllers = boardStatus.getIslandControllers();
 		final String motherNatureIsland = boardStatus.getMotherNatureIsland();
-		final Map<String, Integer> islandsNoEntryTiles = boardStatus.getIslandsNoEntryTiles();
+		final Map<String, Integer> islandsNoEntryTiles = boardStatus.getIslandNoEntryTiles();
 		for (String island : islands) {
 			String controller = Optional.ofNullable(islandsControllers.get(island)).orElse("none");
 			output.append("\n\n[").append(island).append("]")
@@ -314,6 +322,36 @@ public class CommandLineInterface implements UserInterface {
 			if (noEntryTiles != null && noEntryTiles > 0) {
 				output.append("\nhas ").append(noEntryTiles).append(" no entry tiles");
 			}
+		}
+		showInfo(output.toString());
+	}
+
+	public void showSchoolBoard() {
+		showSchoolBoard(client.getUsername());
+	}
+
+	public void showSchoolBoard(String player) {
+		BoardStatus boardStatus = client.getBoardStatus();
+		if (boardStatus == null) return;
+		StringBuilder output = new StringBuilder(player).append("'s school board:");
+		final List<String> players = boardStatus.getPlayers();
+		if (!players.contains(player)) {
+			showError(player + " not in player list");
+			return;
+		}
+		final Map<String, Integer> playerEntrance = boardStatus.getPlayerEntrances().get(player);
+		final Map<String, Integer> playerDiningRoom = boardStatus.getPlayerDiningRooms().get(player);
+		final Integer playerTowers = boardStatus.getPlayerTowers().get(player);
+		final Integer playerCoins = boardStatus.getPlayerCoins().get(player);
+		output.append("\ncoins: ").append(playerCoins);
+		output.append("\ntowers: ").append(playerTowers);
+		output.append("\nentrance:");
+		for (String color : playerEntrance.keySet()) {
+			output.append("\n\t").append(playerEntrance.get(color)).append(" ").append(color);
+		}
+		output.append("\ndining room:");
+		for (String color : playerDiningRoom.keySet()) {
+			output.append("\n\t").append(playerDiningRoom.get(color)).append(" ").append(color);
 		}
 		showInfo(output.toString());
 	}

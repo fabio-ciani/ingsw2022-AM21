@@ -34,23 +34,23 @@ public class BoardStatus implements Serializable {
 	 */
 	private class PlayersInfo implements Serializable {
 		private final List<String> players;
-		private final Map<String, Map<String, Integer>> playersEntrances, playersDiningRooms;
-		private final Map<String, Integer> playersTowers;
-		private final Map<String, Integer> playersCoins;
+		private final Map<String, Map<String, Integer>> playerEntrances, playerDiningRooms;
+		private final Map<String, Integer> playerTowers;
+		private final Map<String, Integer> playerCoins;
 
 		private PlayersInfo() {
 			this.players = gm.getTurnOrder();
 
-			this.playersEntrances = new LinkedHashMap<>();
-			this.playersDiningRooms = new LinkedHashMap<>();
-			this.playersTowers = new LinkedHashMap<>();
-			this.playersCoins = new LinkedHashMap<>();
+			this.playerEntrances = new LinkedHashMap<>();
+			this.playerDiningRooms = new LinkedHashMap<>();
+			this.playerTowers = new LinkedHashMap<>();
+			this.playerCoins = new LinkedHashMap<>();
 
 			for (String p : players) {
-				playersEntrances.put(p, gm.entranceRepresentation(p));
-				playersDiningRooms.put(p, gm.diningRoomRepresentation(p));
-				playersTowers.put(p, gm.towersRepresentation(p));
-				playersCoins.put(p, gm.coinsRepresentation(p));
+				playerEntrances.put(p, gm.entranceRepresentation(p));
+				playerDiningRooms.put(p, gm.diningRoomRepresentation(p));
+				playerTowers.put(p, gm.towersRepresentation(p));
+				playerCoins.put(p, gm.coinsRepresentation(p));
 			}
 		}
 	}
@@ -60,28 +60,28 @@ public class BoardStatus implements Serializable {
 	 */
 	private class IslandsInfo implements Serializable {
 		private final List<String> islands;
-		private final Map<String, Integer> islandsSizes;
-		private final Map<String, Map<String, Integer>> islandsStudents;
-		private final Map<String, String> islandsControllers;
+		private final Map<String, Integer> islandSizes;
+		private final Map<String, Map<String, Integer>> islandStudents;
+		private final Map<String, String> islandControllers;
 		private final String motherNatureIsland;
-		private final Map<String, Integer> islandsNoEntryTiles;
+		private final Map<String, Integer> islandNoEntryTiles;
 
 		private IslandsInfo() {
 			this.islands = gm.islandsRepresentation();
 
-			this.islandsSizes = new LinkedHashMap<>();
-			this.islandsStudents = new LinkedHashMap<>();
-			this.islandsControllers = new LinkedHashMap<>();
+			this.islandSizes = new LinkedHashMap<>();
+			this.islandStudents = new LinkedHashMap<>();
+			this.islandControllers = new LinkedHashMap<>();
 
 			this.motherNatureIsland = gm.motherNatureIslandRepresentation();
 
-			this.islandsNoEntryTiles = new LinkedHashMap<>();
+			this.islandNoEntryTiles = new LinkedHashMap<>();
 
 			for (String isle : islands) {
-				this.islandsSizes.put(isle, gm.islandSizeRepresentation(isle));
-				this.islandsStudents.put(isle, gm.islandStudentsRepresentation(isle));
-				this.islandsControllers.put(isle, gm.islandControllerRepresentation(isle));
-				this.islandsNoEntryTiles.put(isle, gm.islandNoEntryTilesRepresentation(isle));
+				this.islandSizes.put(isle, gm.islandSizeRepresentation(isle));
+				this.islandStudents.put(isle, gm.islandStudentsRepresentation(isle));
+				this.islandControllers.put(isle, gm.islandControllerRepresentation(isle));
+				this.islandNoEntryTiles.put(isle, gm.islandNoEntryTilesRepresentation(isle));
 			}
 		}
 	}
@@ -94,23 +94,43 @@ public class BoardStatus implements Serializable {
 		return islandsInfo.islands;
 	}
 
-	public Map<String, Integer> getIslandsSizes() {
-		return islandsInfo.islandsSizes;
+	public Map<String, Integer> getIslandSizes() {
+		return islandsInfo.islandSizes;
 	}
 
-	public Map<String, Map<String, Integer>> getIslandsStudents() {
-		return islandsInfo.islandsStudents;
+	public Map<String, Map<String, Integer>> getIslandStudents() {
+		return islandsInfo.islandStudents;
 	}
 
-	public Map<String, String> getIslandsControllers() {
-		return islandsInfo.islandsControllers;
+	public Map<String, String> getIslandControllers() {
+		return islandsInfo.islandControllers;
 	}
 
 	public String getMotherNatureIsland() {
 		return islandsInfo.motherNatureIsland;
 	}
 
-	public Map<String, Integer> getIslandsNoEntryTiles() {
-		return islandsInfo.islandsNoEntryTiles;
+	public Map<String, Integer> getIslandNoEntryTiles() {
+		return islandsInfo.islandNoEntryTiles;
+	}
+
+	public List<String> getPlayers() {
+		return playersInfo.players;
+	}
+
+	public Map<String, Map<String, Integer>> getPlayerEntrances() {
+		return playersInfo.playerEntrances;
+	}
+
+	public Map<String, Map<String, Integer>> getPlayerDiningRooms() {
+		return playersInfo.playerDiningRooms;
+	}
+
+	public Map<String, Integer> getPlayerTowers() {
+		return playersInfo.playerTowers;
+	}
+
+	public Map<String, Integer> getPlayerCoins() {
+		return playersInfo.playerCoins;
 	}
 }

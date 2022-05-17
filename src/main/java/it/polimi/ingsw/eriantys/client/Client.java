@@ -22,6 +22,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.List;
+import java.util.Map;
 import java.util.prefs.Preferences;
 
 public class Client extends Thread {
@@ -37,6 +38,7 @@ public class Client extends Thread {
 	private String wizard;
 	private Integer characterCard;
 	private BoardStatus boardStatus;
+	private List<String> availableCards;
 
 	public static void main(String[] args) throws IOException {
 		// TODO: 03/05/2022 Get user interface type from args
@@ -146,12 +148,21 @@ public class Client extends Thread {
 	}
 
 	public BoardStatus getBoardStatus() {
-		if (boardStatus == null) ui.showError("Nothing to show");
+		if (boardStatus == null) ui.showError("Nothing to show yet");
 		return boardStatus;
 	}
 
 	public void setBoardStatus(BoardStatus boardStatus) {
 		this.boardStatus = boardStatus;
+	}
+
+	public List<String> getAvailableCards() {
+		if (boardStatus == null) ui.showError("Nothing to show yet");
+		return availableCards;
+	}
+
+	public void setAvailableCards(List<String> availableCards) {
+		this.availableCards = availableCards;
 	}
 
 	public void askHelp() {

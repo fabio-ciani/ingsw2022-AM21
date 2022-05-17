@@ -123,11 +123,11 @@ public class CommandLineInterface implements UserInterface {
 					case "dining", "sd" -> {
 						// TODO: 13/05/2022 Replace "dining room" with GameConstants
 						if (wrongArgNumber(tokens, 1)) return;
-						client.moveStudent(tokens[1], "dining room");
+						client.moveStudent(tokens[1].toUpperCase(), "dining room");
 					}
 					case "island", "si" -> {
 						if (wrongArgNumber(tokens, 2)) return;
-						client.moveStudent(tokens[1], tokens[2]);
+						client.moveStudent(tokens[2].toUpperCase(), tokens[1]);
 					}
 					case "mother", "m" -> {
 						if (wrongArgNumber(tokens, 1)) return;
@@ -154,7 +154,11 @@ public class CommandLineInterface implements UserInterface {
 						if (wrongArgNumber(tokens, 0)) return;
 						showSchoolBoard();
 					}
-					case "ccard", "ccl" -> {
+					case "acards", "acl" -> {
+						if (wrongArgNumber(tokens, 0)) return;
+						showAssistantCards();
+					}
+					case "ccards", "ccl" -> {
 						if (wrongArgNumber(tokens, 0)) return;
 						showCharacterCards();
 					}
@@ -204,23 +208,28 @@ public class CommandLineInterface implements UserInterface {
 			showInfo(output.toString());
 		} else if (message instanceof UserActionUpdate m1) {
 			String nextPlayer = m1.getNextPlayer();
-			if (message instanceof AssistantCardUpdate m && !m.getPlayedCards().isEmpty()) {
-				StringBuilder output = new StringBuilder("Played assistant cards:");
-				Map<String, String> playedCards = m.getPlayedCards();
-				for (String player : playedCards.keySet()) {
-					String cardName = playedCards.get(player);
-					AssistantCard card = AssistantCard.valueOf(cardName);
-					output.append("\n- ")
-							.append(player)
-							.append(" \u2192 ")
-							.append(cardName)
-							.append(" (value = ")
-							.append(card.value())
-							.append(", movement = ")
-							.append(card.movement())
-							.append(")");
+			if (message instanceof AssistantCardUpdate m) {
+				client.setAvailableCards(m.getAvailableCards().get(client.getUsername()));
+				if (!m.getPlayedCards().isEmpty()) {
+					StringBuilder output = new StringBuilder("Played assistant cards:");
+					Map<String, String> playedCards = m.getPlayedCards();
+					for (String player : playedCards.keySet()) {
+						String cardName = playedCards.get(player);
+						AssistantCard card = AssistantCard.valueOf(cardName);
+						output.append("\n- ")
+								.append(player)
+								.append(" \u2192 ")
+								.append(cardName)
+								.append(" (value = ")
+								.append(card.value())
+								.append(", movement = ")
+								.append(card.movement())
+								.append(")");
+					}
+					showInfo(output.toString());
 				}
-				showInfo(output.toString());
+			} else if (message instanceof BoardUpdate m) {
+				client.setBoardStatus(m.getStatus());
 			}
 			if (!nextPlayer.equals(client.getUsername())) {
 				showInfo(String.format("Waiting for %s to play", nextPlayer));
@@ -245,23 +254,9 @@ public class CommandLineInterface implements UserInterface {
 					showInfo(output.toString());
 				}
 			} else if (message instanceof AssistantCardUpdate m) {
-				StringBuilder output;
-				output = new StringBuilder();
-				output.append("Play an assistant card:");
-				for (String cardName : m.getAvailableCards().get(client.getUsername())) {
-					AssistantCard card = AssistantCard.valueOf(cardName);
-					output.append("\n- ")
-							.append(cardName)
-							.append(" (value = ")
-							.append(card.value())
-							.append(", movement = ")
-							.append(card.movement())
-							.append(")");
-				}
-				showInfo(output.toString());
+				showAssistantCards();
 			} else if (message instanceof BoardUpdate m) {
 				showInfo("It's your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
-				client.setBoardStatus(m.getStatus());
 			} else {
 				showInfo("Received " + message.getClass());
 			}
@@ -352,6 +347,23 @@ public class CommandLineInterface implements UserInterface {
 		output.append("\ndining room:");
 		for (String color : playerDiningRoom.keySet()) {
 			output.append("\n\t").append(playerDiningRoom.get(color)).append(" ").append(color);
+		}
+		showInfo(output.toString());
+	}
+
+	private void showAssistantCards() {
+		List<String> cards = client.getAvailableCards();
+		if (cards == null) return;
+		StringBuilder output = new StringBuilder("Available assistant cards:");
+		for (String cardName : cards) {
+			AssistantCard card = AssistantCard.valueOf(cardName);
+			output.append("\n- ")
+					.append(cardName)
+					.append(" (value = ")
+					.append(card.value())
+					.append(", movement = ")
+					.append(card.movement())
+					.append(")");
 		}
 		showInfo(output.toString());
 	}

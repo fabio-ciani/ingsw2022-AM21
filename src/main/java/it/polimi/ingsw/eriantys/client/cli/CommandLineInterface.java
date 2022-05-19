@@ -16,10 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class CommandLineInterface implements UserInterface {
 	private Client client;
@@ -319,7 +316,8 @@ public class CommandLineInterface implements UserInterface {
 	private void showBoard() {
 		BoardStatus boardStatus = client.getBoardStatus();
 		if (boardStatus == null) return;
-		StringBuilder output = new StringBuilder("Islands:");
+		String output;
+		GridBuilder islandGridBuilder = new GridBuilder(3);
 		final List<String> islands = boardStatus.getIslands();
 		final Map<String, Integer> islandsSizes = boardStatus.getIslandSizes();
 		final Map<String, Map<String, Integer>> islandsStudents = boardStatus.getIslandStudents();
@@ -327,24 +325,38 @@ public class CommandLineInterface implements UserInterface {
 		final String motherNatureIsland = boardStatus.getMotherNatureIsland();
 		final Map<String, Integer> islandsNoEntryTiles = boardStatus.getIslandNoEntryTiles();
 		for (String island : islands) {
+			StringBuilder islandStringBuilder = new StringBuilder();
 			String controller = Optional.ofNullable(islandsControllers.get(island)).orElse("none");
-			output.append("\n\n[").append(island).append("]")
+			islandStringBuilder.append("[").append(island).append("]")
 					.append("\ngroup of ").append(islandsSizes.get(island)).append(" islands")
 					.append("\ncontroller: ").append(controller)
 					.append("\nstudents:");
 			Map<String, Integer> students = islandsStudents.get(island);
 			for (String color : students.keySet()) {
-				output.append("\n\t").append(students.get(color)).append(" ").append(color);
+				islandStringBuilder.append("\n  ").append(students.get(color)).append(" ").append(color);
 			}
 			if (island.equals(motherNatureIsland)) {
-				output.append("\nhas Mother Nature");
+				islandStringBuilder.append("\nhas Mother Nature");
 			}
 			Integer noEntryTiles = islandsNoEntryTiles.get(island);
 			if (noEntryTiles != null && noEntryTiles > 0) {
-				output.append("\nhas ").append(noEntryTiles).append(" no entry tiles");
+				islandStringBuilder.append("\nhas ").append(noEntryTiles).append(" no entry tiles");
 			}
+			islandGridBuilder.add(islandStringBuilder.toString());
 		}
-		showInfo(output.toString());
+		output = "Islands:\n" + islandGridBuilder;
+		Map<String, Map<String, Integer>> cloudTiles = boardStatus.getCloudTiles();
+		GridBuilder cloudGridBuilder = new GridBuilder(3);
+		for (String cloud : cloudTiles.keySet()) {
+			StringBuilder cloudStringBuilder = new StringBuilder();
+			cloudStringBuilder.append("[").append(cloud).append("]");
+			for (String color : cloudTiles.get(cloud).keySet()) {
+				cloudStringBuilder.append("\n  ").append(cloudTiles.get(cloud).get(color)).append(" ").append(color);
+			}
+			cloudGridBuilder.add(cloudStringBuilder.toString());
+		}
+		output += "\n\nClouds:\n" + cloudGridBuilder;
+		showInfo(output);
 	}
 
 	public void showSchoolBoard() {
@@ -367,14 +379,18 @@ public class CommandLineInterface implements UserInterface {
 			final Integer playerCoins = boardStatus.getPlayerCoins().get(player);
 			output.append("\ncoins: ").append(playerCoins);
 		}
+		final Map<String, String> professors = boardStatus.getProfessors();
 		output.append("\ntowers: ").append(playerTowers);
 		output.append("\nentrance:");
 		for (String color : playerEntrance.keySet()) {
-			output.append("\n\t").append(playerEntrance.get(color)).append(" ").append(color);
+			output.append("\n  ").append(playerEntrance.get(color)).append(" ").append(color);
 		}
 		output.append("\ndining room:");
 		for (String color : playerDiningRoom.keySet()) {
-			output.append("\n\t").append(playerDiningRoom.get(color)).append(" ").append(color);
+			output.append("\n  ").append(playerDiningRoom.get(color)).append(" ").append(color);
+			if (Objects.equals(professors.get(color), player)) {
+				output.append(" - PROFESSOR");
+			}
 		}
 		showInfo(output.toString());
 	}

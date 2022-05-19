@@ -90,6 +90,14 @@ public class BoardStatus implements Serializable {
 		return characterCards;
 	}
 
+	public Map<String, Map<String, Integer>> getCloudTiles() {
+		return cloudTiles;
+	}
+
+	public Map<String, String> getProfessors() {
+		return professors;
+	}
+
 	public List<String> getIslands() {
 		return islandsInfo.islands;
 	}

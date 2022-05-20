@@ -3,7 +3,6 @@ package it.polimi.ingsw.eriantys.client.cli;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.client.Client;
-import it.polimi.ingsw.eriantys.client.GameStatus;
 import it.polimi.ingsw.eriantys.client.UserInterface;
 import it.polimi.ingsw.eriantys.controller.GameInfo;
 import it.polimi.ingsw.eriantys.messages.Message;
@@ -49,12 +48,6 @@ public class CommandLineInterface implements UserInterface {
 		System.out.println(ConsoleColors.ANSI_RED + details + ConsoleColors.ANSI_RESET + "\n");
 	}
 
-	@Override
-	public synchronized void showStatus(GameStatus status) {
-		// TODO: 03/05/2022 Print formatted game status
-		System.out.println(ConsoleColors.ANSI_RED + "Not implemented yet" + ConsoleColors.ANSI_RESET);
-	}
-
 	private boolean wrongArgNumber(String[] tokens, int expected) {
 		int argsNumber = tokens.length - 1;
 		if (argsNumber != expected) {
@@ -78,7 +71,7 @@ public class CommandLineInterface implements UserInterface {
 		this.running = true;
 		while (running) {
 			String line = scanner.nextLine();
-			String[] tokens = line.split("( )+", 0);
+			String[] tokens = line.split("( )+");
 			try {
 				switch (tokens[0].toLowerCase()) {
 					case "help", "h" -> {
@@ -141,7 +134,8 @@ public class CommandLineInterface implements UserInterface {
 						showCharacterCardArgs(id);
 					}
 					case "ccarguments", "ccargs" -> {
-						// TODO: 16/05/2022
+						if (wrongArgNumber(tokens, 0, 4)) return;
+						parseCharacterCardArgs(Arrays.copyOfRange(tokens, 1, tokens.length));
 					}
 					case "bstat", "bs" -> {
 						if (wrongArgNumber(tokens, 0)) return;
@@ -159,6 +153,10 @@ public class CommandLineInterface implements UserInterface {
 						if (wrongArgNumber(tokens, 0)) return;
 						showCharacterCards();
 					}
+					case "cdesc", "cc" -> {
+						if (wrongArgNumber(tokens, 1)) return;
+						showCharacterDescription(tokens[1]);
+					}
 					case "pstat", "ps" -> {
 						if (wrongArgNumber(tokens, 1)) return;
 						showSchoolBoard(tokens[1]);
@@ -167,7 +165,6 @@ public class CommandLineInterface implements UserInterface {
 						if (wrongArgNumber(tokens, 0)) return;
 						client.sendReconnect();
 					}
-					// TODO: 16/05/2022 printAssistantCards() called by command /acard and message handlers?
 					default -> showError("Invalid command");
 				}
 			} catch (IndexOutOfBoundsException e) {
@@ -236,6 +233,8 @@ public class CommandLineInterface implements UserInterface {
 				}
 			} else if (message instanceof BoardUpdate m) {
 				client.setBoardStatus(m.getStatus());
+			} else if (message instanceof CharacterCardUpdate m) {
+				showInfo(m.getCard() + " played");
 			}
 			if (!nextPlayer.equals(client.getUsername())) {
 				showInfo(String.format("Waiting for %s to play", nextPlayer));
@@ -267,7 +266,7 @@ public class CommandLineInterface implements UserInterface {
 			} else if (message instanceof GameOverUpdate m) {
 				client.removeReconnectSettings();
 				showInfo("Game over: the winner is " + m.getWinner());
-			} else {
+			} else if (!(message instanceof CharacterCardUpdate)) {
 				showInfo("Received " + message.getClass());
 			}
 		} else if (message instanceof InitialBoardStatus m) {
@@ -292,6 +291,59 @@ public class CommandLineInterface implements UserInterface {
 		}
 	}
 
+	private void parseCharacterCardArgs(String[] args) {
+		if (client.getCharacterCard() == null) {
+			showError("Select a character card first");
+			return;
+		}
+		List<String> sourceColors = new ArrayList<>();
+		List<String> destinationColors = new ArrayList<>();
+		String targetColor = null;
+		String targetIsland = null;
+		boolean source = true;
+		for (String arg : args) {
+			if (isColor(arg)) {
+				if (sourceColors.isEmpty()) {
+					if (targetColor == null) {
+						targetColor = arg.toUpperCase();
+					} else {
+						sourceColors.add(targetColor);
+						targetColor = null;
+						destinationColors.add(arg.toUpperCase());
+					}
+				} else if (source) {
+					sourceColors.add(arg.toUpperCase());
+					source = false;
+				} else {
+					destinationColors.add(arg.toUpperCase());
+					source = true;
+				}
+			} else if (targetIsland == null) {
+				targetIsland = arg;
+			} else {
+				showError("Invalid arguments: more than one argument that is not a valid color");
+				return;
+			}
+		}
+		if (sourceColors.size() != destinationColors.size()) {
+			showError("Invalid arguments: must provide the same number of source and destination colors");
+			return;
+		}
+		client.playCharacterCard(sourceColors.toArray(new String[0]),
+				destinationColors.toArray(new String[0]),
+				targetColor,
+				targetIsland);
+	}
+
+	private static boolean isColor(String s) {
+		s = s.toUpperCase();
+		return s.equals("YELLOW")
+				|| s.equals("BLUE")
+				|| s.equals("GREEN")
+				|| s.equals("RED")
+				|| s.equals("PINK");
+	}
+
 	private void showCharacterCards() {
 		BoardStatus boardStatus = client.getBoardStatus();
 		if (boardStatus == null) return;
@@ -309,8 +361,23 @@ public class CommandLineInterface implements UserInterface {
 		BoardStatus boardStatus = client.getBoardStatus();
 		if (boardStatus == null) return;
 		String card = boardStatus.getCharacterCards().get(id);
+		if (!characterCardInfo.getAsJsonObject(card).has("cmd")) {
+			client.playCharacterCard(null, null, null, null);
+			return;
+		}
 		String cmd = characterCardInfo.getAsJsonObject(card).get("cmd").getAsString();
 		showInfo("Set the arguments for the " + card + " character card using:\n " + cmd);
+	}
+
+	private void showCharacterDescription(String card) {
+		if (!characterCardInfo.has(card)) {
+			showError("Invalid character card name");
+			return;
+		}
+		JsonObject cardInfo = characterCardInfo.getAsJsonObject(card);
+		String setup = Optional.ofNullable(cardInfo.get("setup")).map(j -> "Setup: " + j.getAsString() + "\n").orElse("");
+		String effect = "Effect: " + cardInfo.get("effect").getAsString();
+		showInfo(setup + effect);
 	}
 
 	private void showBoard() {

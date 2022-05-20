@@ -1,28 +1,23 @@
 package it.polimi.ingsw.eriantys.client;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.client.cli.CommandLineInterface;
-import it.polimi.ingsw.eriantys.controller.GameInfo;
 import it.polimi.ingsw.eriantys.messages.Message;
-import it.polimi.ingsw.eriantys.messages.Ping;
 import it.polimi.ingsw.eriantys.messages.client.Handshake;
 import it.polimi.ingsw.eriantys.messages.client.JoinLobby;
 import it.polimi.ingsw.eriantys.messages.client.LobbiesRequest;
 import it.polimi.ingsw.eriantys.messages.client.LobbyCreation;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.messages.client.*;
-import it.polimi.ingsw.eriantys.messages.server.Accepted;
-import it.polimi.ingsw.eriantys.messages.server.AcceptedUsername;
-import it.polimi.ingsw.eriantys.messages.server.AvailableLobbies;
-import it.polimi.ingsw.eriantys.messages.server.Refused;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.prefs.Preferences;
 
 public class Client extends Thread {
@@ -66,7 +61,6 @@ public class Client extends Thread {
 	@Override
 	public void run() {
 		new Thread(ui::getInputs).start();
-		// TODO: 03/05/2022 Reconnect?
 		try (socket) {
 			while (running) {
 				Message message = (Message) in.readObject();
@@ -160,6 +154,10 @@ public class Client extends Thread {
 		this.availableCards = availableCards;
 	}
 
+	public Integer getCharacterCard() {
+		return characterCard;
+	}
+
 	public void askHelp() {
 		if (usernameNotSet()) return;
 		write(new HelpRequest(username));
@@ -240,10 +238,6 @@ public class Client extends Thread {
 		return new Gson().fromJson(prefValue, JsonObject.class);
 	}
 
-	// ???
-	// BoardStatus is the content of BoardUpdate messages
-	// public synchronized void updateGameStatus(BoardStatus boardStatus) {}
-	// ???
 	public void leaveLobby() {
 		if (gameId == null) {
 			ui.showError("Not in a lobby");
@@ -276,5 +270,30 @@ public class Client extends Thread {
 
 	public void selectCharacterCard(int card) {
 		characterCard = card;
+	}
+
+	public void playCharacterCard(String[] sourceColors,
+								  String[] destinationColors,
+								  String targetColor,
+								  String targetIsland) {
+		JsonObject params = new JsonObject();
+		if (sourceColors != null && sourceColors.length > 0) {
+			JsonArray src = new JsonArray(sourceColors.length);
+			Arrays.stream(sourceColors).forEach(src::add);
+			params.add("sourceColors", src);
+		}
+		if (destinationColors != null && destinationColors.length > 0) {
+			JsonArray dst = new JsonArray(destinationColors.length);
+			Arrays.stream(destinationColors).forEach(dst::add);
+			params.add("destinationColors", dst);
+		}
+		if (targetColor != null) {
+			params.addProperty("targetColor", targetColor);
+		}
+		if (targetIsland != null) {
+			params.addProperty("targetIsland", targetIsland);
+		}
+		write(new PlayCharacterCard(username, characterCard, new Gson().toJson(params)));
+		characterCard = null;
 	}
 }

@@ -231,6 +231,11 @@ public class Board {
 			islands.add(startIndex, newIslandPrev);
 	}
 
+	public int getDistanceFromMotherNature(IslandGroup target) {
+		int targetIndex = islands.indexOf(target);
+		return (targetIndex - motherNatureIslandIndex) % islands.size();
+	}
+
 	/**
 	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
 	 * @return a representation of the islands on the game field

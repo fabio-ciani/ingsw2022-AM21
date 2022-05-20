@@ -62,6 +62,9 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 		} catch (IslandNotFoundException e) {
 			game.refuseRequest(message, "Island not found: " + destination);
 			return;
+		} catch (NotEnoughMovementsException e) {
+			game.refuseRequest(message, "Not enough movements: " + e.getMessage());
+			return;
 		}
 
 		game.acceptRequest(message);

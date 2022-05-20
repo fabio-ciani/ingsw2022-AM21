@@ -69,7 +69,7 @@ public class SchoolBoard {
 	 * decreases the number of towers by 1 and returns {@code true}, otherwise returns {@code false}.
 	 * @return {@code true} if and only if this {@code SchoolBoard} can deploy an additional tower
 	 */
-	public boolean getTower() {
+	public boolean deployTower() {
 		if (towers == 0)
 			return false;
 		towers--;
@@ -81,7 +81,7 @@ public class SchoolBoard {
 	 * increases the number of towers by 1 and returns {@code true}, otherwise returns {@code false}.
 	 * @return {@code true} if and only if this {@code SchoolBoard} can contain an additional tower
 	 */
-	public boolean putTower() {
+	public boolean returnTower() {
 		if (towers == towerNumber)
 			return false;
 		towers++;

@@ -44,9 +44,9 @@ class PlayerTest {
 		Player Alice = new Player("Alice", 7, 8);
 		Player Bob = new Player("Bob", 7, 8);
 
-		Alice.getTower();
-		Bob.getTower();
-		Bob.getTower();
+		Alice.deployTower();
+		Bob.deployTower();
+		Bob.deployTower();
 
 		assertEquals(7, Alice.getTowerQuantity());
 		assertEquals(6, Bob.getTowerQuantity());
@@ -57,12 +57,12 @@ class PlayerTest {
 		Player Alice = new Player("Alice", 7, 8);
 		Player Bob = new Player("Bob", 7, 8);
 
-		assertFalse(Alice.putTower());
+		assertFalse(Alice.returnTower());
 		assertEquals(8, Alice.getTowerQuantity());
 
 		for (int i = 0; i < 8; i++)
-			assertTrue(Bob.getTower());
-		assertFalse(Bob.getTower());
+			assertTrue(Bob.deployTower());
+		assertFalse(Bob.deployTower());
 		assertEquals(0, Bob.getTowerQuantity());
 	}
 

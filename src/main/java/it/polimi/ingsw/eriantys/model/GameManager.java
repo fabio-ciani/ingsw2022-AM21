@@ -71,9 +71,19 @@ public class GameManager {
 			}
 	}
 
-	public void setupEntrances() throws InvalidArgumentException, NoMovementException {
-		for (Player player : players.getTurnOrder())
-			player.getEntrance().refillFrom(board.getBag());
+	/**
+	 * Prepares the game by setting up every player's school board entrance, filling it with the appropriate number of
+	 * student discs.
+	 * @throws InvalidArgumentException if an error occurs during one of the movements.
+	 */
+	public void setupEntrances() throws InvalidArgumentException {
+		for (Player player : players.getTurnOrder()) {
+			try {
+				player.getEntrance().refillFrom(board.getBag());
+			} catch (NoMovementException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	/**
@@ -211,14 +221,21 @@ public class GameManager {
 	 * @param islandDestination the destination {@link IslandGroup}
 	 * @throws IslandNotFoundException if no island matching the specified id can be found
 	 * @throws InvalidArgumentException if an error occurs while resolving the destination island
+	 * @throws NotEnoughMovementsException if the player performing this action does not have enough mother nature
+	 * movements in order to complete it
 	 * @return {@code true} if and only if the game ends as a result of Mother Nature's movement
 	 */
 	public boolean handleMotherNatureMovement(String islandDestination)
-			throws IslandNotFoundException, InvalidArgumentException {
+			throws IslandNotFoundException, InvalidArgumentException, NotEnoughMovementsException {
 		IslandGroup destination = tryGetIsland(islandDestination);
 
 		if (destination == null)
 			throw new IslandNotFoundException("Requested id: " + islandDestination);
+
+		int requestedMovements = board.getDistanceFromMotherNature(destination);
+		int actualMovements = currentPlayer().getMotherNatureMovements();
+		if (requestedMovements > actualMovements)
+			throw new NotEnoughMovementsException("requested " + requestedMovements + ", actual " + actualMovements);
 
 		boolean movementSuccessful = board.moveMotherNature(destination);
 		if (movementSuccessful) {
@@ -256,8 +273,8 @@ public class GameManager {
 		boolean res = !Objects.equals(oldController, maxInfluencePlayer);
 		island.setController(maxInfluencePlayer);
 		if (res) {
-			if (oldController != null && !oldController.getTower()) throw new RuntimeException();
-			if (maxInfluencePlayer != null &&	!maxInfluencePlayer.putTower()) throw new RuntimeException();
+			if (oldController != null && !oldController.returnTower()) throw new RuntimeException();
+			if (maxInfluencePlayer != null &&	!maxInfluencePlayer.deployTower()) throw new RuntimeException();
 		}
 		return res;
 	}

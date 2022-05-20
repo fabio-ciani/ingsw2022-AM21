@@ -98,19 +98,19 @@ public class Player {
 	}
 
 	/**
-	 * @see SchoolBoard#getTower() SchoolBoard.getTower()
+	 * @see SchoolBoard#deployTower()
 	 * @return {@code true} if and only if this {@code SchoolBoard} can deploy an additional tower
 	 */
-	public boolean getTower() {
-		return schoolBoard.getTower();
+	public boolean deployTower() {
+		return schoolBoard.deployTower();
 	}
 
 	/**
-	 * @see SchoolBoard#putTower() SchoolBoard.putTower()
+	 * @see SchoolBoard#returnTower()
 	 * @return {@code true} if and only if this {@code SchoolBoard} can contain an additional tower
 	 */
-	public boolean putTower() {
-		return schoolBoard.putTower();
+	public boolean returnTower() {
+		return schoolBoard.returnTower();
 	}
 
 	/**
@@ -153,6 +153,11 @@ public class Player {
 	 */
 	public void playAssistantCard(AssistantCard playedCard) {
 		deck.remove(playedCard);
+		try {
+			setMotherNatureMovements(playedCard.movement());
+		} catch (InvalidArgumentException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	// TODO: tests (?)

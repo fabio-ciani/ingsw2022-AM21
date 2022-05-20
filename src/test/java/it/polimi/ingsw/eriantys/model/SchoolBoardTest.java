@@ -13,8 +13,8 @@ class SchoolBoardTest {
 		SchoolBoard schoolBoard = new SchoolBoard(9, 6);
 
 		for (int i = 0; i < 6; i++)
-			assertTrue(schoolBoard.getTower());
-		assertFalse(schoolBoard.getTower());
+			assertTrue(schoolBoard.deployTower());
+		assertFalse(schoolBoard.deployTower());
 
 		StudentContainer entrance = schoolBoard.getEntrance();
 		DiningRoom diningRoom = schoolBoard.getDiningRoom();
@@ -81,7 +81,7 @@ class SchoolBoardTest {
 	@Test
 	void getTower_HasAllTowers_ReturnTrue() {
 		SchoolBoard schoolBoard = new SchoolBoard(9, 6);
-		assertTrue(schoolBoard.getTower());
+		assertTrue(schoolBoard.deployTower());
 	}
 
 	@Test
@@ -89,14 +89,14 @@ class SchoolBoardTest {
 		SchoolBoard schoolBoard = new SchoolBoard(9, 6);
 
 		for(int i = 0; i < 6; i++)
-			assertTrue(schoolBoard.getTower());
-		assertFalse(schoolBoard.getTower());
+			assertTrue(schoolBoard.deployTower());
+		assertFalse(schoolBoard.deployTower());
 	}
 
 	@Test
 	void putTower_HasAllTowers_ReturnFalse() {
 		SchoolBoard schoolBoard = new SchoolBoard(9, 6);
-		assertFalse(schoolBoard.putTower());
+		assertFalse(schoolBoard.returnTower());
 	}
 
 	@Test
@@ -104,9 +104,9 @@ class SchoolBoardTest {
 		SchoolBoard schoolBoard = new SchoolBoard(9, 6);
 
 		for(int i = 0; i < 6; i++)
-			assertTrue(schoolBoard.getTower());
+			assertTrue(schoolBoard.deployTower());
 		for(int i = 0; i < 6; i++)
-			assertTrue(schoolBoard.putTower());
-		assertFalse(schoolBoard.putTower());
+			assertTrue(schoolBoard.returnTower());
+		assertFalse(schoolBoard.returnTower());
 	}
 }

@@ -100,7 +100,8 @@ public class Game {
 	}
 
 	/**
-	 * Sets up the game.
+	 * Sets up the game by setting the {@code started} flag to {@code true}, setting the game manager and the setting the
+	 * starting message handler.
 	 */
 	public void setup() {
 		started = true;
@@ -126,7 +127,8 @@ public class Game {
 	}
 
 	/**
-	 * Advances to the next round of the game.
+	 * Advances to the next round of the game, or ends the game if the round which just ended was the last to be played.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
 	public void newRound() throws NoConnectionException {
 		if (lastRound) gameOver();
@@ -156,7 +158,9 @@ public class Game {
 	}
 
 	/**
-	 * Advances to the next player's turn in the current round.
+	 * Advances to the next player's turn in the current round, updating the message handler, and advances to the next
+	 * round if necessary.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
 	public void advanceTurn() throws NoConnectionException {
 		nextPlayer();
@@ -216,7 +220,8 @@ public class Game {
 	}
 
 	/**
-	 * Disconnects the specified player from the game.
+	 * Disconnects the specified player from the game, removing them from the lobby if the game has not yet started or
+	 * pausing the game if the game has started and there are less than 2 players currently connected.
 	 * @param username the username of the player which has disconnected.
 	 * @throws NoConnectionException if no connection can be retrieved for the specified player.
 	 */
@@ -238,7 +243,8 @@ public class Game {
 	}
 
 	/**
-	 * Handles the reconnection of the specified player.
+	 * Handles the reconnection of the specified player, notifying the rest of the players about the reconnection,
+	 * resuming the game if necessary and broadcasting an update about the state of the game.
 	 * @param username the username of the player who has reconnected to the game.
 	 * @throws NoConnectionException if no connection can be retrieved for the specified player.
 	 */
@@ -313,8 +319,11 @@ public class Game {
 	 * @return {@code true} if and only if the game ends as a result of Mother Nature's movement.
 	 * @throws InvalidArgumentException if an error occurs while resolving the destination island.
 	 * @throws IslandNotFoundException if no island matching the specified id can be found.
+	 * @throws NotEnoughMovementsException if the player performing this action does not have enough mother nature
+	 * movements in order to complete it
 	 */
-	public boolean moveMotherNature(String destination) throws InvalidArgumentException, IslandNotFoundException {
+	public boolean moveMotherNature(String destination)
+			throws InvalidArgumentException, IslandNotFoundException, NotEnoughMovementsException {
 		return gameManager.handleMotherNatureMovement(destination);
 	}
 
@@ -430,7 +439,7 @@ public class Game {
 	}
 
 	/**
-	 * Ends the game by notifying every player and deleting every reference to {@code this}.
+	 * Ends the game by notifying every player and deleting every reference to it.
 	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
 	public void gameOver() throws NoConnectionException {
@@ -462,10 +471,16 @@ public class Game {
 			gameManager = new GameManager(players, getInfo().isExpertMode());
 	}
 
+	/**
+	 * Sets the current player in the game manager.
+	 */
 	private void updateCurrentPlayer() {
 		gameManager.setCurrentPlayer(players.get(currentPlayer));
 	}
 
+	/**
+	 * If the current player is disconnected calls the disconnected turn handler.
+	 */
 	private void checkDisconnection() {
 		if (!server.isConnected(getCurrentPlayer())) {
 			try {

@@ -23,7 +23,18 @@ public interface MessageHandler {
 	 */
 	String getHelp();
 
+	/**
+	 * Plays the specified user's turn according to the rules if they are disconnected and the game is not idle.
+	 * @param username the disconnected user's username.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
+	 */
 	void handleDisconnectedUser(String username) throws NoConnectionException;
 
+	/**
+	 * Sends a broadcast update after the specified user's reconnection in order to make sure every player has the
+	 * information they need in order to play.
+	 * @param username the reconnected user's username.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
+	 */
 	void sendReconnectUpdate(String username) throws NoConnectionException;
 }

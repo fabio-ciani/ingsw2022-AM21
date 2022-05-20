@@ -54,7 +54,7 @@ public abstract class PlayCharacterCardHandler implements MessageHandler {
 			game.refuseRequest(message, "No movement");
 			return;
 		} catch (InvalidArgumentException e) {
-			game.refuseRequest(message, "Invalid argument");
+			game.refuseRequest(message, e.getMessage() == null ? "Invalid argument" : e.getMessage());
 			return;
 		} catch (DuplicateNoEntryTileException e) {
 			game.refuseRequest(message, "Duplicate no entry tile");

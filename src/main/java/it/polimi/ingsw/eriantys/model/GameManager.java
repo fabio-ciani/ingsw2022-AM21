@@ -53,7 +53,10 @@ public class GameManager {
 	 * Sets the current player to the player matching {@code currentPlayerNickname}.
 	 * @param currentPlayerNickname the nickname of the current player
 	 */
-	public void setCurrentPlayer(String currentPlayerNickname) {
+	public void setCurrentPlayer(String currentPlayerNickname) throws InvalidArgumentException {
+		Player nextPlayer = players.get(currentPlayerNickname);
+		if (nextPlayer == null)
+			 throw new InvalidArgumentException();
 		currPlayer = players.get(currentPlayerNickname);
 	}
 
@@ -187,10 +190,16 @@ public class GameManager {
 	 * @param nickname the nickname of the {@link Player} moving the student
 	 * @param studentColor the string corresponding to the name of the {@link Color}
 	 * @param destination the string representing the destination
+	 * @throws NoMovementException if an error occurs while moving the student.
+	 * @throws IslandNotFoundException if the specified island cannot be found.
+	 * @throws InvalidArgumentException if no player matches the specified nickname or if no {@link Color} matches the
+	 * specified color.
 	 */
 	public void handleMovedStudent(String nickname, String studentColor, String destination)
 			throws NoMovementException, IslandNotFoundException, InvalidArgumentException {
 		Player player = players.get(nickname);
+		if (player == null) throw new InvalidArgumentException();
+
 		StudentContainer entrance = player.getEntrance();
 		StudentContainer diningRoom = player.getDiningRoom();
 		Color student;
@@ -285,11 +294,12 @@ public class GameManager {
 	 * @param cloudIndex the index of the cloud tile to be emptied
 	 * @throws InvalidArgumentException if there is no such player with the specified nickname,
 	 * or if the requested cloud tile index is out of bounds
-	 * @throws NoMovementException if an error occurs while transferring the students
+	 * @throws NoMovementException if the selected cloud is empty
 	 */
 	public void handleSelectedCloud(String nickname, int cloudIndex)
 			throws InvalidArgumentException, NoMovementException {
 		Player recipient = players.get(nickname);
+		if (recipient == null) throw new InvalidArgumentException();
 		board.drawStudents(cloudIndex, recipient);
 	}
 
@@ -346,7 +356,17 @@ public class GameManager {
 			targetIsland = tryGetIsland(params.get("targetIsland").getAsString());
 		}
 
-		characters[index].applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
+		if (index < 0 || index >= characters.length)
+			throw new InvalidArgumentException("Character card index out of bounds");
+
+		CharacterCard target = characters[index];
+		int originalCost = target.getCost();
+
+		if (currPlayer.getCoins() < target.getCost())
+			throw new InvalidArgumentException("Not enough coins to play the selected card");
+
+		target.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
+		currPlayer.updateCoins(-originalCost);
 
 		return lastRound();
 	}

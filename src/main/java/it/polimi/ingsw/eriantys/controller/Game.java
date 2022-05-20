@@ -475,7 +475,11 @@ public class Game {
 	 * Sets the current player in the game manager.
 	 */
 	private void updateCurrentPlayer() {
-		gameManager.setCurrentPlayer(players.get(currentPlayer));
+		try {
+			gameManager.setCurrentPlayer(players.get(currentPlayer));
+		} catch (InvalidArgumentException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**

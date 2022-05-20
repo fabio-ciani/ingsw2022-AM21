@@ -1,7 +1,9 @@
 package it.polimi.ingsw.eriantys.model;
 
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
+import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
+import it.polimi.ingsw.eriantys.model.exceptions.NotEnoughMovementsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +23,31 @@ class GameManagerTest {
 		players.add(Alice.getNickname());
 		players.add(Bob.getNickname());
 		players.add(Eve.getNickname());
+	}
+
+	@Test
+	void createGameManager_SinglePlayer_ThrowsGsonException() {
+		assertThrows(Throwable.class, () -> new GameManager(List.of("foo"), false));
+	}
+
+	@Test
+	void setupEntrances_NormalPreConditions_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+
+		for (String p : gm.getTurnOrder()) {
+			Map<String, Integer> entrance = gm.entranceRepresentation(p);
+			for (String k : entrance.keySet()) {
+				assertEquals(0, entrance.get(k));
+			}
+		}
+
+		assertDoesNotThrow(gm::setupEntrances);
+
+		for (String p : gm.getTurnOrder()) {
+			Map<String, Integer> entrance = gm.entranceRepresentation(p);
+			int numStudents = entrance.keySet().stream().mapToInt(entrance::get).reduce(0, Integer::sum);
+			assertEquals(9, numStudents);
+		}
 	}
 
 	// TODO: Add a test which tries to create a GameManager with a single player -> Gson exception
@@ -44,6 +71,189 @@ class GameManagerTest {
 		GameManager gm = new GameManager(players, false);
 
 		assertDoesNotThrow(() -> gm.setupPlayer(Eve.getNickname(), "BLACK", "DESERT"));
+	}
+
+	@Test
+	void setupRound_NormalPreConditions_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+
+		Map<String, Map<String, Integer>> clouds = gm.cloudTilesRepresentation();
+		for (Map<String, Integer> cloud : clouds.values()) {
+			int numStudents = cloud.keySet().stream().mapToInt(cloud::get).reduce(0, Integer::sum);
+			assertEquals(0, numStudents);
+		}
+
+		assertDoesNotThrow(gm::setupRound);
+
+		clouds = gm.cloudTilesRepresentation();
+		for (Map<String, Integer> cloud : clouds.values()) {
+			int numStudents = cloud.keySet().stream().mapToInt(cloud::get).reduce(0, Integer::sum);
+			assertEquals(4, numStudents);
+		}
+	}
+
+	@Test
+	void getAvailableAssistantCards_NoCardsPlayed_AllCardsAvailable() {
+		GameManager gm = new GameManager(players, false);
+		Map<String, List<String>> res = gm.getAvailableAssistantCards();
+		for (List<String> cards : res.values()) {
+			List<String> cardLiterals = Arrays.stream(AssistantCard.values()).map(AssistantCard::toString).toList();
+			for (String card : cards) {
+				assertTrue(cardLiterals.contains(card));
+			}
+			for (String card : cardLiterals) {
+				assertTrue(cards.contains(card));
+			}
+		}
+	}
+
+	@Test
+	void getAvailableAssistantCards_DogCardPlayed_AllButDogAvailable() {
+		GameManager gm = new GameManager(players, false);
+
+		Map<String, String> played = new HashMap<>();
+		for (String p : gm.getTurnOrder())
+			played.put(p, "DOG");
+		gm.handleAssistantCards(played);
+
+		Map<String, List<String>> res = gm.getAvailableAssistantCards();
+		for (String player : res.keySet()) {
+			List<String> cards = res.get(player);
+			List<String> cardLiterals = Arrays.stream(AssistantCard.values()).map(AssistantCard::toString).toList();
+			for (String card : cards) {
+				assertEquals(!card.equals("DOG"), cardLiterals.contains(card));
+			}
+			for (String card : cardLiterals) {
+				assertEquals(!card.equals("DOG"), cards.contains(card));
+			}
+		}
+	}
+
+	@Test
+	void handleMovedStudent_NonexistentNickname_ThrowsInvalidArgumentException() {
+		GameManager gm = new GameManager(players, false);
+		assertThrowsExactly(InvalidArgumentException.class, () -> gm.handleMovedStudent("foo", "RED", "01"));
+	}
+
+	@Test
+	void handleMovedStudent_InvalidColor_ThrowsInvalidArgumentException() {
+		GameManager gm = new GameManager(players, false);
+		assertThrowsExactly(InvalidArgumentException.class, () -> gm.handleMovedStudent("Bob", "bar", "01"));
+	}
+
+	@Test
+	void handleMovedStudent_NonexistentIsland_ThrowsIslandNotFoundException() {
+		GameManager gm = new GameManager(players, false);
+		assertThrowsExactly(IslandNotFoundException.class, () -> gm.handleMovedStudent("Bob", "RED", "99"));
+	}
+
+	@Test
+	void handleMovedStudent_UnavailableColor_ThrowsNoMovementException() {
+		GameManager gm = new GameManager(players, false);
+		assertDoesNotThrow(gm::setupEntrances);
+		Map<String, Integer> entrance = gm.entranceRepresentation("Bob");
+		String color = "RED";
+		int numStudents = entrance.get(color);
+
+		while(numStudents > 0) {
+			assertDoesNotThrow(() -> gm.handleMovedStudent("Bob", color, "01"));
+			numStudents--;
+		}
+
+		assertThrowsExactly(NoMovementException.class, () -> gm.handleMovedStudent("Bob", color, "01"));
+	}
+
+	@Test
+	void handleMovedStudent_LegalParameters_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+		assertDoesNotThrow(gm::setupEntrances);
+		Map<String, Integer> entrance = gm.entranceRepresentation("Bob");
+		List<String> availableColors = entrance.keySet().stream().filter(k -> entrance.get(k) > 0).toList();
+		String color = availableColors.get(0);
+		assertDoesNotThrow(() -> gm.handleMovedStudent("Bob", color, "01"));
+	}
+
+	@Test
+	void handleMotherNatureMovement_NonexistentIsland_ThrowsIslandNotFoundException() {
+		GameManager gm = new GameManager(players, false);
+		assertThrowsExactly(IslandNotFoundException.class, () -> gm.handleMotherNatureMovement("939"));
+	}
+
+	@Test
+	void handleMotherNatureMovement_NotEnoughMovements_ThrowsNotEnoughMovementsException() {
+		GameManager gm = new GameManager(players, false);
+		assertDoesNotThrow(gm::setupBoard);
+
+		Map<String, String> played = new HashMap<>();
+		for (String p : gm.getTurnOrder())
+			played.put(p, "CHEETAH");
+		gm.handleAssistantCards(played);
+		assertDoesNotThrow(() -> gm.setCurrentPlayer("Bob"));
+
+		int index = Integer.parseInt(gm.motherNatureIslandRepresentation());
+		String dest = String.format("%02d", (index == 12 ? 3 : index + 3));
+		assertThrowsExactly(NotEnoughMovementsException.class, () -> gm.handleMotherNatureMovement(dest));
+	}
+
+	@Test
+	void handleMotherNatureMovement_LegalParameters_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+		assertDoesNotThrow(gm::setupBoard);
+
+		Map<String, String> played = new HashMap<>();
+		for (String p : gm.getTurnOrder())
+			played.put(p, "CHEETAH");
+		gm.handleAssistantCards(played);
+
+		for (String p : gm.getTurnOrder()) {
+			int index = Integer.parseInt(gm.motherNatureIslandRepresentation());
+			String dest = String.format("%02d", (index == 12 ? 1 : index + 1));
+			assertDoesNotThrow(() -> gm.setCurrentPlayer(p));
+			assertDoesNotThrow(() -> gm.handleMotherNatureMovement(dest));
+			int updatedIndex = Integer.parseInt(gm.motherNatureIslandRepresentation());
+			assertEquals((index + 1) % 12, updatedIndex);
+		}
+	}
+
+	@Test
+	void handleMotherNatureMovement_AdjacentIslandsWithSameController_UnifiesIslands() {
+
+	}
+
+	@Test
+	void handleSelectedCloud_NonexistentPlayer_ThrowsInvalidArgumentException() {
+		GameManager gm = new GameManager(players, false);
+		assertThrowsExactly(InvalidArgumentException.class, () -> gm.handleSelectedCloud("foo", 0));
+	}
+
+	@Test
+	void handleSelectedCloud_CloudIndexOutOfBounds_ThrowsInvalidArgumentException() {
+		GameManager gm = new GameManager(players, false);
+		assertThrowsExactly(InvalidArgumentException.class, () -> gm.handleSelectedCloud("Bob", 3));
+	}
+
+	@Test
+	void handleSelectedCloud_EmptyCloud_ThrowNoMovementException() {
+		GameManager gm = new GameManager(players, false);
+		assertDoesNotThrow(gm::setupBoard);
+		assertDoesNotThrow(gm::setupRound);
+
+		assertDoesNotThrow(() -> gm.handleSelectedCloud("Alice", 0));
+		assertThrowsExactly(NoMovementException.class, () -> gm.handleSelectedCloud("Bob", 0));
+	}
+
+	@Test
+	void handleSelectedCloud_LegalParameters_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+		assertDoesNotThrow(gm::setupBoard);
+		assertDoesNotThrow(gm::setupRound);
+
+		Map<String, Integer> entrance = gm.entranceRepresentation("Alice");
+		assertEquals(0, entrance.keySet().stream().mapToInt(entrance::get).reduce(0, Integer::sum));
+		assertDoesNotThrow(() -> gm.handleSelectedCloud("Alice", 0));
+
+		entrance = gm.entranceRepresentation("Alice");
+		assertEquals(4, entrance.keySet().stream().mapToInt(entrance::get).reduce(0, Integer::sum));
 	}
 
 	@Test

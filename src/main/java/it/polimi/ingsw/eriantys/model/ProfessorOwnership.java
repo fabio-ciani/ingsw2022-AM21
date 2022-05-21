@@ -78,7 +78,7 @@ public class ProfessorOwnership {
 	/**
 	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
 	 * @param c the target {@link Color}
-	 * @return a representation of the {@link Player} owning the professor of the specified {@link Color}
+	 * @return a representation for the {@link Player} owning the professor of the specified {@link Color}
 	 */
 	public Player getOwnership(Color c) {
 		return ownerships.get(c);

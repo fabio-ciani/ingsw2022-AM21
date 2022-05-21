@@ -18,7 +18,7 @@ public class BoardStatus implements Serializable {
 	private final IslandsInfo islandsInfo;
 	private final Map<String, Map<String, Integer>> cloudTiles;
 	private final Map<String, String> professors;
-	private final List<String> characterCards;
+	private final CharacterCardsInfo charactersInfo;
 
 	public BoardStatus(GameManager gm) {
 		this.gm = gm;
@@ -26,7 +26,7 @@ public class BoardStatus implements Serializable {
 		this.islandsInfo = new IslandsInfo();
 		this.cloudTiles = gm.cloudTilesRepresentation();
 		this.professors = gm.professorsRepresentation();
-		this.characterCards = gm.charactersRepresentation();
+		this.charactersInfo = new CharacterCardsInfo();
 	}
 
 	/**
@@ -86,8 +86,32 @@ public class BoardStatus implements Serializable {
 		}
 	}
 
+	/**
+	 * An inner class which holds cards-related information.
+	 */
+	private class CharacterCardsInfo implements Serializable {
+		private final List<String> characterCards;
+		private final Map<String, Integer> characterCardsCost;
+		private final Map<String, Map<String, Integer>> characterCardsStudents;
+		private final Map<String, Integer> characterCardsNoEntryTiles;
+
+		private CharacterCardsInfo() {
+			this.characterCards = gm.charactersRepresentation();
+
+			this.characterCardsCost = new LinkedHashMap<>();
+			this.characterCardsStudents = new LinkedHashMap<>();
+			this.characterCardsNoEntryTiles = new LinkedHashMap<>();
+
+			for (String c : characterCards) {
+				characterCardsCost.put(c, gm.characterCostRepresentation(c));
+				characterCardsStudents.put(c, gm.characterStudentsRepresentation(c));
+				characterCardsNoEntryTiles.put(c, gm.characterNoEntryTilesRepresentation(c));
+			}
+		}
+	}
+
 	public List<String> getCharacterCards() {
-		return characterCards;
+		return charactersInfo.characterCards;
 	}
 
 	public Map<String, Map<String, Integer>> getCloudTiles() {

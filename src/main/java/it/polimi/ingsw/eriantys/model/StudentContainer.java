@@ -221,7 +221,7 @@ public class StudentContainer {
 
 	/**
 	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
-	 * @return a representation of the object, ordered by {@link Color} enum declarations
+	 * @return a representation for the object, ordered by {@link Color} enum declarations
 	 */
 	public Map<String, Integer> getRepresentation() {
 		Map<String, Integer> rep = new LinkedHashMap<>();

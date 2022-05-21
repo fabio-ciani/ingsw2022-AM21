@@ -480,7 +480,7 @@ public class GameManager {
 	 * within the MVC pattern for the game.
 	 * @param isle the identificator of the target isle
 	 * @return a representation for the students on the specified aggregate
-	 * StudentContainer#getRepresentation() StudentContainer.getRepresentation()
+	 * @see StudentContainer#getRepresentation() StudentContainer.getRepresentation()
 	 */
 	public Map<String, Integer> islandStudentsRepresentation(String isle) {
 		Map<String, Integer> rep = null;
@@ -592,11 +592,73 @@ public class GameManager {
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
 	 * @return a representation for the character cards of the game if and only if expert mode is enabled
+	 * @see CharacterCard#getName() CharacterCard.getName()
 	 */
 	public List<String> charactersRepresentation() {
 		if (!expertMode)
 			return null;
 		return Arrays.stream(characters).map(CharacterCard::getName).toList();
+	}
+
+	// TODO: tests + add documentation with @see tag?
+	/**
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param c the target character card literal
+	 * @return a representation for the cost of the specified character card if and only if expert mode is enabled
+	 */
+	public Integer characterCostRepresentation(String c) {
+		if (!expertMode)
+			return null;
+
+		for (CharacterCard card : characters)
+			if (card.getName().equals(c))
+				return card.getCost();
+
+		return null;	// TODO: throw exception?
+	}
+
+	// TODO: tests
+	/**
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param c the target character card literal
+	 * @return a representation for the students on the specified character card if and only if expert mode is enabled
+	 * @see StudentContainer#getRepresentation() StudentContainer.getRepresentation()
+	 */
+	public Map<String, Integer> characterStudentsRepresentation(String c) {
+		if (!expertMode)
+			return null;
+
+		for (CharacterCard card : characters)
+			if (card.getName().equals(c))
+				if (card instanceof ContainerCharacterCard)
+					return ((ContainerCharacterCard) card).getRepresentation();
+				else return null;
+
+		return null;	// TODO: throw exception?
+	}
+
+	// TODO: tests
+	/**
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param c the target character card literal
+	 * @return a representation for the number of no-entry tiles placed on the Herb Granny character card
+	 * if and only if expert mode is enabled and the target literal coincide with {@link HerbGranny#getName()} return value
+	 */
+	public Integer characterNoEntryTilesRepresentation(String c) {
+		if (!expertMode)
+			return null;
+
+		if (!c.equals("HerbGranny"))
+			return null;
+
+		for (CharacterCard card : characters)
+			if (card.getName().equals(c))
+				return ((HerbGranny) card).getNoEntryTiles();
+
+		return null;	// TODO: throw exception?
 	}
 
 	private boolean gameOver() {

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.Board;
+import it.polimi.ingsw.eriantys.model.BoardStatus;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.exceptions.DuplicateNoEntryTileException;
@@ -17,7 +18,7 @@ import java.util.Stack;
  */
 public class HerbGranny extends BaseCharacterCard {
 	/**
-	 * No Entry tiles currently available on this card.
+	 * No-entry tiles currently available on this card.
 	 */
 	private final Stack<Integer> tiles;
 
@@ -32,7 +33,7 @@ public class HerbGranny extends BaseCharacterCard {
 	private static final int INITIAL_COST = 2;
 
 	/**
-	 * Total number of No Entry tiles available in the game.
+	 * Total number of no-entry tiles available in the game.
 	 */
 	private static final int MAX_ENTRY_TILES = 4;
 
@@ -48,7 +49,7 @@ public class HerbGranny extends BaseCharacterCard {
 	}
 
 	/**
-	 * Method called when a No Entry tile is removed from an island to put it back on this card.
+	 * Method called when a no-entry tile is removed from an island to put it back on this card.
 	 *
 	 * @param id ID of the tile to put back.
 	 *
@@ -77,9 +78,17 @@ public class HerbGranny extends BaseCharacterCard {
 			throw new InvalidArgumentException("targetIsland argument is null.");
 		}
 		if (tiles.empty()) {
-			throw new ItemNotAvailableException("There are no NoEntry tiles on the HerbGranny character card.");
+			throw new ItemNotAvailableException("The HerbGranny character card does not have any no-entry tiles.");
 		}
 		targetIsland.putNoEntryTile(tiles.pop());
 		increaseCost();
+	}
+
+	/**
+	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
+	 * @return a representation for the number of no-entry tiles placed on the card
+	 */
+	public Integer getNoEntryTiles() {
+		return tiles.size();
 	}
 }

@@ -238,7 +238,7 @@ public class Board {
 
 	/**
 	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
-	 * @return a representation of the islands on the game field
+	 * @return a representation for the islands on the game field
 	 */
 	public List<String> getIslandsRepresentation() {
 		List<String> rep = new ArrayList<>();
@@ -251,7 +251,7 @@ public class Board {
 
 	/**
 	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
-	 * @return a representation of the cloud tiles on the game field
+	 * @return a representation for the cloud tiles on the game field
 	 */
 	public Map<String, Map<String, Integer>> getCloudTiles() {
 		Map<String, Map<String, Integer>> rep = new LinkedHashMap<>();

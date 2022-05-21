@@ -134,7 +134,7 @@ public class IslandGroup extends StudentContainer {
 
 	/**
 	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
-	 * @return a representation of the number of islands which form the aggregate
+	 * @return a representation for the number of islands which form the aggregate
 	 */
 	public Integer getSize() {
 		return islandIds.size();
@@ -142,7 +142,7 @@ public class IslandGroup extends StudentContainer {
 
 	/**
 	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
-	 * @return a representation of the number of no-entry tiles placed on the aggregate
+	 * @return a representation for the number of no-entry tiles placed on the aggregate
 	 */
 	public Integer getNoEntryTiles() {
 		return noEntryTiles.size();

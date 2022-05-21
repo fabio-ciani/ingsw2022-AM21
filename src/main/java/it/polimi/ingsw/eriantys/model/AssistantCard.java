@@ -12,7 +12,7 @@ public enum AssistantCard {
 
 	private final int value, movement;
 
-	private AssistantCard(int value, int movement) {
+	AssistantCard(int value, int movement) {
 		this.value = value;
 		this.movement = movement;
 	}

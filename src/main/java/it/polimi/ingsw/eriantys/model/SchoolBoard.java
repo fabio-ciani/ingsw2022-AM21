@@ -90,7 +90,7 @@ public class SchoolBoard {
 
 	/**
 	 * A helper-getter method to fulfill the {@link BoardStatus} creation process.
-	 * @return a representation of the number of towers owned by the {@link Player}
+	 * @return a representation for the number of towers owned by the {@link Player}
 	 */
 	public int getTowerQuantity() {
 		return towers;

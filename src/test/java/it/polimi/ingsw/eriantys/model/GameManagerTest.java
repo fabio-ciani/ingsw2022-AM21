@@ -191,7 +191,7 @@ class GameManagerTest {
 		assertDoesNotThrow(() -> gm.setCurrentPlayer("Bob"));
 
 		int index = Integer.parseInt(gm.motherNatureIslandRepresentation());
-		String dest = String.format("%02d", (index == 12 ? 3 : index + 3));
+		String dest = String.format("%02d", (index < 10 ? index + 3 : index - 9));
 		assertThrowsExactly(NotEnoughMovementsException.class, () -> gm.handleMotherNatureMovement(dest));
 	}
 
@@ -211,7 +211,7 @@ class GameManagerTest {
 			assertDoesNotThrow(() -> gm.setCurrentPlayer(p));
 			assertDoesNotThrow(() -> gm.handleMotherNatureMovement(dest));
 			int updatedIndex = Integer.parseInt(gm.motherNatureIslandRepresentation());
-			assertEquals((index + 1) % 12, updatedIndex);
+			assertEquals((index == 12 ? 1 : index + 1), updatedIndex);
 		}
 	}
 

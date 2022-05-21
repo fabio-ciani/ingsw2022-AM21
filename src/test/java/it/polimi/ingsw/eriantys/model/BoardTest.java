@@ -267,6 +267,36 @@ class BoardTest {
 	}
 
 	@Test
+	void getDistanceFromMotherNature_NullTarget_ReturnNeg1() {
+		Board b = new Board(2, 3);
+		assertDoesNotThrow(b::setup);
+		assertEquals(-1, b.getDistanceFromMotherNature(null));
+	}
+
+	@Test
+	void getDistanceFromMotherNature_NonexistentTarget_ReturnNeg1() {
+		Board b = new Board(2, 3);
+		assertDoesNotThrow(b::setup);
+		assertEquals(-1, b.getDistanceFromMotherNature(new IslandGroup("98")));
+	}
+
+	@Test
+	void getDistanceFromMotherNature_3StepsAhead_Return3() {
+		Board b = new Board(2, 3);
+		assertDoesNotThrow(b::setup);
+		assertTrue(b.moveMotherNature(new IslandGroup("01")));
+		assertEquals(3, b.getDistanceFromMotherNature(new IslandGroup("04")));
+	}
+
+	@Test
+	void getDistanceFromMotherNature_StartIndexGreaterThanEndIndexBy3_Return9() {
+		Board b = new Board(2, 3);
+		assertDoesNotThrow(b::setup);
+		assertTrue(b.moveMotherNature(new IslandGroup("09")));
+		assertEquals(9, b.getDistanceFromMotherNature(new IslandGroup("06")));
+	}
+
+	@Test
 	void getIslandsRepresentation_NoAggregates_NormalPostConditions() {
 		Board b = new Board(2, 3);
 

@@ -231,9 +231,18 @@ public class Board {
 			islands.add(startIndex, newIslandPrev);
 	}
 
+	/**
+	 * Returns the number of steps required for Mother Nature to move from the island where it is currently placed to the
+	 * {@code target} island.
+	 * @param target the destination island.
+	 * @return the number of steps required for Mother Nature to move from the island where it is currently placed to the
+	 * {@code target} island.
+	 */
 	public int getDistanceFromMotherNature(IslandGroup target) {
 		int targetIndex = islands.indexOf(target);
-		return (targetIndex - motherNatureIslandIndex) % islands.size();
+		if (targetIndex == -1) return -1;
+		int diff = targetIndex - motherNatureIslandIndex;
+		return diff < 0 ? diff + islands.size() : diff;
 	}
 
 	/**

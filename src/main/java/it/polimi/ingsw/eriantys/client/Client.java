@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.client.cli.CommandLineInterface;
 import it.polimi.ingsw.eriantys.messages.Message;
+import it.polimi.ingsw.eriantys.messages.Ping;
 import it.polimi.ingsw.eriantys.messages.client.Handshake;
 import it.polimi.ingsw.eriantys.messages.client.JoinLobby;
 import it.polimi.ingsw.eriantys.messages.client.LobbiesRequest;
@@ -60,11 +61,11 @@ public class Client extends Thread {
 
 	@Override
 	public void run() {
-		new Thread(ui::getInputs).start();
+		new Thread(ui).start();
 		try (socket) {
 			while (running) {
 				Message message = (Message) in.readObject();
-				ui.handleMessage(message);
+				handleMessage(message);
 			}
 		} catch (SocketTimeoutException e) {
 			System.out.println("Timeout");
@@ -92,14 +93,6 @@ public class Client extends Thread {
 		}
 	}
 
-	private boolean usernameNotSet() {
-		if (username == null) {
-			ui.showError("Set a username first using\n /u, /user <username>");
-			return true;
-		}
-		return false;
-	}
-
 	public synchronized void setRunning(boolean running) {
 		this.running = running;
 	}
@@ -110,6 +103,14 @@ public class Client extends Thread {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	private boolean usernameNotSet() {
+		if (username == null) {
+			ui.showError("Set a username first using\n /u, /user <username>");
+			return true;
+		}
+		return false;
 	}
 
 	public void setGameId(int gameId) {
@@ -146,7 +147,7 @@ public class Client extends Thread {
 	}
 
 	public List<String> getAvailableCards() {
-		if (boardStatus == null) ui.showError("Nothing to show yet");
+		if (availableCards == null) ui.showError("Nothing to show yet");
 		return availableCards;
 	}
 
@@ -156,6 +157,48 @@ public class Client extends Thread {
 
 	public Integer getCharacterCard() {
 		return characterCard;
+	}
+
+	private void handleMessage(Message message) {
+		if (message instanceof AcceptedUsername m) {
+			ui.handleMessage(m);
+		} else if (message instanceof AcceptedJoinLobby m) {
+			ui.handleMessage(m);
+		} else if (message instanceof AcceptedLeaveLobby m) {
+			ui.handleMessage(m);
+		} else if (message instanceof Accepted m) {
+			ui.handleMessage(m);
+		} else if (message instanceof RefusedReconnect m) {
+			ui.handleMessage(m);
+		} else if (message instanceof Refused m) {
+			ui.handleMessage(m);
+		} else if (message instanceof HelpResponse m) {
+			ui.handleMessage(m);
+		} else if (message instanceof AvailableLobbies m) {
+			ui.handleMessage(m);
+		} else if (message instanceof LobbyUpdate m) {
+			ui.handleMessage(m);
+		} else if (message instanceof AssistantCardUpdate m) {
+			ui.handleMessage(m);
+		} else if (message instanceof BoardUpdate m) {
+			ui.handleMessage(m);
+		} else if (message instanceof CharacterCardUpdate m) {
+			ui.handleMessage(m);
+		} else if (message instanceof UserSelectionUpdate m) {
+			ui.handleMessage(m);
+		} else if (message instanceof GameOverUpdate m) {
+			ui.handleMessage(m);
+		} else if (message instanceof InitialBoardStatus m) {
+			ui.handleMessage(m);
+		} else if (message instanceof ReconnectionUpdate m) {
+			ui.handleMessage(m);
+		} else if (message instanceof DisconnectionUpdate m) {
+			ui.handleMessage(m);
+		} else if (message instanceof Ping m) {
+			ui.handleMessage(m);
+		} else {
+			ui.handleMessage(message);
+		}
 	}
 
 	public void askHelp() {

@@ -67,7 +67,7 @@ public class CommandLineInterface implements UserInterface {
 	}
 
 	@Override
-	public void getInputs() {
+	public void run() {
 		this.running = true;
 		while (running) {
 			String line = scanner.nextLine();
@@ -75,95 +75,95 @@ public class CommandLineInterface implements UserInterface {
 			try {
 				switch (tokens[0].toLowerCase()) {
 					case "help", "h" -> {
-						if (wrongArgNumber(tokens, 0)) return;
+						if (wrongArgNumber(tokens, 0)) break;
 						client.askHelp();
 					}
 					case "user", "u" -> {
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						client.sendHandshake(tokens[1]);
 					}
 					case "lobbies", "l" -> {
-						if (wrongArgNumber(tokens, 0)) return;
+						if (wrongArgNumber(tokens, 0)) break;
 						client.askLobbies();
 					}
 					case "join", "j" -> {
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						client.joinLobby(tokens[1]);
 					}
 					case "create", "cr" -> {
-						if (wrongArgNumber(tokens, 1, 2)) return;
+						if (wrongArgNumber(tokens, 1, 2)) break;
 						client.createLobby(tokens[1], tokens.length == 3 ? tokens[2] : "true");
 					}
 					case "leave", "e" -> {
-						if (wrongArgNumber(tokens, 0)) return;
+						if (wrongArgNumber(tokens, 0)) break;
 						client.leaveLobby();
 					}
 					case "wizard", "w" -> {
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						client.setWizard(tokens[1].toUpperCase());
 					}
 					case "tower", "t" -> {
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						client.setTowerColor(tokens[1].toUpperCase());
 					}
 					case "assistant", "a" -> {
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						client.playAssistantCard(tokens[1].toUpperCase());
 					}
 					case "dining", "sd" -> {
 						// TODO: 13/05/2022 Replace "dining room" with GameConstants
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						client.moveStudent(tokens[1].toUpperCase(), "dining room");
 					}
 					case "island", "si" -> {
-						if (wrongArgNumber(tokens, 2)) return;
+						if (wrongArgNumber(tokens, 2)) break;
 						client.moveStudent(tokens[2].toUpperCase(), tokens[1]);
 					}
 					case "mother", "m" -> {
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						client.moveMotherNature(tokens[1]);
 					}
 					case "cloud", "cl" -> {
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						client.chooseCloud(Integer.parseInt(tokens[1]));
 					}
 					case "character", "ch" -> {
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						int id = Integer.parseInt(tokens[1]);
 						client.selectCharacterCard(id);
 						showCharacterCardArgs(id);
 					}
 					case "ccarguments", "ccargs" -> parseCharacterCardArgs(Arrays.copyOfRange(tokens, 1, tokens.length));
 					case "bstat", "bs" -> {
-						if (wrongArgNumber(tokens, 0)) return;
+						if (wrongArgNumber(tokens, 0)) break;
 						showBoard();
 					}
 					case "sbstat", "sbs" -> {
-						if (wrongArgNumber(tokens, 0)) return;
+						if (wrongArgNumber(tokens, 0)) break;
 						showSchoolBoard();
 					}
 					case "acards", "acl" -> {
-						if (wrongArgNumber(tokens, 0)) return;
+						if (wrongArgNumber(tokens, 0)) break;
 						showAssistantCards();
 					}
 					case "ccards", "ccl" -> {
-						if (wrongArgNumber(tokens, 0)) return;
+						if (wrongArgNumber(tokens, 0)) break;
 						showCharacterCards();
 					}
 					case "cdesc", "cc" -> {
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						showCharacterDescription(tokens[1]);
 					}
 					case "ccstat", "ccs" -> {
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						showCharacterStatus(tokens[1]);
 					}
 					case "pstat", "ps" -> {
-						if (wrongArgNumber(tokens, 1)) return;
+						if (wrongArgNumber(tokens, 1)) break;
 						showSchoolBoard(tokens[1]);
 					}
 					case "reconnect", "r" -> {
-						if (wrongArgNumber(tokens, 0)) return;
+						if (wrongArgNumber(tokens, 0)) break;
 						client.sendReconnect();
 					}
 					default -> showError("Invalid command");
@@ -173,122 +173,6 @@ public class CommandLineInterface implements UserInterface {
 			} catch (NumberFormatException e) {
 				showError("Invalid number format");
 			}
-		}
-	}
-
-	@Override
-	public void handleMessage(Message message) {
-		if (message instanceof Accepted) {
-			showInfo("Ok");
-			if (message instanceof AcceptedUsername m) {
-				client.setUsername(m.getUsername());
-				if (client.hasReconnectSettings())
-					showInfo("Reconnection available, type /r or /reconnect to join");
-			} else if (message instanceof AcceptedJoinLobby m) {
-				client.setGameId(m.getGameId());
-				client.putReconnectSettings(m);
-			} else if (message instanceof AcceptedLeaveLobby) {
-				client.removeReconnectSettings();
-			}
-		} else if (message instanceof Refused refused) {
-			showError(refused.getDetails());
-			if (message instanceof RefusedReconnect) client.removeReconnectSettings();
-		} else if (message instanceof HelpResponse m) {
-			showInfo(m.getContent());
-		} else if (message instanceof AvailableLobbies availableLobbies) {
-			List<GameInfo> lobbies = availableLobbies.getLobbies();
-			if (lobbies.isEmpty()) {
-				showInfo("No available lobbies");
-			} else {
-				for (GameInfo lobby : availableLobbies.getLobbies()) {
-					showInfo(lobby.toString());
-				}
-			}
-		} else if (message instanceof LobbyUpdate m) {
-			StringBuilder output = new StringBuilder("Players in the lobby:");
-			for (String player : m.getPlayers()) {
-				output.append("\n- ").append(player);
-			}
-			showInfo(output.toString());
-		} else if (message instanceof UserActionUpdate m1) {
-			String nextPlayer = m1.getNextPlayer();
-			if (message instanceof AssistantCardUpdate m) {
-				client.setAvailableCards(m.getAvailableCards().get(client.getUsername()));
-				if (!m.getPlayedCards().isEmpty()) {
-					StringBuilder output = new StringBuilder("Played assistant cards:");
-					Map<String, String> playedCards = m.getPlayedCards();
-					for (String player : playedCards.keySet()) {
-						String cardName = playedCards.get(player);
-						AssistantCard card = AssistantCard.valueOf(cardName);
-						output.append("\n- ")
-								.append(player)
-								.append(" \u2192 ")
-								.append(cardName)
-								.append(" (value = ")
-								.append(card.value())
-								.append(", movement = ")
-								.append(card.movement())
-								.append(")");
-					}
-					showInfo(output.toString());
-				}
-			} else if (message instanceof BoardUpdate m) {
-				client.setBoardStatus(m.getStatus());
-			} else if (message instanceof CharacterCardUpdate m) {
-				showInfo(m.getCard() + " played");
-			}
-			if (!nextPlayer.equals(client.getUsername())) {
-				showInfo(String.format("Waiting for %s to play", nextPlayer));
-				return;
-			}
-			if (message instanceof UserSelectionUpdate m) {
-				StringBuilder output;
-				if (client.getTowerColor() == null) {
-					output = new StringBuilder();
-					output.append("Choose a tower color between:");
-					for (String color : m.getAvailableTowerColors()) {
-						output.append("\n- ").append(color);
-					}
-					showInfo(output.toString());
-				}
-				if (client.getWizard() == null) {
-					output = new StringBuilder();
-					output.append("Choose a wizard between:");
-					for (String wizard : m.getAvailableWizards()) {
-						output.append("\n- ").append(wizard);
-					}
-					showInfo(output.toString());
-				}
-			} else if (message instanceof AssistantCardUpdate m) {
-				showAssistantCards();
-			} else if (message instanceof BoardUpdate m) {
-				showInfo("It's your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
-				client.setBoardStatus(m.getStatus());
-			} else if (message instanceof GameOverUpdate m) {
-				client.removeReconnectSettings();
-				showInfo("Game over: the winner is " + m.getWinner());
-			} else if (!(message instanceof CharacterCardUpdate)) {
-				showInfo("Received " + message.getClass());
-			}
-		} else if (message instanceof InitialBoardStatus m) {
-			showInfo("The game has begun!");
-			client.setBoardStatus(m.getStatus());
-		} else if (message instanceof DisconnectionUpdate m) {
-			String subject = m.getSubject();
-			int numPlayers = m.getNumPlayers();
-			boolean gameIdle = m.isGameIdle();
-			showInfo(subject + " has disconnected, " + numPlayers + " players currently connected"
-					+ (gameIdle ? "\nGame idle" : ""));
-		} else if (message instanceof ReconnectionUpdate m) {
-			String subject = m.getSubject();
-			int numPlayers = m.getNumPlayers();
-			boolean gameResumed = m.isGameResumed();
-			showInfo(subject + " has reconnected, " + numPlayers + " players currently connected"
-					+ (gameResumed ? "\nGame resumed" : ""));
-		} else if (message instanceof Ping) {
-			client.write(new Ping());
-		} else {
-			showInfo("Received " + message.getClass());
 		}
 	}
 
@@ -514,5 +398,179 @@ public class CommandLineInterface implements UserInterface {
 					.append(")");
 		}
 		showInfo(output.toString());
+	}
+
+	private boolean notNextPlayer(String username) {
+		if (!Objects.equals(client.getUsername(), username)) {
+			showInfo(String.format("%s is playing...", username));
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void handleMessage(Message message) {
+		showError("Unrecognized message:\n" + message.getClass());
+	}
+
+	@Override
+	public void handleMessage(Accepted message) {
+		showInfo("Ok");
+	}
+
+	@Override
+	public void handleMessage(AcceptedUsername message) {
+		showInfo("Ok");
+		client.setUsername(message.getUsername());
+		if (client.hasReconnectSettings()) {
+			showInfo("Reconnection available, type /r or /reconnect to join");
+		}
+	}
+
+	@Override
+	public void handleMessage(AcceptedJoinLobby message) {
+		showInfo("Lobby joined");
+		client.setGameId(message.getGameId());
+		client.putReconnectSettings(message);
+	}
+
+	@Override
+	public void handleMessage(AcceptedLeaveLobby message) {
+		showInfo("Lobby left");
+		client.removeReconnectSettings();
+	}
+
+	@Override
+	public void handleMessage(Refused message) {
+		showError(message.getDetails());
+	}
+
+	@Override
+	public void handleMessage(RefusedReconnect message) {
+		showError(message.getDetails());
+		client.removeReconnectSettings();
+	}
+
+	@Override
+	public void handleMessage(HelpResponse message) {
+		showInfo(message.getContent());
+	}
+
+	@Override
+	public void handleMessage(AvailableLobbies message) {
+		List<GameInfo> lobbies = message.getLobbies();
+		if (lobbies.isEmpty()) {
+			showInfo("No available lobbies");
+		} else {
+			StringBuilder output = new StringBuilder("Available lobbies:");
+			for (GameInfo lobby : message.getLobbies()) {
+				output.append("\n").append(lobby);
+			}
+			showInfo(output.toString());
+		}
+	}
+
+	@Override
+	public void handleMessage(LobbyUpdate message) {
+		StringBuilder output = new StringBuilder("Players in the lobby:");
+		for (String player : message.getPlayers()) {
+			output.append("\n- ").append(player);
+		}
+		showInfo(output.toString());
+	}
+
+	@Override
+	public void handleMessage(AssistantCardUpdate message) {
+		client.setAvailableCards(message.getAvailableCards().get(client.getUsername()));
+		if (!message.getPlayedCards().isEmpty()) {
+			StringBuilder output = new StringBuilder("Played assistant cards:");
+			Map<String, String> playedCards = message.getPlayedCards();
+			for (String player : playedCards.keySet()) {
+				String cardName = playedCards.get(player);
+				AssistantCard card = AssistantCard.valueOf(cardName);
+				output.append("\n- ")
+						.append(player)
+						.append(" \u2192 ")
+						.append(cardName)
+						.append(" (value = ")
+						.append(card.value())
+						.append(", movement = ")
+						.append(card.movement())
+						.append(")");
+			}
+			showInfo(output.toString());
+		}
+		if (notNextPlayer(message.getNextPlayer())) return;
+		showAssistantCards();
+	}
+
+	@Override
+	public void handleMessage(BoardUpdate message) {
+		client.setBoardStatus(message.getStatus());
+		if (notNextPlayer(message.getNextPlayer())) return;
+		showInfo("It's your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
+		client.setBoardStatus(message.getStatus());
+	}
+
+	@Override
+	public void handleMessage(CharacterCardUpdate message) {
+		showInfo(message.getCard() + " played");
+	}
+
+	@Override
+	public void handleMessage(UserSelectionUpdate message) {
+		if (notNextPlayer(message.getNextPlayer())) return;
+		StringBuilder output;
+		if (client.getTowerColor() == null) {
+			output = new StringBuilder();
+			output.append("Choose a tower color between:");
+			for (String color : message.getAvailableTowerColors()) {
+				output.append("\n- ").append(color);
+			}
+			showInfo(output.toString());
+		}
+		if (client.getWizard() == null) {
+			output = new StringBuilder();
+			output.append("Choose a wizard between:");
+			for (String wizard : message.getAvailableWizards()) {
+				output.append("\n- ").append(wizard);
+			}
+			showInfo(output.toString());
+		}
+	}
+
+	@Override
+	public void handleMessage(GameOverUpdate message) {
+		client.removeReconnectSettings();
+		showInfo("Game over: the winner is " + message.getWinner());
+	}
+
+	@Override
+	public void handleMessage(InitialBoardStatus message) {
+		showInfo("The game has begun!");
+		client.setBoardStatus(message.getStatus());
+	}
+
+	@Override
+	public void handleMessage(ReconnectionUpdate message) {
+		String subject = message.getSubject();
+		int numPlayers = message.getNumPlayers();
+		boolean gameResumed = message.isGameResumed();
+		showInfo(subject + " has reconnected, " + numPlayers + " players currently connected"
+				+ (gameResumed ? "\nGame resumed" : ""));
+	}
+
+	@Override
+	public void handleMessage(DisconnectionUpdate message) {
+		String subject = message.getSubject();
+		int numPlayers = message.getNumPlayers();
+		boolean gameIdle = message.isGameIdle();
+		showInfo(subject + " has disconnected, " + numPlayers + " players currently connected"
+				+ (gameIdle ? "\nGame idle" : ""));
+	}
+
+	@Override
+	public void handleMessage(Ping message) {
+		client.write(new Ping());
 	}
 }

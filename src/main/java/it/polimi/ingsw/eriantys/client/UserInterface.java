@@ -1,11 +1,10 @@
 package it.polimi.ingsw.eriantys.client;
 
-import it.polimi.ingsw.eriantys.messages.Message;
-
-public interface UserInterface {
+public interface UserInterface extends Runnable, ClientMessageHandler {
 	void setClient(Client client);
 	void showInfo(String details);
 	void showError(String details);
-	void getInputs();
-	void handleMessage(Message message);
+
+	@Override
+	void run();
 }

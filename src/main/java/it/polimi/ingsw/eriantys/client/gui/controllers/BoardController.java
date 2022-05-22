@@ -1,7 +1,5 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
-import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
@@ -15,15 +13,13 @@ import java.net.URL;
 import java.util.*;
 
 // The chain of invocation is the following: constructor, @FXML annotations resolution, initialize().
-public class ExampleController implements Initializable {
-	private Application app;
-
+public class BoardController extends Controller implements Initializable {
 	@FXML private GridPane islands;
-	private List<GridCell> towerCells;
+	private final List<GridCell> towerCells;
 	// TODO: Change Pink and Yellow students text labels row and column (according to the ImageView, in order to simplify drawing)
-	private Map<GridCell, String> studentCells;
+	private final Map<GridCell, String> studentCells;
 
-	public ExampleController() {
+	public BoardController() {
 		// null is considered as 0.
 		towerCells = new ArrayList<>();
 		towerCells.add(new GridCell(null, null));
@@ -39,10 +35,6 @@ public class ExampleController implements Initializable {
 		studentCells.put(new GridCell(2, 3), "Green");
 		studentCells.put(new GridCell(2, 1), "Blue");
 		studentCells.put(new GridCell(1, 1), "Pink");
-	}
-
-	public void setApp(Application app) {
-		this.app = app;
 	}
 
 	@Override
@@ -123,7 +115,7 @@ public class ExampleController implements Initializable {
 		return towerCells.contains(new GridCell(GridPane.getRowIndex(n), GridPane.getColumnIndex(n)));
 	}
 
-	private class GridCell {
+	private static class GridCell {
 		Integer row, column;
 
 		private GridCell(Integer row, Integer column) {

@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.eriantys.client.gui.controllers.ExampleController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.eriantys.client.gui.controllers.BoardController">
 	<center>
 		<GridPane fx:id="islands" maxHeight="680.0" maxWidth="680.0" prefHeight="680.0" prefWidth="680.0" BorderPane.alignment="CENTER">
 			<columnConstraints>
@@ -136,20 +136,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -189,6 +189,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="45.0" left="-15.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>
@@ -267,20 +275,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -320,6 +328,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="45.0" left="5.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>
@@ -398,20 +414,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -451,6 +467,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="45.0" left="-15.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>
@@ -529,20 +553,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -582,6 +606,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="45.0" left="15.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>
@@ -660,20 +692,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -713,6 +745,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="25.0" right="47.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>
@@ -791,20 +831,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -844,6 +884,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="25.0" right="-47.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>
@@ -922,20 +970,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -975,6 +1023,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="-25.0" right="47.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>
@@ -1053,20 +1109,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -1106,6 +1162,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="-25.0" right="-47.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>
@@ -1184,20 +1248,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -1237,6 +1301,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="-45.0" left="-15.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>
@@ -1315,20 +1387,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -1368,6 +1440,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="-45.0" left="15.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>
@@ -1446,20 +1526,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -1499,6 +1579,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="-55.0" left="-15.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>
@@ -1577,20 +1665,20 @@
 										<Insets top="-8.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets left="30.0" top="1.5" />
+										<Insets right="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
-								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
 									<font>
 										<Font name="System Bold" size="16.0" />
 									</font>
 									<GridPane.margin>
-										<Insets right="30.0" top="1.5" />
+										<Insets left="34.0" top="1.5" />
 									</GridPane.margin>
 								</Text>
 								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
@@ -1630,6 +1718,14 @@
 									</font>
 									<GridPane.margin>
 										<Insets bottom="-55.0" left="5.0" />
+									</GridPane.margin>
+								</Text>
+								<Text fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<GridPane.margin>
+										<Insets top="25.0" />
 									</GridPane.margin>
 								</Text>
 							</children>

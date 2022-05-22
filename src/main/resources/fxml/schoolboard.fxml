@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.eriantys.client.gui.controllers.SchoolBoardController">
 	<center>
-		<Group BorderPane.alignment="CENTER">
+		<Group fx:id="schoolboard" BorderPane.alignment="CENTER">
 			<children>
 				<ImageView fitHeight="538.0" fitWidth="1240.0" pickOnBounds="true" preserveRatio="true">
 				</ImageView>

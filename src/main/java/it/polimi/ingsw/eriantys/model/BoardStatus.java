@@ -114,6 +114,18 @@ public class BoardStatus implements Serializable {
 		return charactersInfo.characterCards;
 	}
 
+	public Map<String, Integer> getCharacterCardsCost() {
+		return charactersInfo.characterCardsCost;
+	}
+
+	public Map<String, Map<String, Integer>> getCharacterCardsStudents() {
+		return charactersInfo.characterCardsStudents;
+	}
+
+	public Map<String, Integer> getCharacterCardsNoEntryTiles() {
+		return charactersInfo.characterCardsNoEntryTiles;
+	}
+
 	public Map<String, Map<String, Integer>> getCloudTiles() {
 		return cloudTiles;
 	}

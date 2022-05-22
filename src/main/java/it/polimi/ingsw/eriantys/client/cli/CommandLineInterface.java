@@ -133,10 +133,7 @@ public class CommandLineInterface implements UserInterface {
 						client.selectCharacterCard(id);
 						showCharacterCardArgs(id);
 					}
-					case "ccarguments", "ccargs" -> {
-						if (wrongArgNumber(tokens, 0, 4)) return;
-						parseCharacterCardArgs(Arrays.copyOfRange(tokens, 1, tokens.length));
-					}
+					case "ccarguments", "ccargs" -> parseCharacterCardArgs(Arrays.copyOfRange(tokens, 1, tokens.length));
 					case "bstat", "bs" -> {
 						if (wrongArgNumber(tokens, 0)) return;
 						showBoard();
@@ -156,6 +153,10 @@ public class CommandLineInterface implements UserInterface {
 					case "cdesc", "cc" -> {
 						if (wrongArgNumber(tokens, 1)) return;
 						showCharacterDescription(tokens[1]);
+					}
+					case "ccstat", "ccs" -> {
+						if (wrongArgNumber(tokens, 1)) return;
+						showCharacterStatus(tokens[1]);
 					}
 					case "pstat", "ps" -> {
 						if (wrongArgNumber(tokens, 1)) return;
@@ -378,6 +379,42 @@ public class CommandLineInterface implements UserInterface {
 		String setup = Optional.ofNullable(cardInfo.get("setup")).map(j -> "Setup: " + j.getAsString() + "\n").orElse("");
 		String effect = "Effect: " + cardInfo.get("effect").getAsString();
 		showInfo(setup + effect);
+	}
+
+	private void showCharacterStatus(String card) {
+		if (!characterCardInfo.has(card)) {
+			showError("Invalid character card name");
+			return;
+		}
+		BoardStatus boardStatus = client.getBoardStatus();
+		if (boardStatus == null) return;
+		StringBuilder output = new StringBuilder();
+		Map<String, Integer> cardsCost = boardStatus.getCharacterCardsCost();
+		if (cardsCost != null) {
+			output.append("Cost: ");
+			Integer cost = cardsCost.get(card);
+			if (cost != null) {
+				output.append(cost);
+			}
+		}
+		Map<String, Integer> cardsNoEntryTiles = boardStatus.getCharacterCardsNoEntryTiles();
+		if (cardsNoEntryTiles != null) {
+			Integer noEntryTiles = cardsNoEntryTiles.get(card);
+			if (noEntryTiles != null) {
+				output.append("\nNo entry tiles: ").append(noEntryTiles);
+			}
+		}
+		Map<String, Map<String, Integer>> cardsStudents = boardStatus.getCharacterCardsStudents();
+		if (cardsStudents != null) {
+			Map<String, Integer> students = cardsStudents.get(card);
+			if (students != null) {
+				output.append("\nStudents:");
+				for (String color : students.keySet()) {
+					output.append("\n  ").append(students.get(color)).append(" ").append(color);
+				}
+			}
+		}
+		showInfo(output.toString());
 	}
 
 	private void showBoard() {

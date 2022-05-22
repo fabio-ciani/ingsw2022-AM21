@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+	<center>
+		<GridPane BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<ImageView fx:id="c0_img" fitHeight="400.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				</ImageView>
+				<ImageView fx:id="c1_img" fitHeight="400.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				</ImageView>
+				<ImageView fx:id="c2_img" fitHeight="400.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				</ImageView>
+				<Text fx:id="c0_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Knight" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+					<font>
+						<Font size="20.0" />
+					</font>
+					<GridPane.margin>
+						<Insets bottom="120.0" />
+					</GridPane.margin>
+				</Text>
+				<Text fx:id="c1_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Minstrel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+					<font>
+						<Font size="20.0" />
+					</font>
+					<GridPane.margin>
+						<Insets bottom="120.0" />
+					</GridPane.margin>
+				</Text>
+				<Text fx:id="c2_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Thief" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+					<font>
+						<Font size="20.0" />
+					</font>
+					<GridPane.margin>
+						<Insets bottom="120.0" />
+					</GridPane.margin>
+				</Text>
+				<ImageView fx:id="c0_coin" fitHeight="114.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="380.0" left="250.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="c1_coin" fitHeight="114.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="380.0" left="250.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="c2_coin" fitHeight="114.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="380.0" left="250.0" />
+					</GridPane.margin>
+				</ImageView>
+			</children>
+		</GridPane>
+	</center>
+</BorderPane>

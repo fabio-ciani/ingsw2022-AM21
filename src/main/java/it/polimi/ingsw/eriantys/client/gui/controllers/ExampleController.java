@@ -1,12 +1,14 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
@@ -15,6 +17,7 @@ import java.util.*;
 // The chain of invocation is the following: constructor, @FXML annotations resolution, initialize().
 public class ExampleController implements Initializable {
 	private Application app;
+
 	@FXML private GridPane islands;
 	private List<GridCell> towerCells;
 	// TODO: Change Pink and Yellow students text labels row and column (according to the ImageView, in order to simplify drawing)
@@ -57,9 +60,15 @@ public class ExampleController implements Initializable {
 					int num = Integer.parseInt(x.getId().substring(1).replace("-", ""));
 
 					// Randomize loaded image.
+					ImageView img = (ImageView) x;
 					if (num % 3 != 0)
-						((ImageView) x).setImage(new Image(getClass().getResource("/graphics/Island_" + num % 3 + ".png").toExternalForm()));
-					else ((ImageView) x).setImage(new Image(getClass().getResource("/graphics/Island_3.png").toExternalForm()));
+						img.setImage(new Image(getClass().getResource("/graphics/Islands/Island_" + num % 3 + ".png").toExternalForm()));
+					else img.setImage(new Image(getClass().getResource("/graphics/Islands/Island_3.png").toExternalForm()));
+
+					img.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+						System.out.println("You clicked on island " + ((ImageView) e.getSource()).getId());
+						e.consume();
+					});
 				});
 	}
 
@@ -71,7 +80,16 @@ public class ExampleController implements Initializable {
 					p.getChildren().stream()
 							.filter(y -> y instanceof ImageView)
 							.filter(this::isStudent)
-							.forEach(y -> ((ImageView) y).setImage(new Image(getClass().getResource("/graphics/" + studentImage(y) + "Student.png").toExternalForm())));
+							.forEach(y -> {
+								ImageView img = (ImageView) y;
+
+								img.setImage(new Image(getClass().getResource("/graphics/Students/" + studentImage(y) + "Student.png").toExternalForm()));
+
+								img.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+									System.out.println("You clicked on a " + studentImage(y) + " student");
+									e.consume();
+								});
+							});
 				});
 	}
 
@@ -93,9 +111,9 @@ public class ExampleController implements Initializable {
 							.filter(this::isTower)
 							.forEach(y -> {
 								switch ((int) ((ImageView) y).getFitWidth()) {
-									case 32 -> ((ImageView) y).setImage(new Image(getClass().getResource("/graphics/WhiteTower.png").toExternalForm()));
-									case 36 -> ((ImageView) y).setImage(new Image(getClass().getResource("/graphics/BlackTower.png").toExternalForm()));
-									case 40 -> ((ImageView) y).setImage(new Image(getClass().getResource("/graphics/GreyTower.png").toExternalForm()));
+									case 32 -> ((ImageView) y).setImage(new Image(getClass().getResource("/graphics/Towers/WhiteTower.png").toExternalForm()));
+									case 36 -> ((ImageView) y).setImage(new Image(getClass().getResource("/graphics/Towers/BlackTower.png").toExternalForm()));
+									case 40 -> ((ImageView) y).setImage(new Image(getClass().getResource("/graphics/Towers/GreyTower.png").toExternalForm()));
 								}
 							});
 				});

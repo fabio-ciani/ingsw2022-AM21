@@ -1,7 +1,6 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -13,7 +12,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CharacterCardsController extends Controller implements Initializable {
+public class CharacterCardsController extends Controller {
 	@FXML private GridPane cards;
 	private final String[] characters;
 

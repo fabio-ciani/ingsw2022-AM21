@@ -22,17 +22,17 @@
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<ImageView fx:id="white" fitHeight="192.0" fitWidth="192.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<ImageView fx:id="White" fitHeight="192.0" fitWidth="192.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<effect>
 						<DropShadow height="20.0" radius="9.5" width="20.0" />
 					</effect>
 				</ImageView>
-				<ImageView fx:id="grey" fitHeight="220.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<ImageView fx:id="Grey" fitHeight="220.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<effect>
 						<DropShadow height="20.0" radius="9.5" width="20.0" />
 					</effect>
 				</ImageView>
-				<ImageView fx:id="black" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<ImageView fx:id="Black" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<effect>
 						<DropShadow height="20.0" radius="9.5" width="20.0" />
 					</effect>

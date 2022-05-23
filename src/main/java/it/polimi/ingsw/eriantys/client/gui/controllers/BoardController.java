@@ -1,7 +1,6 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -12,8 +11,7 @@ import javafx.scene.layout.GridPane;
 import java.net.URL;
 import java.util.*;
 
-// The chain of invocation is the following: constructor, @FXML annotations resolution, initialize().
-public class BoardController extends Controller implements Initializable {
+public class BoardController extends Controller {
 	@FXML private GridPane islands;
 	private final List<GridCell> towerCells;
 	// TODO: Change Pink and Yellow students text labels row and column (according to the ImageView, in order to simplify drawing)

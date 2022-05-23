@@ -1,7 +1,6 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -9,7 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LobbiesController extends Controller implements Initializable {
+public class LobbiesController extends Controller {
 	@FXML private TableView lobbies;
 	@FXML private TableColumn identificators, creators, players, modes;
 

@@ -18,7 +18,7 @@
 	<center>
 		<TableView fx:id="lobbies" focusTraversable="false" maxHeight="400.0" maxWidth="720.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<columns>
-				<TableColumn fx:id="identificators" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Lobby ID" />
+				<TableColumn fx:id="identifiers" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Lobby ID" />
 				<TableColumn fx:id="creators" maxWidth="320.0" minWidth="320.0" prefWidth="320.0" text="Creator" />
 				<TableColumn fx:id="players" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Players" />
 				<TableColumn fx:id="modes" maxWidth="80.0" minWidth="80.0" text="Mode" />

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.eriantys.client.gui.controllers.WaitingRoomController">
+	<center>
+		<TableView fx:id="info" focusTraversable="false" maxHeight="320.0" maxWidth="640.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<columns>
+				<TableColumn fx:id="usernames" maxWidth="320.0" minWidth="320.0" prefWidth="320.0" text="Username" />
+				<TableColumn fx:id="tower_colors" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Tower Color" />
+				<TableColumn fx:id="wizards" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Wizard" />
+			</columns>
+		</TableView>
+	</center>
+	<top>
+		<Text fx:id="lobby" strokeType="OUTSIDE" strokeWidth="0.0" text="Lobby #0" BorderPane.alignment="CENTER">
+			<font>
+				<Font size="72.0" />
+			</font>
+			<BorderPane.margin>
+				<Insets top="40.0" />
+			</BorderPane.margin>
+		</Text>
+	</top>
+	<bottom>
+		<Button fx:id="leave" focusTraversable="false" minWidth="120.0" mnemonicParsing="false" text="Leave lobby" BorderPane.alignment="CENTER">
+			<BorderPane.margin>
+				<Insets bottom="40.0" />
+			</BorderPane.margin>
+		</Button>
+	</bottom>
+</BorderPane>

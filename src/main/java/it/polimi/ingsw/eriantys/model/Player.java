@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Player {
 	private final String nickname;
 	private final SchoolBoard schoolBoard;
-	private TowerColor teamColor;
+	private TowerColor towerColor;
 	private Wizard wizard;
 	private final List<AssistantCard> deck;
 	private int motherNatureMovements, coins;
@@ -22,7 +22,7 @@ public class Player {
 	public Player(String nickname, int entranceSize, int towerNumber) {
 		this.nickname = nickname;
 		schoolBoard = new SchoolBoard(entranceSize, towerNumber);
-		teamColor = null;
+		towerColor = null;
 		wizard = null;
 
 		deck = new ArrayList<>();
@@ -70,15 +70,15 @@ public class Player {
 	 * @return the internal state for a {@code Player}'s {@link TowerColor}
 	 */
 	public TowerColor getTowerColor() {
-		return teamColor;
+		return towerColor;
 	}
 
 	/**
 	 * A setter for the {@link TowerColor} of a {@code Player}'s object.
-	 * @param teamColor the new internal state for a {@code Player}'s {@link TowerColor}
+	 * @param towerColor the new internal state for a {@code Player}'s {@link TowerColor}
 	 */
-	public void setTowerColor(TowerColor teamColor) {
-		this.teamColor = teamColor;
+	public void setTowerColor(TowerColor towerColor) {
+		this.towerColor = towerColor;
 	}
 
 	/**

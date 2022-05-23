@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -621,4 +624,54 @@
 			</children>
 		</Group>
 	</center>
+	<bottom>
+		<GridPane minHeight="40.0" BorderPane.alignment="CENTER">
+			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<GridPane minHeight="40.0" style="-fx-border-radius: 10; -fx-border-color: grey;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<columnConstraints>
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+					</columnConstraints>
+					<rowConstraints>
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+					</rowConstraints>
+					<children>
+						<ChoiceBox fx:id="sb_username" focusTraversable="false" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+						<Button fx:id="sb_button" focusTraversable="false" minWidth="120.0" mnemonicParsing="false" text="See school board" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+					</children>
+					<GridPane.margin>
+						<Insets bottom="20.0" />
+					</GridPane.margin>
+				</GridPane>
+				<Button fx:id="board" focusTraversable="false" minWidth="120.0" mnemonicParsing="false" text="See board" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="20.0" />
+					</GridPane.margin>
+				</Button>
+				<Button fx:id="characters" focusTraversable="false" minWidth="120.0" mnemonicParsing="false" text="See character cards" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="20.0" />
+					</GridPane.margin>
+				</Button>
+			</children>
+		</GridPane>
+	</bottom>
+	<top>
+		<Text fx:id="username" strokeType="OUTSIDE" strokeWidth="0.0" text="JohnDoe’s school board" BorderPane.alignment="CENTER">
+			<font>
+				<Font size="36.0" />
+			</font>
+			<BorderPane.margin>
+				<Insets top="20.0" />
+			</BorderPane.margin>
+		</Text>
+	</top>
 </BorderPane>

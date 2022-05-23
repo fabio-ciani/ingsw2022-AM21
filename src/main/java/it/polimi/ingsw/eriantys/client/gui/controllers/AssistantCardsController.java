@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AssistantCardsController extends Controller {
-	@FXML private GridPane cards;
+	@FXML private GridPane container;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -18,7 +18,8 @@ public class AssistantCardsController extends Controller {
 	}
 
 	private void drawImages() {
-		cards.getChildren().stream()
+		container.getChildren().stream()
+				.filter(x -> x instanceof ImageView)
 				.forEach(x -> {
 					ImageView img = (ImageView) x;
 

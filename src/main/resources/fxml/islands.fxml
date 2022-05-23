@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -1922,6 +1923,16 @@
 						</ImageView>
 					</children>
 				</GridPane>
+				<Text fx:id="move_label" strokeType="OUTSIDE" strokeWidth="0.0" text="You have not selected any student yet." GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="122.0" right="490.0" />
+					</GridPane.margin>
+				</Text>
+				<Button fx:id="back" focusTraversable="false" minWidth="120.0" mnemonicParsing="false" text="Back" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="112.0" left="575.0" />
+					</GridPane.margin>
+				</Button>
 			</children>
 		</GridPane>
 	</center>

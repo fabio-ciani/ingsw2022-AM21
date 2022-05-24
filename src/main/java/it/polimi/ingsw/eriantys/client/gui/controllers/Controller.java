@@ -43,4 +43,6 @@ public abstract class Controller implements Initializable {
 		grayscale.setSaturation(-1);
 		img.setEffect(grayscale);
 	}
+
+	public abstract void onChangeScene();
 }

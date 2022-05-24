@@ -5,6 +5,7 @@ import it.polimi.ingsw.eriantys.client.gui.controllers.LobbiesController;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -59,7 +60,13 @@ public class GraphicalUserInterface extends UserInterface {
 
 	@Override
 	public void handleMessage(AcceptedUsername message) {
-		// TODO: 23/05/2022
+		client.setUsername(message.getUsername());
+		Platform.runLater(() -> app.changeScene(SceneName.LOBBIES));
+		/*
+		if (client.hasReconnectSettings()) {
+			showInfo("Reconnection available, type /r or /reconnect to join");
+		}
+		 */
 	}
 
 	@Override

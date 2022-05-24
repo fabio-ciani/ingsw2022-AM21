@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,6 +15,11 @@ public class AssistantCardsController extends Controller {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		drawImages();
+	}
+
+	@Override
+	public void onChangeScene() {
+
 	}
 
 	private void drawImages() {

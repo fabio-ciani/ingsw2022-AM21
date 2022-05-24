@@ -5,7 +5,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -26,6 +25,11 @@ public class CharacterCardsController extends Controller {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		drawImages();
 		drawLabels();
+	}
+
+	@Override
+	public void onChangeScene() {
+
 	}
 
 	private void drawImages() {

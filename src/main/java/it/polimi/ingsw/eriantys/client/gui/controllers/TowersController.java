@@ -16,6 +16,11 @@ public class TowersController extends Controller {
 		drawImages();
 	}
 
+	@Override
+	public void onChangeScene() {
+
+	}
+
 	private void drawImages() {
 		container.getChildren().stream()
 				.forEach(x -> {

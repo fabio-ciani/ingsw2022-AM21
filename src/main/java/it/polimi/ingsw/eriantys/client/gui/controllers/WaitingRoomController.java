@@ -8,4 +8,9 @@ public class WaitingRoomController extends Controller {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 
 	}
+
+	@Override
+	public void onChangeScene() {
+
+	}
 }

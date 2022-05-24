@@ -48,6 +48,9 @@ public class CommandLineInterface extends UserInterface {
 
 	@Override
 	public void run() {
+		synchronized (client) {
+			client.notifyAll();
+		}
 		this.running = true;
 		while (running) {
 			String line = scanner.nextLine();

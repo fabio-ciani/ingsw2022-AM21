@@ -52,6 +52,13 @@ public class LobbiesController extends Controller {
 		});
 	}
 
+	@Override
+	public void onChangeScene() {
+		if (client.hasReconnectSettings()) {
+			showInfo.accept("Reconnection available, type /r or /reconnect to join");
+		}
+	}
+
 	public void updateLobbies(List<GameInfo> availableLobbies) {
 		ObservableList<Lobby> content = lobbies.getItems();
 		content.clear();

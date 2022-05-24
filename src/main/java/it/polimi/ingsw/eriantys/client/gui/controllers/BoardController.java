@@ -42,6 +42,11 @@ public class BoardController extends Controller {
 		drawTowers();
 	}
 
+	@Override
+	public void onChangeScene() {
+
+	}
+
 	private void drawIslands() {
 		islands.getChildren().stream()
 				.filter(x -> x instanceof ImageView)

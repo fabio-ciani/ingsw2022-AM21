@@ -72,6 +72,8 @@ public class GraphicalApplication extends Application {
 		stage.setScene(scene);
 		center(scene);
 
+		controllerByScene.get(currentScene).onChangeScene();
+
 		stage.show();
 	}
 

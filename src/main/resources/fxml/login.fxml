@@ -37,7 +37,7 @@
 		</GridPane>
 	</center>
 	<top>
-		<Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Eryantis" BorderPane.alignment="CENTER">
+		<Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Eriantys" BorderPane.alignment="CENTER">
 			<font>
 				<Font size="96.0" />
 			</font>

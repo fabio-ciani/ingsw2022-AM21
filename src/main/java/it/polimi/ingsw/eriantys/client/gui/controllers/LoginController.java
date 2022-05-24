@@ -24,11 +24,6 @@ public class LoginController extends Controller {
 		login.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> this.sendHandshake());
 	}
 
-	@Override
-	public void onChangeScene() {
-
-	}
-
 	private void sendHandshake() {
 		String chosenUsername = username.getText();
 		client.sendHandshake(chosenUsername);

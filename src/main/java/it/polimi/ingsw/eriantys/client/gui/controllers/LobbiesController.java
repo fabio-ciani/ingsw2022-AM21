@@ -1,12 +1,11 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
 import it.polimi.ingsw.eriantys.controller.GameInfo;
+import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
@@ -19,6 +18,9 @@ public class LobbiesController extends Controller {
 	@FXML private TableColumn<Lobby, String> creators;
 	@FXML private TableColumn<Lobby, String> players;
 	@FXML private TableColumn<Lobby, String> modes;
+	@FXML private ChoiceBox<Integer> c_players;
+	@FXML private CheckBox c_expert;
+	@FXML private Button join;
 	@FXML private Button create;
 	@FXML private Button list;
 
@@ -32,31 +34,46 @@ public class LobbiesController extends Controller {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		identifiers.setCellValueFactory(new PropertyValueFactory<>("id"));
-		creators.setCellValueFactory(new PropertyValueFactory<>("creator"));
-		players.setCellValueFactory(new PropertyValueFactory<>("counter"));
-		modes.setCellValueFactory(new PropertyValueFactory<>("expert"));
+		lobbies.setRowFactory(t -> {
+			TableRow<Lobby> tableRow = new TableRow<>();
+			tableRow.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+				int count = event.getClickCount();
+				if (count == 2 && !tableRow.isEmpty()) {
+					client.joinLobby(Integer.toString(tableRow.getItem().id));
+				}
+			});
+			return tableRow;
+		});
 
-		create.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-			System.out.println("confirm - mouse clicked");
+		identifiers.setCellValueFactory(c -> c.getValue().idProperty());
+		creators.setCellValueFactory(c -> c.getValue().creatorProperty());
+		players.setCellValueFactory(c -> c.getValue().counterProperty());
+		modes.setCellValueFactory(c -> c.getValue().modeProperty());
+
+		c_players.getItems().addAll(2, 3);
+
+		join.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 			Lobby selectedLobby = lobbies.getSelectionModel().getSelectedItem();
 			if (selectedLobby == null)
 				showError.accept("Please select a lobby!");
 			else
-				client.joinLobby(Integer.toString(selectedLobby.getId()));
+				client.joinLobby(Integer.toString(selectedLobby.id));
 		});
 
-		list.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-			System.out.println("refresh - mouse clicked");
-			client.askLobbies();
+		create.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+			Integer numPlayers = c_players.getSelectionModel().getSelectedItem();
+			Boolean expertMode = c_expert.isSelected();
+			client.createLobby(numPlayers.toString(), expertMode.toString());
 		});
+
+		list.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> client.askLobbies());
 	}
 
 	@Override
 	public void onChangeScene() {
-		if (client.hasReconnectSettings()) {
-			showInfo.accept("Reconnection available, type /r or /reconnect to join");
-		}
+		client.askLobbies();
+		if (client.hasReconnectSettings())
+			showReconnect();
 	}
 
 	public void updateLobbies(List<GameInfo> availableLobbies) {
@@ -68,9 +85,42 @@ public class LobbiesController extends Controller {
 		}
 	}
 
-	private record Lobby(Integer id, String creator, String counter, Boolean expert) {
-		public int getId() {
-			return id;
-		}
+	private void showReconnect() {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+		alert.setTitle("Confirmation");
+		alert.setHeaderText("Reconnection available");
+		alert.setContentText("Do you want to reconnect?");
+		alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+
+		alert.showAndWait().ifPresent(type -> {
+			if (type == ButtonType.YES) client.sendReconnect();
+		});
 	}
+
+	private record Lobby(int id, String creator, String counter, boolean expert) {
+		public ObservableValue<Integer> idProperty() {
+				IntegerProperty res = new SimpleIntegerProperty();
+				res.setValue(id);
+				return res.asObject();
+			}
+
+			public ObservableValue<String> creatorProperty() {
+				StringProperty res = new SimpleStringProperty();
+				res.setValue(creator);
+				return res;
+			}
+
+			public ObservableValue<String> counterProperty() {
+				StringProperty res = new SimpleStringProperty();
+				res.setValue(counter);
+				return res;
+			}
+
+			public ObservableValue<String> modeProperty() {
+				StringProperty res = new SimpleStringProperty();
+				res.setValue(expert ? "Expert" : "Base");
+				return res;
+			}
+		}
 }

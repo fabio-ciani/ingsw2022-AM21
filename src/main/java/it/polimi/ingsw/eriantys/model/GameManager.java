@@ -417,6 +417,17 @@ public class GameManager {
 		return diningRoom.getRepresentation();
 	}
 
+	// TODO: tests
+	/**
+	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
+	 * within the MVC pattern for the game.
+	 * @param username the username of the target player
+	 * @return a representation for the tower color of the specified player
+	 */
+	public String towerColorRepresentation(String username) {
+		return players.get(username).getTowerColor().toString();	// TODO: check NullPointerException?
+	}
+
 	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation

@@ -35,6 +35,7 @@ public class BoardStatus implements Serializable {
 	private class PlayersInfo implements Serializable {
 		private final List<String> players;
 		private final Map<String, Map<String, Integer>> playerEntrances, playerDiningRooms;
+		private final Map<String, String> playerTowerColors;
 		private final Map<String, Integer> playerTowers;
 		private final Map<String, Integer> playerCoins;
 
@@ -43,12 +44,14 @@ public class BoardStatus implements Serializable {
 
 			this.playerEntrances = new LinkedHashMap<>();
 			this.playerDiningRooms = new LinkedHashMap<>();
+			this.playerTowerColors = new LinkedHashMap<>();
 			this.playerTowers = new LinkedHashMap<>();
 			this.playerCoins = new LinkedHashMap<>();
 
 			for (String p : players) {
 				playerEntrances.put(p, gm.entranceRepresentation(p));
 				playerDiningRooms.put(p, gm.diningRoomRepresentation(p));
+				playerTowerColors.put(p, gm.towerColorRepresentation(p));
 				playerTowers.put(p, gm.towersRepresentation(p));
 				playerCoins.put(p, gm.coinsRepresentation(p));
 			}

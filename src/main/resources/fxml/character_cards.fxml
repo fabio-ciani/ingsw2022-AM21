@@ -28,7 +28,7 @@
 				</ImageView>
 				<ImageView fx:id="c2_img" fitHeight="400.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 				</ImageView>
-				<Text fx:id="c0_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Knight" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+				<Text fx:id="c0_text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Knight" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
 					<font>
 						<Font size="20.0" />
 					</font>
@@ -36,7 +36,7 @@
 						<Insets bottom="35.0" />
 					</GridPane.margin>
 				</Text>
-				<Text fx:id="c1_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Minstrel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+				<Text fx:id="c1_text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Minstrel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
 					<font>
 						<Font size="20.0" />
 					</font>
@@ -44,7 +44,7 @@
 						<Insets bottom="35.0" />
 					</GridPane.margin>
 				</Text>
-				<Text fx:id="c2_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Thief" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+				<Text fx:id="c2_text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Thief" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
 					<font>
 						<Font size="20.0" />
 					</font>

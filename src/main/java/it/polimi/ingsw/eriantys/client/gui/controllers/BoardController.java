@@ -60,9 +60,9 @@ public class BoardController extends Controller {
 						img.setImage(new Image(getClass().getResource("/graphics/Islands/Island_" + num % 3 + ".png").toExternalForm()));
 					else img.setImage(new Image(getClass().getResource("/graphics/Islands/Island_3.png").toExternalForm()));
 
-					img.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-						System.out.println("You clicked on island " + ((ImageView) e.getSource()).getId());
-						e.consume();
+					img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+						System.out.println("You clicked on island " + ((ImageView) event.getSource()).getId());
+						event.consume();
 					});
 				});
 	}
@@ -80,9 +80,9 @@ public class BoardController extends Controller {
 
 								img.setImage(new Image(getClass().getResource("/graphics/Students/" + studentImage(y) + "Student.png").toExternalForm()));
 
-								img.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+								img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 									System.out.println("You clicked on a " + studentImage(y) + " student");
-									e.consume();
+									event.consume();
 								});
 							});
 				});

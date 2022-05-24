@@ -17,11 +17,18 @@ public class LoginController extends Controller {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		username.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-			if (event.getCode() != KeyCode.ENTER) return;
+			if (event.getCode() != KeyCode.ENTER) {
+				event.consume();
+				return;
+			}
 			sendHandshake();
+			event.consume();
 		});
 
-		login.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> this.sendHandshake());
+		login.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+			this.sendHandshake();
+			event.consume();
+		});
 	}
 
 	private void sendHandshake() {

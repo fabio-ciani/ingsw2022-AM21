@@ -35,7 +35,10 @@ public class WaitingRoomController extends Controller {
 		tower_colors.setCellValueFactory(c -> c.getValue().towerColorProperty());
 		wizards.setCellValueFactory(c -> c.getValue().wizardProperty());
 
-		leave.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> client.leaveLobby());
+		leave.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+			client.leaveLobby();
+			event.consume();
+		});
 	}
 
 	public void updatePlayers(List<String> players) {

@@ -41,6 +41,7 @@ public class LobbiesController extends Controller {
 				if (count == 2 && !tableRow.isEmpty()) {
 					client.joinLobby(Integer.toString(tableRow.getItem().id));
 				}
+				event.consume();
 			});
 			return tableRow;
 		});
@@ -58,15 +59,20 @@ public class LobbiesController extends Controller {
 				showError.accept("Please select a lobby!");
 			else
 				client.joinLobby(Integer.toString(selectedLobby.id));
+			event.consume();
 		});
 
 		create.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 			Integer numPlayers = c_players.getSelectionModel().getSelectedItem();
 			Boolean expertMode = c_expert.isSelected();
 			client.createLobby(numPlayers.toString(), expertMode.toString());
+			event.consume();
 		});
 
-		list.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> client.askLobbies());
+		list.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+			client.askLobbies();
+			event.consume();
+		});
 	}
 
 	@Override
@@ -119,7 +125,7 @@ public class LobbiesController extends Controller {
 
 			public ObservableValue<String> modeProperty() {
 				StringProperty res = new SimpleStringProperty();
-				res.setValue(expert ? "Expert" : "Base");
+				res.setValue(expert ? "Expert" : "Simplified");
 				return res;
 			}
 		}

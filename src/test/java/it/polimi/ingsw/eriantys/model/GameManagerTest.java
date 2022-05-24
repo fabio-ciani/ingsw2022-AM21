@@ -283,7 +283,7 @@ class GameManagerTest {
 	}
 
 	@Test
-	void entranceRepresentation_UsernameNotFound_ThrowException() {
+	void entranceRepresentation_InvalidUsername_ThrowException() {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, false);
 
@@ -291,7 +291,14 @@ class GameManagerTest {
 	}
 
 	@Test
-	void diningRoomRepresentation_UsernameNotFound_ThrowException() {
+	void entranceRepresentation_ValidUsername_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+
+		assertNotNull(gm.entranceRepresentation(Eve.getNickname()));
+	}
+
+	@Test
+	void diningRoomRepresentation_InvalidUsername_ThrowException() {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, false);
 
@@ -299,7 +306,48 @@ class GameManagerTest {
 	}
 
 	@Test
-	void towersRepresentation_UsernameNotFound_NormalPostConditions() {
+	void diningRoomRepresentation_ValidUsername_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+
+		assertNotNull(gm.diningRoomRepresentation(Eve.getNickname()));
+	}
+
+	@Test
+	void towerColorRepresentation_BeforeSetup_ThrowException() {
+		// Note: the test case will never happen
+		GameManager gm = new GameManager(players, false);
+
+		assertThrowsExactly(NullPointerException.class, () -> gm.towerColorRepresentation("admin"));
+		assertThrowsExactly(NullPointerException.class, () -> gm.towerColorRepresentation(Eve.getNickname()));
+	}
+
+	@Test
+	void towerColorRepresentation_AfterSetupAndInvalidUsername_ThrowException() throws InvalidArgumentException {
+		// Note: the test case will never happen
+		GameManager gm = new GameManager(players, false);
+
+		gm.setupPlayer(Alice.getNickname(), TowerColor.WHITE.toString(), Wizard.SNOW.toString());
+		gm.setupPlayer(Bob.getNickname(), TowerColor.BLACK.toString(), Wizard.DESERT.toString());
+		gm.setupPlayer(Eve.getNickname(), TowerColor.GREY.toString(), Wizard.SKY.toString());
+
+		assertThrowsExactly(NullPointerException.class, () -> gm.towerColorRepresentation("admin"));
+	}
+
+	@Test
+	void towerColorRepresentation_AfterSetupAndValidUsername_NormalPostConditions() throws InvalidArgumentException {
+		GameManager gm = new GameManager(players, false);
+
+		gm.setupPlayer(Alice.getNickname(), TowerColor.WHITE.toString(), Wizard.SNOW.toString());
+		gm.setupPlayer(Bob.getNickname(), TowerColor.BLACK.toString(), Wizard.DESERT.toString());
+		gm.setupPlayer(Eve.getNickname(), TowerColor.GREY.toString(), Wizard.SKY.toString());
+
+		assertSame("WHITE", gm.towerColorRepresentation(Alice.getNickname()));
+		assertSame("BLACK", gm.towerColorRepresentation(Bob.getNickname()));
+		assertSame("GREY", gm.towerColorRepresentation(Eve.getNickname()));
+	}
+
+	@Test
+	void towersRepresentation_UsernameNotFound_ThrowException() {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, false);
 
@@ -315,26 +363,35 @@ class GameManagerTest {
 	}
 
 	@Test
-	void coinsRepresentation_SimplifiedModeAndValidUsername_NormalPostConditions() {
-		GameManager gm = new GameManager(players, false);
-
-		assertNull(gm.coinsRepresentation("Eve"));
-	}
-
-	@Test
-	void coinsRepresentation_SimplifiedModeAndInvalidUsername_NormalPostConditions() {
+	void coinsRepresentation_SimplifiedModeAndInvalidUsername_ReturnNull() {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, false);
 
 		assertDoesNotThrow(() -> gm.coinsRepresentation("admin"));
+		assertNull(gm.coinsRepresentation("admin"));
 	}
 
 	@Test
-	void coinsRepresentation_ExpertModeAndUsernameNotFound_NormalPostConditions() {
+	void coinsRepresentation_SimplifiedModeAndValidUsername_ReturnNull() {
+		GameManager gm = new GameManager(players, false);
+
+		assertDoesNotThrow(() -> gm.coinsRepresentation(Eve.getNickname()));
+		assertNull(gm.coinsRepresentation(Eve.getNickname()));
+	}
+
+	@Test
+	void coinsRepresentation_ExpertModeAndInvalidUsername_ThrowException() {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, true);
 
 		assertThrowsExactly(NullPointerException.class, () -> gm.coinsRepresentation("admin"));
+	}
+
+	@Test
+	void coinsRepresentation_ExpertModeAndValidUsernameAndNoAction_NormalPostConditions() {
+		GameManager gm = new GameManager(players, true);
+
+		assertEquals(1, gm.coinsRepresentation(Eve.getNickname()));
 	}
 
 	@Test
@@ -363,6 +420,13 @@ class GameManagerTest {
 	}
 
 	@Test
+	void islandStudentsRepresentation_AfterSetup_ReturnNotNull() {
+		GameManager gm = new GameManager(players, false);
+
+		assertNotNull(gm.islandStudentsRepresentation("03"));
+	}
+
+	@Test
 	void islandControllerRepresentation_PassInvalidIsle_ReturnNull() {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, false);
@@ -372,7 +436,7 @@ class GameManagerTest {
 	}
 
 	@Test
-	void islandControllerRepresentation_NoController_NormalPostConditions() {
+	void islandControllerRepresentation_NoController_ReturnNull() {
 		GameManager gm = new GameManager(players, false);
 
 		assertNull(gm.islandControllerRepresentation("03"));
@@ -387,7 +451,7 @@ class GameManagerTest {
 	}
 
 	@Test
-	void motherNatureIslandRepresentation_AfterSetup_NormalPostConditions() throws InvalidArgumentException, NoMovementException {
+	void motherNatureIslandRepresentation_AfterSetup_ReturnNotNull() throws InvalidArgumentException, NoMovementException {
 		GameManager gm = new GameManager(players, false);
 
 		gm.setupBoard();
@@ -445,5 +509,90 @@ class GameManagerTest {
 		assertEquals(3, rep.size());
 		for (String c : rep)
 			assertNotNull(c);
+	}
+
+	@Test
+	void characterCostRepresentation_SimplifiedModeAndNonexistentCard_NormalPostConditions() {
+		// Note: the test case will never happen
+		GameManager gm = new GameManager(players, false);
+
+		assertNull(gm.characterCostRepresentation("Mage"));
+	}
+
+	@Test
+	void characterCostRepresentation_SimplifiedModeAndExistentCard_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+
+		assertNull(gm.characterCostRepresentation("Minstrel"));
+	}
+
+	@Test
+	void characterCostRepresentation_ExpertModeAndNonexistentCard_NormalPostConditions() {
+		// Note: the test case will never happen
+		GameManager gm = new GameManager(players, true);
+
+		assertNull(gm.characterCostRepresentation("Mage"));
+	}
+
+	@Test
+	void characterCostRepresentation_ExpertModeAndExistentCard_NormalPostConditions() {
+		GameManager gm = new GameManager(players, true);
+
+		Integer rep = gm.characterCostRepresentation("Minstrel");
+
+		assertTrue(rep == null || (rep >= 1 && rep <= 4));
+	}
+
+	@Test
+	void characterStudentsRepresentation_SimplifiedModeAndNonexistentCard_NormalPostConditions() {
+		// Note: the test case will never happen
+		GameManager gm = new GameManager(players, false);
+
+		assertNull(gm.characterStudentsRepresentation("Mage"));
+	}
+
+	@Test
+	void characterStudentsRepresentation_SimplifiedModeAndExistentCard_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+
+		assertNull(gm.characterStudentsRepresentation("Minstrel"));
+	}
+
+	@Test
+	void characterStudentsRepresentation_ExpertModeAndNonexistentCard_NormalPostConditions() {
+		// Note: the test case will never happen
+		GameManager gm = new GameManager(players, true);
+
+		assertNull(gm.characterStudentsRepresentation("Mage"));
+	}
+
+	@Test
+	void characterStudentsRepresentation_NotInstanceOfContainerCard_NormalPostConditions() {
+		GameManager gm = new GameManager(players, true);
+
+		assertNull(gm.characterStudentsRepresentation("Minstrel"));	// Minstrel is not a subclass of ContainerCharacterCard
+	}
+
+	@Test
+	void characterNoEntryTilesRepresentation_SimplifiedModeAndNonexistentCard_NormalPostConditions() {
+		// Note: the test case will never happen
+		GameManager gm = new GameManager(players, false);
+
+		assertNull(gm.characterCostRepresentation("Mage"));
+	}
+
+	@Test
+	void characterNoEntryTilesRepresentation_SimplifiedModeAndExistentCard_NormalPostConditions() {
+		GameManager gm = new GameManager(players, false);
+
+		assertNull(gm.characterCostRepresentation("Minstrel"));
+	}
+
+	@Test
+	void characterNoEntryTilesRepresentation_ExpertModeAndNonexistentCard_NormalPostConditions() {
+		// Note: the test case will never happen
+		GameManager gm = new GameManager(players, true);
+
+		assertNull(gm.characterCostRepresentation("Mage"));
 	}
 }

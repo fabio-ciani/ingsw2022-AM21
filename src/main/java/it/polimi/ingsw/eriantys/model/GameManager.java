@@ -398,7 +398,7 @@ public class GameManager {
 	 */
 	public Map<String, Integer> entranceRepresentation(String username) {
 		Player p = players.get(username);
-		StudentContainer entrance = p.getEntrance();	// TODO: check NullPointerException? (RuntimeException, thus unchecked)
+		StudentContainer entrance = p.getEntrance();
 
 		return entrance.getRepresentation();
 	}
@@ -412,12 +412,11 @@ public class GameManager {
 	 */
 	public Map<String, Integer> diningRoomRepresentation(String username) {
 		Player p = players.get(username);
-		StudentContainer diningRoom = p.getDiningRoom();	// TODO: check NullPointerException? (RuntimeException, thus unchecked)
+		StudentContainer diningRoom = p.getDiningRoom();
 
 		return diningRoom.getRepresentation();
 	}
 
-	// TODO: tests
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -425,10 +424,9 @@ public class GameManager {
 	 * @return a representation for the tower color of the specified player
 	 */
 	public String towerColorRepresentation(String username) {
-		return players.get(username).getTowerColor().toString();	// TODO: check NullPointerException?
+		return players.get(username).getTowerColor().toString();
 	}
 
-	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -436,10 +434,9 @@ public class GameManager {
 	 * @return a representation for the number of towers on the school board of the specified player
 	 */
 	public Integer towersRepresentation(String username) {
-		return players.get(username).getTowerQuantity();	// TODO: check NullPointerException?
+		return players.get(username).getTowerQuantity();
 	}
 
-	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -449,7 +446,7 @@ public class GameManager {
 	public Integer coinsRepresentation(String username) {
 		if (!expertMode)
 			return null;
-		return players.get(username).getCoins();	// TODO: check NullPointerException?
+		return players.get(username).getCoins();
 	}
 
 	/**
@@ -462,7 +459,6 @@ public class GameManager {
 		return board.getIslandsRepresentation();
 	}
 
-	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -485,7 +481,6 @@ public class GameManager {
 		return rep;
 	}
 
-	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -532,17 +527,15 @@ public class GameManager {
 		return rep;
 	}
 
-	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
 	 * @return a representation for the identificator of the aggregate on which Mother Nature is currently placed
 	 */
 	public String motherNatureIslandRepresentation() {
-		return board.getMotherNatureIsland().getId();	// TODO: check NullPointerException (?)
+		return board.getMotherNatureIsland().getId();
 	}
 
-	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -565,7 +558,6 @@ public class GameManager {
 		return rep;
 	}
 
-	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -576,7 +568,6 @@ public class GameManager {
 		return board.getCloudTiles();
 	}
 
-	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -598,7 +589,6 @@ public class GameManager {
 		return rep;
 	}
 
-	// TODO: more tests (?)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -611,7 +601,6 @@ public class GameManager {
 		return Arrays.stream(characters).map(CharacterCard::getName).toList();
 	}
 
-	// TODO: tests + add documentation with @see tag?
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -626,10 +615,9 @@ public class GameManager {
 			if (card.getName().equals(c))
 				return card.getCost();
 
-		return null;	// TODO: throw exception?
+		return null;
 	}
 
-	// TODO: tests
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -647,10 +635,9 @@ public class GameManager {
 					return ((ContainerCharacterCard) card).getRepresentation();
 				else return null;
 
-		return null;	// TODO: throw exception?
+		return null;
 	}
 
-	// TODO: tests
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
@@ -669,7 +656,7 @@ public class GameManager {
 			if (card.getName().equals(c))
 				return ((HerbGranny) card).getNoEntryTiles();
 
-		return null;	// TODO: throw exception?
+		return null;
 	}
 
 	private boolean gameOver() {

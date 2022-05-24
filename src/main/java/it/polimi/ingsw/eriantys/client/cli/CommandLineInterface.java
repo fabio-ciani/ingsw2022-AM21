@@ -486,6 +486,23 @@ public class CommandLineInterface extends UserInterface {
 
 	@Override
 	public void handleMessage(UserSelectionUpdate message) {
+		if (!message.getTowerColors().isEmpty() && !message.getWizards().isEmpty()) {
+			StringBuilder output = new StringBuilder("User selections:");
+			Map<String, String> towerColors = message.getTowerColors();
+			Map<String, String> wizards = message.getWizards();
+			for (String player : towerColors.keySet()) {
+				String towerColor = towerColors.get(player);
+				String wizard = wizards.get(player);
+				output.append("\n- ")
+						.append(player)
+						.append(" \u2192 ")
+						.append(towerColor)
+						.append(" towers, ")
+						.append(wizard)
+						.append(" wizard");
+			}
+			showInfo(output.toString());
+		}
 		if (notNextPlayer(message.getNextPlayer())) return;
 		StringBuilder output;
 		if (client.getTowerColor() == null) {

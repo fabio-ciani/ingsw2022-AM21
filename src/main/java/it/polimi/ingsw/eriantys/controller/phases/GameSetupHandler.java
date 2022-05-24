@@ -3,7 +3,6 @@ package it.polimi.ingsw.eriantys.controller.phases;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.GameSetupSelection;
-import it.polimi.ingsw.eriantys.messages.server.UserActionUpdate;
 import it.polimi.ingsw.eriantys.messages.server.UserSelectionUpdate;
 import it.polimi.ingsw.eriantys.model.TowerColor;
 import it.polimi.ingsw.eriantys.model.Wizard;
@@ -11,7 +10,10 @@ import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.server.HelpContent;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GameSetupHandler implements MessageHandler {
 	private final Game game;
@@ -31,7 +33,7 @@ public class GameSetupHandler implements MessageHandler {
 			this.availableTowerColors.remove("GREY");
 
 		try {
-			this.game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards));
+			this.game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards, towerColors, wizards));
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);
@@ -72,7 +74,7 @@ public class GameSetupHandler implements MessageHandler {
 
 	@Override
 	public void sendReconnectUpdate(String username) throws NoConnectionException {
-		game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards));
+		game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards, towerColors, wizards));
 	}
 
 	private void process(GameSetupSelection message) throws NoConnectionException {
@@ -111,6 +113,6 @@ public class GameSetupHandler implements MessageHandler {
 		if (towerColors.keySet().size() == numPlayers || wizards.keySet().size() == numPlayers)
 			game.start();
 		else
-			game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards));
+			game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards, towerColors, wizards));
 	}
 }

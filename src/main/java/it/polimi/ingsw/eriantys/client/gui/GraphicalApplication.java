@@ -45,7 +45,7 @@ public class GraphicalApplication extends Application {
 			controller.setShowError(showError);
 			controllerByScene.put(scene, controller);
 		}
-		currentScene = SceneName.BOARD;
+		currentScene = SceneName.LOGIN;
 	}
 
 	@Override
@@ -100,6 +100,10 @@ public class GraphicalApplication extends Application {
 
 	public Controller getCurrentController() {
 		return controllerByScene.get(currentScene);
+	}
+
+	public Controller getControllerForScene(SceneName sceneName) {
+		return controllerByScene.get(sceneName);
 	}
 
 	private void center(Scene scene) {

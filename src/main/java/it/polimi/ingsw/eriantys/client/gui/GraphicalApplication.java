@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -44,7 +45,7 @@ public class GraphicalApplication extends Application {
 			controller.setShowError(showError);
 			controllerByScene.put(scene, controller);
 		}
-		currentScene = SceneName.ASSISTANT_CARDS;
+		currentScene = SceneName.BOARD;
 	}
 
 	@Override
@@ -54,6 +55,8 @@ public class GraphicalApplication extends Application {
 		this.stage = primaryStage;
 
 		Scene scene = sceneByName.get(currentScene);
+		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+		Font.loadFont(getClass().getResource("/fonts/CelticGaramond.ttf").toExternalForm(), 12);
 		primaryStage.setTitle("Eriantys");
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
@@ -66,10 +69,12 @@ public class GraphicalApplication extends Application {
 	}
 
 	public void changeScene(SceneName sceneName) {
-		currentScene = sceneName;
-		Scene scene = sceneByName.get(currentScene);
+		Scene scene = sceneByName.get(sceneName);
+		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+		Font.loadFont(getClass().getResource("/fonts/CelticGaramond.ttf").toExternalForm(), 12);
 
 		stage.setScene(scene);
+		currentScene = sceneName;
 		center(scene);
 
 		controllerByScene.get(currentScene).onChangeScene();

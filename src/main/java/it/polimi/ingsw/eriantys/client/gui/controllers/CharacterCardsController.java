@@ -8,17 +8,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CharacterCardsController extends Controller {
 	@FXML private GridPane cards;
-	private final String[] characters;
+	private final List<String> characters;
 
 	public CharacterCardsController() {
-		characters = new String[3];
-		characters[0] = "Knight";
-		characters[1] = "Minstrel";
-		characters[2] = "Thief";
+		characters = new ArrayList<>();
+		characters.add("Knight");
+		characters.add("Minstrel");
+		characters.add("Thief");
 	}
 
 	@Override
@@ -38,20 +40,22 @@ public class CharacterCardsController extends Controller {
 				.forEach(x -> {
 					ImageView img = (ImageView) x;
 
-					img.setImage(new Image(getClass().getResource("/graphics/CharacterCards/" + characters[Character.getNumericValue(x.getId().charAt(1))] + ".jpg").toExternalForm()));
+					img.setImage(new Image(getClass().getResource("/graphics/CharacterCards/" + characters.get(Character.getNumericValue(x.getId().charAt(1))) + ".jpg").toExternalForm()));
 
 					roundBorders(img, 30);
 
-					Tooltip desc = new Tooltip("You are hovering on the " + split(characters[Character.getNumericValue(x.getId().charAt(1))]) + " card.");
+					Tooltip desc = new Tooltip("You are hovering on the " + split(characters.get(Character.getNumericValue(x.getId().charAt(1)))) + " card.");
 					// desc.setShowDelay(Duration.ZERO);
 					Tooltip.install(img, desc);
+
+					// TODO: if result of the difference between the actual cost and the cost from JSON is 1, then draw the coin
 				});
 	}
 
 	private void drawLabels() {
 		cards.getChildren().stream()
 				.filter(x -> x instanceof Text && x.getId().matches("^\\w+text\\z"))
-				.forEach(x -> ((Text) x).setText(split(characters[Character.getNumericValue(x.getId().charAt(1))])));
+				.forEach(x -> ((Text) x).setText(split(characters.get(Character.getNumericValue(x.getId().charAt(1))))));
 	}
 
 	private String split(String in) {

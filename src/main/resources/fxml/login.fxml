@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.eriantys.client.gui.controllers.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="bg" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.eriantys.client.gui.controllers.LoginController">
 	<center>
 		<GridPane maxHeight="240.0" maxWidth="720.0" BorderPane.alignment="CENTER">
 			<columnConstraints>
@@ -37,7 +37,7 @@
 		</GridPane>
 	</center>
 	<top>
-		<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Eryantis" BorderPane.alignment="CENTER">
+		<Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Eryantis" BorderPane.alignment="CENTER">
 			<font>
 				<Font size="96.0" />
 			</font>

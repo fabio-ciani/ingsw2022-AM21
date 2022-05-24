@@ -1,0 +1,8 @@
+.bg {
+    -fx-background-image: url("../backgrounds/bg.jpg");
+    -fx-background-size: stretch;
+}
+
+.title {
+    -fx-font-family: "Celtic Garamond the 2nd";
+}

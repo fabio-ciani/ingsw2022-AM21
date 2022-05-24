@@ -31,6 +31,10 @@ public abstract class Controller implements Initializable {
 		this.showError = showError;
 	}
 
+	public void hideImage(ImageView img) {
+		img.setVisible(false);
+	}
+
 	public void roundBorders(ImageView img, double arcSize) {
 		Rectangle clip = new Rectangle(img.getFitWidth(), img.getFitHeight());
 		clip.setArcWidth(arcSize);

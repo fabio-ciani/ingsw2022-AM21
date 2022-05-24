@@ -8,7 +8,7 @@ public enum SceneName {
 	WIZARDS("wizards.fxml"),
 	ASSISTANT_CARDS("assistant_cards.fxml"),
 	SCHOOLBOARD("schoolboard.fxml"),
-	ISLANDS("islands.fxml"),
+	BOARD("board.fxml"),
 	CHARACTER_CARDS("character_cards.fxml");
 
 	private final String path;

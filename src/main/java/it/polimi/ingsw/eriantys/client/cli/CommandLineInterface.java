@@ -1,41 +1,21 @@
 package it.polimi.ingsw.eriantys.client.cli;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.eriantys.client.Client;
 import it.polimi.ingsw.eriantys.client.UserInterface;
 import it.polimi.ingsw.eriantys.controller.GameInfo;
-import it.polimi.ingsw.eriantys.messages.Message;
-import it.polimi.ingsw.eriantys.messages.Ping;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.AssistantCard;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.*;
 
-public class CommandLineInterface implements UserInterface {
-	private Client client;
+public class CommandLineInterface extends UserInterface {
 	private final Scanner scanner;
-	private boolean running; // TODO: 10/05/2022 Set to false when "quit" command is typed, also handle client.running
-	private final JsonObject characterCardInfo;
 
 	public CommandLineInterface() throws IOException {
+		super();
 		this.scanner = new Scanner(System.in);
-		try (InputStream in = getClass().getClassLoader().getResourceAsStream("help/characters.json")) {
-			if (in == null) throw new FileNotFoundException();
-			InputStreamReader reader = new InputStreamReader(in);
-			Gson gson = new Gson();
-			characterCardInfo = gson.fromJson(reader, JsonObject.class);
-		}
-	}
-
-	@Override
-	public void setClient(Client client) {
-		this.client = client;
 	}
 
 	@Override
@@ -409,11 +389,6 @@ public class CommandLineInterface implements UserInterface {
 	}
 
 	@Override
-	public void handleMessage(Message message) {
-		showError("Unrecognized message:\n" + message.getClass());
-	}
-
-	@Override
 	public void handleMessage(Accepted message) {
 		showInfo("Ok");
 	}
@@ -429,26 +404,15 @@ public class CommandLineInterface implements UserInterface {
 
 	@Override
 	public void handleMessage(AcceptedJoinLobby message) {
-		showInfo("Lobby joined");
 		client.setGameId(message.getGameId());
 		client.putReconnectSettings(message);
+		showInfo("Lobby joined");
 	}
 
 	@Override
 	public void handleMessage(AcceptedLeaveLobby message) {
+		client.removeReconnectSettings();
 		showInfo("Lobby left");
-		client.removeReconnectSettings();
-	}
-
-	@Override
-	public void handleMessage(Refused message) {
-		showError(message.getDetails());
-	}
-
-	@Override
-	public void handleMessage(RefusedReconnect message) {
-		showError(message.getDetails());
-		client.removeReconnectSettings();
 	}
 
 	@Override
@@ -567,10 +531,5 @@ public class CommandLineInterface implements UserInterface {
 		boolean gameIdle = message.isGameIdle();
 		showInfo(subject + " has disconnected, " + numPlayers + " players currently connected"
 				+ (gameIdle ? "\nGame idle" : ""));
-	}
-
-	@Override
-	public void handleMessage(Ping message) {
-		client.write(new Ping());
 	}
 }

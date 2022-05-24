@@ -3,7 +3,6 @@ package it.polimi.ingsw.eriantys.client.gui.controllers;
 import it.polimi.ingsw.eriantys.controller.GameInfo;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -14,14 +13,14 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class LobbiesController extends Controller implements Initializable {
+public class LobbiesController extends Controller {
 	@FXML private TableView<Lobby> lobbies;
 	@FXML private TableColumn<Lobby, Integer> identifiers;
 	@FXML private TableColumn<Lobby, String> creators;
 	@FXML private TableColumn<Lobby, String> players;
 	@FXML private TableColumn<Lobby, String> modes;
-	@FXML private Button confirm;
-	@FXML private Button refresh;
+	@FXML private Button create;
+	@FXML private Button list;
 
 	public LobbiesController() {
 		lobbies = new TableView<>();
@@ -38,28 +37,19 @@ public class LobbiesController extends Controller implements Initializable {
 		players.setCellValueFactory(new PropertyValueFactory<>("counter"));
 		modes.setCellValueFactory(new PropertyValueFactory<>("expert"));
 
-		confirm.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+		create.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 			System.out.println("confirm - mouse clicked");
 			Lobby selectedLobby = lobbies.getSelectionModel().getSelectedItem();
-			/*
 			if (selectedLobby == null)
-				ui.showError("Please select a lobby!");
+				showError.accept("Please select a lobby!");
 			else
-				client.joinLobby(selectedLobby.getId());
-			 */
+				client.joinLobby(Integer.toString(selectedLobby.getId()));
 		});
 
-		refresh.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+		list.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 			System.out.println("refresh - mouse clicked");
-			// client.askLobbies();
+			client.askLobbies();
 		});
-
-		// TODO client.askLobbies();
-		// TODO upon receiving AvailableLobbies, check if this scene is active and populate the table
-		/*
-		lobbies.getItems().add(new Lobby(1, "JohnDoe", "1/3", true));
-		lobbies.getItems().add(new Lobby(2, "MarioRossi", "1/2", false));
-	 */
 	}
 
 	public void updateLobbies(List<GameInfo> availableLobbies) {

@@ -4,17 +4,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.client.cli.CommandLineInterface;
+import it.polimi.ingsw.eriantys.client.gui.GraphicalUserInterface;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.Ping;
-import it.polimi.ingsw.eriantys.messages.client.Handshake;
-import it.polimi.ingsw.eriantys.messages.client.JoinLobby;
-import it.polimi.ingsw.eriantys.messages.client.LobbiesRequest;
-import it.polimi.ingsw.eriantys.messages.client.LobbyCreation;
-import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.messages.client.*;
+import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
@@ -32,36 +31,48 @@ public class Client extends Thread {
 	private String towerColor;
 	private String wizard;
 	private Integer characterCard;
-	private BoardStatus boardStatus;
 	private List<String> availableCards;
+	private BoardStatus boardStatus;
 
 	public static void main(String[] args) throws IOException {
 		// TODO: 03/05/2022 Get user interface type from args
-		UserInterface ui = new CommandLineInterface();
+		boolean useGui = true;
 		// TODO: 03/05/2022 Get server address and port from args
 		String serverAddress = "localhost";
 		int serverPort = 12345;
-		try {
-			Client client = new Client(serverAddress, serverPort, ui);
-			ui.setClient(client);
-			client.start();
-		} catch (IOException e) {
-			ui.showError("Could not connect to the server");
-		}
+		Client client = new Client(serverAddress, serverPort, useGui);
+		client.start();
 	}
 
-	public Client(String serverAddress, int serverPort, UserInterface ui) throws IOException {
-		this.socket = new Socket(serverAddress, serverPort);
-		this.socket.setSoTimeout(5000);
-		this.out = new ObjectOutputStream(this.socket.getOutputStream());
-		this.in = new ObjectInputStream(this.socket.getInputStream());
-		this.ui = ui;
+	public Client(String serverAddress, int serverPort, boolean gui) throws IOException {
+		try {
+			this.ui = gui ? new GraphicalUserInterface() : new CommandLineInterface();
+		} catch (IOException e) {
+			throw new IOException("Unable to open characters.json", e);
+		}
+		try {
+			this.socket = new Socket(serverAddress, serverPort);
+			this.socket.setSoTimeout(5000);
+			this.out = new ObjectOutputStream(this.socket.getOutputStream());
+			this.in = new ObjectInputStream(this.socket.getInputStream());
+		} catch (IOException e) {
+			throw new IOException("Can't connect to the server", e);
+		}
 		this.running = true;
 	}
 
 	@Override
 	public void run() {
+		ui.setClient(this);
 		new Thread(ui).start();
+		synchronized (this) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		ui.init();
 		try (socket) {
 			while (running) {
 				Message message = (Message) in.readObject();
@@ -175,6 +186,7 @@ public class Client extends Thread {
 		} else if (message instanceof HelpResponse m) {
 			ui.handleMessage(m);
 		} else if (message instanceof AvailableLobbies m) {
+			// TODO: 23/05/2022 lobbies = m.getLobbies(); ?
 			ui.handleMessage(m);
 		} else if (message instanceof LobbyUpdate m) {
 			ui.handleMessage(m);

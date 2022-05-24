@@ -2,7 +2,6 @@ package it.polimi.ingsw.eriantys.client.gui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Tooltip;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -37,10 +36,7 @@ public class CharacterCardsController extends Controller {
 
 					img.setImage(new Image(getClass().getResource("/graphics/CharacterCards/" + characters[Character.getNumericValue(x.getId().charAt(1))] + ".jpg").toExternalForm()));
 
-					Rectangle clip = new Rectangle(img.getFitWidth(), img.getFitHeight());
-					clip.setArcWidth(30);
-					clip.setArcHeight(30);
-					img.setClip(clip);
+					roundBorders(img, 30);
 
 					Tooltip desc = new Tooltip("You are hovering on the " + split(characters[Character.getNumericValue(x.getId().charAt(1))]) + " card.");
 					// desc.setShowDelay(Duration.ZERO);
@@ -66,11 +62,5 @@ public class CharacterCardsController extends Controller {
 		}
 
 		return out.toString();
-	}
-
-	private void applyGrayscale(ImageView img) {
-		ColorAdjust grayscale = new ColorAdjust();
-		grayscale.setSaturation(-1);
-		img.setEffect(grayscale);
 	}
 }

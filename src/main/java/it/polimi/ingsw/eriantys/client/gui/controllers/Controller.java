@@ -3,6 +3,9 @@ package it.polimi.ingsw.eriantys.client.gui.controllers;
 import it.polimi.ingsw.eriantys.client.Client;
 import it.polimi.ingsw.eriantys.client.gui.GraphicalApplication;
 import javafx.fxml.Initializable;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 
 import java.util.function.Consumer;
 
@@ -26,5 +29,18 @@ public abstract class Controller implements Initializable {
 
 	public void setShowError(Consumer<String> showError) {
 		this.showError = showError;
+	}
+
+	public void roundBorders(ImageView img, double arcSize) {
+		Rectangle clip = new Rectangle(img.getFitWidth(), img.getFitHeight());
+		clip.setArcWidth(arcSize);
+		clip.setArcHeight(arcSize);
+		img.setClip(clip);
+	}
+
+	public void applyGrayscale(ImageView img) {
+		ColorAdjust grayscale = new ColorAdjust();
+		grayscale.setSaturation(-1);
+		img.setEffect(grayscale);
 	}
 }

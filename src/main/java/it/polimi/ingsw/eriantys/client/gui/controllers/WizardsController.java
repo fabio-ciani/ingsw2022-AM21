@@ -24,10 +24,7 @@ public class WizardsController extends Controller {
 
 					img.setImage(new Image(getClass().getResource("/graphics/Wizards/" + x.getId() + "Wizard.png").toExternalForm()));
 
-					Rectangle clip = new Rectangle(img.getFitWidth(), img.getFitHeight());
-					clip.setArcWidth(30);
-					clip.setArcHeight(30);
-					img.setClip(clip);
+					roundBorders(img, 30);
 				});
 	}
 }

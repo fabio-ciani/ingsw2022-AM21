@@ -15,9 +15,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="bg" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.eriantys.client.gui.controllers.SchoolBoardController">
 	<center>
-		<Group fx:id="schoolboard" BorderPane.alignment="CENTER">
+		<Group BorderPane.alignment="CENTER">
 			<children>
-				<ImageView fitHeight="538.0" fitWidth="1240.0" pickOnBounds="true" preserveRatio="true">
+				<ImageView fx:id="schoolboard" fitHeight="538.0" fitWidth="1240.0" pickOnBounds="true" preserveRatio="true">
 				</ImageView>
 				<GridPane fx:id="dr_green" layoutX="227.5" layoutY="67.5" prefHeight="50.0" prefWidth="590.0">
 					<columnConstraints>
@@ -616,7 +616,7 @@
 				<ImageView fx:id="coins" fitHeight="82.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
 
 				</ImageView>
-				<Text fill="WHITE" layoutX="50.0" layoutY="65.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0">
+				<Text fx:id="c_text" fill="WHITE" layoutX="50.0" layoutY="65.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.75" text="0">
 					<font>
 						<Font name="System Bold" size="20.0" />
 					</font>

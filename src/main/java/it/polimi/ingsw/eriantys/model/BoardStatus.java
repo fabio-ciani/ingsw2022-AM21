@@ -177,6 +177,10 @@ public class BoardStatus implements Serializable {
 		return playersInfo.playerTowers;
 	}
 
+	public Map<String, String> getPlayerTowerColors() {
+		return playersInfo.playerTowerColors;
+	}
+
 	public Map<String, Integer> getPlayerCoins() {
 		return playersInfo.playerCoins;
 	}

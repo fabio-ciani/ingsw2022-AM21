@@ -62,6 +62,8 @@ public class GraphicalApplication extends Application {
 		primaryStage.setResizable(false);
 		center(scene);
 
+		controllerByScene.get(currentScene).onChangeScene();
+
 		primaryStage.show();
 		synchronized (client) {
 			client.notifyAll();

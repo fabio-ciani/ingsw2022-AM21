@@ -36,7 +36,7 @@ public class Client extends Thread {
 
 	public static void main(String[] args) throws IOException {
 		// TODO: 03/05/2022 Get user interface type from args
-		boolean useGui = true;
+		boolean useGui = args.length > 0 && args[0].equals("-gui");
 		// TODO: 03/05/2022 Get server address and port from args
 		String serverAddress = "localhost";
 		int serverPort = 12345;

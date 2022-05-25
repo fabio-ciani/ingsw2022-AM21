@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.client.cli.CommandLineInterface;
+import it.polimi.ingsw.eriantys.client.cli.ConsoleColors;
 import it.polimi.ingsw.eriantys.client.gui.GraphicalUserInterface;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.Ping;
@@ -135,7 +136,6 @@ public class Client extends Thread {
 
 	public void setTowerColor(String towerColor) {
 		this.towerColor = towerColor;
-		ui.showInfo(String.format("Tower color set to: %s", this.towerColor));
 		trySendSetupSelection();
 	}
 
@@ -145,7 +145,6 @@ public class Client extends Thread {
 
 	public void setWizard(String wizard) {
 		this.wizard = wizard;
-		ui.showInfo(String.format("Wizard set to: %s", this.wizard));
 		trySendSetupSelection();
 	}
 

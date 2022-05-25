@@ -52,7 +52,7 @@ public class BoardController extends Controller {
 
 	private void drawIslands() {
 		islands.getChildren().stream()
-				.filter(x -> x instanceof ImageView)
+				.filter(x -> x instanceof ImageView && x.getId() != null)
 				.forEach(x -> {
 					// Handle aggregate islands, if present.
 					int num = Integer.parseInt(x.getId().substring(1).replace("-", ""));

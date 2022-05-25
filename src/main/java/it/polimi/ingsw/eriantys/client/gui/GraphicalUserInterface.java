@@ -104,20 +104,24 @@ public class GraphicalUserInterface extends UserInterface {
 		Map<String, String> playedCards = message.getPlayedCards();
 		for (String player : playedCards.keySet()) {
 			String cardName = playedCards.get(player);
-			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setTitle("Played assistant card");
-			alert.setHeaderText(player + " played the " + cardName + " card");
-			ImageView image = new ImageView();
-			image.setPreserveRatio(true);
-			image.setFitWidth(102);
-			image.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + cardName + ".png").toExternalForm()));
-			alert.setGraphic(image);
+			Platform.runLater(() -> {
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Played assistant card");
+				alert.setHeaderText(player + " played the " + cardName + " card");
+				ImageView image = new ImageView();
+				image.setPreserveRatio(true);
+				image.setFitWidth(102);
+				image.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + cardName + ".png").toExternalForm()));
+				alert.setGraphic(image);
+				alert.show();
+			});
 		}
 	}
 
 	@Override
 	public void handleMessage(BoardUpdate message) {
-
+		client.setBoardStatus(message.getStatus());
+		Platform.runLater(() -> app.changeScene(SceneName.SCHOOLBOARD));
 	}
 
 	@Override
@@ -141,7 +145,8 @@ public class GraphicalUserInterface extends UserInterface {
 
 	@Override
 	public void handleMessage(InitialBoardStatus message) {
-
+		client.setBoardStatus(message.getStatus());
+		Platform.runLater(() -> app.changeScene(SceneName.SCHOOLBOARD));
 	}
 
 	@Override

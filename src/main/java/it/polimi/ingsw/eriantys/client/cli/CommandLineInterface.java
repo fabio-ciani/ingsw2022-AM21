@@ -85,10 +85,12 @@ public class CommandLineInterface extends UserInterface {
 					case "wizard", "w" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						client.setWizard(tokens[1].toUpperCase());
+						showInfo(String.format("Wizard set to: %s", tokens[1]));
 					}
 					case "tower", "t" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						client.setTowerColor(tokens[1].toUpperCase());
+						showInfo(String.format("Tower color set to: %s", tokens[1]));
 					}
 					case "assistant", "a" -> {
 						if (wrongArgNumber(tokens, 1)) break;

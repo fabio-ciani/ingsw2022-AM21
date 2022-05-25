@@ -2,12 +2,9 @@ package it.polimi.ingsw.eriantys.client.gui.controllers;
 
 import com.google.gson.Gson;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -23,15 +20,11 @@ import java.util.*;
 public class CharacterCardsController extends Controller {
 	@FXML private BorderPane pane;
 	@FXML private GridPane cards;
-	private final List<String> characters;
+	private List<String> characters;
+	private Map<String, Integer> costs;
 	private final Map<String, Map<String, String>> info;
 
 	public CharacterCardsController() throws IOException {
-		characters = new ArrayList<>();
-		characters.add("Knight");
-		characters.add("Minstrel");
-		characters.add("Thief");
-
 		try (InputStream in = getClass().getClassLoader().getResourceAsStream("help/characters.json")) {
 			if (in == null) throw new FileNotFoundException();
 			Gson gson = new Gson();
@@ -41,13 +34,19 @@ public class CharacterCardsController extends Controller {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		drawImages();
-		drawLabels();
+
 	}
 
 	@Override
 	public Pane getTopLevelPane() {
 		return pane;
+	}
+
+	public void populate(List<String> characters, Map<String, Integer> costs) {
+		this.characters = characters;
+		this.costs = costs;
+		drawImages();
+		drawLabels();
 	}
 
 	private void drawImages() {
@@ -65,25 +64,12 @@ public class CharacterCardsController extends Controller {
 					// desc.setShowDelay(Duration.ZERO);
 					Tooltip.install(img, desc);
 
-					// TODO: if result of the difference between the actual cost and the cost from JSON is 1, then draw the coin
-					/*
-					cards.getChildren().stream()
-							.filter(y -> y instanceof ImageView && y.getId().equals("c" + x.getId().charAt(1) + "_coin"))
-							.forEach(y -> hideImage((ImageView) y));
-					*/
+					if (costs.get(character) - Integer.parseInt(info.get(character).get("cost")) != 1)
+						cards.getChildren().stream()
+								.filter(y -> y instanceof ImageView && y.getId().equals("c" + x.getId().charAt(1) + "_coin"))
+								.forEach(y -> y.setVisible(false));
 
-					// TODO: if character card status is not null, then add an event handler to the mouse right click to show an information alert
-					x.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-						if (event.getButton() == MouseButton.SECONDARY) {
-							Alert alert = new Alert(Alert.AlertType.INFORMATION);
-							alert.setTitle("Character card status");
-							alert.setHeaderText("You are visualising the " + character + " status.");
-							// alert.setContentText("?");
-							alert.show();
-
-							event.consume();
-						}
-					});
+					// TODO: character cards status
 				});
 	}
 

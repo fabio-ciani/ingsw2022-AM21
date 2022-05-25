@@ -3,8 +3,8 @@ package it.polimi.ingsw.eriantys.model;
 public class GameConstants {
 	private final GameConfig gameConfig;
 
-	public static final String DINING_ROOM = "dining room";
-	public static final String TIE = "tie";
+	public static final String DINING_ROOM = "Dining Room";
+	public static final String TIE = "Tie";
 
 	private GameConstants() {
 		gameConfig = new GameConfig();

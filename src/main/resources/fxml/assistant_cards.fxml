@@ -54,22 +54,22 @@
 				<RowConstraints vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<ImageView fx:id="pc_1" fitHeight="102.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<ImageView fx:id="pc_1_img" fitHeight="102.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<GridPane.margin>
 						<Insets right="25.0" />
 					</GridPane.margin>
 				</ImageView>
-				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="JohnDoe" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<Text fx:id="pc_1_user" strokeType="OUTSIDE" strokeWidth="0.0" text="JohnDoe" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<GridPane.margin>
 						<Insets right="25.0" top="125.0" />
 					</GridPane.margin>
 				</Text>
-				<ImageView fx:id="pc_2" fitHeight="102.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<ImageView fx:id="pc_2_img" fitHeight="102.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<GridPane.margin>
 						<Insets left="25.0" />
 					</GridPane.margin>
 				</ImageView>
-				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="MarioRossi" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<Text fx:id="pc_2_user" strokeType="OUTSIDE" strokeWidth="0.0" text="MarioRossi" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<GridPane.margin>
 						<Insets left="25.0" top="125.0" />
 					</GridPane.margin>

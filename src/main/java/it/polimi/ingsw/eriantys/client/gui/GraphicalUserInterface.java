@@ -1,6 +1,8 @@
 package it.polimi.ingsw.eriantys.client.gui;
 
 import it.polimi.ingsw.eriantys.client.UserInterface;
+import it.polimi.ingsw.eriantys.client.gui.controllers.AssistantCardsController;
+import it.polimi.ingsw.eriantys.client.gui.controllers.CharacterCardsController;
 import it.polimi.ingsw.eriantys.client.gui.controllers.LobbiesController;
 import it.polimi.ingsw.eriantys.client.gui.controllers.WaitingRoomController;
 import it.polimi.ingsw.eriantys.messages.Message;
@@ -8,11 +10,8 @@ import it.polimi.ingsw.eriantys.messages.server.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Objects;
 
 public class GraphicalUserInterface extends UserInterface {
@@ -101,21 +100,8 @@ public class GraphicalUserInterface extends UserInterface {
 	@Override
 	public void handleMessage(AssistantCardUpdate message) {
 		client.setAvailableCards(message.getAvailableCards().get(client.getUsername()));
-		Map<String, String> playedCards = message.getPlayedCards();
-		for (String player : playedCards.keySet()) {
-			String cardName = playedCards.get(player);
-			Platform.runLater(() -> {
-				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setTitle("Played assistant card");
-				alert.setHeaderText(player + " played the " + cardName + " card");
-				ImageView image = new ImageView();
-				image.setPreserveRatio(true);
-				image.setFitWidth(102);
-				image.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + cardName + ".png").toExternalForm()));
-				alert.setGraphic(image);
-				alert.show();
-			});
-		}
+		AssistantCardsController controller = (AssistantCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
+		controller.populate(message.getAvailableCards().get(client.getUsername()), message.getPlayedCards());
 	}
 
 	@Override
@@ -146,6 +132,8 @@ public class GraphicalUserInterface extends UserInterface {
 	@Override
 	public void handleMessage(InitialBoardStatus message) {
 		client.setBoardStatus(message.getStatus());
+		CharacterCardsController controller = (CharacterCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
+		controller.populate(message.getStatus().getCharacterCards(), message.getStatus().getCharacterCardsCost());
 		Platform.runLater(() -> app.changeScene(SceneName.SCHOOLBOARD));
 	}
 

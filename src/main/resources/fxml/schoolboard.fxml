@@ -656,11 +656,30 @@
 						<Insets bottom="20.0" />
 					</GridPane.margin>
 				</Button>
-				<Button fx:id="characters" focusTraversable="false" minWidth="120.0" mnemonicParsing="false" text="See character cards" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<GridPane minHeight="40.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<columnConstraints>
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+					</columnConstraints>
+					<rowConstraints>
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+					</rowConstraints>
 					<GridPane.margin>
 						<Insets bottom="20.0" />
 					</GridPane.margin>
-				</Button>
+					<children>
+						<Button fx:id="assistants" focusTraversable="false" minWidth="120.0" mnemonicParsing="false" text="See character cards" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+							<GridPane.margin>
+								<Insets right="20.0" />
+							</GridPane.margin>
+						</Button>
+						<Button fx:id="characters" focusTraversable="false" minWidth="120.0" mnemonicParsing="false" text="See character cards" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+							<GridPane.margin>
+								<Insets left="20.0" />
+							</GridPane.margin>
+						</Button>
+					</children>
+				</GridPane>
 			</children>
 		</GridPane>
 	</bottom>

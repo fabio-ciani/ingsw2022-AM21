@@ -29,7 +29,7 @@ public class GraphicalUserInterface extends UserInterface {
 			alert.setTitle("Info");
 			alert.setHeaderText("Info");
 			alert.setContentText(details);
-			alert.show();
+			alert.showAndWait();
 		});
 	}
 
@@ -40,7 +40,7 @@ public class GraphicalUserInterface extends UserInterface {
 			alert.setTitle("Error");
 			alert.setHeaderText("Error");
 			alert.setContentText(details);
-			alert.show();
+			alert.showAndWait();
 		});
 	}
 

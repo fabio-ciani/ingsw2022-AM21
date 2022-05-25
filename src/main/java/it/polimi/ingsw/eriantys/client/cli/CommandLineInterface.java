@@ -6,6 +6,7 @@ import it.polimi.ingsw.eriantys.controller.GameInfo;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.AssistantCard;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
+import it.polimi.ingsw.eriantys.model.GameConstants;
 
 import java.io.IOException;
 import java.util.*;
@@ -94,9 +95,8 @@ public class CommandLineInterface extends UserInterface {
 						client.playAssistantCard(tokens[1].toUpperCase());
 					}
 					case "dining", "sd" -> {
-						// TODO: 13/05/2022 Replace "dining room" with GameConstants
 						if (wrongArgNumber(tokens, 1)) break;
-						client.moveStudent(tokens[1].toUpperCase(), "dining room");
+						client.moveStudent(tokens[1].toUpperCase(), GameConstants.DINING_ROOM);
 					}
 					case "island", "si" -> {
 						if (wrongArgNumber(tokens, 2)) break;

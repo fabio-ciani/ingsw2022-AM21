@@ -8,11 +8,9 @@ import it.polimi.ingsw.eriantys.model.exceptions.*;
 import it.polimi.ingsw.eriantys.model.influence.CommonInfluence;
 import it.polimi.ingsw.eriantys.model.influence.InfluenceCalculator;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GameManager {
 	private final Board board;
@@ -211,7 +209,7 @@ public class GameManager {
 		}
 
 		try {
-			if (destination.equals(constants.getDiningRoom())) {
+			if (destination.equals(GameConstants.DINING_ROOM)) {
 				entrance.moveTo(diningRoom, student);
 				if (expertMode && player.checkForCoins(student))
 					player.updateCoins(1);
@@ -386,7 +384,7 @@ public class GameManager {
 		if (playersWithMostProfessors.size() == 1)
 			return playersWithMostProfessors.get(0).getNickname();
 		else
-			return constants.getTie();
+			return GameConstants.TIE;
 	}
 
 	/**
@@ -688,20 +686,14 @@ public class GameManager {
 	private GameConstants loadConstants(int numPlayers) {
 		Gson gson = new Gson();
 
-		InputStream constantsIn = getClass().getClassLoader().getResourceAsStream("constants.json");
 		InputStream configIn = getClass().getClassLoader().getResourceAsStream("config.json");
 
-		if (constantsIn == null || configIn == null)
+		if (configIn == null)
 			throw new NullPointerException();
 
-		String constants =
-				new BufferedReader(new InputStreamReader(constantsIn))
-				.lines().collect(Collectors.joining("\n"));
-		String config =
+		String jsonString =
 				gson.fromJson(new InputStreamReader(configIn), JsonObject.class)
 				.get(Integer.toString(numPlayers)).getAsJsonObject().toString();
-
-		String jsonString = constants.substring(0, constants.length() - 2) + ",\n\t\"gameConfig\": " + config + "\n}";
 
 		return gson.fromJson(jsonString, GameConstants.class);
 	}

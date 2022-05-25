@@ -122,7 +122,7 @@ public class Game {
 			e.printStackTrace();
 		}
 
-		broadcast(new InitialBoardStatus(gameManager));
+		sendInitialBoardStatus();
 		newRound();
 	}
 
@@ -411,6 +411,13 @@ public class Game {
 	public void sendUpdate(UserActionUpdate message) throws NoConnectionException {
 		message.setNextPlayer(players.get(currentPlayer));
 		broadcast(message);
+	}
+
+	/**
+	 * Sends an {@link InitialBoardStatus} message to every player.
+	 */
+	public void sendInitialBoardStatus() {
+		broadcast(new InitialBoardStatus(gameManager));
 	}
 
 	/**

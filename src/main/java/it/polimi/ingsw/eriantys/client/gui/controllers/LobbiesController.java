@@ -7,12 +7,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class LobbiesController extends Controller {
+	@FXML private BorderPane pane;
 	@FXML private TableView<Lobby> lobbies;
 	@FXML private TableColumn<Lobby, Integer> identifiers;
 	@FXML private TableColumn<Lobby, String> creators;
@@ -23,6 +26,9 @@ public class LobbiesController extends Controller {
 	@FXML private Button join;
 	@FXML private Button create;
 	@FXML private Button list;
+
+	private static final int TWO_PLAYERS = 2;
+	private static final int THREE_PLAYERS = 3;
 
 	public LobbiesController() {
 		lobbies = new TableView<>();
@@ -51,7 +57,7 @@ public class LobbiesController extends Controller {
 		players.setCellValueFactory(c -> c.getValue().counterProperty());
 		modes.setCellValueFactory(c -> c.getValue().modeProperty());
 
-		c_players.getItems().addAll(2, 3);
+		c_players.getItems().addAll(TWO_PLAYERS, THREE_PLAYERS);
 
 		join.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 			Lobby selectedLobby = lobbies.getSelectionModel().getSelectedItem();
@@ -65,7 +71,12 @@ public class LobbiesController extends Controller {
 		create.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 			Integer numPlayers = c_players.getSelectionModel().getSelectedItem();
 			Boolean expertMode = c_expert.isSelected();
-			client.createLobby(numPlayers.toString(), expertMode.toString());
+
+			if (numPlayers == null)
+				showError.accept("Please select the number of players!");
+			else
+				client.createLobby(numPlayers.toString(), expertMode.toString());
+
 			event.consume();
 		});
 
@@ -80,6 +91,11 @@ public class LobbiesController extends Controller {
 		client.askLobbies();
 		if (client.hasReconnectSettings())
 			showReconnect();
+	}
+
+	@Override
+	public Pane getTopLevelPane() {
+		return pane;
 	}
 
 	public void updateLobbies(List<GameInfo> availableLobbies) {

@@ -5,6 +5,7 @@ import it.polimi.ingsw.eriantys.client.gui.GraphicalApplication;
 import javafx.fxml.Initializable;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 import java.util.function.Consumer;
@@ -49,4 +50,6 @@ public abstract class Controller implements Initializable {
 	}
 
 	public void onChangeScene() {}
+
+	public abstract Pane getTopLevelPane();
 }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
+import it.polimi.ingsw.eriantys.client.gui.PopupName;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
@@ -9,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.List;
@@ -16,11 +20,15 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class WaitingRoomController extends Controller {
+	@FXML private BorderPane pane;
 	@FXML private TableView<Player> info;
 	@FXML private TableColumn<Player, String> usernames;
 	@FXML private TableColumn<Player, String> tower_colors;
 	@FXML private TableColumn<Player, String> wizards;
 	@FXML private Button leave;
+	private String towerColor;
+	private List<String> availableWizards;
+	private String wizard;
 
 	public WaitingRoomController() {
 		info = new TableView<>();
@@ -41,6 +49,11 @@ public class WaitingRoomController extends Controller {
 		});
 	}
 
+	@Override
+	public Pane getTopLevelPane() {
+		return pane;
+	}
+
 	public void updatePlayers(List<String> players) {
 		ObservableList<Player> content = info.getItems();
 		content.clear();
@@ -50,7 +63,8 @@ public class WaitingRoomController extends Controller {
 
 	public void updateSelections(Map<String, String> towerColors, Map<String, String> wizards) {
 		ObservableList<Player> content = info.getItems();
-		for (Player player : content) {
+		List<Player> staticContent = info.getItems().stream().toList();
+		for (Player player : staticContent) {
 			String username = player.username;
 			if (towerColors.containsKey(username)) {
 				content.remove(player);
@@ -60,7 +74,24 @@ public class WaitingRoomController extends Controller {
 	}
 
 	public void promptSelection(List<String> towerColors, List<String> wizards) {
-		// TODO popup
+		availableWizards = wizards;
+		TowersController controller = (TowersController) app.getControllerForPopup(PopupName.TOWERS);
+		controller.populate(towerColors);
+		Platform.runLater(() -> app.showStickyPopup(PopupName.TOWERS));
+	}
+
+	public void setTowerColor(String towerColor) {
+		// this.towerColor = towerColor;
+		client.setTowerColor(towerColor);
+		WizardsController controller = (WizardsController) app.getControllerForPopup(PopupName.WIZARDS);
+		controller.populate(availableWizards);
+		app.showStickyPopup(PopupName.WIZARDS);
+		//Platform.runLater(() -> app.showStickyPopup(PopupName.WIZARDS));
+	}
+
+	public void setWizard(String wizard) {
+		// this.wizard = wizard;
+		client.setWizard(wizard);
 	}
 
 	private static class Player {

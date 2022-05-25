@@ -6,11 +6,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginController extends Controller {
+	@FXML private BorderPane pane;
 	@FXML private TextField username;
 	@FXML private Button login;
 
@@ -29,6 +32,11 @@ public class LoginController extends Controller {
 			this.sendHandshake();
 			event.consume();
 		});
+	}
+
+	@Override
+	public Pane getTopLevelPane() {
+		return pane;
 	}
 
 	private void sendHandshake() {

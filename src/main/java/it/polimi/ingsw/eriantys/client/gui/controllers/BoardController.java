@@ -6,12 +6,15 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.*;
 
 public class BoardController extends Controller {
+	@FXML private BorderPane pane;
 	@FXML private GridPane islands;
 	private final List<GridCell> towerCells;
 	// TODO: Change Pink and Yellow students text labels row and column (according to the ImageView, in order to simplify drawing)
@@ -43,8 +46,8 @@ public class BoardController extends Controller {
 	}
 
 	@Override
-	public void onChangeScene() {
-
+	public Pane getTopLevelPane() {
+		return pane;
 	}
 
 	private void drawIslands() {

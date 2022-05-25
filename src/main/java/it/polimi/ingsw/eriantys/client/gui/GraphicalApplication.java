@@ -6,9 +6,14 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,12 +27,17 @@ public class GraphicalApplication extends Application {
 	private static Consumer<String> showInfo, showError;
 	private final Map<SceneName, Scene> sceneByName;
 	private final Map<SceneName, Controller> controllerByScene;
+	private final Map<PopupName, Scene> popupByName;
+	private final Map<PopupName, Controller> controllerByPopup;
 	private SceneName currentScene;
+	private Stage openPopup;
 
 	public GraphicalApplication() {
 		app = this;
 		sceneByName = new HashMap<>();
 		controllerByScene = new HashMap<>();
+		popupByName = new HashMap<>();
+		controllerByPopup = new HashMap<>();
 	}
 
 	public static GraphicalApplication getInstance() {
@@ -45,6 +55,18 @@ public class GraphicalApplication extends Application {
 			controller.setShowError(showError);
 			controllerByScene.put(scene, controller);
 		}
+
+		for (PopupName popup : PopupName.values()) {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(popup.getPath()));
+			popupByName.put(popup, new Scene(loader.load(), Color.TRANSPARENT));
+			Controller controller = loader.getController();
+			controller.setApp(this);
+			controller.setClient(client);
+			controller.setShowInfo(showInfo);
+			controller.setShowError(showError);
+			controllerByPopup.put(popup, controller);
+		}
+
 		currentScene = SceneName.LOGIN;
 	}
 
@@ -106,6 +128,32 @@ public class GraphicalApplication extends Application {
 
 	public Controller getControllerForScene(SceneName sceneName) {
 		return controllerByScene.get(sceneName);
+	}
+
+	public Controller getControllerForPopup(PopupName popupName) {
+		return controllerByPopup.get(popupName);
+	}
+
+	public void showStickyPopup(PopupName popupName) {
+		if (openPopup != null) throw new RuntimeException("A popup is already open");
+
+		Pane background = getCurrentController().getTopLevelPane();
+		background.setEffect(new GaussianBlur(2.5));
+
+		openPopup = new Stage(StageStyle.TRANSPARENT);
+		openPopup.initOwner(stage);
+		openPopup.initModality(Modality.APPLICATION_MODAL);
+		openPopup.setScene(popupByName.get(popupName));
+		openPopup.show();
+	}
+
+	public void hideStickyPopup() {
+		if (openPopup == null) throw new RuntimeException("No popup is currently open");
+
+		Pane background = getCurrentController().getTopLevelPane();
+		background.setEffect(null);
+		openPopup.hide();
+		openPopup = null;
 	}
 
 	private void center(Scene scene) {

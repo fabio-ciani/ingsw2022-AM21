@@ -72,6 +72,7 @@ public class Client extends Thread {
 				throw new RuntimeException(e);
 			}
 		}
+		System.out.println("thread awake");
 		ui.init();
 		try (socket) {
 			while (running) {
@@ -218,6 +219,8 @@ public class Client extends Thread {
 		write(new HelpRequest(username));
 	}
 
+	// TODO parameters should be converted to the correct types (e.g. String -> int) in the UserInterface
+
 	public void sendHandshake(String username) {
 		if(username.matches("\\w+")) {
 			write(new Handshake(username));
@@ -250,6 +253,11 @@ public class Client extends Thread {
 		} catch (NumberFormatException e) {
 			ui.showError("Invalid number format for argument <id>");
 		}
+	}
+
+	public void joinLobby(int lobbyId) {
+		if (usernameNotSet()) return;
+		write(new JoinLobby(username, lobbyId));
 	}
 
 	public void createLobby(String numPlayersArg, String expertModeArg) {

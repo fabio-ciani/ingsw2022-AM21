@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,8 +19,8 @@ public class AssistantCardsController extends Controller {
 	}
 
 	@Override
-	public void onChangeScene() {
-
+	public Pane getTopLevelPane() {
+		return container;
 	}
 
 	private void drawImages() {

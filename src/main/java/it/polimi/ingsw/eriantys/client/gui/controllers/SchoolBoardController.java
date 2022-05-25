@@ -9,7 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -17,6 +19,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class SchoolBoardController extends Controller {
+	@FXML	private BorderPane pane;
 	@FXML private ImageView schoolboard;
 	@FXML private Text username;
 	@FXML private GridPane dr_green;
@@ -42,6 +45,7 @@ public class SchoolBoardController extends Controller {
 	private Image towerSlot;
 	private Image coinImage;
 
+
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		studentImages = new HashMap<>();
@@ -61,6 +65,11 @@ public class SchoolBoardController extends Controller {
 			currentUsername = sb_username.getSelectionModel().getSelectedItem();
 			onChangeScene();
 		});
+	}
+
+	@Override
+	public Pane getTopLevelPane() {
+		return pane;
 	}
 
 	@Override

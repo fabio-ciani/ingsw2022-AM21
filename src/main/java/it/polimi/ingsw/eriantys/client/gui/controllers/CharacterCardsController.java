@@ -8,7 +8,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.io.FileNotFoundException;
@@ -19,6 +21,7 @@ import java.net.URL;
 import java.util.*;
 
 public class CharacterCardsController extends Controller {
+	@FXML private BorderPane pane;
 	@FXML private GridPane cards;
 	private final List<String> characters;
 	private final Map<String, Map<String, String>> info;
@@ -43,8 +46,8 @@ public class CharacterCardsController extends Controller {
 	}
 
 	@Override
-	public void onChangeScene() {
-
+	public Pane getTopLevelPane() {
+		return pane;
 	}
 
 	private void drawImages() {

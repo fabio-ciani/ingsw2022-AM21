@@ -41,7 +41,7 @@ public class SchoolBoardController extends Controller {
 	private Map<String, Image> studentImages;
 	private Map<String, Image> professorImages;
 	private Map<String, Image> towerImages;
-	private Map<String, Integer> towerWidths;
+	private Map<String, Integer> towerSizes;
 	private Image towerSlot;
 	private Image coinImage;
 
@@ -51,7 +51,7 @@ public class SchoolBoardController extends Controller {
 		studentImages = new HashMap<>();
 		professorImages = new HashMap<>();
 		towerImages = new HashMap<>();
-		towerWidths = new HashMap<>();
+		towerSizes = new HashMap<>();
 		initImages();
 		characters.setOnMouseClicked(event -> {
 			app.changeScene(SceneName.CHARACTER_CARDS);
@@ -183,7 +183,8 @@ public class SchoolBoardController extends Controller {
 			} while (imageView.getId() == null);
 			if (imageView.getImage() == null) {
 				imageView.setImage(towerImages.get(color));
-				imageView.setFitWidth(towerWidths.get(color));
+				imageView.setFitWidth(towerSizes.get(color));
+				imageView.setFitHeight(towerSizes.get(color));
 			}
 			imageView.setVisible(true);
 		}
@@ -215,17 +216,21 @@ public class SchoolBoardController extends Controller {
 		studentImages.put(Color.YELLOW.name(), new Image(getClass().getResource("/graphics/Students/YellowStudent.png").toExternalForm()));
 		studentImages.put(Color.PINK.name(), new Image(getClass().getResource("/graphics/Students/PinkStudent.png").toExternalForm()));
 		studentImages.put(Color.BLUE.name(), new Image(getClass().getResource("/graphics/Students/BlueStudent.png").toExternalForm()));
+
 		professorImages.put(Color.GREEN.name(), new Image(getClass().getResource("/graphics/Professors/GreenProfessor.png").toExternalForm()));
 		professorImages.put(Color.RED.name(), new Image(getClass().getResource("/graphics/Professors/RedProfessor.png").toExternalForm()));
 		professorImages.put(Color.YELLOW.name(), new Image(getClass().getResource("/graphics/Professors/YellowProfessor.png").toExternalForm()));
 		professorImages.put(Color.PINK.name(), new Image(getClass().getResource("/graphics/Professors/PinkProfessor.png").toExternalForm()));
 		professorImages.put(Color.BLUE.name(), new Image(getClass().getResource("/graphics/Professors/BlueProfessor.png").toExternalForm()));
+
+		towerImages.put(TowerColor.WHITE.name(), new Image(getClass().getResource("/graphics/Towers/WhiteTower.png").toExternalForm()));
 		towerImages.put(TowerColor.BLACK.name(), new Image(getClass().getResource("/graphics/Towers/BlackTower.png").toExternalForm()));
 		towerImages.put(TowerColor.GREY.name(), new Image(getClass().getResource("/graphics/Towers/GreyTower.png").toExternalForm()));
-		towerImages.put(TowerColor.WHITE.name(), new Image(getClass().getResource("/graphics/Towers/WhiteTower.png").toExternalForm()));
-		towerWidths.put(TowerColor.BLACK.name(), 54);
-		towerWidths.put(TowerColor.GREY.name(), 58);
-		towerWidths.put(TowerColor.WHITE.name(), 50);
+
+		towerSizes.put(TowerColor.WHITE.name(), 50);
+		towerSizes.put(TowerColor.BLACK.name(), 54);
+		towerSizes.put(TowerColor.GREY.name(), 58);
+
 		coinImage = new Image(getClass().getResource("/graphics/Coin.png").toExternalForm());
 		towerSlot = new Image(getClass().getResource("/graphics/Circle.png").toExternalForm());
 		schoolboard.setImage(new Image(getClass().getResource("/graphics/SchoolBoard.png").toExternalForm()));

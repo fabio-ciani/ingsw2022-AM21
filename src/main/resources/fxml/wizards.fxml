@@ -22,13 +22,13 @@
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<ImageView fx:id="Forest" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<ImageView fx:id="Forest" fitHeight="164.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 				</ImageView>
-				<ImageView fx:id="Desert" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<ImageView fx:id="Desert" fitHeight="164.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 				</ImageView>
-				<ImageView fx:id="Sky" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<ImageView fx:id="Sky" fitHeight="164.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 				</ImageView>
-				<ImageView fx:id="Snow" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<ImageView fx:id="Snow" fitHeight="164.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 				</ImageView>
 			</children>
 		</GridPane>

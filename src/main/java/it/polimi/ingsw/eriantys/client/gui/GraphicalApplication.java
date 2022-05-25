@@ -6,7 +6,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -22,7 +24,8 @@ import java.util.function.Consumer;
 
 public class GraphicalApplication extends Application {
 	private static GraphicalApplication app;
-	private Stage stage;
+	private Stage primaryStage;
+	private Stage openPopup;
 	private static Client client;
 	private static Consumer<String> showInfo, showError;
 	private final Map<SceneName, Scene> sceneByName;
@@ -30,7 +33,6 @@ public class GraphicalApplication extends Application {
 	private final Map<PopupName, Scene> popupByName;
 	private final Map<PopupName, Controller> controllerByPopup;
 	private SceneName currentScene;
-	private Stage openPopup;
 
 	public GraphicalApplication() {
 		app = this;
@@ -74,7 +76,7 @@ public class GraphicalApplication extends Application {
 	public void start(Stage primaryStage) throws IOException {
 		initialize();
 
-		this.stage = primaryStage;
+		this.primaryStage = primaryStage;
 
 		Scene scene = sceneByName.get(currentScene);
 		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
@@ -86,6 +88,7 @@ public class GraphicalApplication extends Application {
 
 		controllerByScene.get(currentScene).onChangeScene();
 
+		primaryStage.getIcons().add(new Image(getClass().getResource("/icon/icon.png").toExternalForm()));
 		primaryStage.show();
 		synchronized (client) {
 			client.notifyAll();
@@ -97,13 +100,13 @@ public class GraphicalApplication extends Application {
 		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 		Font.loadFont(getClass().getResource("/fonts/CelticGaramond.ttf").toExternalForm(), 12);
 
-		stage.setScene(scene);
+		primaryStage.setScene(scene);
 		currentScene = sceneName;
 		center(scene);
 
 		controllerByScene.get(currentScene).onChangeScene();
 
-		stage.show();
+		primaryStage.show();
 	}
 
 	public static void setClient(Client client) {
@@ -138,10 +141,10 @@ public class GraphicalApplication extends Application {
 		if (openPopup != null) throw new RuntimeException("A popup is already open");
 
 		Pane background = getCurrentController().getTopLevelPane();
-		background.setEffect(new GaussianBlur(2.5));
+		background.setEffect(new GaussianBlur(3));
 
 		openPopup = new Stage(StageStyle.TRANSPARENT);
-		openPopup.initOwner(stage);
+		openPopup.initOwner(primaryStage);
 		openPopup.initModality(Modality.APPLICATION_MODAL);
 		openPopup.setScene(popupByName.get(popupName));
 		openPopup.show();
@@ -159,7 +162,7 @@ public class GraphicalApplication extends Application {
 	private void center(Scene scene) {
 		Rectangle2D screen = Screen.getPrimary().getVisualBounds();
 
-		stage.setX((screen.getWidth() - scene.getWidth()) / 2);
-		stage.setY((screen.getHeight() - scene.getHeight()) / 2);
+		primaryStage.setX((screen.getWidth() - scene.getWidth()) / 2);
+		primaryStage.setY((screen.getHeight() - scene.getHeight()) / 2);
 	}
 }

@@ -621,7 +621,21 @@
 						<Font name="System Bold" size="20.0" />
 					</font>
 				</Text>
+				<Text fx:id="selected_text" layoutY="-12.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected:">
+					<font>
+						<Font size="20.0" />
+					</font>
+				</Text>
+				<ImageView fx:id="selected_img" fitHeight="24.0" fitWidth="24.0" layoutX="90.0" layoutY="-30.0" pickOnBounds="true" preserveRatio="true">
+
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+				</ImageView>
 			</children>
+			<BorderPane.margin>
+				<Insets bottom="25.0" />
+			</BorderPane.margin>
 		</Group>
 	</center>
 	<bottom>

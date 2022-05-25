@@ -1928,6 +1928,15 @@
 						<Insets bottom="122.0" right="490.0" />
 					</GridPane.margin>
 				</Text>
+				<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="70.0" right="670.0" />
+					</GridPane.margin>
+				</ImageView>
 				<Button fx:id="back" focusTraversable="false" minWidth="120.0" mnemonicParsing="false" text="Back" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<GridPane.margin>
 						<Insets bottom="112.0" left="575.0" />

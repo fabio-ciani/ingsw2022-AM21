@@ -1,6 +1,6 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
-import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
+import it.polimi.ingsw.eriantys.model.exceptions.*;
 
 /**
  * Abstract class that represents character cards that don't hold students.

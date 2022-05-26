@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This class models the actual bag in the board game, which initially contains all the students discs. It exposes a
- * method which returns a list of {@link Color}, used during the game setup.
+ * This class models the actual bag in the board game, which initially contains all the students discs.
+ * It exposes a method which returns a list of {@link Color}, used during the game setup.
  * @see StudentContainer
  */
 public class Bag extends StudentContainer {
@@ -23,9 +23,8 @@ public class Bag extends StudentContainer {
 	}
 
 	/**
-	 * Returns a list containing two students of each {@link Color} in random order, which is needed in order to set up
-	 * the islands at the start of the game.
-	 * @return a list containing two students of each {@link Color} in random order.
+	 * Sets up the islands at the start of the game.
+	 * @return a list containing two students of each {@link Color} in random order
 	 * @see Board#setup()
 	 */
 	public List<Color> setupDraw() {
@@ -36,6 +35,10 @@ public class Bag extends StudentContainer {
 		return colors;
 	}
 
+	/**
+	 * A method which states if the {@code Bag} is empty.
+	 * @return {@code true} if and only if the object is empty
+	 */
 	public boolean isEmpty() {
 		return super.empty();
 	}

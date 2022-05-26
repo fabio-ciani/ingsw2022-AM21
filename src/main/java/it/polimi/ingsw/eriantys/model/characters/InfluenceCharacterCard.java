@@ -1,9 +1,8 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
 import it.polimi.ingsw.eriantys.model.*;
-import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
-import it.polimi.ingsw.eriantys.model.influence.CommonInfluence;
-import it.polimi.ingsw.eriantys.model.influence.InfluenceCalculator;
+import it.polimi.ingsw.eriantys.model.exceptions.*;
+import it.polimi.ingsw.eriantys.model.influence.*;
 
 import java.util.List;
 

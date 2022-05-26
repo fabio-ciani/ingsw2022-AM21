@@ -5,7 +5,6 @@ import it.polimi.ingsw.eriantys.model.GameManager;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 /**

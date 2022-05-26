@@ -7,16 +7,16 @@ import java.util.*;
 
 /**
  * This class provides a container for student discs.
- * It is meant to model every game object on which student discs can be placed. It can be used as is, or it can be
- * extended in order to include additional methods and attributes.
- * It exposes various methods to move students between two {@code StudentContainer} objects and a method returning the
- * number of students of a given {@link Color} in the container.
+ * It is meant to model every game object on which student discs can be placed.
+ * It can be used as is, or it can be extended in order to include additional methods and attributes.
+ * It exposes various methods to move students between two {@code StudentContainer} objects
+ * and a method returning the number of students of a given {@link Color} in the container.
  */
 public class StudentContainer {
 
 	/**
-	 * The default maximum size for containers which do not intrinsically have a limit on the number of students. The
-	 * value 130 is the total number of student discs in the game, so no container should have to hold more.
+	 * The default maximum size for containers which do not intrinsically have a limit on the number of students.
+	 * The value 130 is the total number of student discs in the game, so no container should have to hold more.
 	 */
 	private static final int NO_MAX_SIZE = 130;
 
@@ -38,9 +38,9 @@ public class StudentContainer {
 	private final int maxSize;
 
 	/**
-	 * Constructs a {@code StudentContainer} with maximum size equal to the total number of student discs in the
-	 * game (130). This constructor is to be used only to construct a {@code StudentContainer} with no specified
-	 * maximum size.
+	 * Constructs a {@code StudentContainer} with maximum size equal to the total number of student discs
+	 * in the game (130). This constructor is to be used only to construct a {@code StudentContainer}
+	 * with no specified maximum size.
 	 */
 	public StudentContainer() {
 		this.maxSize = NO_MAX_SIZE;
@@ -61,11 +61,10 @@ public class StudentContainer {
 	}
 
 	/**
-	 * Returns the amount of students of color {@code color} currently in the container, or -1 if {@code color} is
-	 * {@code null}.
+	 * A getter for the amount of students of color {@code color} currently in the container.
 	 * @param color the color of students whose amount is requested.
-	 * @return the amount of students of color {@code color} currently in the container, or -1 if {@code color} is
-	 * {@code null}.
+	 * @return the amount of students of color {@code color} currently in the container,
+	 * or -1 if {@code color} is {@code null}
 	 */
 	public int getQuantity(Color color) {
 		if (color == null)
@@ -76,12 +75,12 @@ public class StudentContainer {
 	}
 
 	/**
-	 * Moves a student of color {@code color} from {@code this} to the destination container {@code dest}. No movement
-	 * occurs if {@code this} is empty or the destination container has no remaining capacity.
-	 * @param dest the destination {@code StudentContainer}.
-	 * @param color the {@link Color} of the student to be moved.
-	 * @throws InvalidArgumentException if any argument is {@code null}.
-	 * @throws NoMovementException if {@code this} is empty or the destination container is full.
+	 * Moves a student of color {@code color} from {@code this} to the destination container {@code dest}.
+	 * No movement occurs if {@code this} is empty or the destination container has no remaining capacity.
+	 * @param dest the destination {@code StudentContainer}
+	 * @param color the {@link Color} of the student to be moved
+	 * @throws InvalidArgumentException if any argument is {@code null}
+	 * @throws NoMovementException if {@code this} is empty or the destination container is full
 	 */
 	public void moveTo(StudentContainer dest, Color color) throws InvalidArgumentException, NoMovementException {
 		if (dest == null)
@@ -106,13 +105,14 @@ public class StudentContainer {
 
 	/**
 	 * Moves {@code amount} students of random colors from {@code this} to the destination container {@code dest}.
-	 * Students are moved one by one until {@code amount} is reached ot no colors that can be both removed from
-	 * {@code this} and added to {@code dest} can be found, at which point no subsequent movements occur.
-	 * @param dest the destination {@code StudentContainer}.
-	 * @param amount the amount of students to be moved.
-	 * @throws InvalidArgumentException if {@code dest} is {@code null}.
-	 * @throws NoMovementException if no colors that can be both removed from {@code this} and added to {@code dest}
-	 * can be found.
+	 * Students are moved one by one until {@code amount} is reached or no colors that
+	 * can be both removed from {@code this} and added to {@code dest} can be found,
+	 * at which point no subsequent movements occur.
+	 * @param dest the destination {@code StudentContainer}
+	 * @param amount the amount of students to be moved
+	 * @throws InvalidArgumentException if {@code dest} is {@code null}
+	 * @throws NoMovementException if no colors that can be both removed
+	 * from {@code this} and added to {@code dest} can be found
 	 */
 	public void moveTo(StudentContainer dest, int amount) throws InvalidArgumentException, NoMovementException {
 		if (dest == null)
@@ -126,13 +126,13 @@ public class StudentContainer {
 	}
 
 	/**
-	 * Moves all the students from {@code this} to the destination container {@code dest}. Students are moved color by
-	 * color until the source container {@code this} is empty or the destination container has no remaining capacity, at
-	 * which point no subsequent movements occur. Generally, the source container {@code this} should be emptied as a
-	 * result of this method.
-	 * @param dest the destination {@code StudentContainer}.
-	 * @throws InvalidArgumentException if {@code dest} is {@code null}.
-	 * @throws NoMovementException if {@code this} contains more students than the destination container can add.
+	 * Moves all the students from {@code this} to the destination container {@code dest}.
+	 * Students are moved color by color until the source container {@code this} is empty
+	 * or the destination container has no remaining capacity, at which point no subsequent movements occur.
+	 * Generally, the source container {@code this} should be emptied as a result of this method.
+	 * @param dest the destination {@code StudentContainer}
+	 * @throws InvalidArgumentException if {@code dest} is {@code null}
+	 * @throws NoMovementException if {@code this} contains more students than the destination container can add
 	 */
 	public void moveAllTo(StudentContainer dest) throws InvalidArgumentException, NoMovementException {
 		if (dest == null)
@@ -163,11 +163,12 @@ public class StudentContainer {
 	}
 
 	/**
-	 * Refills {@code this} to its maximum capacity by picking random students from {@code source}. Students are moved one
-	 * by one until {@code this} is full or {@code source} is empty, at which point no subsequent movements occur.
-	 * @param source the source {@code StudentContainer}.
-	 * @throws InvalidArgumentException if {@code source} is {@code null}.
-	 * @throws NoMovementException if {@code source} is emptied before {@code this} can be filled.
+	 * Refills {@code this} to its maximum capacity by picking random students from {@code source}.
+	 * Students are moved one by one until {@code this} is full or {@code source} is empty,
+	 * at which point no subsequent movements occur.
+	 * @param source the source {@code StudentContainer}
+	 * @throws InvalidArgumentException if {@code source} is {@code null}
+	 * @throws NoMovementException if {@code source} is emptied before {@code this} can be filled
 	 * @see StudentContainer#moveTo(StudentContainer, int)
 	 */
 	public void refillFrom(StudentContainer source) throws InvalidArgumentException, NoMovementException {
@@ -178,15 +179,16 @@ public class StudentContainer {
 	}
 
 	/**
-	 * Swaps two student discs between {@code this} and {@code that}: one student of color {@code thisColor} is removed
-	 * from {@code this} and added to {@code that}, and one student of color {@code thatColor} is removed from
-	 * {@code that} and added to {@code this}. If any container does not have enough students or enough capacity to
-	 * perform the swap, the operation is aborted.
-	 * @param that the second {@code StudentContainer}.
-	 * @param thisColor the {@link Color} of the student being moved from {@code this} to {@code that}.
-	 * @param thatColor the {@link Color} of the student being moved from {@code that} to {@code this}.
-	 * @throws InvalidArgumentException if any argument is {@code null}.
-	 * @throws NoMovementException if any container does not have enough students or enough capacity to perform the swap.
+	 * Swaps two student discs between {@code this} and {@code that}:
+	 * one student of color {@code thisColor} is removed from {@code this} and
+	 * added to {@code that}, and one student of color {@code thatColor} is removed from {@code that}
+	 * and added to {@code this}. If any container does not have enough students or enough capacity to perform the swap,
+	 * the operation is aborted.
+	 * @param that the second {@code StudentContainer}
+	 * @param thisColor the {@link Color} of the student being moved from {@code this} to {@code that}
+	 * @param thatColor the {@link Color} of the student being moved from {@code that} to {@code this}
+	 * @throws InvalidArgumentException if any argument is {@code null}
+	 * @throws NoMovementException if any container does not have enough students or enough capacity to perform the swap
 	 */
 	public void swap(StudentContainer that, Color thisColor, Color thatColor)
 				throws InvalidArgumentException, NoMovementException {
@@ -293,6 +295,10 @@ public class StudentContainer {
 			students.put(color, MAX_STUDENTS_PER_COLOR);
 	}
 
+	/**
+	 * A method to state if the object has no students.
+	 * @return true if and only if the container is empty
+	 */
 	protected boolean empty() {
 		for (Color color : Color.values())
 			if (students.get(color) != null && students.get(color) > 0)

@@ -3,8 +3,8 @@ package it.polimi.ingsw.eriantys.model.exceptions;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 
 /**
- * This exception is thrown by {@link IslandGroup}'s {@code merge} method to indicate that the two specified islands do
- * not share the same controller, and therefore cannot be merged.
+ * This exception is thrown by {@link IslandGroup}'s {@code merge} method to indicate that
+ * the two specified islands do not share the same controller, and therefore cannot be merged.
  * @see IslandGroup#merge(IslandGroup, IslandGroup)
  */
 public class IncompatibleControllersException extends Exception {

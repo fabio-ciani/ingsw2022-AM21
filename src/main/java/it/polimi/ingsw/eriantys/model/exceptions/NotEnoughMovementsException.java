@@ -3,8 +3,8 @@ package it.polimi.ingsw.eriantys.model.exceptions;
 import it.polimi.ingsw.eriantys.model.GameManager;
 
 /**
- * This exception is thrown by {@link GameManager#handleMotherNatureMovement(String)} to indicate that the movement
- * cannot be completed since the player does not have enough MN movements during this turn.
+ * This exception is thrown by {@link GameManager#handleMotherNatureMovement(String)} to indicate that
+ * the movement cannot be completed since the player does not have enough Mother Nature movements during this turn.
  */
 public class NotEnoughMovementsException extends Exception {
 

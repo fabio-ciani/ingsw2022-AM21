@@ -24,6 +24,9 @@ public class SchoolBoard {
 	 */
 	private int towers;
 
+	/**
+	 * The maximum number of towers which can be contained in the {@code SchoolBoard}.
+	 */
 	private final int towerNumber;
 
 	/**

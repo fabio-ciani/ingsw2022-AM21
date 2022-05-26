@@ -20,6 +20,7 @@ public class ExcludeColorInfluence extends CommonInfluence implements InfluenceC
 		this.excluded = excluded;
 	}
 
+	@Override
 	public int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws InvalidArgumentException {
 		if (excluded == null)
 			throw new InvalidArgumentException("Cannot proceed with null internal attributes parameter(s).");

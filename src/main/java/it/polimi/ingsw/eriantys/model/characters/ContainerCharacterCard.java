@@ -1,9 +1,7 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
-import it.polimi.ingsw.eriantys.model.Bag;
-import it.polimi.ingsw.eriantys.model.StudentContainer;
-import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
-import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
+import it.polimi.ingsw.eriantys.model.*;
+import it.polimi.ingsw.eriantys.model.exceptions.*;
 
 /**
  * Abstract class that represents the character cards that require to contain students to use when activating the effect.

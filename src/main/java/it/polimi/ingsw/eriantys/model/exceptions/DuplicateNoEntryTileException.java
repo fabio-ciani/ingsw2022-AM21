@@ -3,8 +3,8 @@ package it.polimi.ingsw.eriantys.model.exceptions;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 
 /**
- * This exception is thrown by {@link IslandGroup#putNoEntryTile(int)} to indicate that a tile with the specified
- * {@code id} is already placed on the {@link IslandGroup}.
+ * This exception is thrown by {@link IslandGroup#putNoEntryTile(int)} to indicate that
+ * a tile with the specified {@code id} is already placed on the {@link IslandGroup}.
  * @see IslandGroup#putNoEntryTile(int)
  */
 public class DuplicateNoEntryTileException extends Exception {

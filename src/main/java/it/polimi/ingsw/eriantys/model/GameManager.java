@@ -73,9 +73,9 @@ public class GameManager {
 	}
 
 	/**
-	 * Prepares the game by setting up every player's school board entrance, filling it with the appropriate number of
-	 * student discs.
-	 * @throws InvalidArgumentException if an error occurs during one of the movements.
+	 * Prepares the game by setting up every player's school board entrance,
+	 * filling it with the appropriate number of student discs.
+	 * @throws InvalidArgumentException if an error occurs during one of the movements
 	 */
 	public void setupEntrances() throws InvalidArgumentException {
 		for (Player player : players.getTurnOrder()) {
@@ -188,10 +188,10 @@ public class GameManager {
 	 * @param nickname the nickname of the {@link Player} moving the student
 	 * @param studentColor the string corresponding to the name of the {@link Color}
 	 * @param destination the string representing the destination
-	 * @throws NoMovementException if an error occurs while moving the student.
-	 * @throws IslandNotFoundException if the specified island cannot be found.
-	 * @throws InvalidArgumentException if no player matches the specified nickname or if no {@link Color} matches the
-	 * specified color.
+	 * @throws NoMovementException if an error occurs while moving the student
+	 * @throws IslandNotFoundException if the specified island cannot be found
+	 * @throws InvalidArgumentException if no player matches the specified nickname or
+	 * no {@link Color} matches the specified color
 	 */
 	public void handleMovedStudent(String nickname, String studentColor, String destination)
 			throws NoMovementException, IslandNotFoundException, InvalidArgumentException {
@@ -228,8 +228,8 @@ public class GameManager {
 	 * @param islandDestination the destination {@link IslandGroup}
 	 * @throws IslandNotFoundException if no island matching the specified id can be found
 	 * @throws InvalidArgumentException if an error occurs while resolving the destination island
-	 * @throws NotEnoughMovementsException if the player performing this action does not have enough mother nature
-	 * movements in order to complete it
+	 * @throws NotEnoughMovementsException if the player performing this action does not have enough
+	 * Mother Nature movements in order to complete it
 	 * @return {@code true} if and only if the game ends as a result of Mother Nature's movement
 	 */
 	public boolean handleMotherNatureMovement(String islandDestination)
@@ -313,15 +313,14 @@ public class GameManager {
 	}
 
 	/**
-	 * Applies the effect of the desired character card with the specified {@code params}. Returns {@code true} if and
-	 * only if the current round will be the last in the game.
-	 * @param index the index of the desired character card.
-	 * @param params the parameters for the application of the specified character card's effect.
-	 * @return {@code true} if and only if the current round will be the last in the game.
-	 * @throws ItemNotAvailableException if an error has occurred while removing a no-entry tile from an island.
-	 * @throws NoMovementException if an error has occurred while moving one or more students.
-	 * @throws InvalidArgumentException if an error has occurred while applying the card's effect.
-	 * @throws DuplicateNoEntryTileException if an error has occurred while placing a no-entry tile on an island.
+	 * Applies the effect of the desired character card with the specified {@code params}.
+	 * @param index the index of the desired character card
+	 * @param params the parameters for the application of the specified character card's effect
+	 * @return {@code true} if and only if the current round will be the last in the game
+	 * @throws ItemNotAvailableException if an error has occurred while removing a no-entry tile from an island
+	 * @throws NoMovementException if an error has occurred while moving one or more students
+	 * @throws InvalidArgumentException if an error has occurred while applying the card's effect
+	 * @throws DuplicateNoEntryTileException if an error has occurred while placing a no-entry tile on an island
 	 */
 	public boolean handleCharacterCard(int index, JsonObject params) throws
 			ItemNotAvailableException,
@@ -371,7 +370,7 @@ public class GameManager {
 
 	/**
 	 * A getter for the winner of the game.
-	 * @return the nickname of the winner of the game, or {@code null} if no winner has been declared yet.
+	 * @return the nickname of the winner of the game, or {@code null} if no winner has been declared yet
 	 */
 	public String getWinner() {
 		if (!lastRound) return null;
@@ -392,7 +391,7 @@ public class GameManager {
 	 * within the MVC pattern for the game.
 	 * @param username the username of the target player
 	 * @return a representation for the entrance of the specified player
-	 * @see StudentContainer#getRepresentation() StudentContainer.getRepresentation()
+	 * @see StudentContainer#getRepresentation()
 	 */
 	public Map<String, Integer> entranceRepresentation(String username) {
 		Player p = players.get(username);
@@ -406,7 +405,7 @@ public class GameManager {
 	 * within the MVC pattern for the game.
 	 * @param username the username of the target player
 	 * @return a representation for the dining room of the specified player
-	 * @see StudentContainer#getRepresentation() StudentContainer.getRepresentation()
+	 * @see StudentContainer#getRepresentation()
 	 */
 	public Map<String, Integer> diningRoomRepresentation(String username) {
 		Player p = players.get(username);
@@ -439,7 +438,8 @@ public class GameManager {
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
 	 * @param username the username of the target player
-	 * @return a representation for the number of coins owned by the specified player
+	 * @return a representation for the number of coins owned by the specified player,
+	 * or {@code null} if the game is not set on expert mode
 	 */
 	public Integer coinsRepresentation(String username) {
 		if (!expertMode)
@@ -451,7 +451,7 @@ public class GameManager {
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
 	 * @return a representation for the islands on the game board
-	 * @see Board#getIslandsRepresentation() Board.getIslandsRepresentation()
+	 * @see Board#getIslandsRepresentation()
 	 */
 	public List<String> islandsRepresentation() {
 		return board.getIslandsRepresentation();
@@ -460,9 +460,9 @@ public class GameManager {
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
-	 * @param isle the identificator of the target isle
+	 * @param isle the identifier of the target isle
 	 * @return a representation for the aggregate size
-	 * @see IslandGroup#getSize() IslandGroup.getSize()
+	 * @see IslandGroup#getSize()
 	 */
 	public Integer islandSizeRepresentation(String isle) {
 		Integer rep = null;
@@ -482,9 +482,9 @@ public class GameManager {
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
-	 * @param isle the identificator of the target isle
+	 * @param isle the identifier of the target isle
 	 * @return a representation for the students on the specified aggregate
-	 * @see StudentContainer#getRepresentation() StudentContainer.getRepresentation()
+	 * @see StudentContainer#getRepresentation()
 	 */
 	public Map<String, Integer> islandStudentsRepresentation(String isle) {
 		Map<String, Integer> rep = null;
@@ -506,7 +506,7 @@ public class GameManager {
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
-	 * @param isle the identificator of the target isle
+	 * @param isle the identifier of the target isle
 	 * @return a representation for the username of the controller of the specified aggregate
 	 */
 	public String islandControllerRepresentation(String isle) {
@@ -528,7 +528,7 @@ public class GameManager {
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
-	 * @return a representation for the identificator of the aggregate on which Mother Nature is currently placed
+	 * @return a representation for the identifier of the aggregate on which Mother Nature is currently placed
 	 */
 	public String motherNatureIslandRepresentation() {
 		return board.getMotherNatureIsland().getId();
@@ -537,11 +537,15 @@ public class GameManager {
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
-	 * @param isle the identificator of the target isle
+	 * @param isle the identifier of the target isle
 	 * @return a representation for the number of no-entry tiles placed on the specified aggregate
-	 * @see IslandGroup#getNoEntryTiles() IslandGroup.getNoEntryTiles()
+	 * if and only if expert mode is enabled
+	 * @see IslandGroup#getNoEntryTiles()
 	 */
 	public Integer islandNoEntryTilesRepresentation(String isle) {
+		if (!expertMode)
+			return null;
+
 		Integer rep = null;
 		IslandGroup island;
 
@@ -560,7 +564,7 @@ public class GameManager {
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
 	 * @return a representation for the cloud tiles on the game board
-	 * @see Board#getCloudTiles() Board.getCloudTiles()
+	 * @see Board#getCloudTiles()
 	 */
 	public Map<String, Map<String, Integer>> cloudTilesRepresentation() {
 		return board.getCloudTiles();
@@ -570,7 +574,7 @@ public class GameManager {
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
 	 * @return a representation for the username of the owner, when existent, of the game professors
-	 * @see ProfessorOwnership#getOwnership(Color) ProfessorOwnership.getOwnership(Color)
+	 * @see ProfessorOwnership#getOwnership(Color)
 	 */
 	public Map<String, String> professorsRepresentation() {
 		Map<String, String> rep = new LinkedHashMap<>();
@@ -591,7 +595,7 @@ public class GameManager {
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.
 	 * @return a representation for the character cards of the game if and only if expert mode is enabled
-	 * @see CharacterCard#getName() CharacterCard.getName()
+	 * @see CharacterCard#getName()
 	 */
 	public List<String> charactersRepresentation() {
 		if (!expertMode)
@@ -621,7 +625,7 @@ public class GameManager {
 	 * within the MVC pattern for the game.
 	 * @param c the target character card literal
 	 * @return a representation for the students on the specified character card if and only if expert mode is enabled
-	 * @see StudentContainer#getRepresentation() StudentContainer.getRepresentation()
+	 * @see StudentContainer#getRepresentation()
 	 */
 	public Map<String, Integer> characterStudentsRepresentation(String c) {
 		if (!expertMode)

@@ -114,7 +114,7 @@ public class Player {
 	}
 
 	/**
-	 * @see SchoolBoard#getTowerQuantity() () SchoolBoard.getTowerQuantity()
+	 * @see SchoolBoard#getTowerQuantity()
 	 * @return the number of towers which the {@link Player} owns in the {@link SchoolBoard}
 	 */
 	public int getTowerQuantity() {
@@ -160,9 +160,8 @@ public class Player {
 		}
 	}
 
-	// TODO: tests (?)
 	/**
-	 * @see SchoolBoard#checkForCoins(Color) SchoolBoard.checkForCoins(Color)
+	 * @see SchoolBoard#checkForCoins(Color)
 	 * @param color the {@link Color} whose amount of students is checked
 	 * @return {@code true} if and only if the {@link Player} who owns this {@code DiningRoom} is entitled
 	 * to receive a coin based on the number of students of color {@code color} their {@link DiningRoom} contains

@@ -1,5 +1,9 @@
 package it.polimi.ingsw.eriantys.model.exceptions;
 
+/**
+ * This exception is thrown whenever an illegal parameter referred to a game object
+ * has been passed to a class or specific method.
+ */
 public class InvalidArgumentException extends Exception {
 
 	/**

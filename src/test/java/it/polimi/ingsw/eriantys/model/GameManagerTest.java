@@ -460,17 +460,32 @@ class GameManagerTest {
 	}
 
 	@Test
-	void islandNoEntryTilesRepresentation_PassInvalidIsle_ReturnNull() {
+	void islandNoEntryTilesRepresentation_SimplifiedModeAndInvalidIsle_ReturnNull() {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, false);
+
+		assertNull(gm.islandNoEntryTilesRepresentation("13"));
+	}
+
+	@Test
+	void islandNoEntryTilesRepresentation_SimplifiedModeAndValidIsle_ReturnNull() {
+		GameManager gm = new GameManager(players, false);
+
+		assertNull(gm.islandNoEntryTilesRepresentation("03"));
+	}
+
+	@Test
+	void islandNoEntryTilesRepresentation_ExpertModeAndInvalidIsle_ReturnNull() {
+		// Note: the test case will never happen
+		GameManager gm = new GameManager(players, true);
 
 		assertDoesNotThrow(() -> gm.islandNoEntryTilesRepresentation("13"));	// The throwing does not happen because of the catch clause
 		assertNull(gm.islandNoEntryTilesRepresentation("13"));
 	}
 
 	@Test
-	void islandNoEntryTilesRepresentation_AfterSetup_ReturnZero() {
-		GameManager gm = new GameManager(players, false);
+	void islandNoEntryTilesRepresentation_ExpertModeAndValidIsle_ReturnZero() {
+		GameManager gm = new GameManager(players, true);
 
 		assertEquals(0, gm.islandNoEntryTilesRepresentation("03"));
 	}

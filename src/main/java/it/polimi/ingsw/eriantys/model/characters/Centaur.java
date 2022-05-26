@@ -1,6 +1,8 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
-import it.polimi.ingsw.eriantys.model.*;
+import it.polimi.ingsw.eriantys.model.Color;
+import it.polimi.ingsw.eriantys.model.GameManager;
+import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.influence.NoTowersInfluence;
 

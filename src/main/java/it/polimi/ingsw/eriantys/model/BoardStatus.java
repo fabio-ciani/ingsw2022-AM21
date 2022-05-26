@@ -1,6 +1,8 @@
 package it.polimi.ingsw.eriantys.model;
 
+import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.server.BoardUpdate;
+import it.polimi.ingsw.eriantys.model.characters.CharacterCard;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
@@ -113,75 +115,180 @@ public class BoardStatus implements Serializable {
 		}
 	}
 
-	public List<String> getCharacterCards() {
-		return charactersInfo.characterCards;
-	}
+	// PlayersInfo getters
 
-	public Map<String, Integer> getCharacterCardsCost() {
-		return charactersInfo.characterCardsCost;
-	}
-
-	public Map<String, Map<String, Integer>> getCharacterCardsStudents() {
-		return charactersInfo.characterCardsStudents;
-	}
-
-	public Map<String, Integer> getCharacterCardsNoEntryTiles() {
-		return charactersInfo.characterCardsNoEntryTiles;
-	}
-
-	public Map<String, Map<String, Integer>> getCloudTiles() {
-		return cloudTiles;
-	}
-
-	public Map<String, String> getProfessors() {
-		return professors;
-	}
-
-	public List<String> getIslands() {
-		return islandsInfo.islands;
-	}
-
-	public Map<String, Integer> getIslandSizes() {
-		return islandsInfo.islandSizes;
-	}
-
-	public Map<String, Map<String, Integer>> getIslandStudents() {
-		return islandsInfo.islandStudents;
-	}
-
-	public Map<String, String> getIslandControllers() {
-		return islandsInfo.islandControllers;
-	}
-
-	public String getMotherNatureIsland() {
-		return islandsInfo.motherNatureIsland;
-	}
-
-	public Map<String, Integer> getIslandNoEntryTiles() {
-		return islandsInfo.islandNoEntryTiles;
-	}
-
+	/**
+	 * A getter for the nicknames of the users in the {@link Game}.
+	 * @return the nicknames of the users, following the current turn order
+	 */
 	public List<String> getPlayers() {
 		return playersInfo.players;
 	}
 
+	/**
+	 * A getter for the references to the {@link SchoolBoard} entrance of every user in the {@link Game}.
+	 * @return the {@link SchoolBoard} entrances within a data structure
+	 * which maps a nickname to the actual queried representation
+	 * @see GameManager#entranceRepresentation(String)
+	 */
 	public Map<String, Map<String, Integer>> getPlayerEntrances() {
 		return playersInfo.playerEntrances;
 	}
 
+	/**
+	 * A getter for the references to the {@link SchoolBoard} dining room of every user in the {@link Game}.
+	 * @return the {@link SchoolBoard} dining rooms within a data structure
+	 * which maps a nickname to the actual queried representation
+	 * @see GameManager#diningRoomRepresentation(String)
+	 */
 	public Map<String, Map<String, Integer>> getPlayerDiningRooms() {
 		return playersInfo.playerDiningRooms;
 	}
 
-	public Map<String, Integer> getPlayerTowers() {
-		return playersInfo.playerTowers;
-	}
-
+	/**
+	 * A getter for the {@link TowerColor} literals of the users in the {@link Game}.
+	 * @return the {@link TowerColor} literals within a data structure
+	 * which maps a nickname to the actual queried representation
+	 */
 	public Map<String, String> getPlayerTowerColors() {
 		return playersInfo.playerTowerColors;
 	}
 
+	/**
+	 * A getter for the total number of towers on the users' {@link SchoolBoard}.
+	 * @return the number of towers within a data structure
+	 * which maps a nickname to the actual queried representation
+	 */
+	public Map<String, Integer> getPlayerTowers() {
+		return playersInfo.playerTowers;
+	}
+
+	/**
+	 * A getter for the total number of coins owned by the users' in the {@link Game}.
+	 * @return the number of coins within a data structure
+	 * which maps a nickname to the actual queried representation,
+	 * generating a {@code null} reference value if the game is not set on expert mode
+	 */
 	public Map<String, Integer> getPlayerCoins() {
 		return playersInfo.playerCoins;
+	}
+
+	// IslandsInfo getters
+
+	/**
+	 * A getter for the {@link IslandGroup} identifiers.
+	 * @return the identifiers of the islands on the {@link Board} of the {@link Game}
+	 */
+	public List<String> getIslands() {
+		return islandsInfo.islands;
+	}
+
+	/**
+	 * A getter for the number of islands composing an aggregate on the {@link Board} of the {@link Game}.
+	 * @return the {@link IslandGroup} sizes within a data structure
+	 * which maps an island identifier to the actual queried representation
+	 */
+	public Map<String, Integer> getIslandSizes() {
+		return islandsInfo.islandSizes;
+	}
+
+	/**
+	 * A getter for the students placed on an aggregate on the {@link Board} of the {@link Game}.
+	 * @return the students on an {@link IslandGroup} within a data structure
+	 * which maps an island identifier to the actual queried representation
+	 * @see GameManager#islandStudentsRepresentation(String)
+	 */
+	public Map<String, Map<String, Integer>> getIslandStudents() {
+		return islandsInfo.islandStudents;
+	}
+
+	/**
+	 * A getter for the controller, if present, of an aggregate on the {@link Board} of the {@link Game}.
+	 * @return the user nickname of the {@link Player} controlling the {@link IslandGroup} within a data structure
+	 * which maps an island identifier to the actual queried representation
+	 */
+	public Map<String, String> getIslandControllers() {
+		return islandsInfo.islandControllers;
+	}
+
+	/**
+	 * A getter for the {@link IslandGroup} on which Mother Nature is currently placed.
+	 * @return the identifier of the {@link IslandGroup} on which Mother Nature is placed.
+	 */
+	public String getMotherNatureIsland() {
+		return islandsInfo.motherNatureIsland;
+	}
+
+	/**
+	 * A getter for the total number of no-entry tiles placed on an aggregate on the {@link Board} of the {@link Game}.
+	 * @return the number of no-entry tiles on an {@link IslandGroup} within a data structure
+	 * which maps an island identifier to the actual queried representation,
+	 * generating a {@code null} reference value if the game is not set on expert mode
+	 */
+	public Map<String, Integer> getIslandNoEntryTiles() {
+		return islandsInfo.islandNoEntryTiles;
+	}
+
+	// CharacterCardsInfo getters
+
+	/**
+	 * A getter for the {@link CharacterCard}s randomly extracted for the {@link Game}.
+	 * @return the card literals, or {@code null} if the {@link Game} is not set on expert mode
+	 */
+	public List<String> getCharacterCards() {
+		return charactersInfo.characterCards;
+	}
+
+	/**
+	 * A getter for the total number of coins required to play a {@link CharacterCard} of the {@link Game}.
+	 * @return the cost of a {@link CharacterCard} within a data structure
+	 * which maps a card identifier to the actual queried representation,
+	 * or {@code null} if the game is not set on expert mode
+	 */
+	public Map<String, Integer> getCharacterCardsCost() {
+		return charactersInfo.characterCardsCost;
+	}
+
+	/**
+	 * A getter for the students placed on a {@link CharacterCard} of the {@link Game}
+	 * if the card itself involves this additional information and status.
+	 * @return the students placed on a {@link CharacterCard} within a data structure
+	 * which maps a card identifier to the actual queried representation,
+	 * or {@code null} if the game is not set on expert mode
+	 * @see GameManager#characterStudentsRepresentation(String)
+	 */
+	public Map<String, Map<String, Integer>> getCharacterCardsStudents() {
+		return charactersInfo.characterCardsStudents;
+	}
+
+	/**
+	 * A getter for the total number of no-entry tiles placed on a {@link CharacterCard} of the {@link Game}
+	 * if the card itself involves this additional information and status.
+	 * @return the number of no-entry tiles on a {@link CharacterCard} within a data structure
+	 * which maps a card identifier to the actual queried representation,
+	 * or {@code null} if the game is not set on expert mode
+	 */
+	public Map<String, Integer> getCharacterCardsNoEntryTiles() {
+		return charactersInfo.characterCardsNoEntryTiles;
+	}
+
+	// BoardStatus getters
+
+	/**
+	 * A getter for the students placed on a cloud tile on the {@link Board} of the {@link Game}.
+	 * @return the students on a cloud tile within a data structure
+	 * which maps a tile (numerical) identifier to the actual queried representation
+	 */
+	public Map<String, Map<String, Integer>> getCloudTiles() {
+		return cloudTiles;
+	}
+
+	/**
+	 * A getter for the professors owned by the users' in the {@link Game}.
+	 * @return the professor literals within a data structure
+	 * which maps a nickname to the actual queried representation
+	 */
+	public Map<String, String> getProfessors() {
+		return professors;
 	}
 }

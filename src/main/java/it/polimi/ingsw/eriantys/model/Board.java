@@ -35,8 +35,8 @@ public class Board {
 	private int motherNatureIslandIndex;
 
 	/**
-	 * The bag initially containing all the student discs, which are then moved around between the islands, the cloud tiles
-	 * and each player's school board.
+	 * The bag initially containing all the student discs, which are then moved around between the islands,
+	 * the cloud tiles and each player's school board.
 	 */
 	private final Bag bag;
 
@@ -81,6 +81,10 @@ public class Board {
 		return islands.get(index);
 	}
 
+	/**
+	 * A getter for the current number of islands.
+	 * @return the number of islands on the board
+	 */
 	public int getIslandNumber() {
 		return islands.size();
 	}
@@ -232,11 +236,10 @@ public class Board {
 	}
 
 	/**
-	 * Returns the number of steps required for Mother Nature to move from the island where it is currently placed to the
-	 * {@code target} island.
-	 * @param target the destination island.
-	 * @return the number of steps required for Mother Nature to move from the island where it is currently placed to the
-	 * {@code target} island.
+	 * A getter for the steps required by Mother Nature pawn to reach the {@code target} island.
+	 * @param target the destination island
+	 * @return the number of steps required for Mother Nature to move from
+	 * the island where it is currently placed to the {@code target} island
 	 */
 	public int getDistanceFromMotherNature(IslandGroup target) {
 		int targetIndex = islands.indexOf(target);

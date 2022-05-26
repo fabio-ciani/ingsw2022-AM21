@@ -1,6 +1,8 @@
 package it.polimi.ingsw.eriantys.model.characters;
 
-import it.polimi.ingsw.eriantys.model.*;
+import it.polimi.ingsw.eriantys.model.Color;
+import it.polimi.ingsw.eriantys.model.IslandGroup;
+import it.polimi.ingsw.eriantys.model.ProfessorOwnership;
 
 import java.util.List;
 

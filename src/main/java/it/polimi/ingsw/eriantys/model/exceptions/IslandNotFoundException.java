@@ -4,8 +4,7 @@ import it.polimi.ingsw.eriantys.model.Board;
 import it.polimi.ingsw.eriantys.model.IslandGroup;
 
 /**
- * This exception is thrown by {@link Board}'s island handling methods to indicate
- * that no island matches the requested id.
+ * This exception is thrown by {@link Board}'s island handling methods to indicate that no island matches the requested id.
  * @see Board#getIsland(String)
  * @see Board#unifyIslands(IslandGroup)
  */

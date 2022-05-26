@@ -47,8 +47,9 @@
 		</Text>
 	</top>
 	<bottom>
-		<GridPane fx:id="copyright" minHeight="200.0" BorderPane.alignment="CENTER">
+		<GridPane fx:id="copyright" minHeight="120.0" BorderPane.alignment="CENTER">
 			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 			</columnConstraints>
@@ -56,16 +57,21 @@
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<ImageView fx:id="cranio" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+				<ImageView fx:id="cranio" fitHeight="100.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
 					<GridPane.margin>
-						<Insets bottom="40.0" left="40.0" />
+						<Insets left="5.0" />
 					</GridPane.margin>
 				</ImageView>
-				<ImageView fx:id="polimi" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+				<ImageView fx:id="polimi" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
 					<GridPane.margin>
-						<Insets bottom="40.0" right="40.0" />
+						<Insets right="20.0" />
 					</GridPane.margin>
 				</ImageView>
+				<Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Developed with &lt;3 by Tommaso Bonetti, Fabio Ciani, Davide Mozzi" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="20.0" />
+					</GridPane.margin>
+				</Text>
 			</children>
 		</GridPane>
 	</bottom>

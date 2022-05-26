@@ -3,6 +3,8 @@ package it.polimi.ingsw.eriantys.client.gui.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -16,6 +18,7 @@ public class LoginController extends Controller {
 	@FXML private BorderPane pane;
 	@FXML private TextField username;
 	@FXML private Button login;
+	@FXML private ImageView cranio, polimi;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -32,6 +35,9 @@ public class LoginController extends Controller {
 			this.sendHandshake();
 			event.consume();
 		});
+
+		cranio.setImage(new Image(getClass().getResource("/copyright/cranio_creations.png").toExternalForm()));
+		polimi.setImage(new Image(getClass().getResource("/copyright/polimi.png").toExternalForm()));
 	}
 
 	@Override

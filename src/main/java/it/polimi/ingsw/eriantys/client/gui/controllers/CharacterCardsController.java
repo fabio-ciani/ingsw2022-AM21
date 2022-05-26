@@ -1,6 +1,9 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.eriantys.model.BoardStatus;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -16,20 +19,29 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CharacterCardsController extends Controller {
 	@FXML private BorderPane pane;
 	@FXML private GridPane cards;
+	private BoardStatus status;
 	private List<String> characters;
 	private Map<String, Integer> costs;
 	private final Map<String, Map<String, String>> info;
+
+	private final List<ImageView> characterCoins;
 
 	public CharacterCardsController() throws IOException {
 		try (InputStream in = getClass().getClassLoader().getResourceAsStream("help/characters.json")) {
 			if (in == null) throw new FileNotFoundException();
 			Gson gson = new Gson();
-			info = gson.fromJson(new InputStreamReader(in), LinkedHashMap.class);
+			info = gson.fromJson(new InputStreamReader(in), new TypeToken<Map<String, Map<String, String>>>(){}.getType());
 		}
+
+		characterCoins = cards.getChildren().stream()
+				.filter(y -> y instanceof ImageView && y.getId().equals("c\\d_coin"))
+				.map(x -> (ImageView) x)
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -42,9 +54,15 @@ public class CharacterCardsController extends Controller {
 		return pane;
 	}
 
-	public void populate(List<String> characters, Map<String, Integer> costs) {
-		this.characters = characters;
-		this.costs = costs;
+	public void load() {
+		if (client.getBoardStatus().getCharacterCards() != null)
+			populate(client.getBoardStatus());
+	}
+
+	public void populate(BoardStatus status) {
+		this.status = status;
+		this.characters = status.getCharacterCards();
+		this.costs = status.getCharacterCardsCost();
 		drawImages();
 		drawLabels();
 	}
@@ -65,11 +83,19 @@ public class CharacterCardsController extends Controller {
 					Tooltip.install(img, desc);
 
 					if (costs.get(character) - Integer.parseInt(info.get(character).get("cost")) != 1)
-						cards.getChildren().stream()
-								.filter(y -> y instanceof ImageView && y.getId().equals("c" + x.getId().charAt(1) + "_coin"))
-								.forEach(y -> y.setVisible(false));
+						characterCoins.get(x.getId().charAt(1)).setVisible(false);
 
-					// TODO: character cards status
+					// TODO: character cards status + effects
+
+					if (status.getPlayerCoins().get(client.getUsername()) - costs.get(character) < 0) {
+						applyGrayscale(img);
+						img.setOnMouseClicked(Event::consume);
+					} else {
+						img.setOnMouseClicked(event -> {
+							// client.playCharacterCard(...);
+							event.consume();
+						});
+					}
 				});
 	}
 

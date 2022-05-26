@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -12,6 +13,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class AssistantCardsController extends Controller {
 	@FXML private GridPane container;
@@ -19,6 +21,21 @@ public class AssistantCardsController extends Controller {
 	@FXML private Button close;
 	private List<String> assistants;
 	private Map<String, String> played;
+
+	private final List<ImageView> playedCards_images;
+	private final List<Text> playedCards_texts;
+
+	public AssistantCardsController() {
+		playedCards_images = played_cards.getChildren().stream()
+				.filter(x -> x instanceof ImageView && x.getId().matches("^pc\\w+\\z"))
+				.map(x -> (ImageView) x)
+				.collect(Collectors.toList());
+
+		playedCards_texts = played_cards.getChildren().stream()
+				.filter(x -> x instanceof Text && x.getId().matches("^pc\\w+\\z"))
+				.map(x -> (Text) x)
+				.collect(Collectors.toList());
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -54,34 +71,42 @@ public class AssistantCardsController extends Controller {
 
 					roundBorders(img, 30);
 
-					if (!assistants.contains(x.getId().toUpperCase()))
+					if (!assistants.contains(x.getId().toUpperCase())) {
 						applyGrayscale(img);
+						img.setOnMouseClicked(Event::consume);
+					} else {
+						img.setOnMouseClicked(event -> {
+							client.playAssistantCard(x.getId());
+							event.consume();
+						});
+					}
 				});
 	}
 
 	private void drawPlayedCards() {
-		int count = 1;
+		int count = 0;
+		ImageView img;
+		Text label;
 
-		for (String player : played.keySet()) {
-			int finalCount = count;
+		for (String player : client.getBoardStatus().getPlayers()) {
+			img = playedCards_images.get(count);
+			label = playedCards_texts.get(count);
 
-			played_cards.getChildren().stream()
-					.filter(x -> x instanceof ImageView && x.getId().equals("pc_" + finalCount + "_img"))
-					.forEach(x -> {
-						ImageView img = (ImageView) x;
-
-						img.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + played.get(player) + ".png").toExternalForm()));
-
-						roundBorders(img, 10);
-					});
-
-			played_cards.getChildren().stream()
-					.filter(x -> x instanceof Text && x.getId().equals("pc_" + finalCount + "_user"))
-					.forEach(x -> {
-						Text label = (Text) x;
-
-						label.setText(player);
-					});
+			if (!player.equals(client.getUsername())) {
+				if (played.get(player) != null) {
+					img.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + played.get(player) + ".png").toExternalForm()));
+				} else {
+					img.setImage(new Image(getClass().getResource("/graphics/CardBack.png").toExternalForm()));
+				}
+				label.setText(player);
+				roundBorders(img, 10);
+			} else {
+				if (client.getBoardStatus().getPlayers().size() == 2) {
+					img.setImage(new Image(getClass().getResource("/graphics/CardBack.png").toExternalForm()));
+					roundBorders(img, 10);
+					label.setText(null);
+				}
+			}
 
 			count++;
 		}

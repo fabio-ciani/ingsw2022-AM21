@@ -7,6 +7,7 @@ import it.polimi.ingsw.eriantys.client.gui.controllers.LobbiesController;
 import it.polimi.ingsw.eriantys.client.gui.controllers.WaitingRoomController;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.server.*;
+import it.polimi.ingsw.eriantys.model.GameConstants;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -100,14 +101,14 @@ public class GraphicalUserInterface extends UserInterface {
 	@Override
 	public void handleMessage(AssistantCardUpdate message) {
 		client.setAvailableCards(message.getAvailableCards().get(client.getUsername()));
-		AssistantCardsController controller = (AssistantCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
+		AssistantCardsController controller = (AssistantCardsController) app.getControllerForPopup(PopupName.ASSISTANT_CARDS);
 		controller.populate(message.getAvailableCards().get(client.getUsername()), message.getPlayedCards());
 	}
 
 	@Override
 	public void handleMessage(BoardUpdate message) {
 		client.setBoardStatus(message.getStatus());
-		Platform.runLater(() -> app.changeScene(SceneName.SCHOOLBOARD));
+		// TODO: trigger current controller update -> switch?
 	}
 
 	@Override
@@ -126,14 +127,16 @@ public class GraphicalUserInterface extends UserInterface {
 
 	@Override
 	public void handleMessage(GameOverUpdate message) {
-
+		if (Objects.equals(message.getWinner(), GameConstants.TIE))
+			showInfo("The game ends in a tie!");
+		else showInfo(message.getWinner() + " is the winner of the game!");
 	}
 
 	@Override
 	public void handleMessage(InitialBoardStatus message) {
 		client.setBoardStatus(message.getStatus());
 		CharacterCardsController controller = (CharacterCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
-		controller.populate(message.getStatus().getCharacterCards(), message.getStatus().getCharacterCardsCost());
+		controller.load();
 		Platform.runLater(() -> app.changeScene(SceneName.SCHOOLBOARD));
 	}
 

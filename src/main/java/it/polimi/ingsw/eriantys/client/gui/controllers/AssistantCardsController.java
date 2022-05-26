@@ -27,6 +27,11 @@ public class AssistantCardsController extends Controller {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		close.setOnAction(event -> {
+			app.hideStickyPopup();
+			event.consume();
+		});
+
 		playedCards_images = played_cards.getChildren().stream()
 				.filter(x -> x instanceof ImageView && x.getId().matches("^pc\\w+\\z"))
 				.map(x -> (ImageView) x)
@@ -36,11 +41,6 @@ public class AssistantCardsController extends Controller {
 				.filter(x -> x instanceof Text && x.getId().matches("^pc\\w+\\z"))
 				.map(x -> (Text) x)
 				.collect(Collectors.toList());
-
-		close.setOnAction(event -> {
-			app.hideStickyPopup();
-			event.consume();
-		});
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class AssistantCardsController extends Controller {
 						img.setOnMouseClicked(Event::consume);
 					} else {
 						img.setOnMouseClicked(event -> {
-							client.playAssistantCard(x.getId());
+							client.playAssistantCard(x.getId().toUpperCase());
 							event.consume();
 						});
 					}

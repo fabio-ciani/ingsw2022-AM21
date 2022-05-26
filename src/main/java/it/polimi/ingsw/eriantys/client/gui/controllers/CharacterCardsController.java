@@ -42,7 +42,7 @@ public class CharacterCardsController extends Controller {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		characterCoins = cards.getChildren().stream()
-				.filter(y -> y instanceof ImageView && y.getId().equals("c\\d_coin"))
+				.filter(y -> y instanceof ImageView && y.getId().matches("c\\d_coin"))
 				.map(x -> (ImageView) x)
 				.collect(Collectors.toList());
 	}
@@ -81,7 +81,7 @@ public class CharacterCardsController extends Controller {
 					Tooltip.install(img, desc);
 
 					if (costs.get(character) - Integer.parseInt(info.get(character).get("cost")) != 1)
-						characterCoins.get(x.getId().charAt(1)).setVisible(false);
+						characterCoins.get(Character.getNumericValue(x.getId().charAt(1))).setVisible(false);
 
 					// TODO: character cards status + effects
 

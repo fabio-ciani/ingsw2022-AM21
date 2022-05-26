@@ -1,42 +1,34 @@
 package it.polimi.ingsw.eriantys.model;
 
 public class GameConstants {
-	private final GameConfig gameConfig;
+	private final int cloudSize;
+	private final int cloudNumber;
+	private final int entranceSize;
+	private final int towerNumber;
 
 	public static final String DINING_ROOM = "Dining Room";
 	public static final String TIE = "Tie";
 
 	private GameConstants() {
-		gameConfig = new GameConfig();
+		cloudSize = 0;
+		cloudNumber = 0;
+		entranceSize = 0;
+		towerNumber = 0;
 	}
 
 	public int getCloudSize() {
-		return gameConfig.cloudSize;
+		return cloudSize;
 	}
 
 	public int getCloudNumber() {
-		return gameConfig.cloudNumber;
+		return cloudNumber;
 	}
 
 	public int getEntranceSize() {
-		return gameConfig.entranceSize;
+		return entranceSize;
 	}
 
 	public int getTowerNumber() {
-		return gameConfig.towerNumber;
-	}
-
-	private static class GameConfig {
-		private final int cloudSize;
-		private final int cloudNumber;
-		private final int entranceSize;
-		private final int towerNumber;
-
-		private GameConfig() {
-			cloudSize = 0;
-			cloudNumber = 0;
-			entranceSize = 0;
-			towerNumber = 0;
-		}
+		return towerNumber;
 	}
 }

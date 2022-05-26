@@ -29,7 +29,7 @@ public class CharacterCardsController extends Controller {
 	private Map<String, Integer> costs;
 	private final Map<String, Map<String, String>> info;
 
-	private final List<ImageView> characterCoins;
+	private List<ImageView> characterCoins;
 
 	public CharacterCardsController() throws IOException {
 		try (InputStream in = getClass().getClassLoader().getResourceAsStream("help/characters.json")) {
@@ -37,16 +37,14 @@ public class CharacterCardsController extends Controller {
 			Gson gson = new Gson();
 			info = gson.fromJson(new InputStreamReader(in), new TypeToken<Map<String, Map<String, String>>>(){}.getType());
 		}
-
-		characterCoins = cards.getChildren().stream()
-				.filter(y -> y instanceof ImageView && y.getId().equals("c\\d_coin"))
-				.map(x -> (ImageView) x)
-				.collect(Collectors.toList());
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-
+		characterCoins = cards.getChildren().stream()
+				.filter(y -> y instanceof ImageView && y.getId().equals("c\\d_coin"))
+				.map(x -> (ImageView) x)
+				.collect(Collectors.toList());
 	}
 
 	@Override

@@ -22,10 +22,11 @@ public class AssistantCardsController extends Controller {
 	private List<String> assistants;
 	private Map<String, String> played;
 
-	private final List<ImageView> playedCards_images;
-	private final List<Text> playedCards_texts;
+	private List<ImageView> playedCards_images;
+	private List<Text> playedCards_texts;
 
-	public AssistantCardsController() {
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
 		playedCards_images = played_cards.getChildren().stream()
 				.filter(x -> x instanceof ImageView && x.getId().matches("^pc\\w+\\z"))
 				.map(x -> (ImageView) x)
@@ -35,10 +36,7 @@ public class AssistantCardsController extends Controller {
 				.filter(x -> x instanceof Text && x.getId().matches("^pc\\w+\\z"))
 				.map(x -> (Text) x)
 				.collect(Collectors.toList());
-	}
 
-	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
 		close.setOnAction(event -> {
 			app.hideStickyPopup();
 			event.consume();

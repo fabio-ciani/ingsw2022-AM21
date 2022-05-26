@@ -42,10 +42,10 @@ public class SchoolBoardController extends Controller {
 	@FXML private ChoiceBox<String> sb_username;
 	@FXML private Button sb_button;
 
-	private Map<String, GridPane> diningroomPanes;
-
 	private String currentUsername;
 	private String selectedStudent;
+
+	private Map<String, GridPane> diningroomPanes;
 
 	private Map<String, Image> studentImages;
 	private Map<String, Image> professorImages;
@@ -88,10 +88,10 @@ public class SchoolBoardController extends Controller {
 	@Override
 	public void onChangeScene() {
 		currentUsername = client.getUsername();
-		load();
 	}
 
-	private void load() {
+	public void load() {
+		if (currentUsername == null) currentUsername = client.getUsername();
 		BoardStatus boardStatus = client.getBoardStatus();
 		Map<String, String> professorOwnerships = boardStatus.getProfessors();
 		List<String> ownedProfessors = professorOwnerships.keySet().stream()
@@ -109,6 +109,10 @@ public class SchoolBoardController extends Controller {
 
 		setUsernames(boardStatus.getPlayers());
 		setEventHandlers();
+
+		if (boardStatus.getCharacterCards() == null) {
+			characters.setDisable(true);
+		}
 	}
 
 	private void drawUsername() {
@@ -270,22 +274,22 @@ public class SchoolBoardController extends Controller {
 	}
 
 	private void initEventHandlers() {
-		assistants.setOnMouseClicked(event -> {
+		assistants.setOnAction(event -> {
 			app.showStickyPopup(PopupName.ASSISTANT_CARDS);
 			event.consume();
 		});
 
-		characters.setOnMouseClicked(event -> {
+		characters.setOnAction(event -> {
 			app.changeScene(SceneName.CHARACTER_CARDS);
 			event.consume();
 		});
 
-		board.setOnMouseClicked(event -> {
+		board.setOnAction(event -> {
 			app.changeScene(SceneName.BOARD);
 			event.consume();
 		});
 
-		sb_button.setOnMouseClicked(event -> {
+		sb_button.setOnAction(event -> {
 			currentUsername = sb_username.getSelectionModel().getSelectedItem();
 			if (currentUsername == null) currentUsername = client.getUsername();
 			load();

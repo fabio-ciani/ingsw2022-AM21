@@ -1,10 +1,7 @@
 package it.polimi.ingsw.eriantys.client.gui;
 
 import it.polimi.ingsw.eriantys.client.UserInterface;
-import it.polimi.ingsw.eriantys.client.gui.controllers.AssistantCardsController;
-import it.polimi.ingsw.eriantys.client.gui.controllers.CharacterCardsController;
-import it.polimi.ingsw.eriantys.client.gui.controllers.LobbiesController;
-import it.polimi.ingsw.eriantys.client.gui.controllers.WaitingRoomController;
+import it.polimi.ingsw.eriantys.client.gui.controllers.*;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.GameConstants;
@@ -109,6 +106,12 @@ public class GraphicalUserInterface extends UserInterface {
 	public void handleMessage(BoardUpdate message) {
 		client.setBoardStatus(message.getStatus());
 		// TODO: trigger current controller update -> switch?
+		Platform.runLater(() -> {
+			SchoolBoardController schoolBoard = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
+			schoolBoard.load();
+			BoardController board = (BoardController) app.getControllerForScene(SceneName.BOARD);
+			board.load();
+		});
 	}
 
 	@Override
@@ -135,9 +138,15 @@ public class GraphicalUserInterface extends UserInterface {
 	@Override
 	public void handleMessage(InitialBoardStatus message) {
 		client.setBoardStatus(message.getStatus());
-		CharacterCardsController controller = (CharacterCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
-		controller.load();
-		Platform.runLater(() -> app.changeScene(SceneName.SCHOOLBOARD));
+		Platform.runLater(() -> {
+			SchoolBoardController schoolBoard = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
+			schoolBoard.load();
+			BoardController board = (BoardController) app.getControllerForScene(SceneName.BOARD);
+			board.load();
+			CharacterCardsController controller = (CharacterCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
+			controller.load();
+			app.changeScene(SceneName.SCHOOLBOARD);
+		});
 	}
 
 	@Override

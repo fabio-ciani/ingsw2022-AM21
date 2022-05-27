@@ -593,14 +593,14 @@ class GameManagerTest {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, false);
 
-		assertNull(gm.characterCostRepresentation("Mage"));
+		assertNull(gm.characterNoEntryTilesRepresentation("Mage"));
 	}
 
 	@Test
 	void characterNoEntryTilesRepresentation_SimplifiedModeAndExistentCard_NormalPostConditions() {
 		GameManager gm = new GameManager(players, false);
 
-		assertNull(gm.characterCostRepresentation("Minstrel"));
+		assertNull(gm.characterNoEntryTilesRepresentation("Minstrel"));
 	}
 
 	@Test
@@ -608,6 +608,6 @@ class GameManagerTest {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, true);
 
-		assertNull(gm.characterCostRepresentation("Mage"));
+		assertNull(gm.characterNoEntryTilesRepresentation("Mage"));
 	}
 }

@@ -65,6 +65,13 @@
 						<Insets right="25.0" top="125.0" />
 					</GridPane.margin>
 				</Text>
+				<ImageView fx:id="pc_2_img" fitHeight="104.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				</ImageView>
+				<Text fx:id="pc_2_user" strokeType="OUTSIDE" strokeWidth="0.0" text="MartinGarrix" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets top="125.0" />
+					</GridPane.margin>
+				</Text>
 				<ImageView fx:id="pc_3_img" fitHeight="104.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<GridPane.margin>
 						<Insets left="25.0" />
@@ -73,16 +80,6 @@
 				<Text fx:id="pc_3_user" strokeType="OUTSIDE" strokeWidth="0.0" text="MarioRossi" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<GridPane.margin>
 						<Insets left="25.0" top="125.0" />
-					</GridPane.margin>
-				</Text>
-				<ImageView fx:id="pc_2_img" fitHeight="104.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-					<GridPane.margin>
-						<Insets left="25.0" />
-					</GridPane.margin>
-				</ImageView>
-				<Text fx:id="pc_2_user" strokeType="OUTSIDE" strokeWidth="0.0" text="MartinGarrix" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-					<GridPane.margin>
-						<Insets top="125.0" />
 					</GridPane.margin>
 				</Text>
 			</children>

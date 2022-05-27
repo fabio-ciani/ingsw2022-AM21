@@ -8,7 +8,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
-<GridPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: grey;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.eriantys.client.gui.controllers.AssistantCardsController">
+<GridPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: grey;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.eriantys.client.gui.controllers.AssistantCardsController">
 	<columnConstraints>
 		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -45,8 +45,9 @@
 		</ImageView>
 		<Button fx:id="close" focusTraversable="false" minWidth="80.0" mnemonicParsing="false" text="Close deck" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 		</Button>
-		<GridPane fx:id="played_cards" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+		<GridPane fx:id="played_cards" minWidth="240.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 			</columnConstraints>
@@ -64,14 +65,24 @@
 						<Insets right="25.0" top="125.0" />
 					</GridPane.margin>
 				</Text>
+				<ImageView fx:id="pc_3_img" fitHeight="104.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets left="25.0" />
+					</GridPane.margin>
+				</ImageView>
+				<Text fx:id="pc_3_user" strokeType="OUTSIDE" strokeWidth="0.0" text="MarioRossi" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets left="25.0" top="125.0" />
+					</GridPane.margin>
+				</Text>
 				<ImageView fx:id="pc_2_img" fitHeight="104.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<GridPane.margin>
 						<Insets left="25.0" />
 					</GridPane.margin>
 				</ImageView>
-				<Text fx:id="pc_2_user" strokeType="OUTSIDE" strokeWidth="0.0" text="MarioRossi" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<Text fx:id="pc_2_user" strokeType="OUTSIDE" strokeWidth="0.0" text="MartinGarrix" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<GridPane.margin>
-						<Insets left="25.0" top="125.0" />
+						<Insets top="125.0" />
 					</GridPane.margin>
 				</Text>
 			</children>

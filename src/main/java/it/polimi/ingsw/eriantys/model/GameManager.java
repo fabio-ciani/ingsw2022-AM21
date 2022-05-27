@@ -12,6 +12,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
+/**
+ * This class represents the current state of a game, including all game objects and participating players. It exposes
+ * various modifier methods, which are only meant to be called by the controller, as {@link GameManager} constitutes the
+ * only access point to the model. It also exposes observer methods, which return representations of the desired game
+ * objects based solely on {@code java.util} classes and interfaces, such as {@code List} and {@code Map}: this ensures
+ * that the internal structure of the model is not exposed.
+ */
 public class GameManager {
 	private final Board board;
 	private final PlayerList players;
@@ -359,7 +366,7 @@ public class GameManager {
 		CharacterCard target = characters[index];
 		int originalCost = target.getCost();
 
-		if (currPlayer.getCoins() < target.getCost())
+		if (currPlayer.getCoins() < originalCost)
 			throw new InvalidArgumentException("Not enough coins to play the selected card");
 
 		target.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);

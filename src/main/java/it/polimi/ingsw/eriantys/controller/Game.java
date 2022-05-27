@@ -18,6 +18,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class handles the control flow of a game according to the rules. It manages every round and turn and
+ * communicates with the players in order to provide updates about the game, as well as interacting with the model
+ * through {@link GameManager}. {@link Game} implements a state pattern in order to manage the various phases of the
+ * game and exposes several methods which are used to advance the game.
+ */
 public class Game {
 	private final Server server;
 	private final GameInfo info;

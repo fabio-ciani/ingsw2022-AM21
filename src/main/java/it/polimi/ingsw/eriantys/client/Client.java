@@ -223,7 +223,7 @@ public class Client extends Thread {
 	// TODO parameters should be converted to the correct types (e.g. String -> int) in the UserInterface
 
 	public void sendHandshake(String username) {
-		if(username.matches("\\w+")) {
+		if(username.matches("^[a-zA-Z\\d]+(?:(?:-[a-zA-Z\\d]+)*|(?:\\.[a-zA-Z\\d]+)*)\\z") && username.length() <= 16) {
 			write(new Handshake(username));
 		} else {
 			ui.showError("Invalid username, try again");

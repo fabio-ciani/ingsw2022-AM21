@@ -231,7 +231,7 @@ public class Board {
 		newIslandNext = tryMerge(newIslandPrev, next);
 		if (newIslandNext != null)
 			islands.add(startIndex, newIslandNext);
-		else
+		else if (newIslandPrev != target)
 			islands.add(startIndex, newIslandPrev);
 	}
 

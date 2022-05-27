@@ -25,7 +25,7 @@ public class Server extends Thread {
 	private int nextGameId;
 
 	private static final int MIN_NUM_PLAYERS = 2;
-	private static final int MAX_NUM_PLAYERS = 4;
+	private static final int MAX_NUM_PLAYERS = 3;
 
 	public static final String name = "Server";
 
@@ -100,7 +100,7 @@ public class Server extends Thread {
 			else {
 				Game game = gameById.get(gameId);
 				if (game.checkCredentials(username, passcode)) {
-					response = new AcceptedJoinLobby(gameId, passcode);
+					response = new Accepted();
 					connection.setGame(game);
 					game.reconnect(username);
 				} else

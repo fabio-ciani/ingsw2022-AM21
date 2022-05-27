@@ -466,7 +466,9 @@ public class Game {
 	private void broadcast(Message message) {
 		for (String player : players) {
 			try {
-				server.getConnection(player).write(message);
+				ClientConnection connection = server.getConnection(player);
+				if (connection.getGame().getInfo().getGameId() == this.info.getGameId())
+					connection.write(message);
 			} catch (NoConnectionException e) {
 				System.out.println(player + " disconnected");
 			}

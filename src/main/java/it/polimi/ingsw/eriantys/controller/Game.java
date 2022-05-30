@@ -412,10 +412,11 @@ public class Game {
 	/**
 	 * Sends the specified {@link UserActionUpdate} message to every player.
 	 * @param message the message to be sent to the players.
+	 * @param setNextPlayer specifies whether this method should set the next player property on the message being sent.
 	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void sendUpdate(UserActionUpdate message) throws NoConnectionException {
-		message.setNextPlayer(players.get(currentPlayer));
+	public void sendUpdate(UserActionUpdate message, boolean setNextPlayer) throws NoConnectionException {
+		if (setNextPlayer) message.setNextPlayer(players.get(currentPlayer));
 		broadcast(message);
 	}
 
@@ -429,10 +430,10 @@ public class Game {
 	/**
 	 * Sends a {@link BoardUpdate} message to every player.
 	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
-	 * @see Game#sendUpdate(UserActionUpdate)
+	 * @see Game#sendUpdate(UserActionUpdate, boolean)
 	 */
 	public void sendBoardUpdate() throws NoConnectionException {
-		sendUpdate(new BoardUpdate(gameManager));
+		sendUpdate(new BoardUpdate(gameManager), true);
 	}
 
 	/**
@@ -456,13 +457,13 @@ public class Game {
 	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
 	public void gameOver() throws NoConnectionException {
-		sendUpdate(new GameOverUpdate(gameManager.getWinner()));
+		sendUpdate(new GameOverUpdate(gameManager.getWinner()), false);
 		server.gameOver(this, players);
 	}
 
 	private void gameOver(String winner) {
 		try {
-			sendUpdate(new GameOverUpdate(winner));
+			sendUpdate(new GameOverUpdate(winner), false);
 			server.gameOver(this, players);
 		} catch (NoConnectionException e) {
 			e.printStackTrace();

@@ -33,7 +33,7 @@ public class GameSetupHandler implements MessageHandler {
 			this.availableTowerColors.remove("GREY");
 
 		try {
-			this.game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards, towerColors, wizards));
+			this.game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards, towerColors, wizards), true);
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);
@@ -74,7 +74,7 @@ public class GameSetupHandler implements MessageHandler {
 
 	@Override
 	public void sendReconnectUpdate(String username) throws NoConnectionException {
-		game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards, towerColors, wizards));
+		game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards, towerColors, wizards), true);
 	}
 
 	private void process(GameSetupSelection message) throws NoConnectionException {
@@ -113,6 +113,6 @@ public class GameSetupHandler implements MessageHandler {
 		if (towerColors.keySet().size() == numPlayers || wizards.keySet().size() == numPlayers)
 			game.start();
 		else
-			game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards, towerColors, wizards));
+			game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards, towerColors, wizards), true);
 	}
 }

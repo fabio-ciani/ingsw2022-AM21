@@ -31,7 +31,7 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		this.playedCards = new HashMap<>();
 
 		try {
-			this.game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
+			this.game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards), true);
 		} catch (NoConnectionException e) {
 			// TODO handle exception
 			throw new RuntimeException(e);
@@ -68,7 +68,7 @@ public class PlayAssistantCardHandler implements MessageHandler {
 	@Override
 	public void sendReconnectUpdate(String username) throws NoConnectionException {
 		game.sendInitialBoardStatus();
-		game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
+		game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards), true);
 	}
 
 	private void process(PlayAssistantCard message) throws NoConnectionException {
@@ -98,9 +98,10 @@ public class PlayAssistantCardHandler implements MessageHandler {
 
 	private void checkStateTransition() throws NoConnectionException {
 		if (playedCards.keySet().size() == game.getInfo().getLobbySize()) {
+			game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards), false);
 			game.newTurn(playedCards);
-			game.broadcast(new AssistantCardUpdate(playedCards, availableCards));
 		}
-		game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
+		else
+			game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards), true);
 	}
 }

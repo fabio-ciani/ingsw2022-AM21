@@ -12,8 +12,7 @@ import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
  * This concrete implementation for the state design pattern involving {@link MessageHandler}
  * defines how the action phase message {@link SelectCloud} should be processed.
  */
-public class SelectCloudHandler implements MessageHandler {
-	private final Game game;
+public class SelectCloudHandler extends PlayCharacterCardHandler {
 
 	/**
 	 * Constructs a new {@link SelectCloudHandler} for the specified game and notifies the players about the current state
@@ -21,7 +20,7 @@ public class SelectCloudHandler implements MessageHandler {
 	 * @param game the {@link Game} this message handler refers to.
 	 */
 	public SelectCloudHandler(Game game) {
-		this.game = game;
+		super(game);
 
 		try {
 			this.game.sendBoardUpdate();

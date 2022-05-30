@@ -6,6 +6,7 @@ import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.client.*;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
+import org.apache.commons.cli.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -30,9 +31,25 @@ public class Server extends Thread {
 	public static final String name = "Server";
 
 	public static void main(String[] args) {
-		// TODO: 02/05/2022 Get port number from args
+		String serverAddress = "localhost";
+		int serverPort = 9133;
+		Options options = new Options();
+		options.addOption(new Option("p", "port", true, "Server port"));
+		CommandLineParser parser = new DefaultParser();
 		try {
-			Server server = new Server(12345);
+			CommandLine line = parser.parse(options, args);
+			if (line.hasOption("p")) {
+				int port = Integer.parseInt(line.getOptionValue("port"));
+				if (port >= 0 && port <= 65535)
+					serverPort = port;
+			}
+		}
+		catch (ParseException e) {
+			System.out.println("Parsing failed");
+			System.exit(1);
+		}
+		try {
+			Server server = new Server(serverPort);
 			server.start();
 		} catch (IOException e) {
 			e.printStackTrace();

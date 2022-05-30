@@ -11,6 +11,7 @@ import it.polimi.ingsw.eriantys.messages.Ping;
 import it.polimi.ingsw.eriantys.messages.client.*;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
+import org.apache.commons.cli.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -36,11 +37,36 @@ public class Client extends Thread {
 	private BoardStatus boardStatus;
 
 	public static void main(String[] args) throws IOException {
-		// TODO: 03/05/2022 Get user interface type from args
-		boolean useGui = args.length > 0 && args[0].equals("-gui");
-		// TODO: 03/05/2022 Get server address and port from args
 		String serverAddress = "localhost";
-		int serverPort = 12345;
+		int serverPort = 9133;
+		boolean useGui = true;
+		Options options = new Options();
+		options.addOption(new Option("addr", "address", true, "Server address"));
+		options.addOption(new Option("p", "port", true, "Server port"));
+		options.addOption(new Option("ui", "interface", true, "User interface type"));
+		CommandLineParser parser = new DefaultParser();
+		try {
+			CommandLine line = parser.parse(options, args);
+			if (line.hasOption("addr")) {
+				serverAddress = line.getOptionValue("address");
+			}
+			if (line.hasOption("p")) {
+				int port = Integer.parseInt(line.getOptionValue("port"));
+				if (port >= 0 && port <= 65535)
+					serverPort = port;
+			}
+			if (line.hasOption("ui")) {
+				String type = line.getOptionValue("ui");
+				if (type.equals("gui"))
+					useGui = true;
+				else if (type.equals("cli"))
+					useGui = false;
+			}
+		}
+		catch (ParseException e) {
+			System.out.println("Parsing failed");
+			System.exit(1);
+		}
 		Client client = new Client(serverAddress, serverPort, useGui);
 		client.start();
 	}

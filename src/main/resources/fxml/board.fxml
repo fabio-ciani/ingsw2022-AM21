@@ -33,42 +33,42 @@
 			</rowConstraints>
 			<children>
 				<ImageView fx:id="i01" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
-
+					
 				</ImageView>
 				<ImageView fx:id="i02" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
-
+					
 				</ImageView>
 				<ImageView fx:id="i12" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-
+					
 				</ImageView>
 				<ImageView fx:id="i03" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-
+					
 				</ImageView>
 				<ImageView fx:id="i11" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-
+					
 				</ImageView>
 				<ImageView fx:id="i04" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-
+					
 				</ImageView>
 				<ImageView fx:id="i10" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
-
+					
 				</ImageView>
 				<ImageView fx:id="i05" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
-
+					
 				</ImageView>
 				<ImageView fx:id="i09" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="TOP">
-
+					
 				</ImageView>
 				<ImageView fx:id="i06" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="TOP">
-
+					
 				</ImageView>
 				<ImageView fx:id="i08" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-
+					
 				</ImageView>
 				<ImageView fx:id="i07" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-
+					
 				</ImageView>
-				<Group fx:id="g01" mouseTransparent="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+				<Group fx:id="g01" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -85,7 +85,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -94,7 +94,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -103,7 +103,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -112,7 +112,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -121,7 +121,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -170,7 +170,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_01" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -179,7 +179,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_01" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -207,7 +207,7 @@
 						<Insets bottom="27.5" right="-6.0" />
 					</GridPane.margin>
 				</Group>
-				<Group fx:id="g02" mouseTransparent="true" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+				<Group fx:id="g02" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -224,7 +224,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -233,7 +233,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -242,7 +242,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -251,7 +251,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -260,7 +260,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -309,7 +309,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_02" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -318,7 +318,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_02" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -346,7 +346,7 @@
 						<Insets bottom="27.5" left="-6.0" />
 					</GridPane.margin>
 				</Group>
-				<Group fx:id="g12" mouseTransparent="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+				<Group fx:id="g12" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -363,7 +363,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -372,7 +372,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -381,7 +381,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -390,7 +390,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -399,7 +399,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -448,7 +448,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_12" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -457,7 +457,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_12" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -485,7 +485,7 @@
 						<Insets bottom="27.5" right="-5.0" />
 					</GridPane.margin>
 				</Group>
-				<Group fx:id="g03" mouseTransparent="true" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+				<Group fx:id="g03" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -502,7 +502,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -511,7 +511,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -520,7 +520,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -529,7 +529,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -538,7 +538,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -587,7 +587,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_03" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -596,7 +596,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_03" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -624,7 +624,7 @@
 						<Insets bottom="27.5" left="-5.0" />
 					</GridPane.margin>
 				</Group>
-				<Group fx:id="g11" mouseTransparent="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+				<Group fx:id="g11" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -641,7 +641,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -650,7 +650,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -659,7 +659,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -668,7 +668,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -677,7 +677,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -726,7 +726,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_11" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -735,7 +735,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_11" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -763,7 +763,7 @@
 						<Insets bottom="27.5" right="18.0" />
 					</GridPane.margin>
 				</Group>
-				<Group fx:id="g04" mouseTransparent="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+				<Group fx:id="g04" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -780,7 +780,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -789,7 +789,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -798,7 +798,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -807,7 +807,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -816,7 +816,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -865,7 +865,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_04" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -874,7 +874,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_04" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -902,7 +902,7 @@
 						<Insets bottom="27.5" right="-22.0" />
 					</GridPane.margin>
 				</Group>
-				<Group fx:id="g10" mouseTransparent="true" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+				<Group fx:id="g10" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -919,7 +919,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -928,7 +928,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -937,7 +937,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -946,7 +946,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -955,7 +955,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1004,7 +1004,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_10" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1013,7 +1013,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_10" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1041,7 +1041,7 @@
 						<Insets right="18.0" top="12.5" />
 					</GridPane.margin>
 				</Group>
-				<Group fx:id="g05" mouseTransparent="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+				<Group fx:id="g05" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -1058,7 +1058,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1067,7 +1067,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1076,7 +1076,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1085,7 +1085,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1094,7 +1094,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1143,7 +1143,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_05" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1152,7 +1152,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_05" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1180,7 +1180,7 @@
 						<Insets right="-22.0" top="12.5" />
 					</GridPane.margin>
 				</Group>
-				<Group fx:id="g09" mouseTransparent="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="TOP">
+				<Group fx:id="g09" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="TOP">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -1197,7 +1197,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1206,7 +1206,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1215,7 +1215,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1224,7 +1224,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1233,7 +1233,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1282,7 +1282,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_09" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1291,7 +1291,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_09" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1319,7 +1319,7 @@
 						<Insets right="-5.0" top="12.5" />
 					</GridPane.margin>
 				</Group>
-				<Group fx:id="g06" mouseTransparent="true" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="TOP">
+				<Group fx:id="g06" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="TOP">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -1336,7 +1336,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1345,7 +1345,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1354,7 +1354,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1363,7 +1363,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1372,7 +1372,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1421,7 +1421,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_06" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1430,7 +1430,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_06" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1458,7 +1458,7 @@
 						<Insets left="-5.0" top="12.5" />
 					</GridPane.margin>
 				</Group>
-				<Group fx:id="g08" mouseTransparent="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+				<Group fx:id="g08" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -1475,7 +1475,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1484,7 +1484,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1493,7 +1493,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1502,7 +1502,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1511,7 +1511,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1560,7 +1560,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_08" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1569,7 +1569,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_08" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1597,7 +1597,7 @@
 						<Insets right="-4.0" top="10.0" />
 					</GridPane.margin>
 				</Group>
-				<Group fx:id="g07" mouseTransparent="true" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+				<Group fx:id="g07" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
 					<children>
 						<GridPane maxHeight="160.0" maxWidth="160.0">
 							<columnConstraints>
@@ -1614,7 +1614,7 @@
 							</rowConstraints>
 							<children>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1623,7 +1623,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1632,7 +1632,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1641,7 +1641,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1650,7 +1650,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1699,7 +1699,7 @@
 									</GridPane.margin>
 								</Text>
 								<ImageView fx:id="t_07" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1708,7 +1708,7 @@
 									</GridPane.margin>
 								</ImageView>
 								<ImageView fx:id="c_07" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-
+									
 									<effect>
 										<DropShadow height="10.0" radius="4.5" width="10.0" />
 									</effect>
@@ -1736,220 +1736,198 @@
 						<Insets left="-4.0" top="10.0" />
 					</GridPane.margin>
 				</Group>
-				<GridPane fx:id="ct_container_up" minWidth="254.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-					<columnConstraints>
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-					</columnConstraints>
-					<rowConstraints>
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-					</rowConstraints>
-					<children>
-						<ImageView fx:id="ct_2p_0" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<ImageView fx:id="ct_2p_0" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
 
-							<GridPane.margin>
-								<Insets top="118.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="ct_3p_0" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-							<GridPane.margin>
-								<Insets bottom="32.0" right="128.0" />
-							</GridPane.margin>
+					<GridPane.margin>
+						<Insets top="118.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="ct_3p_0" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="32.0" right="128.0" />
+					</GridPane.margin>
 
-						</ImageView>
-						<ImageView fx:id="s_2p_0_1" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				</ImageView>
+				<ImageView fx:id="s_2p_0_1" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
 
-							<GridPane.margin>
-								<Insets left="42.0" top="78.0" />
-							</GridPane.margin>
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-						</ImageView>
-						<ImageView fx:id="s_2p_0_2" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets left="42.0" top="78.0" />
+					</GridPane.margin>
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+				</ImageView>
+				<ImageView fx:id="s_2p_0_2" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
 
-							<GridPane.margin>
-								<Insets right="56.0" top="108.0" />
-							</GridPane.margin>
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-						</ImageView>
-						<ImageView fx:id="s_2p_0_3" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
+					<GridPane.margin>
+						<Insets right="56.0" top="108.0" />
+					</GridPane.margin>
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+				</ImageView>
+				<ImageView fx:id="s_2p_0_3" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
 
-							<GridPane.margin>
-								<Insets left="20.0" top="176.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_0_1" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets left="20.0" top="176.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_0_1" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="100.0" right="-19.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_0_2" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="100.0" right="-19.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_0_2" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="30.0" right="19.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_0_3" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="30.0" right="19.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_0_3" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="30.0" left="19.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_0_4" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="30.0" left="19.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_0_4" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="-40.0" left="-19.0" />
-							</GridPane.margin>
-						</ImageView>
-					</children>
-				</GridPane>
-				<GridPane fx:id="ct_container_down" minWidth="254.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-					<columnConstraints>
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-					</columnConstraints>
-					<rowConstraints>
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-					</rowConstraints>
-					<children>
-						<ImageView fx:id="ct_2p_1" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="-40.0" left="-19.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="ct_2p_1" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 
-							<GridPane.margin>
-								<Insets bottom="118.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="ct_3p_1" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="118.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="ct_3p_1" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 
-							<GridPane.margin>
-								<Insets bottom="32.0" right="20.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="ct_3p_2" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="32.0" right="20.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="ct_3p_2" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 
-							<GridPane.margin>
-								<Insets bottom="32.0" left="20.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_2p_1_1" fitHeight="38.0" fitWidth="48.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<GridPane.margin>
+						<Insets bottom="32.0" left="20.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_2p_1_1" fitHeight="38.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="156.0" left="42.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_2p_1_2" fitHeight="38.0" fitWidth="48.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="156.0" left="42.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_2p_1_2" fitHeight="38.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="126.0" right="56.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_2p_1_3" fitHeight="38.0" fitWidth="48.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="126.0" right="56.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_2p_1_3" fitHeight="38.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="58.0" left="20.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_1_1" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="58.0" left="20.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_1_1" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="100.0" right="20.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_1_2" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="100.0" right="20.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_1_2" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3"  GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="30.0" right="100.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_1_3" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="30.0" right="100.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_1_3" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3"  GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="30.0" left="60.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_1_4" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="30.0" left="60.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_1_4" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3"  GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="-40.0" right="20.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_2_1" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="-40.0" right="20.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_2_1" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="100.0" left="20.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_2_2" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="100.0" left="20.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_2_2" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="30.0" right="60.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_2_3" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="30.0" right="60.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_2_3" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="30.0" left="100.0" />
-							</GridPane.margin>
-						</ImageView>
-						<ImageView fx:id="s_3p_2_4" fitHeight="38.0" fitWidth="38.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="30.0" left="100.0" />
+					</GridPane.margin>
+				</ImageView>
+				<ImageView fx:id="s_3p_2_4" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
 
-							<effect>
-								<DropShadow height="10.0" radius="4.5" width="10.0" />
-							</effect>
-							<GridPane.margin>
-								<Insets bottom="-40.0" left="20.0" />
-							</GridPane.margin>
-						</ImageView>
-					</children>
-				</GridPane>
+					<effect>
+						<DropShadow height="10.0" radius="4.5" width="10.0" />
+					</effect>
+					<GridPane.margin>
+						<Insets bottom="-40.0" left="20.0" />
+					</GridPane.margin>
+				</ImageView>
 				<Text fx:id="selected_text" strokeType="OUTSIDE" strokeWidth="0.0" text="You have selected:" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<GridPane.margin>
 						<Insets bottom="122.0" right="595.0" />

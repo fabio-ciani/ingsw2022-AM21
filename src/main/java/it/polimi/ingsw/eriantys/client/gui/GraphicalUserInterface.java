@@ -85,14 +85,18 @@ public class GraphicalUserInterface extends UserInterface {
 
 	@Override
 	public void handleMessage(AvailableLobbies message) {
-		LobbiesController controller = (LobbiesController) app.getControllerForScene(SceneName.LOBBIES);
-		controller.updateLobbies(message.getLobbies());
+		Platform.runLater(() -> {
+			LobbiesController controller = (LobbiesController) app.getControllerForScene(SceneName.LOBBIES);
+			controller.updateLobbies(message.getLobbies());
+		});
 	}
 
 	@Override
 	public void handleMessage(LobbyUpdate message) {
-		WaitingRoomController controller = (WaitingRoomController) app.getControllerForScene(SceneName.WAITING_ROOM);
-		controller.updatePlayers(message.getPlayers());
+		Platform.runLater(() -> {
+			WaitingRoomController controller = (WaitingRoomController) app.getControllerForScene(SceneName.WAITING_ROOM);
+			controller.updatePlayers(message.getPlayers());
+		});
 	}
 
 	@Override
@@ -107,6 +111,7 @@ public class GraphicalUserInterface extends UserInterface {
 	@Override
 	public void handleMessage(BoardUpdate message) {
 		client.setBoardStatus(message.getStatus());
+		// TODO: update assistant cards view
 		// TODO: trigger current controller update -> switch?
 		Platform.runLater(() -> {
 			SchoolBoardController schoolBoard = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
@@ -123,11 +128,13 @@ public class GraphicalUserInterface extends UserInterface {
 
 	@Override
 	public void handleMessage(UserSelectionUpdate message) {
-		if (app.getCurrentScene() != SceneName.WAITING_ROOM) return;
-		WaitingRoomController controller = (WaitingRoomController) app.getCurrentController();
-		controller.updateSelections(message.getTowerColors(), message.getWizards());
-		if (isNextPlayer(message.getNextPlayer()))
-			controller.promptSelection(message.getAvailableTowerColors(), message.getAvailableWizards());
+		Platform.runLater(() -> {
+			if (app.getCurrentScene() != SceneName.WAITING_ROOM) return;
+			WaitingRoomController controller = (WaitingRoomController) app.getCurrentController();
+			controller.updateSelections(message.getTowerColors(), message.getWizards());
+			if (isNextPlayer(message.getNextPlayer()))
+				controller.promptSelection(message.getAvailableTowerColors(), message.getAvailableWizards());
+		});
 	}
 
 	@Override

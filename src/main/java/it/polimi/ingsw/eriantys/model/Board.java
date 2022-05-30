@@ -215,25 +215,42 @@ public class Board {
 		if (targetIndex == -1)
 			throw new IslandNotFoundException("Requested id: " + target.getId());	// this should not happen
 
-		IslandGroup prev = islands.get(previousIndex(targetIndex));
-		IslandGroup next = islands.get(nextIndex(targetIndex));
+		IslandGroup motherNatureIsland = islands.get(motherNatureIslandIndex);
 
-		int startIndex = targetIndex;
-		IslandGroup newIslandPrev;
-		IslandGroup newIslandNext;
+		// Expected number of islands after unification
+		int size = islands.size();
 
-		newIslandPrev = tryMerge(prev, target);
-		if (newIslandPrev != null) {
-			startIndex = previousIndex(startIndex);
-			motherNatureIslandIndex = previousIndex(motherNatureIslandIndex);
-		} else
-			newIslandPrev = target;
+		IslandGroup prev = islands.get(previousIndex(targetIndex, size));
+		IslandGroup next = islands.get(nextIndex(targetIndex, size));
 
-		newIslandNext = tryMerge(newIslandPrev, next);
-		if (newIslandNext != null)
-			islands.add(startIndex, newIslandNext);
-		else if (newIslandPrev != target)
-			islands.add(startIndex, newIslandPrev);
+		Integer finalIndex = null;
+		IslandGroup newIsland = target;
+		IslandGroup tempIsland;
+
+		tempIsland = tryMerge(prev, target);
+		if (tempIsland != null) {
+			size--;
+			finalIndex = previousIndex(targetIndex, size);
+			newIsland = tempIsland;
+		}
+
+		tempIsland = tryMerge(newIsland, next);
+		if (tempIsland != null) {
+			size--;
+			finalIndex = Math.min(targetIndex, size - 1);	// avoid index out of bounds caused by the resizing of islands
+			newIsland = tempIsland;
+		}
+
+		if (newIsland != target) {
+			islands.add(finalIndex, newIsland);
+		}
+
+		// Place Mother Nature on the same island as before
+		motherNatureIslandIndex = islands.stream()
+				.filter(i -> i.getId().contains(motherNatureIsland.getId()))
+				.map(islands::indexOf)
+				.findAny()
+				.orElse(-1);
 	}
 
 	/**
@@ -315,11 +332,11 @@ public class Board {
 		return newIsland;
 	}
 
-	private int previousIndex(int index) {
-		return index == 0 ? islands.size() - 1 : index - 1;
+	private int previousIndex(int index, int size) {
+		return (index - 1 + size) % size;
 	}
 
-	private int nextIndex(int index) {
-		return index == islands.size() - 1 ? 0 : index + 1;
+	private int nextIndex(int index, int size) {
+		return (index + 1) % size;
 	}
 }

@@ -7,7 +7,7 @@ import it.polimi.ingsw.eriantys.messages.server.AssistantCardUpdate;
 import it.polimi.ingsw.eriantys.server.HelpContent;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public class PlayAssistantCardHandler implements MessageHandler {
 	public PlayAssistantCardHandler(Game game) {
 		this.game = game;
 		this.availableCards = game.getAssistantCards();
-		this.playedCards = new HashMap<>();
+		this.playedCards = new LinkedHashMap<>();
 
 		try {
 			this.game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards), true);

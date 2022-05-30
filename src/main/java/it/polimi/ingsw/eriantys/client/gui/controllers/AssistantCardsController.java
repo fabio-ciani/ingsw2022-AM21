@@ -14,10 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AssistantCardsController extends Controller {
@@ -72,21 +69,25 @@ public class AssistantCardsController extends Controller {
 
 					img.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + x.getId() + ".png").toExternalForm()));
 
+					if (Objects.equals(played.get(client.getUsername()), x.getId().toUpperCase())) {
+						Blend blend = new Blend();
+						Color color = new Color(0.55, 1, 0.35, 0.7);
+						ColorInput topInput = new ColorInput(0, 0, img.getImage().getWidth(), img.getImage().getHeight(), color);
+						blend.setTopInput(topInput);
+						blend.setMode(BlendMode.MULTIPLY);
+						img.setEffect(blend);
+					} else {
+						img.setEffect(null);
+					}
+
 					roundBorders(img, 30);
 
 					if (!assistants.contains(x.getId().toUpperCase())) {
-						img.setEffect(null);
 						applyGrayscale(img);
 						img.setOnMouseClicked(Event::consume);
 					} else {
 						img.setOnMouseClicked(event -> {
 							client.playAssistantCard(x.getId().toUpperCase());
-							Blend blend = new Blend();
-							Color color = new Color(0.55, 1, 0.35, 0.7);
-							ColorInput topInput = new ColorInput(0, 0, img.getImage().getWidth(), img.getImage().getHeight(), color);
-							blend.setTopInput(topInput);
-							blend.setMode(BlendMode.MULTIPLY);
-							img.setEffect(blend);
 							event.consume();
 						});
 					}
@@ -94,15 +95,19 @@ public class AssistantCardsController extends Controller {
 	}
 
 	private void drawPlayedCards() {
-		List<String> players = client.getBoardStatus().getPlayers();
+		int playerNumber = client.getBoardStatus().getPlayers().size();
+		Iterator<String> playerIterator = played.keySet().iterator();
 		Iterator<ImageView> imgIterator = playedCards_images.iterator();
 		Iterator<Text> labelIterator = playedCards_texts.iterator();
 
-		for (String player : players) {
+		for (int playerCounter = 0; playerCounter < playerNumber; playerCounter++) {
+			String player = playerIterator.hasNext() ? playerIterator.next() : null;
 			ImageView img = imgIterator.next();
 			Text label = labelIterator.next();
 
-			if (played.get(player) != null) {
+			if (player != null && played.get(player) != null) {
+				img.setFitWidth(72);
+				img.setFitHeight(106);
 				img.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + played.get(player) + ".png").toExternalForm()));
 				label.setText(player);
 			} else {
@@ -111,6 +116,11 @@ public class AssistantCardsController extends Controller {
 			}
 
 			roundBorders(img, 10);
+
+			if (playerNumber == 2 && imgIterator.hasNext()) {
+				imgIterator.next();
+				labelIterator.next();
+			}
 		}
 	}
 }

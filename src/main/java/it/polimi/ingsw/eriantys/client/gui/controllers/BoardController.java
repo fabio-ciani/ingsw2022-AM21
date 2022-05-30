@@ -21,13 +21,10 @@ import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class BoardController extends Controller {
 	@FXML private BorderPane pane;
-	@FXML private GridPane islands;
-	@FXML private GridPane ct_container_up;
-	@FXML private GridPane ct_container_down;
+	@FXML private GridPane board;
 	@FXML private ImageView selected_img;
 	@FXML private Text selected_text;
 	@FXML private Button back;
@@ -143,14 +140,14 @@ public class BoardController extends Controller {
 				towerText.setVisible(false);
 			}
 			students.get(island).forEach((k, v) -> {
-				ImageView studentImageView = studentImageViews.get(island).get(k);
-				Text studentText = studentTexts.get(island).get(k);
+				ImageView studentImageView = studentImageViews.get(id).get(k);
+				Text studentText = studentTexts.get(id).get(k);
 				studentImageView.setVisible(v > 0);
 				studentText.setText(v.toString());
 				studentText.setVisible(v > 0);
 			});
-			ImageView centerImageView = centerImageViews.get(island);
-			Text centerText = centerTexts.get(island);
+			ImageView centerImageView = centerImageViews.get(id);
+			Text centerText = centerTexts.get(id);
 			Integer noEntryTilesAmount = noEntryTiles.get(island);
 			if (motherNatureIsland.equals(island)) {
 				centerImageView.setImage(motherNatureImage);
@@ -178,7 +175,6 @@ public class BoardController extends Controller {
 			}
 			imageView.setVisible(true);
 			imageView.setMouseTransparent(false);
-			System.out.println(imageView.getId());
 			imageView.setOnMouseClicked(selectCloud);
 			Iterator<ImageView> studentIterator = cloudStudentImageViews.get(p).get(cloudId).iterator();
 			v.forEach((k1, v1) -> {
@@ -194,10 +190,9 @@ public class BoardController extends Controller {
 		});
 
 		cloudImageViews.get(p.equals("2p") ? "3p" : "2p").forEach((k, v) -> {
-			System.out.println(v.getId());
 			v.setOnMouseClicked(selectCloud);
 			v.setMouseTransparent(true);
-			v.setVisible(true);
+			v.setVisible(false);
 		});
 	}
 
@@ -284,7 +279,7 @@ public class BoardController extends Controller {
 	}
 
 	private void initNodes() {
-		ObservableList<Node> children = islands.getChildren();
+		ObservableList<Node> children = board.getChildren();
 
 		children.stream()
 				.filter(n -> n instanceof ImageView && n.getId().startsWith("i"))
@@ -320,8 +315,8 @@ public class BoardController extends Controller {
 					centerTexts.put(id, (Text) c.stream().filter(n -> n instanceof Text && n.getId() != null && n.getId().startsWith("c")).findAny().orElse(null));
 				});
 
-		List<ImageView> ct = Stream.concat(ct_container_up.getChildren().stream(), ct_container_down.getChildren().stream())
-				.filter(n -> n instanceof ImageView && n.getId().startsWith("ct"))
+		List<ImageView> ct = board.getChildren().stream()
+				.filter(n -> n instanceof ImageView && n.getId().startsWith("ct_"))
 				.map(n -> (ImageView) n)
 				.toList();
 		cloudImageViews.put("2p", new HashMap<>());
@@ -332,8 +327,8 @@ public class BoardController extends Controller {
 			cloudImageViews.get(tokens[1]).put(id, i);
 		}
 
-		List<ImageView> s = Stream.concat(ct_container_up.getChildren().stream(), ct_container_down.getChildren().stream())
-				.filter(n -> n instanceof ImageView && n.getId().startsWith("s"))
+		List<ImageView> s = board.getChildren().stream()
+				.filter(n -> n instanceof ImageView && n.getId().startsWith("s_"))
 				.map(n -> (ImageView) n)
 				.toList();
 		cloudStudentImageViews.put("2p", new HashMap<>());
@@ -358,7 +353,6 @@ public class BoardController extends Controller {
 			String selectedStudent = schoolBoardController.getSelectedStudent();
 			ImageView imageView = (ImageView) event.getSource();
 			String selectedIsland = imageView.getId();
-			System.out.println(selectedIsland);
 			if (selectedStudent == null) {
 				client.moveMotherNature(selectedIsland);
 			} else {
@@ -375,7 +369,6 @@ public class BoardController extends Controller {
 			int selectedCloud = cloudImageViews.get(p).keySet().stream()
 					.filter(k -> imageView.equals(cloudImageViews.get(p).get(k)))
 					.findAny().orElse(5);
-			System.out.println(imageView.getId());
 			client.chooseCloud(selectedCloud);
 			event.consume();
 		};

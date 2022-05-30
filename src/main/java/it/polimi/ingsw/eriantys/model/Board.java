@@ -215,8 +215,8 @@ public class Board {
 		if (targetIndex == -1)
 			throw new IslandNotFoundException("Requested id: " + target.getId());	// this should not happen
 
-		IslandGroup prev = islands.get(targetIndex == 0 ? islands.size() - 1 : targetIndex - 1);
-		IslandGroup next = islands.get(targetIndex == islands.size() - 1 ? 0 : targetIndex + 1);
+		IslandGroup prev = islands.get(previousIndex(targetIndex));
+		IslandGroup next = islands.get(nextIndex(targetIndex));
 
 		int startIndex = targetIndex;
 		IslandGroup newIslandPrev;
@@ -224,8 +224,8 @@ public class Board {
 
 		newIslandPrev = tryMerge(prev, target);
 		if (newIslandPrev != null) {
-			startIndex--;
-			motherNatureIslandIndex--;
+			startIndex = previousIndex(startIndex);
+			motherNatureIslandIndex = previousIndex(motherNatureIslandIndex);
 		} else
 			newIslandPrev = target;
 
@@ -313,5 +313,13 @@ public class Board {
 		islands.remove(neighbor);
 
 		return newIsland;
+	}
+
+	private int previousIndex(int index) {
+		return index == 0 ? islands.size() - 1 : index - 1;
+	}
+
+	private int nextIndex(int index) {
+		return index == islands.size() - 1 ? 0 : index + 1;
 	}
 }

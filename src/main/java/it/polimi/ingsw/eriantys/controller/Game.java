@@ -469,7 +469,7 @@ public class Game {
 		}
 	}
 
-	private void broadcast(Message message) {
+	public void broadcast(Message message) {
 		for (String player : players) {
 			try {
 				ClientConnection connection = server.getConnection(player);

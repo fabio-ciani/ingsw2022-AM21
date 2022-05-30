@@ -97,9 +97,10 @@ public class PlayAssistantCardHandler implements MessageHandler {
 	}
 
 	private void checkStateTransition() throws NoConnectionException {
-		if (playedCards.keySet().size() == game.getInfo().getLobbySize())
+		if (playedCards.keySet().size() == game.getInfo().getLobbySize()) {
 			game.newTurn(playedCards);
-		else
-			game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
+			game.broadcast(new AssistantCardUpdate(playedCards, availableCards));
+		}
+		game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards));
 	}
 }

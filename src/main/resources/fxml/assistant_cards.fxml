@@ -67,7 +67,7 @@
 				</Text>
 				<ImageView fx:id="pc_2_img" fitHeight="104.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 				</ImageView>
-				<Text fx:id="pc_2_user" strokeType="OUTSIDE" strokeWidth="0.0" text="MartinGarrix" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+				<Text fx:id="pc_2_user" visible="false" strokeType="OUTSIDE" strokeWidth="0.0" text="MartinGarrix" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 					<GridPane.margin>
 						<Insets top="125.0" />
 					</GridPane.margin>

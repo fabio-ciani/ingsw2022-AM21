@@ -85,6 +85,10 @@ public class SchoolBoardController extends Controller {
 		return selectedStudent;
 	}
 
+	public void setSelectedStudent(String selectedStudent) {
+		this.selectedStudent = selectedStudent;
+	}
+
 	@Override
 	public void onChangeScene() {
 		currentUsername = client.getUsername();

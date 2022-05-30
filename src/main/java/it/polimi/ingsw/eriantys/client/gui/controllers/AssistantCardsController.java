@@ -3,13 +3,18 @@ package it.polimi.ingsw.eriantys.client.gui.controllers;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -70,11 +75,18 @@ public class AssistantCardsController extends Controller {
 					roundBorders(img, 30);
 
 					if (!assistants.contains(x.getId().toUpperCase())) {
+						img.setEffect(null);
 						applyGrayscale(img);
 						img.setOnMouseClicked(Event::consume);
 					} else {
 						img.setOnMouseClicked(event -> {
 							client.playAssistantCard(x.getId().toUpperCase());
+							Blend blend = new Blend();
+							Color color = new Color(0.55, 1, 0.35, 0.7);
+							ColorInput topInput = new ColorInput(0, 0, img.getImage().getWidth(), img.getImage().getHeight(), color);
+							blend.setTopInput(topInput);
+							blend.setMode(BlendMode.MULTIPLY);
+							img.setEffect(blend);
 							event.consume();
 						});
 					}
@@ -82,31 +94,23 @@ public class AssistantCardsController extends Controller {
 	}
 
 	private void drawPlayedCards() {
-		int count = 0;
-		ImageView img;
-		Text label;
+		List<String> players = client.getBoardStatus().getPlayers();
+		Iterator<ImageView> imgIterator = playedCards_images.iterator();
+		Iterator<Text> labelIterator = playedCards_texts.iterator();
 
-		for (String player : client.getBoardStatus().getPlayers()) {
-			img = playedCards_images.get(count);
-			label = playedCards_texts.get(count);
+		for (String player : players) {
+			ImageView img = imgIterator.next();
+			Text label = labelIterator.next();
 
-			if (!player.equals(client.getUsername())) {
-				if (played.get(player) != null) {
-					img.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + played.get(player) + ".png").toExternalForm()));
-				} else {
-					img.setImage(new Image(getClass().getResource("/graphics/CardBack.png").toExternalForm()));
-				}
+			if (played.get(player) != null) {
+				img.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + played.get(player) + ".png").toExternalForm()));
 				label.setText(player);
-				roundBorders(img, 10);
 			} else {
-				if (client.getBoardStatus().getPlayers().size() == 2) {
-					img.setImage(new Image(getClass().getResource("/graphics/CardBack.png").toExternalForm()));
-					roundBorders(img, 10);
-					label.setText(null);
-				}
+				img.setImage(new Image(getClass().getResource("/graphics/CardBack.png").toExternalForm()));
+				label.setText(null);
 			}
 
-			count++;
+			roundBorders(img, 10);
 		}
 	}
 }

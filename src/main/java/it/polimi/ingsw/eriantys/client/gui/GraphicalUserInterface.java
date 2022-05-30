@@ -98,8 +98,10 @@ public class GraphicalUserInterface extends UserInterface {
 	@Override
 	public void handleMessage(AssistantCardUpdate message) {
 		client.setAvailableCards(message.getAvailableCards().get(client.getUsername()));
-		AssistantCardsController controller = (AssistantCardsController) app.getControllerForPopup(PopupName.ASSISTANT_CARDS);
-		controller.populate(message.getAvailableCards().get(client.getUsername()), message.getPlayedCards());
+		Platform.runLater(() -> {
+			AssistantCardsController controller = (AssistantCardsController) app.getControllerForPopup(PopupName.ASSISTANT_CARDS);
+			controller.populate(message.getAvailableCards().get(client.getUsername()), message.getPlayedCards());
+		});
 	}
 
 	@Override
@@ -151,7 +153,7 @@ public class GraphicalUserInterface extends UserInterface {
 
 	@Override
 	public void handleMessage(ReconnectionUpdate message) {
-
+		Platform.runLater(() -> app.changeScene(SceneName.SCHOOLBOARD));
 	}
 
 	@Override

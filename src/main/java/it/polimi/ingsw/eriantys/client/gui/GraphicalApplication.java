@@ -101,7 +101,6 @@ public class GraphicalApplication extends Application {
 
 		primaryStage.setScene(scene);
 		currentScene = sceneName;
-		center(scene);
 
 		controllerByScene.get(currentScene).onChangeScene();
 

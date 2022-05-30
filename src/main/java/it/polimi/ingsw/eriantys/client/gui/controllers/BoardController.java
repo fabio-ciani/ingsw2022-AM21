@@ -5,12 +5,15 @@ import it.polimi.ingsw.eriantys.model.BoardStatus;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.TowerColor;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -29,9 +32,7 @@ public class BoardController extends Controller {
 	@FXML private Text selected_text;
 	@FXML private Button back;
 
-	private String selectedStudent;
-
-	private Map<String, ImageView> islandTiles;
+	private Map<String, ImageView> islandImageViews;
 	private Map<String, Map<String, ImageView>> studentImageViews;
 	private Map<String, Map<String, Text>> studentTexts;
 	private Map<String, ImageView> centerImageViews;
@@ -49,9 +50,12 @@ public class BoardController extends Controller {
 	private Map<String, Integer> towerSizes;
 	private Map<String, Map<Integer, Image>> cloudImages;
 
+	private EventHandler<MouseEvent> selectMoveDestination;
+	private EventHandler<MouseEvent> selectCloud;
+
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		islandTiles = new HashMap<>();
+		islandImageViews = new HashMap<>();
 		studentImageViews = new HashMap<>();
 		studentTexts = new HashMap<>();
 		centerImageViews = new HashMap<>();
@@ -69,7 +73,7 @@ public class BoardController extends Controller {
 
 		initNodes();
 		initImages();
-		setImages();
+		setImagesAndTexts();
 		initEventHandlers();
 	}
 
@@ -79,7 +83,9 @@ public class BoardController extends Controller {
 	}
 
 	@Override
-	public void onChangeScene() {}
+	public void onChangeScene() {
+		drawSelectedStudent();
+	}
 
 	public void load() {
 		BoardStatus boardStatus = client.getBoardStatus();
@@ -91,6 +97,10 @@ public class BoardController extends Controller {
 				boardStatus.getIslandStudents(),
 				boardStatus.getIslandNoEntryTiles(),
 				boardStatus.getMotherNatureIsland());
+
+		drawClouds(boardStatus.getCloudTiles());
+
+		drawSelectedStudent();
 	}
 
 	private void drawIslands(List<String> islands,
@@ -101,8 +111,25 @@ public class BoardController extends Controller {
 							 Map<String, Integer> noEntryTiles,
 							 String motherNatureIsland) {
 		for (String island : islands) {
-			ImageView towerImageView = towerImageViews.get(island.substring(0, 2));
-			Text towerText = towerTexts.get(island.substring(0, 2));
+			String id = island.substring(0, 2);
+			for (String other : island.split("-")) {
+				if (!id.equals(other)) {
+					ImageView i = islandImageViews.get(other);
+					i.setVisible(false);
+					studentImageViews.get(other).forEach((k, v) -> v.setVisible(false));
+					studentTexts.get(other).forEach((k, v) -> v.setVisible(false));
+					towerImageViews.get(other).setVisible(false);
+					towerTexts.get(other).setVisible(false);
+					centerImageViews.get(other).setVisible(false);
+					centerTexts.get(other).setVisible(false);
+					i.setOnMouseClicked(Event::consume);
+				}
+			}
+			ImageView islandImageView = islandImageViews.get(id);
+			islandImageView.setOnMouseClicked(selectMoveDestination);
+			islandImageView.setId(island);
+			ImageView towerImageView = towerImageViews.get(id);
+			Text towerText = towerTexts.get(id);
 			if (controllers.get(island) != null) {
 				String towerColor = playerTowerColors.get(controllers.get(island));
 				towerImageView.setImage(towerImages.get(towerColor));
@@ -139,6 +166,91 @@ public class BoardController extends Controller {
 				centerText.setVisible(false);
 			}
 		}
+	}
+
+	private void drawClouds(Map<String, Map<String, Integer>> cloudTiles) {
+		String p = cloudTiles.size() == 2 ? "2p" : "3p";
+		cloudTiles.forEach((k, v) -> {
+			int cloudId = Integer.parseInt(k);
+			ImageView imageView = cloudImageViews.get(p).get(cloudId);
+			if (imageView.getImage() == null) {
+				imageView.setImage(cloudImages.get(p).get(cloudId));
+			}
+			imageView.setVisible(true);
+			imageView.setMouseTransparent(false);
+			System.out.println(imageView.getId());
+			imageView.setOnMouseClicked(selectCloud);
+			Iterator<ImageView> studentIterator = cloudStudentImageViews.get(p).get(cloudId).iterator();
+			v.forEach((k1, v1) -> {
+				for (int i = 0; i < v1; i++) {
+					ImageView studentImageView = studentIterator.next();
+					studentImageView.setImage(studentImages.get(k1));
+					studentImageView.setVisible(true);
+				}
+			});
+			while (studentIterator.hasNext()) {
+				studentIterator.next().setVisible(false);
+			}
+		});
+
+		cloudImageViews.get(p.equals("2p") ? "3p" : "2p").forEach((k, v) -> {
+			System.out.println(v.getId());
+			v.setOnMouseClicked(selectCloud);
+			v.setMouseTransparent(true);
+			v.setVisible(true);
+		});
+	}
+
+	private void drawSelectedStudent() {
+		SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
+		String selectedStudent = schoolBoardController.getSelectedStudent();
+		if (selectedStudent != null) {
+			selected_img.setImage(studentImages.get(selectedStudent));
+			selected_img.setVisible(true);
+			selected_text.setVisible(true);
+		} else {
+			selected_img.setVisible(false);
+			selected_text.setVisible(false);
+		}
+	}
+
+	private void setImagesAndTexts() {
+		islandImageViews.forEach((k, v) -> {
+			v.setImage(islandImages.get((Integer.parseInt(k) - 1) % 3));
+			v.setVisible(true);
+		});
+
+		studentImageViews.forEach((k1, v1) -> {
+			v1.forEach((k, v) -> {
+				v.setImage(studentImages.get(k));
+			});
+		});
+
+		studentTexts.forEach((k1, v1) -> {
+			v1.forEach((k, v) -> {
+				v.setText("0");
+			});
+		});
+
+		centerTexts.forEach((k, v) -> {
+			v.setText("0");
+		});
+
+		towerTexts.forEach((k, v) -> {
+			v.setText("0");
+		});
+
+		cloudImageViews.get("2p").forEach((k, v) -> {
+			v.setImage(cloudImages.get("2p").get(k));
+			v.setVisible(false);
+		});
+
+		cloudImageViews.get("3p").forEach((k, v) -> {
+			v.setImage(cloudImages.get("3p").get(0));
+			v.setVisible(false);
+		});
+
+		selected_text.setText("You have selected:");
 	}
 
 	private void initImages() {
@@ -178,7 +290,7 @@ public class BoardController extends Controller {
 				.filter(n -> n instanceof ImageView && n.getId().startsWith("i"))
 				.map(n -> (ImageView) n)
 				.forEach(i -> {
-					islandTiles.put(i.getId().substring(1), i);
+					islandImageViews.put(i.getId().substring(1), i);
 				});
 
 		children.stream()
@@ -235,47 +347,37 @@ public class BoardController extends Controller {
 		}
 	}
 
-	private void setImages() {
-		islandTiles.forEach((k, v) -> {
-			v.setImage(islandImages.get(Integer.parseInt(k) % 3));
-			v.setVisible(true);
-		});
-
-		studentImageViews.forEach((k1, v1) -> {
-			v1.forEach((k, v) -> {
-				v.setImage(studentImages.get(k));
-			});
-		});
-
-		studentTexts.forEach((k1, v1) -> {
-			v1.forEach((k, v) -> {
-				v.setText("0");
-			});
-		});
-
-		centerTexts.forEach((k, v) -> {
-			v.setText("0");
-		});
-
-		towerTexts.forEach((k, v) -> {
-			v.setText("0");
-		});
-
-		cloudImageViews.get("2p").forEach((k, v) -> {
-			v.setImage(cloudImages.get("2p").get(k));
-			v.setVisible(false);
-		});
-
-		cloudImageViews.get("3p").forEach((k, v) -> {
-			v.setImage(cloudImages.get("3p").get(0));
-			v.setVisible(false);
-		});
-	}
-
 	private void initEventHandlers() {
 		back.setOnAction(event -> {
 			app.changeScene(SceneName.SCHOOLBOARD);
 			event.consume();
 		});
+
+		selectMoveDestination = event -> {
+			SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
+			String selectedStudent = schoolBoardController.getSelectedStudent();
+			ImageView imageView = (ImageView) event.getSource();
+			String selectedIsland = imageView.getId();
+			System.out.println(selectedIsland);
+			if (selectedStudent == null) {
+				client.moveMotherNature(selectedIsland);
+			} else {
+				client.moveStudent(selectedStudent, selectedIsland);
+				schoolBoardController.setSelectedStudent(null);
+				drawSelectedStudent();
+			}
+			event.consume();
+		};
+
+		selectCloud = event -> {
+			ImageView imageView = (ImageView) event.getSource();
+			String p = imageView.getId().split("_")[1];
+			int selectedCloud = cloudImageViews.get(p).keySet().stream()
+					.filter(k -> imageView.equals(cloudImageViews.get(p).get(k)))
+					.findAny().orElse(5);
+			System.out.println(imageView.getId());
+			client.chooseCloud(selectedCloud);
+			event.consume();
+		};
 	}
 }

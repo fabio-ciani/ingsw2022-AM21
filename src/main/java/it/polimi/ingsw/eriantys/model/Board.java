@@ -245,6 +245,14 @@ public class Board {
 			islands.add(finalIndex, newIsland);
 		}
 
+		/*
+			1. MN is placed before the islands to unify: MN island index is not affected by merge
+			2. MN is placed after the islands to unify: MN island index is shifted back by a unit
+			3. MN is placed on the left island to unify: MN island index is not affected by merge
+			4. MN is placed on the right island to unify: MN island index is shifted back by a unit
+			5. The islands to unify are like "12" and "01": MN island index is shifted back by a unit
+		*/
+
 		// Place Mother Nature on the same island as before
 		motherNatureIslandIndex = islands.stream()
 				.filter(i -> i.getId().contains(motherNatureIsland.getId()))

@@ -80,10 +80,10 @@ class BoardTest {
 
 			for (Color color : Color.values())
 				if (temp.getQuantity(color) > 0) {
-					// check that each island contains at most a student of each color
+					// Check that each island contains at most a student of each color
 					assertEquals(1, temp.getQuantity(color));
 
-					// check that on each island there is only one color such that there are students of that color on the island
+					// Check that on each island there is only one color such that there are students of that color on the island
 					assertFalse(foundColor);
 					foundColor = true;
 
@@ -94,19 +94,19 @@ class BoardTest {
 				emptyIslands.add(i);
 		}
 
-		// check that there are exactly 2 students of each color deployed on the islands
+		// Check that there are exactly 2 students of each color deployed on the islands
 		for (Color color : Color.values())
 			assertEquals(2, colors.get(color));
 
-		// check that there are exactly 2 islands with no students on it
+		// Check that there are exactly 2 islands with no students on it
 		assertEquals(2, emptyIslands.size());
 
-		// check that one of the 2 empty islands has Mother Nature on it
+		// Check that one of the 2 empty islands has Mother Nature on it
 		assertTrue(
 					board.getMotherNatureIsland().equals(board.getIsland(String.format("%02d", 1 + emptyIslands.get(0))))
 					|| board.getMotherNatureIsland().equals(board.getIsland(String.format("%02d", 1 + emptyIslands.get(1)))));
 
-		// check that the 2 empty islands are exactly one opposite the other
+		// Check that the 2 empty islands are exactly one opposite the other
 		assertEquals((int) emptyIslands.get(0), (emptyIslands.get(1) + 6) % 12);
 	}
 
@@ -178,8 +178,9 @@ class BoardTest {
 	}
 
 	@Test
-	void unifyIslands_DifferentControllers_NoEffect() throws IslandNotFoundException, InvalidArgumentException {
+	void unifyIslands_DifferentControllers_NoEffect() throws InvalidArgumentException, NoMovementException, IslandNotFoundException {
 		Board board = new Board(2, 3);
+		board.setup();	// Needed due to MN index retrieval
 		Player p1 = new Player("p1", 7, 8);
 		Player p2 = new Player("p2", 7, 8);
 
@@ -195,8 +196,9 @@ class BoardTest {
 	}
 
 	@Test
-	void unifyIslands_TargetAndPrevSameController_MergeTargetAndPrev() throws IslandNotFoundException, InvalidArgumentException {
+	void unifyIslands_TargetAndPrevSameController_MergeTargetAndPrev() throws InvalidArgumentException, NoMovementException, IslandNotFoundException {
 		Board board = new Board(2, 3);
+		board.setup();	// Needed due to MN index retrieval
 		Player p1 = new Player("p1", 7, 8);
 		Player p2 = new Player("p2", 7, 8);
 
@@ -214,8 +216,9 @@ class BoardTest {
 	}
 
 	@Test
-	void unifyIslands_TargetAndNextSameController_MergeTargetAndNext() throws IslandNotFoundException, InvalidArgumentException {
+	void unifyIslands_TargetAndNextSameController_MergeTargetAndNext() throws InvalidArgumentException, NoMovementException, IslandNotFoundException {
 		Board board = new Board(2, 3);
+		board.setup();	// Needed due to MN index retrieval
 		Player p1 = new Player("p1", 7, 8);
 		Player p2 = new Player("p2", 7, 8);
 
@@ -233,8 +236,9 @@ class BoardTest {
 	}
 
 	@Test
-	void unifyIslands_TargetPrevAndNextSameController_MergeTargetPrevAndNext() throws IslandNotFoundException, InvalidArgumentException {
+	void unifyIslands_TargetPrevAndNextSameController_MergeTargetPrevAndNext() throws InvalidArgumentException, NoMovementException, IslandNotFoundException {
 		Board board = new Board(2, 3);
+		board.setup();	// Needed due to MN index retrieval
 		Player p = new Player("p", 9, 6);
 
 		board.getIsland("01").setController(p);
@@ -251,54 +255,56 @@ class BoardTest {
 	}
 
 	@Test
-	void unifyIslands_MoreThanTwoIslandsSameController_MergeOnlyTwoIslands() throws IslandNotFoundException, InvalidArgumentException {
-		Board b = new Board(2, 3);
+	void unifyIslands_MoreThanTwoIslandsSameController_MergeOnlyTwoIslands() throws InvalidArgumentException, NoMovementException, IslandNotFoundException {
+		Board board = new Board(2, 3);
+		board.setup();	// Needed due to MN index retrieval
 		Player p = new Player("p", 9, 6);
 
-		b.getIsland("01").setController(p);
-		b.getIsland("02").setController(p);
-		b.getIsland("03").setController(p);
+		board.getIsland("01").setController(p);
+		board.getIsland("02").setController(p);
+		board.getIsland("03").setController(p);
 
-		b.unifyIslands(b.getIsland("03"));	// does not recursively call unifyIslands(), hence only "02" and "03" islands are merged
+		board.unifyIslands(board.getIsland("03"));	// The method does not recursively call unifyIslands(), hence only "02" and "03" islands are merged
 
-		assertEquals(11, b.getIslandNumber());
-		assertDoesNotThrow(() -> b.getIsland("02-03"));
-		assertThrowsExactly(IslandNotFoundException.class, () -> b.getIsland("01-02-03"));
+		assertEquals(11, board.getIslandNumber());
+		assertDoesNotThrow(() -> board.getIsland("02-03"));
+		assertThrowsExactly(IslandNotFoundException.class, () -> board.getIsland("01-02-03"));
 	}
 
 	@Test
 	void getDistanceFromMotherNature_NullTarget_ReturnNeg1() {
-		Board b = new Board(2, 3);
-		assertDoesNotThrow(b::setup);
-		assertEquals(-1, b.getDistanceFromMotherNature(null));
+		Board board = new Board(2, 3);
+		assertDoesNotThrow(board::setup);
+		assertEquals(-1, board.getDistanceFromMotherNature(null));
 	}
 
 	@Test
 	void getDistanceFromMotherNature_NonexistentTarget_ReturnNeg1() {
-		Board b = new Board(2, 3);
-		assertDoesNotThrow(b::setup);
-		assertEquals(-1, b.getDistanceFromMotherNature(new IslandGroup("98")));
+		Board board = new Board(2, 3);
+		assertDoesNotThrow(board::setup);
+		assertEquals(-1, board.getDistanceFromMotherNature(new IslandGroup("98")));
 	}
 
 	@Test
 	void getDistanceFromMotherNature_3StepsAhead_Return3() {
-		Board b = new Board(2, 3);
-		assertDoesNotThrow(b::setup);
-		assertTrue(b.moveMotherNature(new IslandGroup("01")));
-		assertEquals(3, b.getDistanceFromMotherNature(new IslandGroup("04")));
+		Board board = new Board(2, 3);
+		assertDoesNotThrow(board::setup);
+		assertTrue(board.moveMotherNature(new IslandGroup("01")));
+		assertEquals(3, board.getDistanceFromMotherNature(new IslandGroup("04")));
 	}
 
 	@Test
 	void getDistanceFromMotherNature_StartIndexGreaterThanEndIndexBy3_Return9() {
-		Board b = new Board(2, 3);
-		assertDoesNotThrow(b::setup);
-		assertTrue(b.moveMotherNature(new IslandGroup("09")));
-		assertEquals(9, b.getDistanceFromMotherNature(new IslandGroup("06")));
+		Board board = new Board(2, 3);
+		assertDoesNotThrow(board::setup);
+		assertTrue(board.moveMotherNature(new IslandGroup("09")));
+		assertEquals(9, board.getDistanceFromMotherNature(new IslandGroup("06")));
 	}
 
 	@Test
-	void getIslandsRepresentation_NoAggregates_NormalPostConditions() {
+	void getIslandsRepresentation_NoAggregates_NormalPostConditions() throws InvalidArgumentException, NoMovementException {
 		Board b = new Board(2, 3);
+		b.setup();	// Needed due to MN index retrieval
 
 		List<String> rep = b.getIslandsRepresentation();
 
@@ -309,8 +315,9 @@ class BoardTest {
 	}
 
 	@Test
-	void getIslandsRepresentation_WithAggregates_NormalPostConditions() throws IslandNotFoundException, InvalidArgumentException {
+	void getIslandsRepresentation_WithAggregates_NormalPostConditions() throws InvalidArgumentException, NoMovementException, IslandNotFoundException {
 		Board b = new Board(2, 3);
+		b.setup();	// Needed due to MN index retrieval
 		Player p = new Player("p", 9, 6);
 
 		b.getIsland("01").setController(p);
@@ -328,8 +335,9 @@ class BoardTest {
 	}
 
 	@Test
-	void getCloudTilesRepresentation_NormalPostConditions() {
+	void getCloudTilesRepresentation_NormalPostConditions() throws InvalidArgumentException, NoMovementException {
 		Board b = new Board(2, 3);
+		b.setup();	// Needed due to MN index retrieval
 
 		Map<String, Map<String, Integer>> rep = b.getCloudTiles();
 

@@ -248,6 +248,8 @@ public class GameManager {
 
 		int requestedMovements = board.getDistanceFromMotherNature(destination);
 		int actualMovements = currentPlayer().getMotherNatureMovements();
+		if (requestedMovements < 1)
+			throw new IllegalArgumentException("Must move Mother Nature by at least 1 island");
 		if (requestedMovements > actualMovements)
 			throw new NotEnoughMovementsException("requested " + requestedMovements + ", actual " + actualMovements);
 

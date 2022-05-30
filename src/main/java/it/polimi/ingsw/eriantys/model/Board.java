@@ -215,17 +215,18 @@ public class Board {
 		if (targetIndex == -1)
 			throw new IslandNotFoundException("Requested id: " + target.getId());	// this should not happen
 
-		IslandGroup prev = islands.get(targetIndex - 1);
-		IslandGroup next = islands.get(targetIndex + 1);
+		IslandGroup prev = islands.get(targetIndex == 0 ? islands.size() - 1 : targetIndex - 1);
+		IslandGroup next = islands.get(targetIndex == islands.size() - 1 ? 0 : targetIndex + 1);
 
 		int startIndex = targetIndex;
 		IslandGroup newIslandPrev;
 		IslandGroup newIslandNext;
 
 		newIslandPrev = tryMerge(prev, target);
-		if (newIslandPrev != null)
+		if (newIslandPrev != null) {
 			startIndex--;
-		else
+			motherNatureIslandIndex--;
+		} else
 			newIslandPrev = target;
 
 		newIslandNext = tryMerge(newIslandPrev, next);

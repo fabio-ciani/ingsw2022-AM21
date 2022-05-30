@@ -57,7 +57,7 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 		try {
 			gameOver = game.moveMotherNature(destination);
 		} catch (InvalidArgumentException e) {
-			game.refuseRequest(message, "Invalid argument");
+			game.refuseRequest(message, e.getMessage() != null ? e.getMessage() : "Invalid argument");
 			return;
 		} catch (IslandNotFoundException e) {
 			game.refuseRequest(message, "Island not found: " + destination);

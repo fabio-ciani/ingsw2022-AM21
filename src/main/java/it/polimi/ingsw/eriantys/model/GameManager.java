@@ -373,6 +373,7 @@ public class GameManager {
 
 		target.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
 		currPlayer.updateCoins(-originalCost);
+		professors.update(Set.of(Color.values()));
 
 		return lastRound();
 	}

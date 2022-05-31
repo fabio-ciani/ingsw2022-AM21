@@ -3,14 +3,10 @@ package it.polimi.ingsw.eriantys.client.gui.controllers;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -70,12 +66,7 @@ public class AssistantCardsController extends Controller {
 					img.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + x.getId() + ".png").toExternalForm()));
 
 					if (Objects.equals(played.get(client.getUsername()), x.getId().toUpperCase())) {
-						Blend blend = new Blend();
-						Color color = new Color(0.55, 1, 0.35, 0.7);
-						ColorInput topInput = new ColorInput(0, 0, img.getImage().getWidth(), img.getImage().getHeight(), color);
-						blend.setTopInput(topInput);
-						blend.setMode(BlendMode.MULTIPLY);
-						img.setEffect(blend);
+						applyGreenShade(img);
 					} else {
 						img.setEffect(null);
 					}

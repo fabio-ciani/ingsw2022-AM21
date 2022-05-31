@@ -6,6 +6,7 @@ import it.polimi.ingsw.eriantys.controller.GameInfo;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.AssistantCard;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
+import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.GameConstants;
 
 import java.io.IOException;
@@ -115,7 +116,7 @@ public class CommandLineInterface extends UserInterface {
 					case "character", "ch" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						int id = Integer.parseInt(tokens[1]);
-						client.selectCharacterCard(id);
+						client.setCharacterCard(id);
 						showCharacterCardArgs(id);
 					}
 					case "ccarguments", "ccargs" -> parseCharacterCardArgs(Arrays.copyOfRange(tokens, 1, tokens.length));
@@ -172,7 +173,7 @@ public class CommandLineInterface extends UserInterface {
 		String targetIsland = null;
 		boolean source = true;
 		for (String arg : args) {
-			if (isColor(arg)) {
+			if (Color.stringLiterals().contains(arg.toUpperCase())) {
 				if (sourceColors.isEmpty()) {
 					if (targetColor == null) {
 						targetColor = arg.toUpperCase();
@@ -203,15 +204,6 @@ public class CommandLineInterface extends UserInterface {
 				destinationColors.toArray(new String[0]),
 				targetColor,
 				targetIsland);
-	}
-
-	private static boolean isColor(String s) {
-		s = s.toUpperCase();
-		return s.equals("YELLOW")
-				|| s.equals("BLUE")
-				|| s.equals("GREEN")
-				|| s.equals("RED")
-				|| s.equals("PINK");
 	}
 
 	private void showCharacterCards() {

@@ -357,7 +357,7 @@ public class Client extends Thread {
 		write(new SelectCloud(username, cloud));
 	}
 
-	public void selectCharacterCard(int card) {
+	public void setCharacterCard(Integer card) {
 		characterCard = card;
 	}
 

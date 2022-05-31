@@ -43,7 +43,7 @@ public class SchoolBoardController extends Controller {
 	@FXML private Button sb_button;
 
 	private String currentUsername;
-	private String selectedStudent;
+	private String selected;
 
 	private Map<String, GridPane> diningroomPanes;
 
@@ -53,10 +53,11 @@ public class SchoolBoardController extends Controller {
 	private Map<String, Integer> towerSizes;
 	private Image towerSlot;
 	private Image coinImage;
+	private Map<String, Image> characterMiniatures;
 
 	private EventHandler<MouseEvent> selectSource;
-	private EventHandler<MouseEvent> selectSwapDestination;
-	private EventHandler<MouseEvent> selectMoveDestination;
+	private EventHandler<MouseEvent> selectDestination;
+	private EventHandler<MouseEvent> selectColorForCharacterCard;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -81,17 +82,19 @@ public class SchoolBoardController extends Controller {
 		return pane;
 	}
 
-	public String getSelectedStudent() {
-		return selectedStudent;
+	public String getSelected() {
+		return selected;
 	}
 
-	public void setSelectedStudent(String selectedStudent) {
-		this.selectedStudent = selectedStudent;
+	public void setSelected(String selected) {
+		this.selected = selected;
+		drawSelected();
 	}
 
 	@Override
 	public void onChangeScene() {
 		currentUsername = client.getUsername();
+		drawSelected();
 	}
 
 	public void load() {
@@ -109,7 +112,7 @@ public class SchoolBoardController extends Controller {
 		drawTowerSlots();
 		drawTowers(boardStatus.getPlayerTowers().get(currentUsername), boardStatus.getPlayerTowerColors().get(currentUsername));
 		drawCoins(boardStatus.getPlayerCoins().get(currentUsername));
-		drawSelectedStudent();
+		drawSelected();
 
 		setUsernames(boardStatus.getPlayers());
 		setEventHandlers();
@@ -227,9 +230,13 @@ public class SchoolBoardController extends Controller {
 		c_text.setText(amount.toString());
 	}
 
-	private void drawSelectedStudent() {
-		if (selectedStudent != null && Objects.equals(currentUsername, client.getUsername())) {
-			selected_img.setImage(studentImages.get(selectedStudent));
+	private void drawSelected() {
+		if (selected != null && Objects.equals(currentUsername, client.getUsername())) {
+			Image image = studentImages.get(selected);
+			if (image == null && characterMiniatures != null) {
+				image = characterMiniatures.get(selected);
+			}
+			selected_img.setImage(image);
 			selected_img.setVisible(true);
 			selected_text.setVisible(true);
 		} else {
@@ -244,14 +251,15 @@ public class SchoolBoardController extends Controller {
 		items.addAll(usernames);
 	}
 
-	private void setEventHandlers() {
+	protected void setEventHandlers() {
 		boolean isCurrentPlayer = Objects.equals(currentUsername, client.getUsername());
+		boolean characterCardSelected = selected != null && !Color.stringLiterals().contains(selected.toUpperCase());
 		entrance.getChildren().stream()
 				.filter(n -> n instanceof ImageView)
 				.map(n -> (ImageView) n)
-				.forEach(i -> i.setOnMouseClicked(isCurrentPlayer ? selectSource : Event::consume));
+				.forEach(i -> i.setOnMouseClicked(isCurrentPlayer ? (characterCardSelected ? selectColorForCharacterCard : selectSource) : Event::consume));
 		for (String color : Color.stringLiterals()) {
-			diningroomPanes.get(color).setOnMouseClicked(isCurrentPlayer ? selectMoveDestination : Event::consume);
+			diningroomPanes.get(color).setOnMouseClicked(isCurrentPlayer ? (characterCardSelected ? selectColorForCharacterCard : selectDestination) : Event::consume);
 		}
 	}
 
@@ -306,26 +314,54 @@ public class SchoolBoardController extends Controller {
 		});
 
 		pane.setOnMouseClicked(event -> {
-			selectedStudent = null;
-			drawSelectedStudent();
+			selected = null;
+			drawSelected();
+			event.consume();
 		});
 
 		selectSource = event -> {
 			ImageView imageView = (ImageView) event.getSource();
-			selectedStudent = studentImages.keySet().stream()
+			selected = studentImages.keySet().stream()
 					.filter(k -> studentImages.get(k) == imageView.getImage())
 					.findAny().orElse(null);
-			drawSelectedStudent();
+			drawSelected();
 			event.consume();
 		};
 
-		selectMoveDestination = event -> {
-			if (selectedStudent != null) {
-				client.moveStudent(selectedStudent, GameConstants.DINING_ROOM);
-				selectedStudent = null;
-				drawSelectedStudent();
+		selectDestination = event -> {
+			if (selected != null) {
+				client.moveStudent(selected, GameConstants.DINING_ROOM);
+				selected = null;
+				drawSelected();
 			}
 			event.consume();
 		};
+
+		selectColorForCharacterCard = event -> {
+			Object source = event.getSource();
+			String selectedColor = null;
+			if (source instanceof ImageView imageView) {
+				selectedColor = studentImages.keySet().stream()
+						.filter(k -> studentImages.get(k) == imageView.getImage())
+						.findAny().orElse(null);
+			} else if (source instanceof GridPane gridPane) {
+				selectedColor = diningroomPanes.keySet().stream()
+						.filter(k -> diningroomPanes.get(k) == gridPane)
+						.findAny().orElse(null);
+			}
+			CharacterCardsController characterCardsController = (CharacterCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
+			characterCardsController.selectColor(selectedColor);
+		};
+	}
+
+	protected void initCharacterMiniatures() {
+		BoardStatus boardStatus = client.getBoardStatus();
+		characterMiniatures = new HashMap<>();
+		for (String character : boardStatus.getCharacterCards()) {
+			characterMiniatures.put(
+					character,
+					new Image(getClass().getResource("/graphics/CharacterCards/" + character + ".jpg").toExternalForm())
+			);
+		}
 	}
 }

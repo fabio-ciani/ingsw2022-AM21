@@ -113,12 +113,7 @@ public class GraphicalUserInterface extends UserInterface {
 		client.setBoardStatus(message.getStatus());
 		// TODO: update assistant cards view
 		// TODO: trigger current controller update -> switch?
-		Platform.runLater(() -> {
-			SchoolBoardController schoolBoard = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
-			schoolBoard.load();
-			BoardController board = (BoardController) app.getControllerForScene(SceneName.BOARD);
-			board.load();
-		});
+		Platform.runLater(this::updateInGameControllers);
 	}
 
 	@Override
@@ -161,12 +156,7 @@ public class GraphicalUserInterface extends UserInterface {
 	public void handleMessage(InitialBoardStatus message) {
 		client.setBoardStatus(message.getStatus());
 		Platform.runLater(() -> {
-			SchoolBoardController schoolBoard = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
-			schoolBoard.load();
-			BoardController board = (BoardController) app.getControllerForScene(SceneName.BOARD);
-			board.load();
-			CharacterCardsController controller = (CharacterCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
-			controller.load();
+			updateInGameControllers();
 			app.changeScene(SceneName.SCHOOLBOARD);
 		});
 	}
@@ -194,5 +184,14 @@ public class GraphicalUserInterface extends UserInterface {
 			return false;
 		}
 		return true;
+	}
+
+	private void updateInGameControllers() {
+		SchoolBoardController schoolBoard = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
+		schoolBoard.load();
+		BoardController board = (BoardController) app.getControllerForScene(SceneName.BOARD);
+		board.load();
+		CharacterCardsController controller = (CharacterCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
+		controller.load();
 	}
 }

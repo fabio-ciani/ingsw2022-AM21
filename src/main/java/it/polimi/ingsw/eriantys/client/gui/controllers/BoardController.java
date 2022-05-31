@@ -46,9 +46,11 @@ public class BoardController extends Controller {
 	private Map<String, Image> towerImages;
 	private Map<String, Integer> towerSizes;
 	private Map<String, Map<Integer, Image>> cloudImages;
+	private Map<String, Image> characterMiniatures;
 
 	private EventHandler<MouseEvent> selectMoveDestination;
 	private EventHandler<MouseEvent> selectCloud;
+	private EventHandler<MouseEvent> selectIslandForCharacterCard;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -81,7 +83,7 @@ public class BoardController extends Controller {
 
 	@Override
 	public void onChangeScene() {
-		drawSelectedStudent();
+		drawSelected();
 	}
 
 	public void load() {
@@ -97,10 +99,10 @@ public class BoardController extends Controller {
 
 		drawClouds(boardStatus.getCloudTiles());
 
-		drawSelectedStudent();
+		drawSelected();
 	}
 
-	private void drawIslands(List<String> islands,
+	protected void drawIslands(List<String> islands,
 							 Map<String, Integer> sizes,
 							 Map<String, String> controllers,
 							 Map<String, String> playerTowerColors,
@@ -123,7 +125,11 @@ public class BoardController extends Controller {
 				}
 			}
 			ImageView islandImageView = islandImageViews.get(id);
-			islandImageView.setOnMouseClicked(selectMoveDestination);
+			if (client.getCharacterCard() != null) {
+				islandImageView.setOnMouseClicked(selectIslandForCharacterCard);
+			} else {
+				islandImageView.setOnMouseClicked(selectMoveDestination);
+			}
 			islandImageView.setId(island);
 			ImageView towerImageView = towerImageViews.get(id);
 			Text towerText = towerTexts.get(id);
@@ -196,11 +202,11 @@ public class BoardController extends Controller {
 		});
 	}
 
-	private void drawSelectedStudent() {
+	private void drawSelected() {
 		SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
-		String selectedStudent = schoolBoardController.getSelectedStudent();
-		if (selectedStudent != null) {
-			selected_img.setImage(studentImages.get(selectedStudent));
+		String selected = schoolBoardController.getSelected();
+		if (selected != null) {
+			selected_img.setImage(Optional.ofNullable(studentImages.get(selected)).orElse(characterMiniatures.get(selected)));
 			selected_img.setVisible(true);
 			selected_text.setVisible(true);
 		} else {
@@ -350,15 +356,15 @@ public class BoardController extends Controller {
 
 		selectMoveDestination = event -> {
 			SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
-			String selectedStudent = schoolBoardController.getSelectedStudent();
+			String selectedStudent = schoolBoardController.getSelected();
 			ImageView imageView = (ImageView) event.getSource();
 			String selectedIsland = imageView.getId();
 			if (selectedStudent == null) {
 				client.moveMotherNature(selectedIsland);
 			} else {
 				client.moveStudent(selectedStudent, selectedIsland);
-				schoolBoardController.setSelectedStudent(null);
-				drawSelectedStudent();
+				schoolBoardController.setSelected(null);
+				drawSelected();
 			}
 			event.consume();
 		};
@@ -372,5 +378,32 @@ public class BoardController extends Controller {
 			client.chooseCloud(selectedCloud);
 			event.consume();
 		};
+
+		selectIslandForCharacterCard = event -> {
+			CharacterCardsController characterCardsController = (CharacterCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
+			ImageView imageView = (ImageView) event.getSource();
+			String selectedIsland = imageView.getId();
+			characterCardsController.selectIsland(selectedIsland);
+			event.consume();
+		};
+
+		pane.setOnMouseClicked(event -> {
+			SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
+			schoolBoardController.setSelected(null);
+			client.setCharacterCard(null);
+			drawSelected();
+			event.consume();
+		});
+	}
+
+	protected void initCharacterMiniatures() {
+		BoardStatus boardStatus = client.getBoardStatus();
+		characterMiniatures = new HashMap<>();
+		for (String character : boardStatus.getCharacterCards()) {
+			characterMiniatures.put(
+					character,
+					new Image(getClass().getResource("/graphics/CharacterCards/" + character + ".jpg").toExternalForm())
+			);
+		}
 	}
 }

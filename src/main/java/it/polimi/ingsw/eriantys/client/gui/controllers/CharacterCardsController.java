@@ -2,9 +2,11 @@ package it.polimi.ingsw.eriantys.client.gui.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.eriantys.client.gui.SceneName;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,12 +27,21 @@ import java.util.stream.Collectors;
 public class CharacterCardsController extends Controller {
 	@FXML private BorderPane pane;
 	@FXML private GridPane cards;
+	@FXML private Button back;
+	@FXML private Button confirm;
+
+	private List<String> sourceColors;
+	private List<String> destinationColors;
+	private String targetColor;
+	private String targetIsland;
+
 	private BoardStatus status;
 	private List<String> characters;
 	private Map<String, Integer> costs;
 	private final Map<String, Map<String, String>> info;
 
 	private List<ImageView> characterCoins;
+	private List<List<ImageView>> characterStudents;
 
 	public CharacterCardsController() throws IOException {
 		try (InputStream in = getClass().getClassLoader().getResourceAsStream("help/characters.json")) {
@@ -45,6 +57,47 @@ public class CharacterCardsController extends Controller {
 				.filter(y -> y instanceof ImageView && y.getId().matches("c\\d_coin"))
 				.map(x -> (ImageView) x)
 				.collect(Collectors.toList());
+
+		characterStudents = cards.getChildren().stream()
+				.filter(y -> y instanceof GridPane && y.getId().matches("c\\d_students"))
+				.map(x -> (GridPane) x)
+				.map(gp -> gp.getChildren().stream()
+						.map(n -> (ImageView) n)
+						.toList())
+				.toList();
+		System.out.println(characterStudents);
+
+		back.setOnAction(event -> {
+			app.changeScene(SceneName.SCHOOLBOARD);
+			event.consume();
+		});
+
+		confirm.setOnAction(event -> {
+			SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
+			if (client.getCharacterCard() != null) {
+				client.playCharacterCard(sourceColors.toArray(new String[0]),
+						destinationColors.toArray(new String[0]),
+						targetColor,
+						targetIsland);
+				schoolBoardController.setSelected(null);
+				drawImages();
+			} else {
+				showError.accept("Select a character card first");
+			}
+		});
+
+		pane.setOnMouseClicked(event -> {
+			SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
+			schoolBoardController.setSelected(null);
+			client.setCharacterCard(null);
+			drawImages();
+			event.consume();
+		});
+	}
+
+	@Override
+	public void onChangeScene() {
+		drawImages();
 	}
 
 	@Override
@@ -65,6 +118,38 @@ public class CharacterCardsController extends Controller {
 		drawLabels();
 	}
 
+	public void selectColor(String color) {
+		if (sourceColors.isEmpty()) {
+			if (targetColor == null) {
+				targetColor = color;
+			} else {
+				sourceColors.add(targetColor);
+				destinationColors.add(color);
+				targetColor = null;
+			}
+		} else {
+			if (sourceColors.size() > destinationColors.size()) {
+				destinationColors.add(color);
+			} else {
+				sourceColors.add(color);
+			}
+		}
+		String message = "sourceColors = " + sourceColors + "\n" +
+				"destinationColors = " + destinationColors + "\n" +
+				"targetColor = " + targetColor + "\n" +
+				"targetIsland = " + targetIsland;
+		showInfo.accept(message);
+	}
+
+	public void selectIsland(String island) {
+		targetIsland = island;
+		String message = "sourceColors = " + sourceColors + "\n" +
+				"destinationColors = " + destinationColors + "\n" +
+				"targetColor = " + targetColor + "\n" +
+				"targetIsland = " + targetIsland;
+		showInfo.accept(message);
+	}
+
 	private void drawImages() {
 		cards.getChildren().stream()
 				.filter(x -> x instanceof ImageView && x.getId().matches("^\\w+img\\z"))
@@ -77,20 +162,58 @@ public class CharacterCardsController extends Controller {
 					roundBorders(img, 30);
 
 					Tooltip desc = generateDescription(character);
-					// desc.setShowDelay(Duration.ZERO);
+					desc.setShowDelay(Duration.millis(300));
 					Tooltip.install(img, desc);
 
 					if (costs.get(character) - Integer.parseInt(info.get(character).get("cost")) != 1)
 						characterCoins.get(Character.getNumericValue(x.getId().charAt(1))).setVisible(false);
 
-					// TODO: character cards status + effects
+					Map<String, Integer> cardStudents = status.getCharacterCardsStudents().get(character);
+					if (cardStudents != null) {
+						Iterator<ImageView> imageViewIterator = characterStudents.get(Character.getNumericValue(x.getId().charAt(1))).iterator();
+						cardStudents.forEach((color, amount) -> {
+							Image image = new Image(getClass().getResource("/graphics/Students/" + color.charAt(0) + color.substring(1).toLowerCase() + "Student.png").toExternalForm());
+							for (int i = 0; i < amount; i++) {
+								ImageView imageView = imageViewIterator.next();
+								imageView.setImage(image);
+								imageView.setVisible(true);
+								imageView.setOnMouseClicked(event -> {
+									if (client.getCharacterCard() != null) {
+										selectColor(color);
+									}
+									event.consume();
+								});
+							}
+						});
+					}
 
 					if (status.getPlayerCoins().get(client.getUsername()) - costs.get(character) < 0) {
 						applyGrayscale(img);
 						img.setOnMouseClicked(Event::consume);
 					} else {
+						SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
+						BoardController boardController = (BoardController) app.getControllerForScene(SceneName.BOARD);
+						if (character.equals(schoolBoardController.getSelected())) {
+							applyGreenShade(img);
+						} else {
+							img.setEffect(null);
+						}
 						img.setOnMouseClicked(event -> {
-							// client.playCharacterCard(...);
+							client.setCharacterCard(characters.indexOf(character));
+							if (info.get(character).get("cmd") == null) {
+								client.playCharacterCard(null, null, null, null);
+							} else {
+								boardController.initCharacterMiniatures();
+								boardController.load();
+								schoolBoardController.initCharacterMiniatures();
+								schoolBoardController.setSelected(character);
+								schoolBoardController.setEventHandlers();
+								sourceColors = new ArrayList<>();
+								destinationColors = new ArrayList<>();
+								targetColor = null;
+								targetIsland = null;
+								drawImages();
+							}
 							event.consume();
 						});
 					}

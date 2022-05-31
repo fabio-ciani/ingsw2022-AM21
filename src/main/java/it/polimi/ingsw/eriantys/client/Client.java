@@ -79,7 +79,7 @@ public class Client extends Thread {
 		}
 		try {
 			this.socket = new Socket(serverAddress, serverPort);
-			this.socket.setSoTimeout(5000);
+			this.socket.setSoTimeout(10000);
 			this.out = new ObjectOutputStream(this.socket.getOutputStream());
 			this.in = new ObjectInputStream(this.socket.getInputStream());
 		} catch (IOException e) {
@@ -99,7 +99,6 @@ public class Client extends Thread {
 				throw new RuntimeException(e);
 			}
 		}
-		System.out.println("thread awake");
 		ui.init();
 		try (socket) {
 			while (running) {

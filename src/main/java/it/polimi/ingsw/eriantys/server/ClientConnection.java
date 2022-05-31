@@ -30,7 +30,7 @@ public class ClientConnection {
 	public ClientConnection(Server server, Socket socketToClient) throws IOException {
 		this.server = server;
 		this.socketToClient = socketToClient;
-		this.socketToClient.setSoTimeout(5000);
+		this.socketToClient.setSoTimeout(10000);
 		this.out = new ObjectOutputStream(socketToClient.getOutputStream());
 		this.in = new ObjectInputStream(socketToClient.getInputStream());
 		this.running = true;

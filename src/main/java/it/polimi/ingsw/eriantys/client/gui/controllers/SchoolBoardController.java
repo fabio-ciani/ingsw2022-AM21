@@ -215,6 +215,11 @@ public class SchoolBoardController extends Controller {
 	}
 
 	private void drawCoins(Integer amount) {
+		if (amount == null) {
+			coins.setVisible(false);
+			c_text.setVisible(false);
+			return;
+		}
 		if (coins.getImage() == null) {
 			coins.setImage(coinImage);
 			coins.setVisible(true);

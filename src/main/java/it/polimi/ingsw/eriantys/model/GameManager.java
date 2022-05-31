@@ -297,8 +297,11 @@ public class GameManager {
 		boolean res = !Objects.equals(oldController, newController);
 		island.setController(newController);
 		if (res) {
-			if (oldController != null && !oldController.returnTower()) throw new RuntimeException();
-			if (newController != null && !newController.deployTower()) throw new RuntimeException();
+			int islandSize = island.getSize();
+			for (int i = 0; i < islandSize; i++) {
+				if (oldController != null && !oldController.returnTower()) throw new RuntimeException();
+				if (newController != null && !newController.deployTower()) return true;
+			}
 		}
 		return res;
 	}

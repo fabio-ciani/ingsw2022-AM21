@@ -262,7 +262,7 @@ public class CommandLineInterface extends UserInterface {
 		if (cardsNoEntryTiles != null) {
 			Integer noEntryTiles = cardsNoEntryTiles.get(card);
 			if (noEntryTiles != null) {
-				output.append("\nNo entry tiles: ").append(noEntryTiles);
+				output.append("\nNo-entry tiles: ").append(noEntryTiles);
 			}
 		}
 		Map<String, Map<String, Integer>> cardsStudents = boardStatus.getCharacterCardsStudents();
@@ -305,7 +305,7 @@ public class CommandLineInterface extends UserInterface {
 			}
 			Integer noEntryTiles = islandsNoEntryTiles.get(island);
 			if (noEntryTiles != null && noEntryTiles > 0) {
-				islandStringBuilder.append("\nhas ").append(noEntryTiles).append(" no entry tiles");
+				islandStringBuilder.append("\nhas ").append(noEntryTiles).append(" no-entry tiles");
 			}
 			islandGridBuilder.add(islandStringBuilder.toString());
 		}

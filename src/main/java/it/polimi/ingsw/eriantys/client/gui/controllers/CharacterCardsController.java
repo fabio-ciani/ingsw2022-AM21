@@ -42,6 +42,8 @@ public class CharacterCardsController extends Controller {
 
 	private List<ImageView> characterCoins;
 	private List<List<ImageView>> characterStudents;
+	private List<ImageView> characterNoEntryTiles;
+	private List<Text> characterNoEntryTileTexts;
 
 	public CharacterCardsController() throws IOException {
 		try (InputStream in = getClass().getClassLoader().getResourceAsStream("help/characters.json")) {
@@ -56,6 +58,7 @@ public class CharacterCardsController extends Controller {
 		characterCoins = cards.getChildren().stream()
 				.filter(y -> y instanceof ImageView && y.getId().matches("c\\d_coin"))
 				.map(x -> (ImageView) x)
+				.peek(i -> i.setImage(new Image(getClass().getResource("/graphics/Coin.png").toExternalForm())))
 				.collect(Collectors.toList());
 
 		characterStudents = cards.getChildren().stream()
@@ -64,6 +67,17 @@ public class CharacterCardsController extends Controller {
 				.map(gp -> gp.getChildren().stream()
 						.map(n -> (ImageView) n)
 						.toList())
+				.toList();
+
+		characterNoEntryTiles = cards.getChildren().stream()
+				.filter(y -> y instanceof ImageView && y.getId().matches("c\\d_tile"))
+				.map(x -> (ImageView) x)
+				.peek(i -> i.setImage(new Image(getClass().getResource("/graphics/NoEntryTile.png").toExternalForm())))
+				.toList();
+
+		characterNoEntryTileTexts = cards.getChildren().stream()
+				.filter(y -> y instanceof Text && y.getId().matches("c\\d_tile_num"))
+				.map(x -> (Text) x)
 				.toList();
 
 		back.setOnAction(event -> {
@@ -154,7 +168,8 @@ public class CharacterCardsController extends Controller {
 				.filter(x -> x instanceof ImageView && x.getId().matches("^\\w+img\\z"))
 				.forEach(x -> {
 					ImageView img = (ImageView) x;
-					String character = characters.get(Character.getNumericValue(x.getId().charAt(1)));
+					int cardId = Character.getNumericValue(x.getId().charAt(1));
+					String character = characters.get(cardId);
 
 					img.setImage(new Image(getClass().getResource("/graphics/CharacterCards/" + character + ".jpg").toExternalForm()));
 
@@ -164,12 +179,13 @@ public class CharacterCardsController extends Controller {
 					desc.setShowDelay(Duration.millis(300));
 					Tooltip.install(img, desc);
 
-					if (costs.get(character) - Integer.parseInt(info.get(character).get("cost")) != 1)
-						characterCoins.get(Character.getNumericValue(x.getId().charAt(1))).setVisible(false);
+					characterCoins.get(cardId).setVisible(
+							costs.get(character) - Integer.parseInt(info.get(character).get("cost")) == 1
+					);
 
 					Map<String, Integer> cardStudents = status.getCharacterCardsStudents().get(character);
 					if (cardStudents != null) {
-						Iterator<ImageView> imageViewIterator = characterStudents.get(Character.getNumericValue(x.getId().charAt(1))).iterator();
+						Iterator<ImageView> imageViewIterator = characterStudents.get(cardId).iterator();
 						cardStudents.forEach((color, amount) -> {
 							Image image = new Image(getClass().getResource("/graphics/Students/" + color.charAt(0) + color.substring(1).toLowerCase() + "Student.png").toExternalForm());
 							for (int i = 0; i < amount; i++) {
@@ -184,6 +200,13 @@ public class CharacterCardsController extends Controller {
 								});
 							}
 						});
+					}
+
+					Integer cardNoEntryTiles = status.getCharacterCardsNoEntryTiles().get(character);
+					if (cardNoEntryTiles != null) {
+						characterNoEntryTiles.get(cardId).setVisible(true);
+						characterNoEntryTileTexts.get(cardId).setVisible(true);
+						characterNoEntryTileTexts.get(cardId).setText(cardNoEntryTiles.toString());
 					}
 
 					if (status.getPlayerCoins().get(client.getUsername()) - costs.get(character) < 0) {

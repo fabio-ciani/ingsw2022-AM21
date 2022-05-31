@@ -103,14 +103,20 @@ public class BoardStatus implements Serializable {
 		private CharacterCardsInfo() {
 			this.characterCards = gm.charactersRepresentation();
 
-			this.characterCardsCost = new LinkedHashMap<>();
-			this.characterCardsStudents = new LinkedHashMap<>();
-			this.characterCardsNoEntryTiles = new LinkedHashMap<>();
+			if (characterCards != null) {
+				this.characterCardsCost = new LinkedHashMap<>();
+				this.characterCardsStudents = new LinkedHashMap<>();
+				this.characterCardsNoEntryTiles = new LinkedHashMap<>();
 
-			for (String c : characterCards) {
-				characterCardsCost.put(c, gm.characterCostRepresentation(c));
-				characterCardsStudents.put(c, gm.characterStudentsRepresentation(c));
-				characterCardsNoEntryTiles.put(c, gm.characterNoEntryTilesRepresentation(c));
+				for (String c : characterCards) {
+					characterCardsCost.put(c, gm.characterCostRepresentation(c));
+					characterCardsStudents.put(c, gm.characterStudentsRepresentation(c));
+					characterCardsNoEntryTiles.put(c, gm.characterNoEntryTilesRepresentation(c));
+				}
+			} else {
+				this.characterCardsCost = null;
+				this.characterCardsStudents = null;
+				this.characterCardsNoEntryTiles = null;
 			}
 		}
 	}

@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.ResourceBundle;
 
 public class WaitingRoomController extends Controller {
 	@FXML private BorderPane pane;
+	@FXML private Text lobby;
 	@FXML private TableView<Player> info;
 	@FXML private TableColumn<Player, String> usernames;
 	@FXML private TableColumn<Player, String> tower_colors;
@@ -52,6 +54,10 @@ public class WaitingRoomController extends Controller {
 	@Override
 	public Pane getTopLevelPane() {
 		return pane;
+	}
+
+	public void setText(String id) {
+		lobby.setText("Lobby #" + id);
 	}
 
 	public void updatePlayers(List<String> players) {

@@ -69,7 +69,11 @@ public class GraphicalUserInterface extends UserInterface {
 	public void handleMessage(AcceptedJoinLobby message) {
 		client.setGameId(message.getGameId());
 		client.putReconnectSettings(message);
-		Platform.runLater(() -> app.changeScene(SceneName.WAITING_ROOM));
+		Platform.runLater(() -> {
+			WaitingRoomController controller = (WaitingRoomController) app.getControllerForScene(SceneName.WAITING_ROOM);
+			controller.setText(Integer.toString(message.getGameId()));
+			app.changeScene(SceneName.WAITING_ROOM);
+		});
 	}
 
 	@Override

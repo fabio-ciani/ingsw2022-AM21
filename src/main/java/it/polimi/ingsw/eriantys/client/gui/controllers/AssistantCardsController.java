@@ -103,6 +103,8 @@ public class AssistantCardsController extends Controller {
 				img.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + card.charAt(0) + card.substring(1).toLowerCase() + ".png").toExternalForm()));
 				label.setText(player);
 			} else {
+				img.setFitWidth(70);
+				img.setFitHeight(106);
 				img.setImage(new Image(getClass().getResource("/graphics/CardBack.png").toExternalForm()));
 				label.setText(null);
 			}

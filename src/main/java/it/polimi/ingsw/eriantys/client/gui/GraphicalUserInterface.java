@@ -178,7 +178,14 @@ public class GraphicalUserInterface extends UserInterface {
 
 	@Override
 	public void handleMessage(DisconnectionUpdate message) {
+		String subject = message.getSubject();
+		int numPlayers = message.getNumPlayers();
+		boolean gameIdle = message.isGameIdle();
 
+		Platform.runLater(() ->
+				showInfo(subject + " has disconnected, " + numPlayers + " players currently connected"
+				+ (gameIdle ? "\nGame idle" : ""))
+		);
 	}
 
 	private boolean isNextPlayer(String username) {

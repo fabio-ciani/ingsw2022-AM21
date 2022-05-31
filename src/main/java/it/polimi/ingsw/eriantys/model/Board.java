@@ -237,7 +237,8 @@ public class Board {
 		tempIsland = tryMerge(newIsland, next);
 		if (tempIsland != null) {
 			size--;
-			finalIndex = Math.min(targetIndex, size - 1);	// avoid index out of bounds caused by the resizing of islands
+			// avoid index out of bounds caused by the resizing of islands
+			finalIndex = Math.min(finalIndex == null ? targetIndex : finalIndex, size - 1);
 			newIsland = tempIsland;
 		}
 

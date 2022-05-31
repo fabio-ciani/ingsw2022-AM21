@@ -169,7 +169,7 @@ public class GraphicalUserInterface extends UserInterface {
 	}
 
 	private boolean isNextPlayer(String username) {
-		if (!Objects.equals(client.getUsername(), username)) {
+		if (username != null && !Objects.equals(client.getUsername(), username)) {
 			showInfo(String.format("%s is playing...", username));
 			return false;
 		}

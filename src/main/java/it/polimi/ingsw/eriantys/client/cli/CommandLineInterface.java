@@ -386,7 +386,7 @@ public class CommandLineInterface extends UserInterface {
 	}
 
 	private boolean notNextPlayer(String username) {
-		if (!Objects.equals(client.getUsername(), username)) {
+		if (username != null && !Objects.equals(client.getUsername(), username)) {
 			showInfo(String.format("%s is playing...", username));
 			return true;
 		}

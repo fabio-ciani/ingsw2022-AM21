@@ -274,23 +274,31 @@ public class GameManager {
 			return false;
 
 		List<Player> players = this.players.getTurnOrder();
-		Player maxInfluencePlayer = island.getController();
-		int maxInfluence = maxInfluencePlayer == null ? 0 : calc.calculate(maxInfluencePlayer, island, professors.getProfessors(maxInfluencePlayer));
+		Player oldController = island.getController();
+		int maxInfluence =
+				oldController == null ? 0 :
+				calc.calculate(oldController, island,professors.getProfessors(oldController));
+		List<Player> maxInfluencePlayers = new ArrayList<>();
 
 		for (Player player : players) {
 			int influence = calc.calculate(player, island, professors.getProfessors(player));
 			if (influence > maxInfluence) {
 				maxInfluence = influence;
-				maxInfluencePlayer = player;
-			}
+				maxInfluencePlayers.clear();
+				maxInfluencePlayers.add(player);
+			} else if (influence == maxInfluence)
+				maxInfluencePlayers.add(player);
 		}
 
-		Player oldController = island.getController();
-		boolean res = !Objects.equals(oldController, maxInfluencePlayer);
-		island.setController(maxInfluencePlayer);
+		if (maxInfluencePlayers.size() > 1)
+			return false;
+
+		Player newController = maxInfluencePlayers.get(0);
+		boolean res = !Objects.equals(oldController, newController);
+		island.setController(newController);
 		if (res) {
 			if (oldController != null && !oldController.returnTower()) throw new RuntimeException();
-			if (maxInfluencePlayer != null &&	!maxInfluencePlayer.deployTower()) throw new RuntimeException();
+			if (newController != null && !newController.deployTower()) throw new RuntimeException();
 		}
 		return res;
 	}

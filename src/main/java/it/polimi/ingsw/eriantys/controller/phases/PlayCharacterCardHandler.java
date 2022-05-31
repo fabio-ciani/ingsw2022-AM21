@@ -62,6 +62,7 @@ public abstract class PlayCharacterCardHandler implements MessageHandler {
 		}
 
 		game.acceptRequest(message);
-		game.sendUpdate(new CharacterCardUpdate(card), true);
+		game.sendUpdate(new CharacterCardUpdate(card), false);
+		game.sendBoardUpdate();
 	}
 }

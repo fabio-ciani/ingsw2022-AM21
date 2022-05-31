@@ -139,9 +139,22 @@ public class GraphicalUserInterface extends UserInterface {
 
 	@Override
 	public void handleMessage(GameOverUpdate message) {
+		String alertContent;
 		if (Objects.equals(message.getWinner(), GameConstants.TIE))
-			showInfo("The game ends in a tie!");
-		else showInfo(message.getWinner() + " is the winner of the game!");
+			alertContent = "The game ends in a tie!";
+		else
+			alertContent = message.getWinner() + " is the winner of the game!";
+
+		Platform.runLater(() -> {
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Game over");
+			alert.setHeaderText("Game over");
+			alert.setContentText(alertContent);
+			alert.showAndWait().ifPresent(type -> {
+				client.setRunning(false);
+				// System.exit(0);
+			});
+		});
 	}
 
 	@Override

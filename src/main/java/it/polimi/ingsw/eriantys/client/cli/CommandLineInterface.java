@@ -528,7 +528,14 @@ public class CommandLineInterface extends UserInterface {
 	@Override
 	public void handleMessage(GameOverUpdate message) {
 		client.removeReconnectSettings();
-		showInfo("Game over: the winner is " + message.getWinner());
+
+		if (Objects.equals(message.getWinner(), GameConstants.TIE))
+			showInfo("The game ends in a tie!");
+		else
+			showInfo(message.getWinner() + " is the winner of the game!");
+
+		new Scanner(System.in).nextLine();
+		client.setRunning(false);
 	}
 
 	@Override

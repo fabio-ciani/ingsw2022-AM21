@@ -68,6 +68,7 @@ public class SelectCloudHandler extends PlayCharacterCardHandler {
 		}
 
 		game.acceptRequest(message);
+		game.sendBoardUpdate();
 		game.advanceTurn();
 	}
 }

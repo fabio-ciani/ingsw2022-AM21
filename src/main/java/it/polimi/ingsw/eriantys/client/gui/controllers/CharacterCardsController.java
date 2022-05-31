@@ -65,7 +65,6 @@ public class CharacterCardsController extends Controller {
 						.map(n -> (ImageView) n)
 						.toList())
 				.toList();
-		System.out.println(characterStudents);
 
 		back.setOnAction(event -> {
 			app.changeScene(SceneName.SCHOOLBOARD);

@@ -99,7 +99,8 @@ public class AssistantCardsController extends Controller {
 			if (player != null && played.get(player) != null) {
 				img.setFitWidth(72);
 				img.setFitHeight(106);
-				img.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + played.get(player) + ".png").toExternalForm()));
+				String card = played.get(player);
+				img.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + card.charAt(0) + card.substring(1).toLowerCase() + ".png").toExternalForm()));
 				label.setText(player);
 			} else {
 				img.setImage(new Image(getClass().getResource("/graphics/CardBack.png").toExternalForm()));

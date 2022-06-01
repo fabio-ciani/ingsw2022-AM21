@@ -470,7 +470,6 @@ public class CommandLineInterface extends UserInterface {
 		client.setBoardStatus(message.getStatus());
 		if (notNextPlayer(message.getNextPlayer())) return;
 		showInfo("It's your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
-		client.setBoardStatus(message.getStatus());
 	}
 
 	@Override

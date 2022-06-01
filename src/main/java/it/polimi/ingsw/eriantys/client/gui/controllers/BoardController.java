@@ -206,7 +206,11 @@ public class BoardController extends Controller {
 		SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
 		String selected = schoolBoardController.getSelected();
 		if (selected != null) {
-			selected_img.setImage(Optional.ofNullable(studentImages.get(selected)).orElse(characterMiniatures.get(selected)));
+			Image image = studentImages.get(selected);
+			if (image == null && characterMiniatures != null) {
+				image = characterMiniatures.get(selected);
+			}
+			selected_img.setImage(image);
 			selected_img.setVisible(true);
 			selected_text.setVisible(true);
 		} else {

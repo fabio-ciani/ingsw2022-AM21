@@ -102,11 +102,12 @@ public class AssistantCardsController extends Controller {
 				String card = played.get(player);
 				img.setImage(new Image(getClass().getResource("/graphics/AssistantCards/" + card.charAt(0) + card.substring(1).toLowerCase() + ".png").toExternalForm()));
 				label.setText(player);
+				label.setVisible(true);
 			} else {
 				img.setFitWidth(70);
 				img.setFitHeight(106);
 				img.setImage(new Image(getClass().getResource("/graphics/CardBack.png").toExternalForm()));
-				label.setText(null);
+				label.setVisible(false);
 			}
 
 			roundBorders(img, 10);

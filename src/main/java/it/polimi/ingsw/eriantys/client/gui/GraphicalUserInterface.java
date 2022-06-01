@@ -110,14 +110,19 @@ public class GraphicalUserInterface extends UserInterface {
 			AssistantCardsController controller = (AssistantCardsController) app.getControllerForPopup(PopupName.ASSISTANT_CARDS);
 			controller.populate(message.getAvailableCards().get(client.getUsername()), message.getPlayedCards());
 		});
+		if (isNextPlayer(message.getNextPlayer())) {
+			showInfo("It's time to play an assistant card");
+		}
 	}
 
 	@Override
 	public void handleMessage(BoardUpdate message) {
 		client.setBoardStatus(message.getStatus());
 		// TODO: update assistant cards view
-		// TODO: trigger current controller update -> switch?
 		Platform.runLater(this::updateInGameControllers);
+		// if (isNextPlayer(message.getNextPlayer())) {
+		// 	showInfo("It's your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
+		// }
 	}
 
 	@Override
@@ -183,7 +188,10 @@ public class GraphicalUserInterface extends UserInterface {
 	}
 
 	private boolean isNextPlayer(String username) {
-		if (username != null && !Objects.equals(client.getUsername(), username)) {
+		if (username == null) {
+			return false;
+		}
+		if (!Objects.equals(client.getUsername(), username)) {
 			showInfo(String.format("%s is playing...", username));
 			return false;
 		}

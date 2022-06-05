@@ -14,8 +14,8 @@ An implementation of a tabletop game as the _Software Engineering_ final examina
 | :---                      | :---:             |
 | Simplified Mode           | :yellow_circle:   |
 | Expert Mode               | :yellow_circle:   |
-| CLI                       | :yellow_circle:   |
-| GUI                       | :yellow_circle:   |
+| CLI                       | :green_circle:    |
+| GUI                       | :green_circle:    |
 | Character Cards           | :green_circle:    |
 | 4-Player Mode             | :red_circle:      |
 | Multiple Games            | :green_circle:    |

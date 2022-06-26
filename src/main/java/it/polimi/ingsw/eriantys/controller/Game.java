@@ -36,7 +36,7 @@ public class Game {
 	private List<String> players;
 	private final Map<String, String> playerPasscodes;
 	private int currentPlayer;
-	private boolean playedCharactedCard;
+	private boolean playedCharacterCard;
 	private Map<String, List<String>> availableAssistantCards;
 	private MessageHandler messageHandler;
 	private GameManager gameManager;
@@ -384,9 +384,9 @@ public class Game {
 	 */
 	public void playCharacterCard(int card, JsonObject params)
 			throws Exception, InvalidArgumentException, ItemNotAvailableException, DuplicateNoEntryTileException, NoMovementException {
-		if (playedCharactedCard) throw new Exception();
+		if (playedCharacterCard) throw new Exception();
 		lastRound = gameManager.handleCharacterCard(card, params);
-		playedCharactedCard = true;
+		playedCharacterCard = true;
 		if (lastRound) broadcast(new LastRoundUpdate());
 	}
 
@@ -436,7 +436,7 @@ public class Game {
 	 */
 	public void nextPlayer() {
 		currentPlayer = (currentPlayer + 1) % players.size();
-		playedCharactedCard = false;
+		playedCharacterCard = false;
 		checkDisconnection();
 	}
 

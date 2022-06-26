@@ -29,13 +29,6 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		this.game = game;
 		this.availableCards = game.getAssistantCards();
 		this.playedCards = new LinkedHashMap<>();
-
-		try {
-			this.game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards), true);
-		} catch (NoConnectionException e) {
-			// TODO handle exception
-			throw new RuntimeException(e);
-		}
 	}
 
 	@Override

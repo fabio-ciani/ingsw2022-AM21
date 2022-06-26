@@ -3,9 +3,9 @@ package it.polimi.ingsw.eriantys.controller.phases;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.MoveStudent;
-import it.polimi.ingsw.eriantys.messages.server.BoardUpdate;
-import it.polimi.ingsw.eriantys.messages.server.UserActionUpdate;
-import it.polimi.ingsw.eriantys.model.exceptions.*;
+import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
+import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
+import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
 /**
@@ -23,13 +23,6 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 	public MoveStudentHandler(Game game) {
 		super(game);
 		this.movementCount = 0;
-
-		try {
-			this.game.sendBoardUpdate();
-		} catch (NoConnectionException e) {
-			// TODO handle exception
-			throw new RuntimeException(e);
-		}
 	}
 
 	@Override
@@ -45,7 +38,7 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 	}
 
 	@Override
-	public void handleDisconnectedUser(String username) {
+	public void handleDisconnectedUser(String username) throws NoConnectionException {
 		game.receiveMotherNatureMovement();
 	}
 

@@ -7,6 +7,8 @@ import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.client.HelpRequest;
 import it.polimi.ingsw.eriantys.messages.server.*;
 import it.polimi.ingsw.eriantys.model.GameManager;
+import it.polimi.ingsw.eriantys.model.TowerColor;
+import it.polimi.ingsw.eriantys.model.Wizard;
 import it.polimi.ingsw.eriantys.model.exceptions.*;
 import it.polimi.ingsw.eriantys.server.ClientConnection;
 import it.polimi.ingsw.eriantys.server.HelpContent;
@@ -34,6 +36,7 @@ public class Game {
 	private List<String> players;
 	private final Map<String, String> playerPasscodes;
 	private int currentPlayer;
+	private boolean playedCharactedCard;
 	private Map<String, List<String>> availableAssistantCards;
 	private MessageHandler messageHandler;
 	private GameManager gameManager;
@@ -108,11 +111,18 @@ public class Game {
 	/**
 	 * Sets up the game by setting the {@code started} flag to {@code true}, setting the game manager and the setting the
 	 * starting message handler.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void setup() {
+	public void setup() throws NoConnectionException {
 		started = true;
 		setGameManager();
 		messageHandler = new GameSetupHandler(this);
+		List<String> towerColorStringLiterals = new ArrayList<>(TowerColor.stringLiterals());
+		if (getInfo().getLobbySize() != 3) towerColorStringLiterals.remove("GREY");
+		sendUpdate(new UserSelectionUpdate(
+						towerColorStringLiterals, Wizard.stringLiterals(),
+						new HashMap<>(), new HashMap<>()),
+				true);
 		checkDisconnection();
 	}
 
@@ -146,19 +156,25 @@ public class Game {
 		}
 		availableAssistantCards = gameManager.getAvailableAssistantCards();
 		messageHandler = new PlayAssistantCardHandler(this);
+		sendUpdate(
+				new AssistantCardUpdate(new HashMap<>(), getAssistantCards()),
+				true
+		);
 		checkDisconnection();
 	}
 
 	/**
 	 * Handles the assistant cards played by the players and sets up the new order of the players.
 	 * @param playedCards the assistant card played by each player.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void newTurn(Map<String, String> playedCards) {
+	public void newTurn(Map<String, String> playedCards) throws NoConnectionException {
 		lastRound = gameManager.handleAssistantCards(playedCards);
 		if (lastRound) broadcast(new LastRoundUpdate());
 		players = gameManager.getTurnOrder();
 		currentPlayer = 0;
 		messageHandler = new MoveStudentHandler(this);
+		sendBoardUpdate();
 		updateCurrentPlayer();
 		checkDisconnection();
 	}
@@ -170,10 +186,18 @@ public class Game {
 	 */
 	public void advanceTurn() throws NoConnectionException {
 		nextPlayer();
+
+		try {
+			gameManager.cancelCharacterCardEffect();
+		} catch (InvalidArgumentException e) {
+			e.printStackTrace();
+		}
+
 		if (currentPlayer == 0)
 			newRound();
 		else {
 			messageHandler = new MoveStudentHandler(this);
+			sendBoardUpdate();
 			updateCurrentPlayer();
 			checkDisconnection();
 		}
@@ -181,17 +205,21 @@ public class Game {
 
 	/**
 	 * Advances to the step of the turn when the current player can move Mother Nature.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void receiveMotherNatureMovement() {
+	public void receiveMotherNatureMovement() throws NoConnectionException {
 		messageHandler = new MotherNatureDestinationHandler(this);
+		sendBoardUpdate();
 		checkDisconnection();
 	}
 
 	/**
 	 * Advances to the step of the turn when the current player can select a cloud tile.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void receiveCloudSelection() {
+	public void receiveCloudSelection() throws NoConnectionException {
 		messageHandler = new SelectCloudHandler(this);
+		sendBoardUpdate();
 		checkDisconnection();
 	}
 
@@ -355,8 +383,10 @@ public class Game {
 	 * @throws NoMovementException if an error has occurred while moving one or more students.
 	 */
 	public void playCharacterCard(int card, JsonObject params)
-			throws InvalidArgumentException, ItemNotAvailableException, DuplicateNoEntryTileException, NoMovementException {
+			throws Exception, InvalidArgumentException, ItemNotAvailableException, DuplicateNoEntryTileException, NoMovementException {
+		if (playedCharactedCard) throw new Exception();
 		lastRound = gameManager.handleCharacterCard(card, params);
+		playedCharactedCard = true;
 		if (lastRound) broadcast(new LastRoundUpdate());
 	}
 
@@ -406,6 +436,7 @@ public class Game {
 	 */
 	public void nextPlayer() {
 		currentPlayer = (currentPlayer + 1) % players.size();
+		playedCharactedCard = false;
 		checkDisconnection();
 	}
 

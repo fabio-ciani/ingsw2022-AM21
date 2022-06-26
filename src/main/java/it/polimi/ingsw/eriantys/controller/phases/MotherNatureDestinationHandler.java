@@ -19,13 +19,6 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 	 */
 	public MotherNatureDestinationHandler(Game game) {
 		super(game);
-
-		try {
-			this.game.sendBoardUpdate();
-		} catch (NoConnectionException e) {
-			// TODO handle exception
-			throw new RuntimeException(e);
-		}
 	}
 
 	@Override
@@ -41,7 +34,7 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 	}
 
 	@Override
-	public void handleDisconnectedUser(String username) {
+	public void handleDisconnectedUser(String username) throws NoConnectionException {
 		game.receiveCloudSelection();
 	}
 

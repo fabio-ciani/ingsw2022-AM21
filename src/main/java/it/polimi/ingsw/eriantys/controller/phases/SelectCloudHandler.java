@@ -21,13 +21,6 @@ public class SelectCloudHandler extends PlayCharacterCardHandler {
 	 */
 	public SelectCloudHandler(Game game) {
 		super(game);
-
-		try {
-			this.game.sendBoardUpdate();
-		} catch (NoConnectionException e) {
-			// TODO handle exception
-			throw new RuntimeException(e);
-		}
 	}
 
 	@Override
@@ -35,7 +28,7 @@ public class SelectCloudHandler extends PlayCharacterCardHandler {
 		if (m instanceof SelectCloud selectCloud)
 			process(selectCloud);
 		else
-			game.refuseRequest(m, "Unexpected message");
+			super.handle(m);
 	}
 
 	@Override

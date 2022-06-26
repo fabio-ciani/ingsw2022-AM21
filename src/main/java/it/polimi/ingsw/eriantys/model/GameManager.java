@@ -27,6 +27,7 @@ public class GameManager {
 	private InfluenceCalculator calc;
 	private final boolean expertMode;
 	private final CharacterCard[] characters;
+	private CharacterCard selectedCharacterCard;
 	private boolean lastRound;
 
 	public final GameConstants constants;
@@ -249,7 +250,7 @@ public class GameManager {
 		int requestedMovements = board.getDistanceFromMotherNature(destination);
 		int actualMovements = currentPlayer().getMotherNatureMovements();
 		if (requestedMovements < 1)
-			throw new IllegalArgumentException("Must move Mother Nature by at least 1 island");
+			throw new InvalidArgumentException("Must move Mother Nature by at least 1 island");
 		if (requestedMovements > actualMovements)
 			throw new NotEnoughMovementsException("requested " + requestedMovements + ", actual " + actualMovements);
 
@@ -376,17 +377,23 @@ public class GameManager {
 		if (index < 0 || index >= characters.length)
 			throw new InvalidArgumentException("Character card index out of bounds");
 
-		CharacterCard target = characters[index];
-		int originalCost = target.getCost();
+		selectedCharacterCard = characters[index];
+		int originalCost = selectedCharacterCard.getCost();
 
 		if (currPlayer.getCoins() < originalCost)
 			throw new InvalidArgumentException("Not enough coins to play the selected card");
 
-		target.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
+		selectedCharacterCard.applyEffect(sourceColors, destinationColors, targetColor, targetIsland);
 		currPlayer.updateCoins(-originalCost);
 		professors.update(Set.of(Color.values()));
 
 		return lastRound();
+	}
+
+	public void cancelCharacterCardEffect() throws InvalidArgumentException {
+		if (selectedCharacterCard == null) return;
+		selectedCharacterCard.cancelEffect();
+		selectedCharacterCard = null;
 	}
 
 	/**
@@ -766,7 +773,10 @@ public class GameManager {
 		potentialWinners.add(candidates.get(0));
 		int minTowersLeft = candidates.get(0).getTowerQuantity();
 
-		for (Player player : candidates) {
+		if (minTowersLeft == 0) return potentialWinners;
+
+		for (int i = 1; i < candidates.size(); i++) {
+			Player player = candidates.get(i);
 			int numTowersLeft = player.getTowerQuantity();
 			if (numTowersLeft < minTowersLeft) {
 				minTowersLeft = numTowersLeft;
@@ -784,7 +794,10 @@ public class GameManager {
 		potentialWinners.add(candidates.get(0));
 		int maxProfessors = professors.getProfessors(candidates.get(0)).size();
 
-		for (Player player : candidates) {
+		if (maxProfessors == Color.values().length) return potentialWinners;
+
+		for (int i = 1; i < candidates.size(); i++) {
+			Player player = candidates.get(i);
 			int playerProfessors = professors.getProfessors(player).size();
 			if (playerProfessors < maxProfessors) {
 				maxProfessors = playerProfessors;

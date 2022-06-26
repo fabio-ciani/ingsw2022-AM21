@@ -23,6 +23,9 @@ public class LoginController extends Controller {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		username.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+			if (event.getCode() == KeyCode.BACK_SPACE) {
+				return;
+			}
 			if (event.getCode() != KeyCode.ENTER) {
 				event.consume();
 				return;

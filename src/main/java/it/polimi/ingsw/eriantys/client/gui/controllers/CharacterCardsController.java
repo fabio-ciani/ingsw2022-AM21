@@ -87,12 +87,15 @@ public class CharacterCardsController extends Controller {
 
 		confirm.setOnAction(event -> {
 			SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
+			BoardController boardController = (BoardController) app.getControllerForScene(SceneName.BOARD);
 			if (client.getCharacterCard() != null) {
 				client.playCharacterCard(sourceColors.toArray(new String[0]),
 						destinationColors.toArray(new String[0]),
 						targetColor,
 						targetIsland);
 				schoolBoardController.setSelected(null);
+				schoolBoardController.setEventHandlers();
+				boardController.load();
 				drawImages();
 			} else {
 				showError.accept("Select a character card first");

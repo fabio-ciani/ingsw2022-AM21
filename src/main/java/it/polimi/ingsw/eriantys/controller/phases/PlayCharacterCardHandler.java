@@ -18,7 +18,6 @@ import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
  */
 public abstract class PlayCharacterCardHandler implements MessageHandler {
 	protected final Game game;
-	// TODO: hasPlayedCard flag on Player (only one card can be played by a user in the turn)
 
 	/**
 	 * Constructs a new {@link PlayCharacterCardHandler} for the specified game.

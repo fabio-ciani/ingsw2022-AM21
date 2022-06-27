@@ -16,8 +16,7 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 	private int movementCount;
 
 	/**
-	 * Constructs a new {@link MoveStudentHandler} for the specified game and notifies the players about the current state
-	 * of the game.
+	 * Constructs a new {@link MoveStudentHandler} for the specified game.
 	 * @param game the {@link Game} this message handler refers to.
 	 */
 	public MoveStudentHandler(Game game) {
@@ -25,19 +24,25 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 		this.movementCount = 0;
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void handle(GameMessage m) throws NoConnectionException {
 		if (m instanceof MoveStudent moveStudent)
 			process(moveStudent);
 		else super.handle(m);
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getHelp() {
 		return super.getHelp();
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void handleDisconnectedUser(String username) throws NoConnectionException {
 		game.receiveMotherNatureMovement();
 	}

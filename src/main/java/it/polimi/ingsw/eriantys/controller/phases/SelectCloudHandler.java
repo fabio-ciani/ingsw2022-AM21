@@ -15,8 +15,7 @@ import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 public class SelectCloudHandler extends PlayCharacterCardHandler {
 
 	/**
-	 * Constructs a new {@link SelectCloudHandler} for the specified game and notifies the players about the current state
-	 * of the game.
+	 * Constructs a new {@link SelectCloudHandler} for the specified game.
 	 * @param game the {@link Game} this message handler refers to.
 	 */
 	public SelectCloudHandler(Game game) {

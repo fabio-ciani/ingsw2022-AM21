@@ -501,7 +501,7 @@ public class Game {
 		}
 	}
 
-	public void broadcast(Message message) {
+	private void broadcast(Message message) {
 		for (String player : players) {
 			try {
 				ClientConnection connection = server.getConnection(player);

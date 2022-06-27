@@ -15,6 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This concrete implementation for the state design pattern involving {@link MessageHandler}
+ * defines how the game setup phase message {@link GameSetupSelection} should be processed.
+ */
 public class GameSetupHandler implements MessageHandler {
 	private final Game game;
 	private final Map<String, String> towerColors;
@@ -22,6 +26,10 @@ public class GameSetupHandler implements MessageHandler {
 	private final List<String> availableTowerColors;
 	private final List<String> availableWizards;
 
+	/**
+	 * Constructs a new {@link GameSetupHandler} for the specified game.
+	 * @param game the {@link Game} this message handler refers to.
+	 */
 	public GameSetupHandler(Game game) {
 		this.game = game;
 		this.towerColors = new HashMap<>();

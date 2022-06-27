@@ -21,8 +21,7 @@ public class PlayAssistantCardHandler implements MessageHandler {
 	private final Map<String, String> playedCards;
 
 	/**
-	 * Constructs a new {@link PlayAssistantCardHandler} for the specified game and notifies the players about the current
-	 * state of the game.
+	 * Constructs a new {@link PlayAssistantCardHandler} for the specified game.
 	 * @param game the {@link Game} this message handler refers to.
 	 */
 	public PlayAssistantCardHandler(Game game) {

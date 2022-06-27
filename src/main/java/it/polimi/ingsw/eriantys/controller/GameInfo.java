@@ -2,6 +2,11 @@ package it.polimi.ingsw.eriantys.controller;
 
 import java.io.Serializable;
 
+/**
+ * This class contains all the relevant information about a {@link Game}. Objects of this class are meant to be included
+ * in messages between the server and the clients in order to provide updates about the game lobby, and to be used by
+ * classes which need information about the game object.
+ */
 public class GameInfo implements Serializable {
 	private final int gameId;
 	private final String creator;

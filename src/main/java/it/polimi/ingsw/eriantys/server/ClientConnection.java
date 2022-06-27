@@ -18,6 +18,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
+/**
+ * This class represents a single client-server connection. It exposes methods which allow to read from and write to the
+ * connection's I/O streams.
+ */
 public class ClientConnection {
 	private final Server server;
 	private final Socket socketToClient;
@@ -27,6 +31,12 @@ public class ClientConnection {
 	private boolean joinedLobby;
 	private Game game;
 
+	/**
+	 * Constructs a new instance of {@link ClientConnection} with the specified parameters.
+	 * @param server the game server.
+	 * @param socketToClient the socket between the server and this connection's client.
+	 * @throws IOException if an error occurs when retrieving the input or output stream.
+	 */
 	public ClientConnection(Server server, Socket socketToClient) throws IOException {
 		this.server = server;
 		this.socketToClient = socketToClient;
@@ -38,26 +48,51 @@ public class ClientConnection {
 		this.game = null;
 	}
 
+	/**
+	 * Sets the {@code running} member variable to the specified value.
+	 * @param running the desired value.
+	 */
 	public synchronized void setRunning(boolean running) {
 		this.running = running;
 	}
 
+	/**
+	 * Returns the game which this connection refers to if there is one, or {@code null} otherwise.
+	 * @return the game which this connection refers to if there is one, or {@code null} otherwise.
+	 */
 	public Game getGame() {
 		return game;
 	}
 
+	/**
+	 * Sets the connection's game reference to the specified {@link Game}.
+	 * @param game the connection's new {@link Game} reference.
+	 */
 	public void setGame(Game game) {
 		this.game = game;
 	}
 
+	/**
+	 * Returns {@code true} if and only if the client of this connection has joined a game lobby.
+	 * @return {@code true} if and only if the client of this connection has joined a game lobby.
+	 */
 	public boolean hasJoinedLobby() {
 		return joinedLobby;
 	}
 
+	/**
+	 * Sets the {@code joinedLobby} member variable to the specified value.
+	 * @param joinedLobby the desired value.
+	 */
 	public void setJoinedLobby(boolean joinedLobby) {
 		this.joinedLobby = joinedLobby;
 	}
 
+	/**
+	 * Continuously checks for new messages being sent by the client through the connection socket's input stream and
+	 * handles them according to the game phase, disconnecting the client if an I/O error occurs or if the client is
+	 * unresponsive to ping messages.
+	 */
 	public void read() {
 		try (socketToClient) {
 			while (running) { // TODO: try {} catch(NoConnectionException e) {}
@@ -107,6 +142,11 @@ public class ClientConnection {
 		}
 	}
 
+	/**
+	 * Writes the specified {@link Message} to the connection socket's output stream, disconnecting the client if an I/O
+	 * error occurs.
+	 * @param message the message to be written and sent to the client.
+	 */
 	public synchronized void write(Message message) {
 		try {
 			out.reset();
@@ -116,6 +156,10 @@ public class ClientConnection {
 		}
 	}
 
+	/**
+	 * Sends a {@link Ping} message to the client approximately every 2.5 seconds in order to ensure that the connection
+	 * is working, disconnecting the client if an I/O error occurs.
+	 */
 	public void ping() {
 		try {
 			while (running) {

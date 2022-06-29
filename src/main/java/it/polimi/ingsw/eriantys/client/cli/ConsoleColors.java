@@ -1,5 +1,8 @@
 package it.polimi.ingsw.eriantys.client.cli;
 
+/**
+ * Enumeration of the codes used to print colored text in the console.
+ */
 public enum ConsoleColors {
 	ANSI_RESET("\u001B[0m"),
 	ANSI_BLACK("\u001B[30m"),

@@ -24,6 +24,12 @@ import java.net.URL;
 import java.util.*;
 import java.util.function.Consumer;
 
+/**
+ * This class represents the controller for the {@code SCHOOLBOARD} scene.
+ *
+ * @see SceneName#SCHOOLBOARD
+ * @see javafx.scene.Scene
+ */
 public class SchoolBoardController extends Controller {
 	@FXML private BorderPane pane;
 	@FXML private Group schoolboard;
@@ -59,6 +65,13 @@ public class SchoolBoardController extends Controller {
 	private EventHandler<MouseEvent> selectDestination;
 	private EventHandler<MouseEvent> selectColorForCharacterCard;
 
+	/**
+	 * Initializes all the images for the {@code SCHOOLBOARD} scene from the resource files.
+	 * Sets some event handlers.
+	 *
+	 * @see Image
+	 * @see EventHandler
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		studentImages = new HashMap<>();
@@ -82,21 +95,40 @@ public class SchoolBoardController extends Controller {
 		return pane;
 	}
 
+	/**
+	 * Getter for the {@link #selected} attribute, which contains either the name of a {@link Color} representing a selected student
+	 * or the name of a character card (during the process of selecting parameters of an effect).
+	 *
+	 * @return the selected color or character card, or {@code null} if nothing is selected
+	 */
 	public String getSelected() {
 		return selected;
 	}
 
+	/**
+	 * Sets the selected color or character card.
+	 *
+	 * @param selected The name of a {@link Color} or the name of a character card
+	 */
 	public void setSelected(String selected) {
 		this.selected = selected;
 		drawSelected();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Saves the username of the player in order to show it at the top of the scene.
+	 * Draws the selected color or character card, which could change when changing to another scene and back.
+	 */
 	@Override
 	public void onChangeScene() {
 		currentUsername = client.getUsername();
 		drawSelected();
 	}
 
+	/**
+	 * Loads the board status and draws all the elements of the scene.
+	 */
 	public void load() {
 		if (currentUsername == null) currentUsername = client.getUsername();
 		BoardStatus boardStatus = client.getBoardStatus();
@@ -251,6 +283,12 @@ public class SchoolBoardController extends Controller {
 		items.addAll(usernames);
 	}
 
+	/**
+	 * Sets the event handlers for the MouseClicked event on the entrance and dining room
+	 * if the schoolboard that is showing is the one of the player.
+	 * If a character card is selected, the event handlers are replaced with the ones to select
+	 * arguments for that card's effect.
+	 */
 	protected void setEventHandlers() {
 		boolean isCurrentPlayer = Objects.equals(currentUsername, client.getUsername());
 		boolean characterCardSelected = selected != null && !Color.stringLiterals().contains(selected.toUpperCase());
@@ -354,6 +392,9 @@ public class SchoolBoardController extends Controller {
 		};
 	}
 
+	/**
+	 * Initializes the miniature images of the character cards to show when a character card is selected.
+	 */
 	protected void initCharacterMiniatures() {
 		BoardStatus boardStatus = client.getBoardStatus();
 		characterMiniatures = new HashMap<>();

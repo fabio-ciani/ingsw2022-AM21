@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * This class represents the JavaFX {@link Application} and handles stages, scenes and controllers.
+ */
 public class GraphicalApplication extends Application {
 	private static GraphicalApplication app;
 	private Stage primaryStage;
@@ -33,6 +36,10 @@ public class GraphicalApplication extends Application {
 	private final Map<PopupName, Controller> controllerByPopup;
 	private SceneName currentScene;
 
+	/**
+	 * Constructs a {@link GraphicalApplication} object initializing the {@link Map} objects to keep track of scenes and controllers.
+	 * Saves a reference to the {@link Application} in a static attribute.
+	 */
 	public GraphicalApplication() {
 		app = this;
 		sceneByName = new HashMap<>();
@@ -41,10 +48,20 @@ public class GraphicalApplication extends Application {
 		controllerByPopup = new HashMap<>();
 	}
 
+	/**
+	 * Static getter for the (unique) instance of the JavaFX {@link Application}.
+	 * @return a reference to the instance of the application
+	 */
 	public static GraphicalApplication getInstance() {
 		return app;
 	}
 
+	/**
+	 * This method is called at the beginning of the {@link #start} method.
+	 * Initializes all the scenes and controllers and sets the initial scene.
+	 *
+	 * @throws IOException if the {@link FXMLLoader} fails loading
+	 */
 	public void initialize() throws IOException {
 		for (SceneName scene : SceneName.values()) {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(scene.getPath()));
@@ -71,6 +88,13 @@ public class GraphicalApplication extends Application {
 		currentScene = SceneName.LOGIN;
 	}
 
+	/**
+	 * Calls the {@link #initialize} method and then sets up the primary stage and starts the graphical application.
+	 *
+	 * @param primaryStage The primary stage for this application, onto which
+	 * the application scene can be set
+	 * @throws IOException if the initialization fails
+	 */
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		initialize();
@@ -94,6 +118,11 @@ public class GraphicalApplication extends Application {
 		}
 	}
 
+	/**
+	 * Changes the current scene and calls the {@link Controller#onChangeScene()} method of the controller associated with the new scene.
+	 *
+	 * @param sceneName The name of the scene to change to
+	 */
 	public void changeScene(SceneName sceneName) {
 		Scene scene = sceneByName.get(sceneName);
 		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
@@ -107,26 +136,56 @@ public class GraphicalApplication extends Application {
 		primaryStage.show();
 	}
 
+	/**
+	 * Sets the {@link #client} static attribute with a reference to the {@link Client}.
+	 *
+	 * @param client The reference to the client object
+	 */
 	public static void setClient(Client client) {
 		GraphicalApplication.client = client;
 	}
 
+	/**
+	 * Sets a reference to the {@link it.polimi.ingsw.eriantys.client.UserInterface#showInfo(String)} method as a {@link Consumer} of {@link String}.
+	 *
+	 * @param showInfo The reference to the {@code showInfo} method
+	 */
 	public static void setShowInfo(Consumer<String> showInfo) {
 		GraphicalApplication.showInfo = showInfo;
 	}
 
+	/**
+	 * Sets a reference to the {@link it.polimi.ingsw.eriantys.client.UserInterface#showError(String)} method as a {@link Consumer} of {@link String}.
+	 * @param showError The reference to the {@code showError} method
+	 */
 	public static void setShowError(Consumer<String> showError) {
 		GraphicalApplication.showError = showError;
 	}
 
+	/**
+	 * Getter for the current {@link Scene}.
+	 *
+	 * @return a reference to the current scene
+	 */
 	public SceneName getCurrentScene() {
 		return currentScene;
 	}
 
+	/**
+	 * Getter for the current controller, which is the {@link Controller} associated to the current scene returned from the {@link #getCurrentScene()} method.
+	 *
+	 * @return a reference to the current controller
+	 */
 	public Controller getCurrentController() {
 		return controllerByScene.get(currentScene);
 	}
 
+	/**
+	 * Getter for the {@link Controller} associated with a given scene.
+	 *
+	 * @param sceneName The name of the scene to which the controller is associated
+	 * @return the controller associated with the given scene
+	 */
 	public Controller getControllerForScene(SceneName sceneName) {
 		return controllerByScene.get(sceneName);
 	}
@@ -157,6 +216,11 @@ public class GraphicalApplication extends Application {
 		openPopup = null;
 	}
 
+	/**
+	 * Centers a scene in the middle of the screen.
+	 *
+	 * @param scene The scene to center
+	 */
 	private void center(Scene scene) {
 		Rectangle2D screen = Screen.getPrimary().getVisualBounds();
 

@@ -24,6 +24,12 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class represents the controller for the {@code CHARACTER_CARDS} scene.
+ *
+ * @see SceneName#CHARACTER_CARDS
+ * @see javafx.scene.Scene
+ */
 public class CharacterCardsController extends Controller {
 	@FXML private BorderPane pane;
 	@FXML private GridPane cards;
@@ -45,6 +51,10 @@ public class CharacterCardsController extends Controller {
 	private List<ImageView> characterNoEntryTiles;
 	private List<Text> characterNoEntryTileTexts;
 
+	/**
+	 * Constructs the {@link CharacterCardsController} getting the character card information from the JSON file.
+	 * @throws IOException if the file cannot be opened or read
+	 */
 	public CharacterCardsController() throws IOException {
 		try (InputStream in = getClass().getClassLoader().getResourceAsStream("help/characters.json")) {
 			if (in == null) throw new FileNotFoundException();
@@ -53,6 +63,10 @@ public class CharacterCardsController extends Controller {
 		}
 	}
 
+	/**
+	 * Gets all the child nodes representing the elements of the {@code CHARACTER_CARDS} scene from the FXML.
+	 * Associates the event handlers with the buttons on the scene.
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		characterCoins = cards.getChildren().stream()
@@ -111,6 +125,10 @@ public class CharacterCardsController extends Controller {
 		});
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Draws the images of the character cards and the elements placed on them (if present).
+	 */
 	@Override
 	public void onChangeScene() {
 		drawImages();
@@ -121,11 +139,19 @@ public class CharacterCardsController extends Controller {
 		return pane;
 	}
 
+	/**
+	 * Loads the board status and calls {@link #populate(BoardStatus)}.
+	 */
 	public void load() {
 		if (client.getBoardStatus().getCharacterCards() != null)
 			populate(client.getBoardStatus());
 	}
 
+	/**
+	 * Gets the information about character cards from the board status and draws all the elements in the scene.
+	 *
+	 * @param status The updated board status
+	 */
 	public void populate(BoardStatus status) {
 		this.status = status;
 		this.characters = status.getCharacterCards();
@@ -134,6 +160,14 @@ public class CharacterCardsController extends Controller {
 		drawLabels();
 	}
 
+	/**
+	 * Adds the selected color to the arguments of the effect of the selected character card.
+	 * If only one color is selected, it is considered as the {@code targetColor}.
+	 * If more colors are selected they are interpreted in alternating order as {@code sourceColors} and {@code destinationColors}.
+	 *
+	 * @param color The name of the selected color
+	 * @see it.polimi.ingsw.eriantys.model.Color
+	 */
 	public void selectColor(String color) {
 		if (sourceColors.isEmpty()) {
 			if (targetColor == null) {
@@ -157,6 +191,10 @@ public class CharacterCardsController extends Controller {
 		showInfo.accept(message);
 	}
 
+	/**
+	 * Sets the {@code targetIsland} argument of the effect of the selected character card.
+	 * @param island The ID of the selected island
+	 */
 	public void selectIsland(String island) {
 		targetIsland = island;
 		String message = "sourceColors = " + sourceColors + "\n" +

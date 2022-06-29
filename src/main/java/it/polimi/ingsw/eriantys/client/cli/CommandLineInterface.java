@@ -12,14 +12,23 @@ import it.polimi.ingsw.eriantys.model.GameConstants;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * This class represents the command line user interface (CLI).
+ * It handles user inputs and messages received from the server.
+ */
 public class CommandLineInterface extends UserInterface {
 	private final Scanner scanner;
 
+	/**
+	 * Constructs a {@link CommandLineInterface} object.
+	 *
+	 * @throws IOException if the {@link Scanner} to read user inputs can't be created
+	 */
 	public CommandLineInterface() throws IOException {
 		super();
 		this.scanner = new Scanner(System.in);
 	}
-
+	
 	@Override
 	public synchronized void showInfo(String details) {
 		System.out.println(details + "\n");
@@ -48,6 +57,10 @@ public class CommandLineInterface extends UserInterface {
 		return false;
 	}
 
+	/**
+	 * Starts the loop reading user inputs and handling commands.
+	 * Notifies the client that the user interface is ready.
+	 */
 	@Override
 	public void run() {
 		synchronized (client) {
@@ -324,10 +337,18 @@ public class CommandLineInterface extends UserInterface {
 		showInfo(output);
 	}
 
+	/**
+	 * Prints the current status of the player's schoolboard.
+	 */
 	public void showSchoolBoard() {
 		showSchoolBoard(client.getUsername());
 	}
 
+	/**
+	 * Prints the current status of a player's schoolboard.
+	 * 
+	 * @param player The player whose schoolboard should be printed
+	 */
 	public void showSchoolBoard(String player) {
 		BoardStatus boardStatus = client.getBoardStatus();
 		if (boardStatus == null) return;
@@ -385,11 +406,24 @@ public class CommandLineInterface extends UserInterface {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Prints a message letting the player know that the action has been accepted.
+	 * 
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(Accepted message) {
 		showInfo("Ok");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Saves the selected username and checks if a reconnection is available.
+	 * Prints a message letting the player know the username was accepted and how to reconnect.
+	 * 
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(AcceptedUsername message) {
 		showInfo("Ok");
@@ -399,6 +433,13 @@ public class CommandLineInterface extends UserInterface {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Saves the game id and the reconnection settings.
+	 * Prints a message letting the player know the lobby was joined correctly.
+	 * 
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(AcceptedJoinLobby message) {
 		client.setGameId(message.getGameId());
@@ -406,17 +447,36 @@ public class CommandLineInterface extends UserInterface {
 		showInfo("Lobby joined");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Removes reconnection settings.
+	 * Prints a message letting the player know the lobby was left correctly.
+	 * 
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(AcceptedLeaveLobby message) {
 		client.removeReconnectSettings();
 		showInfo("Lobby left");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Prints the correct help message received from the server.
+	 * 
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(HelpResponse message) {
 		showInfo(message.getContent());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Prints the list of available lobbies.
+	 * 
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(AvailableLobbies message) {
 		List<GameInfo> lobbies = message.getLobbies();
@@ -431,6 +491,13 @@ public class CommandLineInterface extends UserInterface {
 		}
 	}
 
+
+	/**
+	 * {@inheritDoc}
+	 * Prints the list of players in the joined lobby
+	 * 
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(LobbyUpdate message) {
 		StringBuilder output = new StringBuilder("Players in the lobby:");
@@ -440,6 +507,13 @@ public class CommandLineInterface extends UserInterface {
 		showInfo(output.toString());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Prints the assistant cards played by the other players and then, if the player is the next one to play,
+	 * prints the available assistant cards.
+	 * 
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(AssistantCardUpdate message) {
 		client.setAvailableCards(message.getAvailableCards().get(client.getUsername()));
@@ -465,6 +539,12 @@ public class CommandLineInterface extends UserInterface {
 		showAssistantCards();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Saves the board status.
+	 * If the player is the next one to play, prints a message
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(BoardUpdate message) {
 		client.setBoardStatus(message.getStatus());
@@ -472,11 +552,24 @@ public class CommandLineInterface extends UserInterface {
 		showInfo("It's your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Prints the name of the played card.
+	 *
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(CharacterCardUpdate message) {
 		showInfo(message.getCard() + " played");
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Prints the tower colors and wizards selected by other players and, if the player is the next to choose,
+	 * prints the remaining tower colors and wizards.
+	 *
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(UserSelectionUpdate message) {
 		if (!message.getTowerColors().isEmpty() && !message.getWizards().isEmpty()) {
@@ -516,6 +609,14 @@ public class CommandLineInterface extends UserInterface {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Removes reconnection settings.
+	 * Prints the winner.
+	 * Stops the application.
+	 *
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(GameOverUpdate message) {
 		client.removeReconnectSettings();
@@ -529,12 +630,25 @@ public class CommandLineInterface extends UserInterface {
 		client.setRunning(false);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Saves the initial board status.
+	 * Prints a message letting the player know that the game has started.
+	 *
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(InitialBoardStatus message) {
 		showInfo("The game has begun!");
 		client.setBoardStatus(message.getStatus());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Prints a message with reconnection details.
+	 *
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(ReconnectionUpdate message) {
 		String subject = message.getSubject();
@@ -544,6 +658,12 @@ public class CommandLineInterface extends UserInterface {
 				+ (gameResumed ? "\nGame resumed" : ""));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Prints a message with disconnection details.
+	 *
+	 * @param message The received message
+	 */
 	@Override
 	public void handleMessage(DisconnectionUpdate message) {
 		String subject = message.getSubject();

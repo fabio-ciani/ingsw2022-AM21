@@ -477,7 +477,7 @@ public class Game {
 		ClientConnection connection = server.getConnection(sender);
 		String responseContent;
 		if (messageHandler == null)
-			responseContent = HelpContent.IN_GAME.getContent();
+			responseContent = HelpContent.NOT_STARTED.getContent();
 		else
 			responseContent = messageHandler.getHelp();
 		connection.write(new HelpResponse(responseContent));

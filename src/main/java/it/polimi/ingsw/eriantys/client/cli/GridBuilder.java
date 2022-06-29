@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This utility class is used to print various fragments of text in a grid-like structure.
+ */
 public class GridBuilder {
 	private int rows;
 	private final int cols;
@@ -14,9 +17,15 @@ public class GridBuilder {
 	
 	private int tabSize = 2;
 	private String tab = "  ";
-	private String vertical = "|";
-	private String horizontal = "-";
+	private char vertical = '|';
+	private char horizontal = '-';
 
+	/**
+	 * Constructs a new empty {@link GridBuilder} specifying a fixed number of columns.
+	 * The default tab size is used.
+	 *
+	 * @param cols The number of columns of the grid
+	 */
 	public GridBuilder(int cols) {
 		this.rows = 0;
 		this.cols = cols;
@@ -24,23 +33,44 @@ public class GridBuilder {
 		this.rowHeights = new int[0];
 		this.colWidths = new int[cols];
 	}
-	
+
+	/**
+	 * Constructs a new empty {@link GridBuilder} specifying a fixed number of columns and the tab size.
+	 *
+	 * @param cols The number of columns of the grid
+	 * @param tabSize The amount of spaces that make a tab
+	 */
 	public GridBuilder(int cols, int tabSize) {
 		this(cols);
 		this.tabSize = tabSize;
 		this.tab = " ".repeat(tabSize);
 	}
 
+	/**
+	 * Adds an element to the grid in the first available spot.
+	 *
+	 * @param element The text fragment to add to the grid
+	 */
 	public synchronized void add(String element) {
 		elements.add(new GridElement(element));
 		rows = (elements.size() + cols - 1) / cols;
 	}
 
-	public void setHorizontal(String horizontal) {
+	/**
+	 * Sets the character used to make horizontal lines.
+	 *
+	 * @param horizontal The desired character
+	 */
+	public void setHorizontal(char horizontal) {
 		this.horizontal = horizontal;
 	}
 
-	public void setVertical(String vertical) {
+	/**
+	 * Sets the character used to make vertical lines.
+	 *
+	 * @param vertical The desired character
+	 */
+	public void setVertical(char vertical) {
 		this.vertical = vertical;
 	}
 
@@ -63,7 +93,7 @@ public class GridBuilder {
 				.map(e -> e.width)
 				.max(Integer::compareTo)
 				.orElse(elements.get(0).width));
-		rowSeparator = horizontal.repeat(Arrays.stream(colWidths).sum() + cols * (2 * tabSize + 1) + 1);
+		rowSeparator = String.valueOf(horizontal).repeat(Arrays.stream(colWidths).sum() + cols * (2 * tabSize + 1) + 1);
 	}
 
 	private String getRow(int rowIdx) {

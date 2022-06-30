@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.client.cli.CommandLineInterface;
-import it.polimi.ingsw.eriantys.client.cli.ConsoleColors;
 import it.polimi.ingsw.eriantys.client.gui.GraphicalUserInterface;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.Ping;
@@ -124,8 +123,8 @@ public class Client extends Thread {
 		try (socket) {
 			while (running) {
 				Message message = (Message) in.readObject();
-				if (!(message instanceof Ping)) // TODO: 27/06/2022 Comment this
-					System.out.println(ConsoleColors.ANSI_BLUE + "Received a " + message.getClass() + (message instanceof BoardUpdate bu ? String.format(" (phase=%s)", bu.getPhase()) : "") + ConsoleColors.ANSI_RESET);
+				// if (!(message instanceof Ping))
+				// 	System.out.println(ConsoleColors.ANSI_BLUE + "Received a " + message.getClass() + ConsoleColors.ANSI_RESET);
 				handleMessage(message);
 			}
 		} catch (SocketTimeoutException e) {

@@ -84,14 +84,12 @@ public class GraphicalUserInterface extends UserInterface {
 
 	/**
 	 * {@inheritDoc}
-	 * This implementation only logs in the console that is everything fine.
+	 * This implementation does nothing.
 	 *
 	 * @param message the received message
 	 */
 	@Override
-	public void handleMessage(Accepted message) {
-		System.out.println("Ok");
-	}
+	public void handleMessage(Accepted message) {}
 
 	/**
 	 * {@inheritDoc}

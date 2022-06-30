@@ -419,14 +419,6 @@ public class CommandLineInterface extends UserInterface {
 		showInfo(output.toString());
 	}
 
-	private boolean notNextPlayer(String username) {
-		if (username != null && !Objects.equals(client.getUsername(), username)) {
-			showInfo(String.format("%s is playing...", username));
-			return true;
-		}
-		return false;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 * Prints a message letting the player know that the action has been accepted.

@@ -8,7 +8,6 @@ import it.polimi.ingsw.eriantys.model.AssistantCard;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.GameConstants;
-import it.polimi.ingsw.eriantys.server.HelpContent;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -557,21 +556,22 @@ public class CommandLineInterface extends UserInterface {
 			}
 			showInfo(output.toString());
 		}
-		if (notNextPlayer(message.getNextPlayer())) return;
-		showAssistantCards();
+		super.handleMessage(message);
+		if (Objects.equals(client.getUsername(), message.getNextPlayer())) {
+			showAssistantCards();
+		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * Saves the board status.
-	 * If the player is the next one to play, prints a message
+	 * If the player is the next one to play, prints a message.
 	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(BoardUpdate message) {
 		client.setBoardStatus(message.getStatus());
-		if (notNextPlayer(message.getNextPlayer())) return;
-		showInfo("It's your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
+		super.handleMessage(message);
 	}
 
 	/**
@@ -611,7 +611,8 @@ public class CommandLineInterface extends UserInterface {
 			}
 			showInfo(output.toString());
 		}
-		if (notNextPlayer(message.getNextPlayer())) return;
+		super.handleMessage(message);
+		if (!Objects.equals(client.getUsername(), message.getNextPlayer())) return;
 		StringBuilder output;
 		if (client.getTowerColor() == null) {
 			output = new StringBuilder();
@@ -692,7 +693,7 @@ public class CommandLineInterface extends UserInterface {
 		int numPlayers = message.getNumPlayers();
 		boolean gameIdle = message.isGameIdle();
 		showInfo(subject + " has disconnected, "
-				+ numPlayers + (numPlayers > 1 ? " players" : "player") + " currently connected"
+				+ numPlayers + (numPlayers > 1 ? " players" : " player") + " currently connected"
 				+ (gameIdle ? "\n\nGame idle" : ""));
 	}
 }

@@ -256,7 +256,7 @@ public class CharacterCardsController extends Controller {
 					} else {
 						SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
 						BoardController boardController = (BoardController) app.getControllerForScene(SceneName.BOARD);
-						if (character.equals(schoolBoardController.getSelected())) {
+						if (Objects.equals(cardId, client.getCharacterCard())) {
 							applyGreenShade(img);
 						} else {
 							img.setEffect(null);

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.messages.server;
 
+import it.polimi.ingsw.eriantys.controller.phases.PhaseName;
 import it.polimi.ingsw.eriantys.model.Board;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
 import it.polimi.ingsw.eriantys.model.GameManager;
@@ -11,10 +12,18 @@ import it.polimi.ingsw.eriantys.model.GameManager;
  */
 public class BoardUpdate extends UserActionUpdate {
 	private final BoardStatus status;
+	private final PhaseName phase;
 
 	public BoardUpdate(GameManager gm) {
 		super();
 		this.status = new BoardStatus(gm);
+		this.phase = null;
+	}
+
+	public BoardUpdate(GameManager gm, PhaseName phase) {
+		super();
+		this.status = new BoardStatus(gm);
+		this.phase = phase;
 	}
 
 	/**
@@ -23,5 +32,9 @@ public class BoardUpdate extends UserActionUpdate {
 	 */
 	public BoardStatus getStatus() {
 		return status;
+	}
+
+	public PhaseName getPhase() {
+		return phase;
 	}
 }

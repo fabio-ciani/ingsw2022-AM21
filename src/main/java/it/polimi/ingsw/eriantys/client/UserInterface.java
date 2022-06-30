@@ -2,15 +2,16 @@ package it.polimi.ingsw.eriantys.client;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.eriantys.controller.phases.PhaseName;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.Ping;
-import it.polimi.ingsw.eriantys.messages.server.Refused;
-import it.polimi.ingsw.eriantys.messages.server.RefusedReconnect;
+import it.polimi.ingsw.eriantys.messages.server.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 /**
  * This abstract class represents the generic user interface, which is associated with a single {@link Client}.
@@ -103,6 +104,43 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 	public void handleMessage(RefusedReconnect message) {
 		showError(message.getDetails());
 		client.removeReconnectSettings();
+	}
+
+	@Override
+	public void handleMessage(AssistantCardUpdate message) {
+		String nextPlayer= message.getNextPlayer();
+		if (nextPlayer != null) {
+			if (Objects.equals(client.getUsername(), nextPlayer)) {
+				showInfo("It's time to play an assistant card");
+			} else {
+				showInfo(String.format("%s is playing an assistant card...", nextPlayer));
+			}
+		}
+	}
+
+	@Override
+	public void handleMessage(BoardUpdate message) {
+		String nextPlayer = message.getNextPlayer();
+		PhaseName phase = message.getPhase();
+		if (nextPlayer != null && phase != null) {
+			if (Objects.equals(client.getUsername(), nextPlayer)) {
+				switch (phase) {
+					case MOVE_STUDENT -> showInfo("It's time to move your students");
+					case MOTHER_NATURE -> showInfo("It's time to move Mother Nature");
+					case SELECT_CLOUD -> showInfo("It's time to select a cloud tile");
+				}
+			} else if (phase == PhaseName.MOVE_STUDENT) {
+				showInfo(String.format("%s is playing...", message.getNextPlayer()));
+			}
+		}
+	}
+
+	@Override
+	public void handleMessage(UserSelectionUpdate message) {
+		String nextPlayer = message.getNextPlayer();
+		if (nextPlayer != null && !Objects.equals(client.getUsername(), nextPlayer)) {
+			showInfo(String.format("%s is choosing...", nextPlayer));
+		}
 	}
 
 	/**

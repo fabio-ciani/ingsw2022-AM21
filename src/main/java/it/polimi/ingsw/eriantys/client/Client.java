@@ -125,7 +125,7 @@ public class Client extends Thread {
 			while (running) {
 				Message message = (Message) in.readObject();
 				if (!(message instanceof Ping)) // TODO: 27/06/2022 Comment this
-					System.out.println(ConsoleColors.ANSI_BLUE + "Received a " + message.getClass() + ConsoleColors.ANSI_RESET);
+					System.out.println(ConsoleColors.ANSI_BLUE + "Received a " + message.getClass() + (message instanceof BoardUpdate bu ? String.format(" (phase=%s)", bu.getPhase()) : "") + ConsoleColors.ANSI_RESET);
 				handleMessage(message);
 			}
 		} catch (SocketTimeoutException e) {

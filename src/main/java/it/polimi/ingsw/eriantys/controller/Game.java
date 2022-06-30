@@ -174,7 +174,7 @@ public class Game {
 		players = gameManager.getTurnOrder();
 		currentPlayer = 0;
 		messageHandler = new MoveStudentHandler(this);
-		sendBoardUpdate();
+		sendBoardUpdate(PhaseName.MOVE_STUDENT);
 		updateCurrentPlayer();
 		checkDisconnection();
 	}
@@ -197,7 +197,7 @@ public class Game {
 			newRound();
 		else {
 			messageHandler = new MoveStudentHandler(this);
-			sendBoardUpdate();
+			sendBoardUpdate(PhaseName.MOVE_STUDENT);
 			updateCurrentPlayer();
 			checkDisconnection();
 		}
@@ -209,7 +209,7 @@ public class Game {
 	 */
 	public void receiveMotherNatureMovement() throws NoConnectionException {
 		messageHandler = new MotherNatureDestinationHandler(this);
-		sendBoardUpdate();
+		sendBoardUpdate(PhaseName.MOTHER_NATURE);
 		checkDisconnection();
 	}
 
@@ -219,7 +219,7 @@ public class Game {
 	 */
 	public void receiveCloudSelection() throws NoConnectionException {
 		messageHandler = new SelectCloudHandler(this);
-		sendBoardUpdate();
+		sendBoardUpdate(PhaseName.SELECT_CLOUD);
 		checkDisconnection();
 	}
 
@@ -456,6 +456,15 @@ public class Game {
 	 */
 	public void sendInitialBoardStatus() {
 		broadcast(new InitialBoardStatus(gameManager));
+	}
+
+	/**
+	 * Sends a {@link BoardUpdate} message with the current {@link PhaseName} to every player.
+	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
+	 * @see Game#sendUpdate(UserActionUpdate, boolean)
+	 */
+	public void sendBoardUpdate(PhaseName phase) throws NoConnectionException {
+		sendUpdate(new BoardUpdate(gameManager, phase), true);
 	}
 
 	/**

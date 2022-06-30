@@ -189,9 +189,7 @@ public class GraphicalUserInterface extends UserInterface {
 			AssistantCardsController controller = (AssistantCardsController) app.getControllerForPopup(PopupName.ASSISTANT_CARDS);
 			controller.populate(message.getAvailableCards().get(client.getUsername()), message.getPlayedCards());
 		});
-		if (isNextPlayer(message.getNextPlayer())) {
-			showInfo("It is your turn to play an assistant card");
-		}
+		super.handleMessage(message);
 	}
 
 	/**
@@ -206,9 +204,7 @@ public class GraphicalUserInterface extends UserInterface {
 		client.setBoardStatus(message.getStatus());
 		// TODO: update assistant cards view
 		Platform.runLater(this::updateInGameControllers);
-		if (isNextPlayer(message.getNextPlayer())) {
-			showInfo("It is your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
-		}
+		super.handleMessage(message);
 	}
 
 	@Override
@@ -229,9 +225,11 @@ public class GraphicalUserInterface extends UserInterface {
 			if (app.getCurrentScene() != SceneName.WAITING_ROOM) return;
 			WaitingRoomController controller = (WaitingRoomController) app.getCurrentController();
 			controller.updateSelections(message.getTowerColors(), message.getWizards());
-			if (isNextPlayer(message.getNextPlayer()))
+			if (Objects.equals(client.getUsername(), message.getNextPlayer())) {
 				controller.promptSelection(message.getAvailableTowerColors(), message.getAvailableWizards());
+			}
 		});
+		super.handleMessage(message);
 	}
 
 	/**
@@ -305,20 +303,9 @@ public class GraphicalUserInterface extends UserInterface {
 
 		Platform.runLater(() ->
 				showInfo(subject + " has disconnected, "
-						+ numPlayers + (numPlayers > 1 ? " players" : "player") + " currently connected"
+						+ numPlayers + (numPlayers > 1 ? " players" : " player") + " currently connected"
 						+ (gameIdle ? "\n\nGame idle" : ""))
 		);
-	}
-
-	private boolean isNextPlayer(String username) {
-		if (username == null) {
-			return false;
-		}
-		if (!Objects.equals(client.getUsername(), username)) {
-			showInfo(String.format("%s is playing...", username));
-			return false;
-		}
-		return true;
 	}
 
 	private void updateInGameControllers() {

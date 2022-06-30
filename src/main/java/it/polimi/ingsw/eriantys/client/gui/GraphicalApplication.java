@@ -1,6 +1,7 @@
 package it.polimi.ingsw.eriantys.client.gui;
 
 import it.polimi.ingsw.eriantys.client.Client;
+import it.polimi.ingsw.eriantys.client.UserInterface;
 import it.polimi.ingsw.eriantys.client.gui.controllers.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +38,7 @@ public class GraphicalApplication extends Application {
 	private SceneName currentScene;
 
 	/**
-	 * Constructs a {@link GraphicalApplication} object initializing the {@link Map} objects to keep track of scenes and controllers.
+	 * Constructs a {@link GraphicalApplication} initializing the {@link Map} objects to keep track of scenes and controllers.
 	 * Saves a reference to the {@link Application} in a static attribute.
 	 */
 	public GraphicalApplication() {
@@ -91,8 +92,7 @@ public class GraphicalApplication extends Application {
 	/**
 	 * Calls the {@link #initialize} method and then sets up the primary stage and starts the graphical application.
 	 *
-	 * @param primaryStage The primary stage for this application, onto which
-	 * the application scene can be set
+	 * @param primaryStage The primary stage for this application, onto which the application scene can be set
 	 * @throws IOException if the initialization fails
 	 */
 	@Override
@@ -119,9 +119,10 @@ public class GraphicalApplication extends Application {
 	}
 
 	/**
-	 * Changes the current scene and calls the {@link Controller#onChangeScene()} method of the controller associated with the new scene.
+	 * Changes the current scene and calls the {@link Controller#onChangeScene()} method
+	 * of the controller associated with the new scene.
 	 *
-	 * @param sceneName The name of the scene to change to
+	 * @param sceneName the name of the scene to change to
 	 */
 	public void changeScene(SceneName sceneName) {
 		Scene scene = sceneByName.get(sceneName);
@@ -139,24 +140,24 @@ public class GraphicalApplication extends Application {
 	/**
 	 * Sets the {@link #client} static attribute with a reference to the {@link Client}.
 	 *
-	 * @param client The reference to the client object
+	 * @param client the reference to the client object
 	 */
 	public static void setClient(Client client) {
 		GraphicalApplication.client = client;
 	}
 
 	/**
-	 * Sets a reference to the {@link it.polimi.ingsw.eriantys.client.UserInterface#showInfo(String)} method as a {@link Consumer} of {@link String}.
+	 * Sets a reference to the {@link UserInterface#showInfo(String)} method as a {@link Consumer} of {@link String}.
 	 *
-	 * @param showInfo The reference to the {@code showInfo} method
+	 * @param showInfo the reference to the {@code showInfo} method
 	 */
 	public static void setShowInfo(Consumer<String> showInfo) {
 		GraphicalApplication.showInfo = showInfo;
 	}
 
 	/**
-	 * Sets a reference to the {@link it.polimi.ingsw.eriantys.client.UserInterface#showError(String)} method as a {@link Consumer} of {@link String}.
-	 * @param showError The reference to the {@code showError} method
+	 * Sets a reference to the {@link UserInterface#showError(String)} method as a {@link Consumer} of {@link String}.
+	 * @param showError the reference to the {@code showError} method
 	 */
 	public static void setShowError(Consumer<String> showError) {
 		GraphicalApplication.showError = showError;
@@ -172,7 +173,8 @@ public class GraphicalApplication extends Application {
 	}
 
 	/**
-	 * Getter for the current controller, which is the {@link Controller} associated to the current scene returned from the {@link #getCurrentScene()} method.
+	 * Getter for the current controller, which is the {@link Controller} associated to
+	 * the current scene returned from the {@link #getCurrentScene()} method.
 	 *
 	 * @return a reference to the current controller
 	 */
@@ -183,17 +185,28 @@ public class GraphicalApplication extends Application {
 	/**
 	 * Getter for the {@link Controller} associated with a given scene.
 	 *
-	 * @param sceneName The name of the scene to which the controller is associated
+	 * @param sceneName the name of the scene to which the controller is associated
 	 * @return the controller associated with the given scene
 	 */
 	public Controller getControllerForScene(SceneName sceneName) {
 		return controllerByScene.get(sceneName);
 	}
 
+	/**
+	 * Getter for the {@link Controller} associated with a given popup scene.
+	 *
+	 * @param popupName the name of the popup scene to which the controller is associated
+	 * @return the controller associated with the given popup scene
+	 */
 	public Controller getControllerForPopup(PopupName popupName) {
 		return controllerByPopup.get(popupName);
 	}
 
+	/**
+	 * Shows a popup on the screen (on top of the main scene).
+	 *
+	 * @param popupName the name of the popup scene to show
+	 */
 	public void showStickyPopup(PopupName popupName) {
 		if (openPopup != null) throw new RuntimeException("A popup is already open");
 
@@ -207,6 +220,9 @@ public class GraphicalApplication extends Application {
 		openPopup.show();
 	}
 
+	/**
+	 * Hides a popup previously opened on the screen, if present.
+	 */
 	public void hideStickyPopup() {
 		if (openPopup == null) throw new RuntimeException("No popup is currently open");
 
@@ -219,7 +235,7 @@ public class GraphicalApplication extends Application {
 	/**
 	 * Centers a scene in the middle of the screen.
 	 *
-	 * @param scene The scene to center
+	 * @param scene the scene to center
 	 */
 	private void center(Scene scene) {
 		Rectangle2D screen = Screen.getPrimary().getVisualBounds();

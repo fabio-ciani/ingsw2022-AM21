@@ -19,8 +19,8 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 /**
- * This class represents a single client-server connection. It exposes methods which allow to read from and write to the
- * connection's I/O streams.
+ * This class represents a single client-server connection.
+ * It exposes methods which allow to read from and write to the connection's I/O streams.
  */
 public class ClientConnection {
 	private final Server server;
@@ -33,9 +33,9 @@ public class ClientConnection {
 
 	/**
 	 * Constructs a new instance of {@link ClientConnection} with the specified parameters.
-	 * @param server the game server.
-	 * @param socketToClient the socket between the server and this connection's client.
-	 * @throws IOException if an error occurs when retrieving the input or output stream.
+	 * @param server the game server
+	 * @param socketToClient the socket between the server and this connection's client
+	 * @throws IOException if an error occurs when retrieving the input or output stream
 	 */
 	public ClientConnection(Server server, Socket socketToClient) throws IOException {
 		this.server = server;
@@ -50,15 +50,15 @@ public class ClientConnection {
 
 	/**
 	 * Sets the {@code running} member variable to the specified value.
-	 * @param running the desired value.
+	 * @param running the desired value
 	 */
 	public synchronized void setRunning(boolean running) {
 		this.running = running;
 	}
 
 	/**
-	 * Returns the game which this connection refers to if there is one, or {@code null} otherwise.
-	 * @return the game which this connection refers to if there is one, or {@code null} otherwise.
+	 * A getter for the game which {@code this} refers to.
+	 * @return the game which the connection refers to (if there is one), or {@code null} otherwise.
 	 */
 	public Game getGame() {
 		return game;
@@ -66,15 +66,15 @@ public class ClientConnection {
 
 	/**
 	 * Sets the connection's game reference to the specified {@link Game}.
-	 * @param game the connection's new {@link Game} reference.
+	 * @param game the connection's new {@link Game} reference
 	 */
 	public void setGame(Game game) {
 		this.game = game;
 	}
 
 	/**
-	 * Returns {@code true} if and only if the client of this connection has joined a game lobby.
-	 * @return {@code true} if and only if the client of this connection has joined a game lobby.
+	 * A getter to know if the client is inside a game lobby.
+	 * @return {@code true} if and only if the client associated with {@code this} has joined a game lobby
 	 */
 	public boolean hasJoinedLobby() {
 		return joinedLobby;
@@ -82,7 +82,7 @@ public class ClientConnection {
 
 	/**
 	 * Sets the {@code joinedLobby} member variable to the specified value.
-	 * @param joinedLobby the desired value.
+	 * @param joinedLobby the desired value
 	 */
 	public void setJoinedLobby(boolean joinedLobby) {
 		this.joinedLobby = joinedLobby;
@@ -90,8 +90,8 @@ public class ClientConnection {
 
 	/**
 	 * Continuously checks for new messages being sent by the client through the connection socket's input stream and
-	 * handles them according to the game phase, disconnecting the client if an I/O error occurs or if the client is
-	 * unresponsive to ping messages.
+	 * handles them according to the game phase, disconnecting the client if an I/O error occurs
+	 * or if the client is unresponsive to ping messages.
 	 */
 	public void read() {
 		try (socketToClient) {
@@ -143,9 +143,9 @@ public class ClientConnection {
 	}
 
 	/**
-	 * Writes the specified {@link Message} to the connection socket's output stream, disconnecting the client if an I/O
-	 * error occurs.
-	 * @param message the message to be written and sent to the client.
+	 * Writes the specified {@link Message} to the connection socket's output stream,
+	 * disconnecting the client if an I/O error occurs.
+	 * @param message the message to be written and sent to the client
 	 */
 	public synchronized void write(Message message) {
 		try {
@@ -157,8 +157,8 @@ public class ClientConnection {
 	}
 
 	/**
-	 * Sends a {@link Ping} message to the client approximately every 2.5 seconds in order to ensure that the connection
-	 * is working, disconnecting the client if an I/O error occurs.
+	 * Sends a {@link Ping} message to the client approximately every 2.5 seconds in order to
+	 * ensure that the connection is working, disconnecting the client if an I/O error occurs.
 	 */
 	public void ping() {
 		try {

@@ -8,8 +8,11 @@ import it.polimi.ingsw.eriantys.model.AssistantCard;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
 import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.GameConstants;
+import it.polimi.ingsw.eriantys.server.HelpContent;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -22,7 +25,7 @@ public class CommandLineInterface extends UserInterface {
 	/**
 	 * Constructs a {@link CommandLineInterface} object.
 	 *
-	 * @throws IOException if the {@link Scanner} to read user inputs can't be created
+	 * @throws IOException if the {@link Scanner} to read user inputs couldn't be created
 	 */
 	public CommandLineInterface() throws IOException {
 		super();
@@ -58,6 +61,23 @@ public class CommandLineInterface extends UserInterface {
 	}
 
 	/**
+	 * Shows the application title.
+	 */
+	private void showTitle() {
+		String title = null;
+
+		try (InputStream in = CommandLineInterface.class.getClassLoader().getResourceAsStream("graphics/title.txt")) {
+			if (in == null)
+				throw new RuntimeException();	// TODO: Is this necessary?
+			title = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(title);
+	}
+
+	/**
 	 * Starts the loop reading user inputs and handling commands.
 	 * Notifies the client that the user interface is ready.
 	 */
@@ -67,101 +87,103 @@ public class CommandLineInterface extends UserInterface {
 			client.notifyAll();
 		}
 		this.running = true;
+		showTitle();
 		while (running) {
 			String line = scanner.nextLine();
 			String[] tokens = line.split("( )+");
 			try {
+				// Support for / commands: tokens[0].toLowerCase().substring(1);
 				switch (tokens[0].toLowerCase()) {
-					case "help", "h" -> {
+					case "/help", "/h" -> {
 						if (wrongArgNumber(tokens, 0)) break;
 						client.askHelp();
 					}
-					case "user", "u" -> {
+					case "/user", "/u" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						client.sendHandshake(tokens[1]);
 					}
-					case "lobbies", "l" -> {
+					case "/lobbies", "/l" -> {
 						if (wrongArgNumber(tokens, 0)) break;
 						client.askLobbies();
 					}
-					case "join", "j" -> {
+					case "/join", "/j" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						client.joinLobby(tokens[1]);
 					}
-					case "create", "cr" -> {
+					case "/create", "/cr" -> {
 						if (wrongArgNumber(tokens, 1, 2)) break;
 						client.createLobby(tokens[1], tokens.length == 3 ? tokens[2] : "true");
 					}
-					case "leave", "e" -> {
+					case "/leave", "/e" -> {
 						if (wrongArgNumber(tokens, 0)) break;
 						client.leaveLobby();
 					}
-					case "wizard", "w" -> {
+					case "/wizard", "/w" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						client.setWizard(tokens[1].toUpperCase());
 						showInfo(String.format("Wizard set to: %s", tokens[1]));
 					}
-					case "tower", "t" -> {
+					case "/tower", "/t" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						client.setTowerColor(tokens[1].toUpperCase());
 						showInfo(String.format("Tower color set to: %s", tokens[1]));
 					}
-					case "assistant", "a" -> {
+					case "/assistant", "/a" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						client.playAssistantCard(tokens[1].toUpperCase());
 					}
-					case "dining", "sd" -> {
+					case "/dining", "/sd" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						client.moveStudent(tokens[1].toUpperCase(), GameConstants.DINING_ROOM);
 					}
-					case "island", "si" -> {
+					case "/island", "/si" -> {
 						if (wrongArgNumber(tokens, 2)) break;
 						client.moveStudent(tokens[2].toUpperCase(), tokens[1]);
 					}
-					case "mother", "m" -> {
+					case "/mother", "/m" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						client.moveMotherNature(tokens[1]);
 					}
-					case "cloud", "cl" -> {
+					case "/cloud", "/cl" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						client.chooseCloud(Integer.parseInt(tokens[1]));
 					}
-					case "character", "ch" -> {
+					case "/character", "/ch" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						int id = Integer.parseInt(tokens[1]);
 						client.setCharacterCard(id);
 						showCharacterCardArgs(id);
 					}
-					case "ccarguments", "ccargs" -> parseCharacterCardArgs(Arrays.copyOfRange(tokens, 1, tokens.length));
-					case "bstat", "bs" -> {
+					case "/ccarguments", "/ccargs" -> parseCharacterCardArgs(Arrays.copyOfRange(tokens, 1, tokens.length));
+					case "/bstat", "/bs" -> {
 						if (wrongArgNumber(tokens, 0)) break;
 						showBoard();
 					}
-					case "sbstat", "sbs" -> {
+					case "/sbstat", "/sbs" -> {
 						if (wrongArgNumber(tokens, 0)) break;
 						showSchoolBoard();
 					}
-					case "acards", "acl" -> {
+					case "/acards", "/acl" -> {
 						if (wrongArgNumber(tokens, 0)) break;
 						showAssistantCards();
 					}
-					case "ccards", "ccl" -> {
+					case "/ccards", "/ccl" -> {
 						if (wrongArgNumber(tokens, 0)) break;
 						showCharacterCards();
 					}
-					case "cdesc", "cc" -> {
+					case "/cdesc", "/cc" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						showCharacterDescription(tokens[1]);
 					}
-					case "ccstat", "ccs" -> {
+					case "/ccstat", "/ccs" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						showCharacterStatus(tokens[1]);
 					}
-					case "pstat", "ps" -> {
+					case "/pstat", "/ps" -> {
 						if (wrongArgNumber(tokens, 1)) break;
 						showSchoolBoard(tokens[1]);
 					}
-					case "reconnect", "r" -> {
+					case "/reconnect", "/r" -> {
 						if (wrongArgNumber(tokens, 0)) break;
 						client.sendReconnect();
 					}
@@ -347,7 +369,7 @@ public class CommandLineInterface extends UserInterface {
 	/**
 	 * Prints the current status of a player's schoolboard.
 	 * 
-	 * @param player The player whose schoolboard should be printed
+	 * @param player the player whose schoolboard should be printed
 	 */
 	public void showSchoolBoard(String player) {
 		BoardStatus boardStatus = client.getBoardStatus();
@@ -410,7 +432,7 @@ public class CommandLineInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Prints a message letting the player know that the action has been accepted.
 	 * 
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(Accepted message) {
@@ -422,7 +444,7 @@ public class CommandLineInterface extends UserInterface {
 	 * Saves the selected username and checks if a reconnection is available.
 	 * Prints a message letting the player know the username was accepted and how to reconnect.
 	 * 
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(AcceptedUsername message) {
@@ -438,7 +460,7 @@ public class CommandLineInterface extends UserInterface {
 	 * Saves the game id and the reconnection settings.
 	 * Prints a message letting the player know the lobby was joined correctly.
 	 * 
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(AcceptedJoinLobby message) {
@@ -452,7 +474,7 @@ public class CommandLineInterface extends UserInterface {
 	 * Removes reconnection settings.
 	 * Prints a message letting the player know the lobby was left correctly.
 	 * 
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(AcceptedLeaveLobby message) {
@@ -464,7 +486,7 @@ public class CommandLineInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Prints the correct help message received from the server.
 	 * 
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(HelpResponse message) {
@@ -475,7 +497,7 @@ public class CommandLineInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Prints the list of available lobbies.
 	 * 
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(AvailableLobbies message) {
@@ -496,7 +518,7 @@ public class CommandLineInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Prints the list of players in the joined lobby
 	 * 
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(LobbyUpdate message) {
@@ -512,7 +534,7 @@ public class CommandLineInterface extends UserInterface {
 	 * Prints the assistant cards played by the other players and then, if the player is the next one to play,
 	 * prints the available assistant cards.
 	 * 
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(AssistantCardUpdate message) {
@@ -543,7 +565,7 @@ public class CommandLineInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Saves the board status.
 	 * If the player is the next one to play, prints a message
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(BoardUpdate message) {
@@ -556,7 +578,7 @@ public class CommandLineInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Prints the name of the played card.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(CharacterCardUpdate message) {
@@ -568,7 +590,7 @@ public class CommandLineInterface extends UserInterface {
 	 * Prints the tower colors and wizards selected by other players and, if the player is the next to choose,
 	 * prints the remaining tower colors and wizards.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(UserSelectionUpdate message) {
@@ -615,7 +637,7 @@ public class CommandLineInterface extends UserInterface {
 	 * Prints the winner.
 	 * Stops the application.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(GameOverUpdate message) {
@@ -635,7 +657,7 @@ public class CommandLineInterface extends UserInterface {
 	 * Saves the initial board status.
 	 * Prints a message letting the player know that the game has started.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(InitialBoardStatus message) {
@@ -647,7 +669,7 @@ public class CommandLineInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Prints a message with reconnection details.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(ReconnectionUpdate message) {
@@ -655,21 +677,22 @@ public class CommandLineInterface extends UserInterface {
 		int numPlayers = message.getNumPlayers();
 		boolean gameResumed = message.isGameResumed();
 		showInfo(subject + " has reconnected, " + numPlayers + " players currently connected"
-				+ (gameResumed ? "\nGame resumed" : ""));
+				+ (gameResumed ? "\n\nGame resumed" : ""));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * Prints a message with disconnection details.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(DisconnectionUpdate message) {
 		String subject = message.getSubject();
 		int numPlayers = message.getNumPlayers();
 		boolean gameIdle = message.isGameIdle();
-		showInfo(subject + " has disconnected, " + numPlayers + " players currently connected"
-				+ (gameIdle ? "\nGame idle" : ""));
+		showInfo(subject + " has disconnected, "
+				+ numPlayers + (numPlayers > 1 ? " players" : "player") + " currently connected"
+				+ (gameIdle ? "\n\nGame idle" : ""));
 	}
 }

@@ -1,5 +1,5 @@
 Available commands
- /h, /help                         print help page
- /l, /lobbies                      retrieve available lobbies
- /j, /join <id>                    enter a game
- /cr, /create <players> <expert>   create a game, set player number and toggle expert mode
+ /h, /help                            print help page
+ /l, /lobbies                         retrieve available lobbies
+ /j, /join <id>                       enter a game
+ /cr, /create <players> [<expert>]    create a game, set player number and toggle expert mode

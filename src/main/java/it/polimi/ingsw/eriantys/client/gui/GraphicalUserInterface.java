@@ -33,7 +33,7 @@ public class GraphicalUserInterface extends UserInterface {
 	/**
 	 * Shows an information alert with the given message.
 	 *
-	 * @param details The message to show
+	 * @param details the message to show
 	 */
 	@Override
 	public void showInfo(String details) {
@@ -49,7 +49,7 @@ public class GraphicalUserInterface extends UserInterface {
 	/**
 	 * Shows an error alert with the given message.
 	 *
-	 * @param details The message to show
+	 * @param details the message to show
 	 */
 	@Override
 	public void showError(String details) {
@@ -84,9 +84,9 @@ public class GraphicalUserInterface extends UserInterface {
 
 	/**
 	 * {@inheritDoc}
-	 * This implementation only logs in the console that is everything ok.
+	 * This implementation only logs in the console that is everything fine.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(Accepted message) {
@@ -97,7 +97,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Saves the selected username and changes the scene to {@code LOBBIES}.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(AcceptedUsername message) {
@@ -110,7 +110,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * Saves the game id and the reconnection settings.
 	 * Changes the scene to {@code WAITING_ROOM}.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(AcceptedJoinLobby message) {
@@ -128,7 +128,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * Removes reconnection settings.
 	 * Changes the scene to {@code LOBBIES}.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(AcceptedLeaveLobby message) {
@@ -140,7 +140,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * This message should not be received in GUI mode.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(HelpResponse message) {
@@ -151,7 +151,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Updates the list of lobbies calling {@link LobbiesController#updateLobbies(List)}.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(AvailableLobbies message) {
@@ -165,7 +165,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Updates the list of players in the lobby calling {@link WaitingRoomController#updatePlayers(List)}.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(LobbyUpdate message) {
@@ -180,7 +180,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * Updates the Assistant Cards popup calling {@link AssistantCardsController#populate(List, Map)}.
 	 * If the player is the next one to play it shows an info alert.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(AssistantCardUpdate message) {
@@ -190,7 +190,7 @@ public class GraphicalUserInterface extends UserInterface {
 			controller.populate(message.getAvailableCards().get(client.getUsername()), message.getPlayedCards());
 		});
 		if (isNextPlayer(message.getNextPlayer())) {
-			showInfo("It's time to play an assistant card");
+			showInfo("It is your turn to play an assistant card");
 		}
 	}
 
@@ -199,7 +199,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * Saves the board status.
 	 * If the player is the next one to play it shows an info alert.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(BoardUpdate message) {
@@ -207,7 +207,7 @@ public class GraphicalUserInterface extends UserInterface {
 		// TODO: update assistant cards view
 		Platform.runLater(this::updateInGameControllers);
 		if (isNextPlayer(message.getNextPlayer())) {
-			showInfo("It's your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
+			showInfo("It is your turn:\n1. move your students\n2. move Mother Nature\n3. select a cloud tile");
 		}
 	}
 
@@ -221,7 +221,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * Updates user selections calling {@link WaitingRoomController#updateSelections(Map, Map)}.
 	 * If the players is the next one to choose, it prompts the selection popup.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(UserSelectionUpdate message) {
@@ -239,7 +239,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * Removes reconnection settings.
 	 * Shows an alert with the username of the winner (or an appropriate message if it was a tie).
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(GameOverUpdate message) {
@@ -269,7 +269,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * Saves the initial board status.
 	 * Changes the scene to {@code SCHOOLBOARD}.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(InitialBoardStatus message) {
@@ -284,7 +284,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Changes the scene to {@code SCHOOLBOARD}.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(ReconnectionUpdate message) {
@@ -295,7 +295,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Shows an info alert with information about the disconnection.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(DisconnectionUpdate message) {
@@ -304,8 +304,9 @@ public class GraphicalUserInterface extends UserInterface {
 		boolean gameIdle = message.isGameIdle();
 
 		Platform.runLater(() ->
-				showInfo(subject + " has disconnected, " + numPlayers + " players currently connected"
-				+ (gameIdle ? "\nGame idle" : ""))
+				showInfo(subject + " has disconnected, "
+						+ numPlayers + (numPlayers > 1 ? " players" : "player") + " currently connected"
+						+ (gameIdle ? "\n\nGame idle" : ""))
 		);
 	}
 

@@ -84,21 +84,27 @@ public class Server extends Thread {
 		}
 	}
 
+	// TODO: ?
 	public synchronized void setRunning(boolean running) {
 		this.running = running;
 	}
 
+	/**
+	 * Handles a user connection by processing a {@link Handshake} communication item.
+	 * @param username the username requested by the client
+	 * @param connection a reference to the client connection instance
+	 */
 	public synchronized void connect(String username, ClientConnection connection) {
 		Message response;
 		if (connectionByUsername.containsKey(username)) {
-			response = new Refused("Username \"" + username + "\" already exists");
+			response = new Refused("The requested username already exists");
 		} else if (connectionByUsername.containsValue(connection)) {
 			Optional<String> existingUsername = connectionByUsername.keySet().stream()
 					.filter(k -> connectionByUsername.get(k) == connection)
 					.reduce((a, b) -> a);
 			String details = existingUsername
-					.map(u -> "Client already connected with username \"" + u + "\"")
-					.orElse("Client already connected but no username found");
+					.map(u -> "Client already connected with username " + u)
+					.orElse("Client already connected, but no username found");
 			response = new Refused(details);
 		} else {
 			connectionByUsername.put(username, connection);
@@ -108,12 +114,20 @@ public class Server extends Thread {
 		connection.write(response);
 	}
 
+	/**
+	 * Handles a user reconnection by processing a {@link Reconnect} communication item.
+	 * @param username the username which has been chosen by the client prior to its disconnection
+	 * @param gameId the identifier of the game inside which the client was playing prior to its disconnection
+	 * @param passcode the hexadecimal code which has been associated to the client by the disconnection handling infrastructure
+	 * @param connection a reference to the client connection instance
+	 * @throws NoConnectionException if no connection can be retrieved for the target player
+	 */
 	public synchronized void reconnect(String username, int gameId, String passcode, ClientConnection connection)
 			throws NoConnectionException {
 		Message response;
 		if (reconnectionSettings.get(username) != null && reconnectionSettings.get(username)) {
 			if (!gameById.containsKey(gameId) || gameById.get(gameId) == null)
-				response = new RefusedReconnect("Game " + gameId + " does not exist");
+				response = new RefusedReconnect("The game #" + gameId + " does not exist");
 			else {
 				Game game = gameById.get(gameId);
 				if (game.checkCredentials(username, passcode)) {
@@ -124,14 +138,18 @@ public class Server extends Thread {
 					response = new RefusedReconnect("Incorrect credentials");
 			}
 		} else if (!connectionByUsername.containsKey(username)) {
-			response = new RefusedReconnect("Username \"" + username + "\" does not exist");
+			response = new RefusedReconnect("The requested username does not exist");
 		} else {
-			response = new RefusedReconnect("Unable to reconnect to game " + gameId);
+			response = new RefusedReconnect("Unable to reconnect to game #" + gameId);
 		}
 
 		connection.write(response);
 	}
 
+	/**
+	 * Handles a user disconnection, causing an update on the internal state of the class.
+	 * @param connection a reference to the client connection instance
+	 */
 	public synchronized void disconnect(ClientConnection connection) {
 		connectionByUsername.keySet().stream()
 				.filter(k -> connectionByUsername.get(k) == connection)
@@ -151,16 +169,32 @@ public class Server extends Thread {
 				});
 	}
 
+	/**
+	 * A method to know if a user with a specified identifier exists or not.
+	 * @param username the target user
+	 * @return {@code true} if and only if a {@link ClientConnection} exists for the target username
+	 */
 	public boolean isConnected(String username) {
 		return connectionByUsername.get(username) != null;
 	}
 
+	/**
+	 * A getter for the client connection instance of a user.
+	 * @param username the target user
+	 * @return a reference to the client connection
+	 * @throws NoConnectionException if no connection can be retrieved for the target player
+	 */
 	public ClientConnection getConnection(String username) throws NoConnectionException {
 		ClientConnection connection = connectionByUsername.get(username);
 		if (connection == null) throw new NoConnectionException();
 		return connection;
 	}
 
+	/**
+	 * Handles a user request by processing a {@link ConnectionMessage} communication item.
+	 * @param message the target message to process
+	 * @throws NoConnectionException if no connection can be retrieved for the target player
+	 */
 	public void handleMessage(ConnectionMessage message) throws NoConnectionException {
 		if (message instanceof LobbiesRequest lobbiesRequest)
 			handleLobbiesRequest(lobbiesRequest);
@@ -174,6 +208,11 @@ public class Server extends Thread {
 			handleUnexpectedMessage(message);
 	}
 
+	/**
+	 * Handles a user request by processing a {@link LobbiesRequest} communication item.
+	 * @param message the target message to process
+	 * @throws NoConnectionException if no connection can be retrieved for the target player
+	 */
 	private void handleLobbiesRequest(LobbiesRequest message) throws NoConnectionException {
 		String sender = message.getSender();
 		ClientConnection connection = getConnection(sender);
@@ -184,6 +223,11 @@ public class Server extends Thread {
 		connection.write(response);
 	}
 
+	/**
+	 * Handles a user request by processing a {@link JoinLobby} communication item.
+	 * @param message the target message to process
+	 * @throws NoConnectionException if no connection can be retrieved for the target player
+	 */
 	private void handleJoinLobby(JoinLobby message) throws NoConnectionException {
 		String sender = message.getSender();
 		ClientConnection connection = getConnection(sender);
@@ -195,15 +239,15 @@ public class Server extends Thread {
 			System.out.println("Already joined a lobby");
 			connection.write(new Refused("Already joined a lobby"));
 		}	else if (target == null || target.isStarted()) {
-			System.out.printf("Unavailable game: %d%n", gameId);
-			connection.write(new Refused("Unavailable game: " + gameId));
+			System.out.printf("Unavailable game: #%d%n", gameId);
+			connection.write(new Refused("Unavailable game: #" + gameId));
 		} else {
 			String passcode = target.addPlayer(sender);
 			if (passcode == null) {
-				System.out.printf("Already participating in game: %d%n", gameId);
-				connection.write(new Refused("Already participating in game: " + gameId));
+				System.out.printf("Already participating in game: #%d%n", gameId);
+				connection.write(new Refused("Already participating in game: #" + gameId));
 			} else {
-				System.out.printf("Joined game: %d%n", gameId);
+				System.out.printf("Joined game: #%d%n", gameId);
 				connection.setGame(target);
 				connection.write(new AcceptedJoinLobby(gameId, passcode));
 				connection.setJoinedLobby(true);
@@ -215,6 +259,11 @@ public class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Handles a user request by processing a {@link LeaveLobby} communication item.
+	 * @param message the target message to process
+	 * @throws NoConnectionException if no connection can be retrieved for the target player
+	 */
 	private void handleLeaveLobby(LeaveLobby message) throws NoConnectionException {
 		String sender = message.getSender();
 		ClientConnection connection = getConnection(sender);
@@ -226,13 +275,13 @@ public class Server extends Thread {
 			System.out.println("Not part of a lobby");
 			connection.write(new Refused("Not part of a lobby"));
 		} else if (target == null || target.isStarted()) {
-			System.out.printf("Cannot leave game: %d%n", gameId);
-			connection.write(new Refused("Cannot leave game: " + gameId));
+			System.out.printf("Cannot leave game: #%d%n", gameId);
+			connection.write(new Refused("Cannot leave game: #" + gameId));
 		} else if (!target.removePlayer(sender)) {
-			System.out.printf("Not participating in game: %d%n", gameId);
-			connection.write(new Refused("Not participating in game: " + gameId));
+			System.out.printf("Not participating in game: #%d%n", gameId);
+			connection.write(new Refused("Not participating in game: #" + gameId));
 		} else {
-			System.out.printf("Left game: %d%n", gameId);
+			System.out.printf("Left game: #%d%n", gameId);
 			connection.setGame(null);
 			connection.write(new AcceptedLeaveLobby());
 			connection.setJoinedLobby(false);
@@ -243,6 +292,11 @@ public class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Handles a user request by processing a {@link LobbyCreation} communication item.
+	 * @param message the target message to process
+	 * @throws NoConnectionException if no connection can be retrieved for the target player
+	 */
 	private void handleLobbyCreation(LobbyCreation message) throws NoConnectionException {
 		String sender = message.getSender();
 		ClientConnection connection = getConnection(sender);
@@ -261,7 +315,7 @@ public class Server extends Thread {
 			Game game = new Game(this, nextGameId, username, numPlayers, expertMode);
 			String passcode = game.addPlayer(username);
 			gameById.put(nextGameId, game);
-			System.out.printf("Created game successfully: %d%n", nextGameId);
+			System.out.printf("Game created successfully: #%d%n", nextGameId);
 			connection.setGame(game);
 			connection.write(new AcceptedJoinLobby(nextGameId, passcode));
 			connection.setJoinedLobby(true);
@@ -271,24 +325,39 @@ public class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Handles the processing of an unexpected {@link ConnectionMessage} communication item.
+	 * @param message the target message
+	 * @throws NoConnectionException if no connection can be retrieved for the target player
+	 */
 	private void handleUnexpectedMessage(ConnectionMessage message) throws NoConnectionException {
 		String sender = message.getSender();
 		ClientConnection connection = getConnection(sender);
 		connection.write(new Refused("Unexpected message"));
 	}
 
+	/**
+	 * Handles the processing of a {@link HelpRequest} communication item.
+	 * @param helpRequest the target request to process
+	 * @throws NoConnectionException if no connection can be retrieved for the target player
+	 */
 	public void sendHelp(HelpRequest helpRequest) throws NoConnectionException {
 		String sender = helpRequest.getSender();
 		ClientConnection connection = getConnection(sender);
 		connection.write(new HelpResponse(HelpContent.NO_GAME.getContent()));
 	}
 
+	/**
+	 * Processes the server-side end of the game.
+	 * @param game the identifier of the game which has been ended
+	 * @param players the list of usernames who played the game
+	 */
 	public void gameOver(Game game, List<String> players) {
 		for (String player : players) {
 			try {
 				getConnection(player).setGame(null);
 			} catch (NoConnectionException e) {
-				System.out.println("this is a printstacktrace");
+				System.out.println("This is a Throwable#printStackTrace() method call.");
 				e.printStackTrace();
 			}
 			connectionByUsername.remove(player);

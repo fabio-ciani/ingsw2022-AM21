@@ -6,6 +6,7 @@ import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.client.HelpRequest;
 import it.polimi.ingsw.eriantys.messages.server.*;
+import it.polimi.ingsw.eriantys.model.Color;
 import it.polimi.ingsw.eriantys.model.GameManager;
 import it.polimi.ingsw.eriantys.model.TowerColor;
 import it.polimi.ingsw.eriantys.model.Wizard;
@@ -45,6 +46,7 @@ public class Game {
 	 * Constructs a {@code Game} that fits the specified parameters.
 	 * @param server the {@link Server} in charge of exchanging messages with the clients.
 	 * @param gameId the unique id of this {@code Game}.
+	 * @param creator the username of the player who created the game.
 	 * @param lobbySize the number of players allowed in the game.
 	 * @param expertMode {@code true} if and only if the instantiated game is to be played in expert mode.
 	 */
@@ -70,11 +72,11 @@ public class Game {
 	}
 
 	/**
-	 * Returns the username of the current player.
-	 * @return the username of the current player.
+	 * Returns the username of the current player, or {@code null} if the game has not started yet.
+	 * @return the username of the current player, or {@code null} if the game has not started yet.
 	 */
 	public String getCurrentPlayer() {
-		return players.get(currentPlayer);
+		return started ? players.get(currentPlayer) : null;
 	}
 
 	/**
@@ -111,12 +113,18 @@ public class Game {
 	/**
 	 * Sets up the game by setting the {@code started} flag to {@code true}, setting the game manager and the setting the
 	 * starting message handler.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void setup() throws NoConnectionException {
+	public void setup() {
 		started = true;
 		setGameManager();
 		messageHandler = new GameSetupHandler(this);
+	}
+
+	/**
+	 * Sends an update to all players which prompts the first player to select the wizard and tower color. The message
+	 * contains all available wizards and tower colors.
+	 */
+	public void promptSelection() {
 		List<String> towerColorStringLiterals = new ArrayList<>(TowerColor.stringLiterals());
 		if (getInfo().getLobbySize() != 3) towerColorStringLiterals.remove("GREY");
 		sendUpdate(new UserSelectionUpdate(
@@ -128,9 +136,8 @@ public class Game {
 
 	/**
 	 * Starts the game and notifies each player about the initial status of the game objects.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void start() throws NoConnectionException {
+	public void start() {
 		try {
 			gameManager.setupBoard();
 			gameManager.setupEntrances();
@@ -144,9 +151,8 @@ public class Game {
 
 	/**
 	 * Advances to the next round of the game, or ends the game if the round which just ended was the last to be played.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void newRound() throws NoConnectionException {
+	public void newRound() {
 		if (lastRound) gameOver();
 		try {
 			lastRound = gameManager.setupRound();
@@ -156,19 +162,16 @@ public class Game {
 		}
 		availableAssistantCards = gameManager.getAvailableAssistantCards();
 		messageHandler = new PlayAssistantCardHandler(this);
-		sendUpdate(
-				new AssistantCardUpdate(new HashMap<>(), getAssistantCards()),
-				true
-		);
+		sendUpdate(new AssistantCardUpdate(new HashMap<>(), getAssistantCards()),
+				true);
 		checkDisconnection();
 	}
 
 	/**
 	 * Handles the assistant cards played by the players and sets up the new order of the players.
 	 * @param playedCards the assistant card played by each player.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void newTurn(Map<String, String> playedCards) throws NoConnectionException {
+	public void newTurn(Map<String, String> playedCards) {
 		lastRound = gameManager.handleAssistantCards(playedCards);
 		if (lastRound) broadcast(new LastRoundUpdate());
 		players = gameManager.getTurnOrder();
@@ -182,9 +185,8 @@ public class Game {
 	/**
 	 * Advances to the next player's turn in the current round, updating the message handler, and advances to the next
 	 * round if necessary.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void advanceTurn() throws NoConnectionException {
+	public void advanceTurn() {
 		nextPlayer();
 
 		try {
@@ -205,9 +207,8 @@ public class Game {
 
 	/**
 	 * Advances to the step of the turn when the current player can move Mother Nature.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void receiveMotherNatureMovement() throws NoConnectionException {
+	public void receiveMotherNatureMovement() {
 		messageHandler = new MotherNatureDestinationHandler(this);
 		sendBoardUpdate(PhaseName.MOTHER_NATURE);
 		checkDisconnection();
@@ -215,23 +216,22 @@ public class Game {
 
 	/**
 	 * Advances to the step of the turn when the current player can select a cloud tile.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void receiveCloudSelection() throws NoConnectionException {
+	public void receiveCloudSelection() {
 		messageHandler = new SelectCloudHandler(this);
 		sendBoardUpdate(PhaseName.SELECT_CLOUD);
 		checkDisconnection();
 	}
 
 	/**
-	 * If the specified username is already in the game returns {@code null}, otherwise adds the username to the players
-	 * and returns the passcode which the player can use to reconnect to the game.
+	 * If the specified username is already in the game or the lobby is full returns {@code null}, otherwise adds the
+	 * username to the players and returns the passcode which the player can use to reconnect to the game.
 	 * @param username the username of the player to add to the game.
 	 * @return the passcode which the player can use to reconnect to the game, or {@code null} if the specified username
 	 * is already in the game.
 	 */
 	public String addPlayer(String username) {
-		if (players.contains(username)) return null;
+		if (players.contains(username) || players.size() == getInfo().getLobbySize()) return null;
 		players.add(username);
 		String passcode = Integer.toHexString((int) (Math.random() * 65536));
 		playerPasscodes.put(username, passcode);
@@ -264,12 +264,9 @@ public class Game {
 			removePlayer(username);
 			notifyLobbyChange();
 		} else {
-			List<String> connectedPlayers = players.stream().filter(server::isConnected).toList();
-			if (connectedPlayers.size() == 1)
-				pause(connectedPlayers.get(0));
-			else if (connectedPlayers.size() == 0)
-				gameOver();
-			broadcast(new DisconnectionUpdate(username, connectedPlayers.size(), idle));
+			int connectedPlayers = checkConnectedPlayers();
+			if (connectedPlayers == 0) return;
+			broadcast(new DisconnectionUpdate(username, connectedPlayers, idle));
 			if (!idle && players.get(currentPlayer).equals(username)) {
 				messageHandler.handleDisconnectedUser(username);
 			}
@@ -280,9 +277,8 @@ public class Game {
 	 * Handles the reconnection of the specified player, notifying the rest of the players about the reconnection,
 	 * resuming the game if necessary and broadcasting an update about the state of the game.
 	 * @param username the username of the player who has reconnected to the game.
-	 * @throws NoConnectionException if no connection can be retrieved for the specified player.
 	 */
-	public void reconnect(String username) throws NoConnectionException {
+	public void reconnect(String username) {
 		int connectedPlayers =
 				players.stream().mapToInt(p -> server.isConnected(p) ? 1 : 0).reduce(0, Integer::sum);
 		broadcast(new ReconnectionUpdate(username, connectedPlayers, resume()));
@@ -310,7 +306,8 @@ public class Game {
 	 * @param username the player's username.
 	 * @param towerColor the player's tower color.
 	 * @param wizard the player's wizard.
-	 * @throws InvalidArgumentException if {@code towerColor} or {@code wizard} are not legal enum literals.
+	 * @throws InvalidArgumentException if no player matches the specified nickname or if {@code towerColor} or
+	 * {@code wizard} are not legal enum literals.
 	 */
 	public void setupPlayer(String username, String towerColor, String wizard) throws InvalidArgumentException {
 		gameManager.setupPlayer(username, towerColor, wizard);
@@ -333,6 +330,8 @@ public class Game {
 	 * @param destination the destination of the movement.
 	 * @throws IslandNotFoundException if {@code destination} is not a valid island id.
 	 * @throws NoMovementException if an error occurs during the student movement.
+	 * @throws InvalidArgumentException if no player matches the specified nickname or
+	 * no {@link Color} matches the specified color.
 	 */
 	public void moveStudent(String username, String color, String destination)
 			throws IslandNotFoundException, NoMovementException, InvalidArgumentException {
@@ -444,9 +443,8 @@ public class Game {
 	 * Sends the specified {@link UserActionUpdate} message to every player.
 	 * @param message the message to be sent to the players.
 	 * @param setNextPlayer specifies whether this method should set the next player property on the message being sent.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void sendUpdate(UserActionUpdate message, boolean setNextPlayer) throws NoConnectionException {
+	public void sendUpdate(UserActionUpdate message, boolean setNextPlayer) {
 		if (setNextPlayer) message.setNextPlayer(players.get(currentPlayer));
 		broadcast(message);
 	}
@@ -460,19 +458,18 @@ public class Game {
 
 	/**
 	 * Sends a {@link BoardUpdate} message with the current {@link PhaseName} to every player.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
+	 * @param phase the current game phase.
 	 * @see Game#sendUpdate(UserActionUpdate, boolean)
 	 */
-	public void sendBoardUpdate(PhaseName phase) throws NoConnectionException {
+	public void sendBoardUpdate(PhaseName phase) {
 		sendUpdate(new BoardUpdate(gameManager, phase), true);
 	}
 
 	/**
 	 * Sends a {@link BoardUpdate} message to every player.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 * @see Game#sendUpdate(UserActionUpdate, boolean)
 	 */
-	public void sendBoardUpdate() throws NoConnectionException {
+	public void sendBoardUpdate() {
 		sendUpdate(new BoardUpdate(gameManager), true);
 	}
 
@@ -494,20 +491,15 @@ public class Game {
 
 	/**
 	 * Ends the game by notifying every player and deleting every reference to it.
-	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	public void gameOver() throws NoConnectionException {
+	public void gameOver() {
 		sendUpdate(new GameOverUpdate(gameManager.getWinner()), false);
 		server.gameOver(this, players);
 	}
 
 	private void gameOver(String winner) {
-		try {
-			sendUpdate(new GameOverUpdate(winner), false);
-			server.gameOver(this, players);
-		} catch (NoConnectionException e) {
-			e.printStackTrace();
-		}
+		sendUpdate(new GameOverUpdate(winner), false);
+		server.gameOver(this, players);
 	}
 
 	private void broadcast(Message message) {
@@ -542,6 +534,8 @@ public class Game {
 	 * If the current player is disconnected calls the disconnected turn handler.
 	 */
 	private void checkDisconnection() {
+		// checkConnectedPlayers();
+
 		if (!server.isConnected(getCurrentPlayer())) {
 			try {
 				messageHandler.handleDisconnectedUser(getCurrentPlayer());
@@ -549,6 +543,17 @@ public class Game {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private int checkConnectedPlayers() {
+		List<String> connectedPlayers = players.stream().filter(server::isConnected).toList();
+
+		if (connectedPlayers.size() == 1 && !idle)
+			pause(connectedPlayers.get(0));
+		else if (connectedPlayers.size() == 0)
+			gameOver();
+
+		return connectedPlayers.size();
 	}
 
 	private void pause(String connectedPlayer) {

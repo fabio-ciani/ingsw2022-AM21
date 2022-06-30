@@ -100,13 +100,16 @@ public class GameManager {
 	 * @param nickname the {@link Player}'s nickname
 	 * @param towerColorLiteral the string value of the {@link TowerColor} which the {@link Player} selected
 	 * @param wizardLiteral the string value of the {@link Wizard} which the {@link Player} selected
-	 * @throws InvalidArgumentException if at least one of the enum literals is not a legal value
+	 * @throws InvalidArgumentException if no player matches the specified nickname or if at least one of the enum
+	 * literals is not a legal value.
 	 */
 	public void setupPlayer(String nickname, String towerColorLiteral, String wizardLiteral)
 			throws InvalidArgumentException {
 		Player p = players.get(nickname);
 		TowerColor towerColor;
 		Wizard wizard;
+
+		if (p == null) throw new InvalidArgumentException();
 
 		try {
 			towerColor = TowerColor.valueOf(towerColorLiteral);

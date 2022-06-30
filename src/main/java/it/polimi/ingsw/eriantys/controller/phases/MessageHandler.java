@@ -1,7 +1,6 @@
 package it.polimi.ingsw.eriantys.controller.phases;
 
 import it.polimi.ingsw.eriantys.messages.GameMessage;
-import it.polimi.ingsw.eriantys.messages.server.UserActionUpdate;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 
 /**
@@ -36,5 +35,5 @@ public interface MessageHandler {
 	 * @param username the reconnected user's username.
 	 * @throws NoConnectionException if no connection can be retrieved for one or more players.
 	 */
-	void sendReconnectUpdate(String username) throws NoConnectionException;
+	void sendReconnectUpdate(String username);
 }

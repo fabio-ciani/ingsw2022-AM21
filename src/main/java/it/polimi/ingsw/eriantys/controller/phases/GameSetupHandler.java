@@ -55,9 +55,18 @@ public class GameSetupHandler implements MessageHandler {
 	}
 
 	@Override
-	public void handleDisconnectedUser(String username) {
-		String towerColor = availableTowerColors.get(0);
-		String wizard = availableWizards.get(0);
+	public void handleDisconnectedUser(String username) throws NoConnectionException {
+		String towerColor;
+		String wizard;
+
+		try {
+			towerColor = availableTowerColors.get(0);
+			wizard = availableWizards.get(0);
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			checkStateTransition();
+			return;
+		}
 
 		try {
 			game.setupPlayer(username, towerColor, wizard);
@@ -70,11 +79,12 @@ public class GameSetupHandler implements MessageHandler {
 		availableTowerColors.remove(towerColor);
 		availableWizards.remove(wizard);
 		System.out.println("Confirmed: tower color " + towerColor + ", wizard " + wizard);
+		checkStateTransition();
 		game.nextPlayer();
 	}
 
 	@Override
-	public void sendReconnectUpdate(String username) throws NoConnectionException {
+	public void sendReconnectUpdate(String username) {
 		game.sendUpdate(new UserSelectionUpdate(availableTowerColors, availableWizards, towerColors, wizards), true);
 	}
 
@@ -109,7 +119,7 @@ public class GameSetupHandler implements MessageHandler {
 		}
 	}
 
-	private void checkStateTransition() throws NoConnectionException {
+	private void checkStateTransition() {
 		int numPlayers = game.getInfo().getLobbySize();
 		if (towerColors.keySet().size() == numPlayers || wizards.keySet().size() == numPlayers)
 			game.start();

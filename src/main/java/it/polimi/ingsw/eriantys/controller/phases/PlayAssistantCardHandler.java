@@ -53,12 +53,12 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		}
 
 		playedCards.put(username, card);
-		game.nextPlayer();
 		checkStateTransition();
+		game.nextPlayer();
 	}
 
 	@Override
-	public void sendReconnectUpdate(String username) throws NoConnectionException {
+	public void sendReconnectUpdate(String username) {
 		game.sendInitialBoardStatus();
 		game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards), true);
 	}

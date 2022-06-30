@@ -292,6 +292,28 @@ class GameManagerTest {
 	}
 
 	@Test
+	void getWinner_MoreTowers_ReturnCorrectPlayer() {
+		GameManager gm = new GameManager(players, false);
+		gm.getTurnOrder();
+	}
+
+	@Test
+	void getWinner_SameTowersMoreProfessors_ReturnCorrectPlayer() {
+
+	}
+
+	@Test
+	void getWinner_NotLastRound_ReturnNull() {
+		GameManager gm = new GameManager(players, false);
+		assertNull(gm.getWinner());
+	}
+
+	@Test
+	void getWinner_SameTowersSameProfessors_ReturnTie() {
+		//GameManager gm = new GameManager(players, false);
+	}
+
+	@Test
 	void entranceRepresentation_InvalidUsername_ThrowException() {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, false);

@@ -38,7 +38,7 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 	}
 
 	@Override
-	public void sendReconnectUpdate(String username) throws NoConnectionException {
+	public void sendReconnectUpdate(String username) {
 		game.sendBoardUpdate();
 	}
 

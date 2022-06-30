@@ -16,6 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * This class represents the application server thread. It handles all the clients, instantiating
+ * {@link ClientConnection} objects for each of them, and exposes various methods
+ */
 public class Server extends Thread {
 	private final int port;
 	private final ServerSocket serverSocket;
@@ -253,8 +257,10 @@ public class Server extends Thread {
 				connection.setJoinedLobby(true);
 				reconnectionSettings.put(sender, true);
 				target.notifyLobbyChange();
-				if (target.meetsStartupCondition())
+				if (target.meetsStartupCondition()) {
 					target.setup();
+					target.promptSelection();
+				}
 			}
 		}
 	}

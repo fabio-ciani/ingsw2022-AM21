@@ -209,11 +209,6 @@ public class GraphicalUserInterface extends UserInterface {
 		super.handleMessage(message);
 	}
 
-	@Override
-	public void handleMessage(CharacterCardUpdate message) {
-		// TODO: 29/06/2022 showInfo?
-	}
-
 	/**
 	 * {@inheritDoc}
 	 * Updates user selections calling {@link WaitingRoomController#updateSelections(Map, Map)}.

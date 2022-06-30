@@ -53,8 +53,8 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		}
 
 		playedCards.put(username, card);
-		checkStateTransition();
 		game.nextPlayer();
+		checkStateTransition();
 	}
 
 	@Override

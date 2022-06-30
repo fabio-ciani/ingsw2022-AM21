@@ -79,8 +79,8 @@ public class GameSetupHandler implements MessageHandler {
 		availableTowerColors.remove(towerColor);
 		availableWizards.remove(wizard);
 		System.out.println("Confirmed: tower color " + towerColor + ", wizard " + wizard);
-		checkStateTransition();
 		game.nextPlayer();
+		checkStateTransition();
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class CommonInfluence implements InfluenceCalculator {
 		int result = 0;
 
 		for (Color c : ownedProfessors)
-			result += evaluateColor(island, c);     // TODO: Should we suppress the for loop by putting it inside evaluateColor(...)? (ExcludeColorInfluence will need to do an @Override)
+			result += evaluateColor(island, c);
 		result += evaluateTowers(island, player);
 
 		return result;

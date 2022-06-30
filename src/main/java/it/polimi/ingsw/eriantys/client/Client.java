@@ -302,7 +302,6 @@ public class Client extends Thread {
 		} else if (message instanceof HelpResponse m) {
 			ui.handleMessage(m);
 		} else if (message instanceof AvailableLobbies m) {
-			// TODO: 23/05/2022 lobbies = m.getLobbies(); ?
 			ui.handleMessage(m);
 		} else if (message instanceof LobbyUpdate m) {
 			ui.handleMessage(m);

@@ -40,7 +40,6 @@ public class Player {
 		return nickname;
 	}
 
-	// TODO: Is it correct to return a new reference? (i.e., a new object)
 	/**
 	 * A getter for the {@link AssistantCard} held in the hand by a {@code Player}.
 	 * @return the reference to a {@link List} containing the {@code Player}'s cards

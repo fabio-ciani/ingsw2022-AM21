@@ -534,7 +534,6 @@ public class GameManager {
 		return rep;
 	}
 
-	// TODO: more tests (?) (e.g., resolve() method)
 	/**
 	 * A method called by {@link BoardStatus} in order to obtain a view-oriented representation
 	 * within the MVC pattern for the game.

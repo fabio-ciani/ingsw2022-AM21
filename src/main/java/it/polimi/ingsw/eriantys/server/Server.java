@@ -361,12 +361,16 @@ public class Server extends Thread {
 	public void gameOver(Game game, List<String> players) {
 		for (String player : players) {
 			try {
-				getConnection(player).setGame(null);
+				Game playerGame = getConnection(player).getGame();
+				if (playerGame != null && playerGame.getInfo().getGameId() == game.getInfo().getGameId()) {
+					getConnection(player).setGame(null);
+					connectionByUsername.remove(player);
+				}
 			} catch (NoConnectionException e) {
 				System.out.println("This is a Throwable#printStackTrace() method call.");
 				e.printStackTrace();
+				connectionByUsername.remove(player);
 			}
-			connectionByUsername.remove(player);
 		}
 		gameById.remove(game.getInfo().getGameId(), game);
 	}

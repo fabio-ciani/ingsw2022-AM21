@@ -74,6 +74,7 @@ public class CommandLineInterface extends UserInterface {
 		}
 
 		System.out.println(title);
+		System.out.println("\n");
 	}
 
 	/**

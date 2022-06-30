@@ -6,3 +6,8 @@
    \ \_______\ \__\\ _\\ \__\ \__\ \__\ \__\\ \__\   \ \__\__/  / /       ____\_\  \
     \|_______|\|__|\|__|\|__|\|__|\|__|\|__| \|__|    \|__|\___/ /       |\_________\
                                                           \|___|/        \|_________|
+
+Copyright (C) Cranio Creations Ltd., 2021
+In collaboration with Polytechnic University of Milan
+
+Developed with <3 by Tommaso Bonetti, Fabio Ciani, Davide Mozzi

@@ -436,7 +436,6 @@ public class Game {
 	public void nextPlayer() {
 		currentPlayer = (currentPlayer + 1) % players.size();
 		playedCharacterCard = false;
-		checkDisconnection();
 	}
 
 	/**
@@ -533,9 +532,7 @@ public class Game {
 	/**
 	 * If the current player is disconnected calls the disconnected turn handler.
 	 */
-	private void checkDisconnection() {
-		// checkConnectedPlayers();
-
+	public void checkDisconnection() {
 		if (!server.isConnected(getCurrentPlayer())) {
 			try {
 				messageHandler.handleDisconnectedUser(getCurrentPlayer());

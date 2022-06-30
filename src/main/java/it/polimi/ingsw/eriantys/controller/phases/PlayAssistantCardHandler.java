@@ -44,7 +44,7 @@ public class PlayAssistantCardHandler implements MessageHandler {
 	}
 
 	@Override
-	public void handleDisconnectedUser(String username) throws NoConnectionException {
+	public void handleDisconnectedUser(String username) {
 		List<String> availableCardsForUser = availableCards.get(username);
 		String card = null;
 		for (int i = 0; i < availableCardsForUser.size() && card == null; i++) {
@@ -55,6 +55,7 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		playedCards.put(username, card);
 		game.nextPlayer();
 		checkStateTransition();
+		game.checkDisconnection();
 	}
 
 	@Override
@@ -76,6 +77,7 @@ public class PlayAssistantCardHandler implements MessageHandler {
 			game.acceptRequest(message);
 			game.nextPlayer();
 			checkStateTransition();
+			game.checkDisconnection();
 		}
 	}
 
@@ -88,7 +90,7 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		return available.stream().filter(c -> !playedCards.containsValue(c)).toList().size() == 0;
 	}
 
-	private void checkStateTransition() throws NoConnectionException {
+	private void checkStateTransition() {
 		if (playedCards.keySet().size() == game.getInfo().getLobbySize()) {
 			game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards), false);
 			game.newTurn(playedCards);

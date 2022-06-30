@@ -81,6 +81,7 @@ public class GameSetupHandler implements MessageHandler {
 		System.out.println("Confirmed: tower color " + towerColor + ", wizard " + wizard);
 		game.nextPlayer();
 		checkStateTransition();
+		game.checkDisconnection();
 	}
 
 	@Override
@@ -116,6 +117,7 @@ public class GameSetupHandler implements MessageHandler {
 
 			game.nextPlayer();
 			checkStateTransition();
+			game.checkDisconnection();
 		}
 	}
 

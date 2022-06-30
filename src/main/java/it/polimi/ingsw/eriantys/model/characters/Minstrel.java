@@ -35,6 +35,8 @@ public class Minstrel extends BaseCharacterCard {
 
 	/**
 	 * Constructs a new {@link Minstrel} character card.
+	 *
+	 * @param currentPlayerSupplier Supplier to get the current player.
 	 */
 	public Minstrel(Supplier<Player> currentPlayerSupplier) {
 		super(INITIAL_COST);
@@ -43,7 +45,7 @@ public class Minstrel extends BaseCharacterCard {
 
 	@Override
 	public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland)
-			throws NoMovementException, InvalidArgumentException {
+			throws InvalidArgumentException, NoMovementException {
 		if (sourceColors == null) {
 			throw new InvalidArgumentException("sourceColors argument is null.");
 		}

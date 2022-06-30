@@ -45,7 +45,7 @@ public class CommonInfluence implements InfluenceCalculator {
 	 * @return the contribution of the towers on the specified island if the passed {@link Player} parameter is equal to the controller of the island
 	 */
 	protected int evaluateTowers(IslandGroup island, Player player) {
-		// since an island could not have a controller yet, the call sequence cannot be island.getController().equals(player)
+		// Since an island could not have a controller yet, the call sequence cannot be island.getController().equals(player)
 		return (player.equals(island.getController())) ? island.getTowers() : 0;
 	}
 }

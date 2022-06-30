@@ -35,7 +35,7 @@ public class Monk extends ContainerCharacterCard {
 
 	@Override
 	public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland)
-			throws NoMovementException, InvalidArgumentException {
+			throws InvalidArgumentException, NoMovementException {
 		if (targetColor == null) {
 			throw new InvalidArgumentException("targetColor argument is null.");
 		}

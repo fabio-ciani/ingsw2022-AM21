@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.model;
 
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
@@ -280,6 +281,14 @@ class GameManagerTest {
 		GameManager gm = new GameManager(players, false);
 
 		assertThrowsExactly(InvalidArgumentException.class, () -> gm.changeInfluenceState(null));
+	}
+
+	@Test
+	void handleCharacterCard_IndexOutOfBounds_ThrowException() {
+		GameManager gm = new GameManager(players, true);
+
+		assertThrowsExactly(InvalidArgumentException.class, () -> gm.handleCharacterCard(-1, new JsonObject()));
+		assertThrowsExactly(InvalidArgumentException.class, () -> gm.handleCharacterCard(4, new JsonObject()));
 	}
 
 	@Test

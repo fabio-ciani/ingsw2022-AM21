@@ -81,7 +81,7 @@ class HerbGrannyTest {
 
 	@Test
 	void returnTile_SetupAndApplyThenBoardCallsReturnTile_TileReturned() throws InvalidArgumentException {
-		final int tileId = 1; // id of the first tile popped
+		final int tileId = 1;	// id of the first popped tile
 		IslandGroup island1 = new IslandGroup("01");
 		IslandGroup island2 = new IslandGroup("02");
 		card.setupEffect();

@@ -32,6 +32,8 @@ public class SchoolBoard {
 	/**
 	 * Constructs a {@code SchoolBoard} initially containing the maximum number of towers,
 	 * with an empty {@code entrance} of maximum size according to the game rules and an empty {@code diningRoom}.
+	 * @param entranceSize the maximum number of students which the entrance can hold
+	 * @param towerNumber the maximum number of towers which the schoolboard can hold
 	 */
 	public SchoolBoard(int entranceSize, int towerNumber) {
 		this.towerNumber = towerNumber;

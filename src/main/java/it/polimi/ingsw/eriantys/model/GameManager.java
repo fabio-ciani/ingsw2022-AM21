@@ -390,6 +390,10 @@ public class GameManager {
 		return lastRound();
 	}
 
+	/**
+	 * Cancels the effect of the desired character card at the end of the current turn.
+	 * @throws InvalidArgumentException if an error has occurred while canceling the card's effect
+	 */
 	public void cancelCharacterCardEffect() throws InvalidArgumentException {
 		if (selectedCharacterCard == null) return;
 		selectedCharacterCard.cancelEffect();
@@ -605,7 +609,7 @@ public class GameManager {
 	 * @see ProfessorOwnership#getOwnership(Color)
 	 */
 	public Map<String, String> professorsRepresentation() {
-		Map<String, String> rep = new LinkedHashMap<>();
+		Map<String, String> rep = new HashMap<>();
 		Player p;
 
 		for (Color c : Color.values()) {

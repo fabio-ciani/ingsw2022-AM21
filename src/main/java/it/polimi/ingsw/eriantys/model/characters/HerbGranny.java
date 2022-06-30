@@ -73,7 +73,7 @@ public class HerbGranny extends BaseCharacterCard {
 
 	@Override
 	public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland)
-			throws ItemNotAvailableException, DuplicateNoEntryTileException, InvalidArgumentException {
+			throws DuplicateNoEntryTileException, InvalidArgumentException, ItemNotAvailableException {
 		if (targetIsland == null) {
 			throw new InvalidArgumentException("targetIsland argument is null.");
 		}

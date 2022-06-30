@@ -18,6 +18,7 @@ public interface InfluenceCalculator {
 	 * @param island the game location used for the calculation
 	 * @param ownedProfessors the {@link Color}(s) of the professors which the {@link Player} owns
 	 * @return the influence value for the given {@link Player} on the specified island
+	 * @throws InvalidArgumentException if one or more parameters are illegal
 	 */
 	int calculate(Player player, IslandGroup island, Set<Color> ownedProfessors) throws InvalidArgumentException;
 }

@@ -660,21 +660,6 @@ public class CommandLineInterface extends UserInterface {
 
 	/**
 	 * {@inheritDoc}
-	 * Prints a message with reconnection details.
-	 *
-	 * @param message the received message
-	 */
-	@Override
-	public void handleMessage(ReconnectionUpdate message) {
-		String subject = message.getSubject();
-		int numPlayers = message.getNumPlayers();
-		boolean gameResumed = message.isGameResumed();
-		showInfo(subject + " has reconnected, " + numPlayers + " players currently connected"
-				+ (gameResumed ? "\n\nGame resumed" : ""));
-	}
-
-	/**
-	 * {@inheritDoc}
 	 * Prints a message with disconnection details.
 	 *
 	 * @param message the received message

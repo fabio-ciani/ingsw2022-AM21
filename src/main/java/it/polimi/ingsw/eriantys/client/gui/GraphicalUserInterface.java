@@ -282,15 +282,6 @@ public class GraphicalUserInterface extends UserInterface {
 
 	/**
 	 * {@inheritDoc}
-	 * Changes the scene to {@code SCHOOLBOARD}.
-	 *
-	 * @param message the received message
-	 */
-	@Override
-	public void handleMessage(ReconnectionUpdate message) {}
-
-	/**
-	 * {@inheritDoc}
 	 * Shows an info alert with information about the disconnection.
 	 *
 	 * @param message the received message

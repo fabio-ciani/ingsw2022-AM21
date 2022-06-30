@@ -145,6 +145,22 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 
 	/**
 	 * {@inheritDoc}
+	 * Prints a message with reconnection details.
+	 *
+	 * @param message the received message
+	 */
+	@Override
+	public void handleMessage(ReconnectionUpdate message) {
+		String subject = message.getSubject();
+		if (Objects.equals(subject, client.getUsername())) return;
+		int numPlayers = message.getNumPlayers();
+		boolean gameResumed = message.isGameResumed();
+		showInfo(subject + " has reconnected, " + numPlayers + " players currently connected"
+				+ (gameResumed ? "\n\nGame resumed" : ""));
+	}
+
+	/**
+	 * {@inheritDoc}
 	 * Sends back a new {@link Ping} to the server.
 	 *
 	 * @param message The received message

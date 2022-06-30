@@ -60,7 +60,7 @@ public class PlayAssistantCardHandler implements MessageHandler {
 
 	@Override
 	public void sendReconnectUpdate(String username) {
-		game.sendInitialBoardStatus();
+		game.sendBoardUpdate();
 		game.sendUpdate(new AssistantCardUpdate(playedCards, availableCards), true);
 	}
 

@@ -201,7 +201,11 @@ public class GraphicalUserInterface extends UserInterface {
 	public void handleMessage(BoardUpdate message) {
 		client.setBoardStatus(message.getStatus());
 		// TODO: update assistant cards view
-		Platform.runLater(this::updateInGameControllers);
+		Platform.runLater(() -> {
+			updateInGameControllers();
+			if (app.getCurrentScene() == SceneName.LOBBIES)
+				app.changeScene(SceneName.SCHOOLBOARD);
+		});
 		super.handleMessage(message);
 	}
 
@@ -220,7 +224,7 @@ public class GraphicalUserInterface extends UserInterface {
 	@Override
 	public void handleMessage(UserSelectionUpdate message) {
 		Platform.runLater(() -> {
-			if (app.getCurrentScene() != SceneName.WAITING_ROOM) return;
+			app.changeScene(SceneName.WAITING_ROOM);
 			WaitingRoomController controller = (WaitingRoomController) app.getCurrentController();
 			controller.updateSelections(message.getTowerColors(), message.getWizards());
 			if (Objects.equals(client.getUsername(), message.getNextPlayer())) {
@@ -283,9 +287,7 @@ public class GraphicalUserInterface extends UserInterface {
 	 * @param message the received message
 	 */
 	@Override
-	public void handleMessage(ReconnectionUpdate message) {
-		Platform.runLater(() -> app.changeScene(SceneName.SCHOOLBOARD));
-	}
+	public void handleMessage(ReconnectionUpdate message) {}
 
 	/**
 	 * {@inheritDoc}

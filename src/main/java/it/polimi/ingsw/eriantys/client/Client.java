@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.client.cli.CommandLineInterface;
+import it.polimi.ingsw.eriantys.client.cli.ConsoleColors;
 import it.polimi.ingsw.eriantys.client.gui.GraphicalUserInterface;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.Ping;
@@ -123,8 +124,8 @@ public class Client extends Thread {
 		try (socket) {
 			while (running) {
 				Message message = (Message) in.readObject();
-				// if (!(message instanceof Ping))
-				// 	System.out.println(ConsoleColors.ANSI_BLUE + "Received a " + message.getClass() + ConsoleColors.ANSI_RESET);
+				if (!(message instanceof Ping))
+					System.out.println(ConsoleColors.ANSI_BLUE + "Received a " + message.getClass() + ConsoleColors.ANSI_RESET);
 				handleMessage(message);
 			}
 		} catch (SocketTimeoutException e) {
@@ -317,6 +318,7 @@ public class Client extends Thread {
 		} else if (message instanceof InitialBoardStatus m) {
 			ui.handleMessage(m);
 		} else if (message instanceof ReconnectionUpdate m) {
+			towerColor = null; wizard = null;
 			ui.handleMessage(m);
 		} else if (message instanceof DisconnectionUpdate m) {
 			ui.handleMessage(m);

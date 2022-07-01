@@ -10,13 +10,14 @@ An implementation of a tabletop game as the _Software Engineering_ final examina
 [davide.mozzi@mail.polimi.it](mailto:davide.mozzi@mail.polimi.it)
 
 ## Implemented features
-| Functionality				| State				|
+| Functionality			| State				|
+| :---						| :---:				|
 | Simplified Mode			| :green_circle:	|
 | Expert Mode				| :green_circle:	|
 | CLI						| :green_circle:	|
 | GUI						| :green_circle:	|
 | Character Cards			| :green_circle:	|
-| 4-Player Mode				| :red_circle:		|
+| 4-Player Mode			| :red_circle:		|
 | Multiple Games			| :green_circle:	|
 | Persistence				| :red_circle:		|
 | Disconnection Handling	| :green_circle:	|

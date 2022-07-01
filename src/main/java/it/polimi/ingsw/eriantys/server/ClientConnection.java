@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 /**
  * This class represents a single client-server connection.
@@ -128,17 +127,8 @@ public class ClientConnection {
 					System.out.println("Ping - " + socketToClient.getPort());
 				}*/
 			}
-		} catch (SocketTimeoutException e) {
-			System.out.println("Timeout");
+		} catch (IOException | NoConnectionException | ClassNotFoundException e) {
 			server.disconnect(this);
-		} catch (IOException e) {
-			server.disconnect(this);
-		} catch (NoConnectionException e) {
-			// TODO handle exception?
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO: 02/05/2022 Handle exception?
-			throw new RuntimeException(e);
 		}
 	}
 

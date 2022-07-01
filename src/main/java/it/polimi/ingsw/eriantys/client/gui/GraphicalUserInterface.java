@@ -253,8 +253,7 @@ public class GraphicalUserInterface extends UserInterface {
 			alert.setContentText(alertContent);
 			alert.showAndWait().ifPresent(type -> {
 				client.setRunning(false);
-				// TODO: 29/06/2022 ?
-				// System.exit(0);
+				Platform.exit();
 			});
 		});
 	}
@@ -301,5 +300,19 @@ public class GraphicalUserInterface extends UserInterface {
 		board.load();
 		CharacterCardsController controller = (CharacterCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
 		controller.load();
+	}
+
+	@Override
+	public void quit() {
+		Platform.runLater(() -> {
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Game over");
+			alert.setHeaderText("Game over");
+			alert.setContentText("An error has occurred, you have been disconnected");
+			alert.showAndWait().ifPresent(type -> {
+				client.setRunning(false);
+				Platform.exit();
+			});
+		});
 	}
 }

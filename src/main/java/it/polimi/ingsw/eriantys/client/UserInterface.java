@@ -27,8 +27,6 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 	 */
 	protected final JsonObject characterCardInfo;
 
-	protected boolean running; // TODO: 10/05/2022 Set to false when "quit" command is typed, also handle client.running
-
 	/**
 	 * Reads the JSON file and saves the information about character cards.
 	 *
@@ -191,4 +189,6 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 	public void handleMessage(Ping message) {
 		client.write(new Ping());
 	}
+
+	public abstract void quit();
 }

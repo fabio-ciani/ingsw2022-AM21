@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.eriantys.client.cli.CommandLineInterface;
-import it.polimi.ingsw.eriantys.client.cli.ConsoleColors;
 import it.polimi.ingsw.eriantys.client.gui.GraphicalUserInterface;
 import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.Ping;
@@ -21,7 +20,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.prefs.Preferences;
@@ -128,22 +126,13 @@ public class Client extends Thread {
 		try (socket) {
 			while (running) {
 				Message message = (Message) in.readObject();
-				if (!(message instanceof Ping))
-					System.out.println(ConsoleColors.ANSI_BLUE + "Received a " + message.getClass() + ConsoleColors.ANSI_RESET);
+				// if (!(message instanceof Ping))
+				// 	System.out.println(ConsoleColors.ANSI_BLUE + "Received a " + message.getClass() + ConsoleColors.ANSI_RESET);
 				handleMessage(message);
 			}
-		} catch (SocketTimeoutException e) {
-			System.out.println("Timeout");
-			e.printStackTrace();
+		} catch (IOException | ClassNotFoundException e) {
 			setRunning(false);
-			System.out.println("Stopped");
-		} catch (IOException e) {
-			// TODO: 03/05/2022 Handle exception
-			setRunning(false);
-			System.out.println("Stopped");
-		} catch (ClassNotFoundException e) {
-			// TODO: 03/05/2022 Handle exception?
-			throw new RuntimeException(e);
+			ui.quit();
 		}
 	}
 
@@ -156,8 +145,8 @@ public class Client extends Thread {
 			try {
 				out.writeObject(message);
 			} catch (IOException e) {
-				// TODO: 03/05/2022 Handle exception
-				running = false;
+				setRunning(false);
+				ui.quit();
 			}
 		}
 	}

@@ -71,7 +71,6 @@ public class Server extends Thread {
 	 */
 	public Server(int port) throws IOException {
 		this.port = port;
-		this.running = true;
 		this.gameById = new HashMap<>();
 		this.connectionByUsername = new HashMap<>();
 		this.reconnectionSettings = new HashMap<>();
@@ -92,14 +91,9 @@ public class Server extends Thread {
 				new Thread(connection::ping).start();
 			}
 		} catch (IOException e) {
-			// TODO: 02/05/2022 Handle exception
-			throw new RuntimeException(e);
+			System.out.println("The server has stopped due to the following exception:");
+			e.printStackTrace();
 		}
-	}
-
-	// TODO: ?
-	public synchronized void setRunning(boolean running) {
-		this.running = running;
 	}
 
 	/**
@@ -164,6 +158,7 @@ public class Server extends Thread {
 	 * @param connection a reference to the client connection instance
 	 */
 	public synchronized void disconnect(ClientConnection connection) {
+		connection.setRunning(false);
 		connectionByUsername.keySet().stream()
 				.filter(k -> connectionByUsername.get(k) == connection)
 				.toList()

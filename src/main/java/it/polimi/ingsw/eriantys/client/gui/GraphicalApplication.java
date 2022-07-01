@@ -100,6 +100,7 @@ public class GraphicalApplication extends Application {
 		initialize();
 
 		this.primaryStage = primaryStage;
+		this.primaryStage.setOnCloseRequest(event -> client.setRunning(false));
 
 		Scene scene = sceneByName.get(currentScene);
 		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());

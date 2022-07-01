@@ -21,6 +21,8 @@ import java.util.*;
 public class CommandLineInterface extends UserInterface {
 	private final Scanner scanner;
 
+	private boolean running;
+
 	/**
 	 * Constructs a {@link CommandLineInterface} object.
 	 *
@@ -187,6 +189,7 @@ public class CommandLineInterface extends UserInterface {
 						if (wrongArgNumber(tokens, 0)) break;
 						client.sendReconnect();
 					}
+					case "" -> {}
 					default -> showError("Invalid command");
 				}
 			} catch (IndexOutOfBoundsException e) {
@@ -631,8 +634,10 @@ public class CommandLineInterface extends UserInterface {
 		else
 			showInfo(message.getWinner() + " is the winner of the game!");
 
-		new Scanner(System.in).nextLine();
 		client.setRunning(false);
+		running = false;
+
+		showInfo("Press enter to exit");
 	}
 
 	/**
@@ -662,5 +667,12 @@ public class CommandLineInterface extends UserInterface {
 		showInfo(subject + " has disconnected, "
 				+ numPlayers + (numPlayers > 1 ? " players" : " player") + " currently connected"
 				+ (gameIdle ? "\n\nGame idle" : ""));
+	}
+
+	@Override
+	public synchronized void quit() {
+		running = false;
+		showError("An error has occurred, you have been disconnected");
+		showInfo("Press enter to exit");
 	}
 }

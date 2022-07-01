@@ -3,10 +3,13 @@ package it.polimi.ingsw.eriantys.controller.phases;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.GameMessage;
 import it.polimi.ingsw.eriantys.messages.client.SelectCloud;
+import it.polimi.ingsw.eriantys.messages.server.AssistantCardUpdate;
 import it.polimi.ingsw.eriantys.model.exceptions.InvalidArgumentException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import it.polimi.ingsw.eriantys.server.HelpContent;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
+
+import java.util.LinkedHashMap;
 
 /**
  * This concrete implementation for the state design pattern involving {@link MessageHandler}
@@ -43,6 +46,7 @@ public class SelectCloudHandler extends PlayCharacterCardHandler {
 	@Override
 	public void sendReconnectUpdate(String username) {
 		game.sendBoardUpdate();
+		game.sendUpdate(new AssistantCardUpdate(new LinkedHashMap<>(), game.getAssistantCards()), false);
 	}
 
 	private void process(SelectCloud message) throws NoConnectionException {

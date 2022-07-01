@@ -135,12 +135,50 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Prints the name of the played card.
+	 *
+	 * @param message the received message
+	 */
+	@Override
+	public void handleMessage(CharacterCardUpdate message) {
+		StringBuilder name = new StringBuilder();
+		String card = client.getBoardStatus().getCharacterCards().get(message.getCard());
+		char c;
+
+		for (int i = 0; i < card.length(); i++) {
+			c = card.charAt(i);
+			if (i != card.length() - 1 && Character.isLowerCase(c) && Character.isUpperCase(card.charAt(i + 1)))
+				name.append(c).append(' ');
+			else name.append(c);
+		}
+
+		showInfo("The " + name + " character card has been played!");
+	}
+
 	@Override
 	public void handleMessage(UserSelectionUpdate message) {
 		String nextPlayer = message.getNextPlayer();
 		if (nextPlayer != null && !Objects.equals(client.getUsername(), nextPlayer)) {
 			showInfo(String.format("%s is choosing...", nextPlayer));
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * Prints a message with reconnection details.
+	 *
+	 * @param message the received message
+	 */
+	@Override
+	public void handleMessage(ReconnectionUpdate message) {
+		String subject = message.getSubject();
+		if (Objects.equals(subject, client.getUsername())) return;
+		int numPlayers = message.getNumPlayers();
+		boolean gameResumed = message.isGameResumed();
+		showInfo(subject + " has reconnected, " + numPlayers + " players currently connected"
+				+ (gameResumed ? "\n\nGame resumed" : ""));
 	}
 
 	/**

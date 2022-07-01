@@ -69,6 +69,12 @@ public class WaitingRoomController extends Controller {
 
 	public void updateSelections(Map<String, String> towerColors, Map<String, String> wizards) {
 		ObservableList<Player> content = info.getItems();
+		if (content.isEmpty()) {
+			for (String username : towerColors.keySet()) {
+				content.add(new Player(username, towerColors.get(username), wizards.get(username)));
+			}
+			return;
+		}
 		List<Player> staticContent = info.getItems().stream().toList();
 		for (Player player : staticContent) {
 			String username = player.username;

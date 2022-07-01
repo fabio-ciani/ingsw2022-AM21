@@ -30,7 +30,7 @@ public class CommandLineInterface extends UserInterface {
 		super();
 		this.scanner = new Scanner(System.in);
 	}
-	
+
 	@Override
 	public synchronized void showInfo(String details) {
 		System.out.println(details + "\n");
@@ -74,6 +74,7 @@ public class CommandLineInterface extends UserInterface {
 		}
 
 		System.out.println(title);
+		System.out.println("\n");
 	}
 
 	/**
@@ -367,7 +368,7 @@ public class CommandLineInterface extends UserInterface {
 
 	/**
 	 * Prints the current status of a player's schoolboard.
-	 * 
+	 *
 	 * @param player the player whose schoolboard should be printed
 	 */
 	public void showSchoolBoard(String player) {
@@ -422,7 +423,7 @@ public class CommandLineInterface extends UserInterface {
 	/**
 	 * {@inheritDoc}
 	 * Prints a message letting the player know that the action has been accepted.
-	 * 
+	 *
 	 * @param message the received message
 	 */
 	@Override
@@ -434,7 +435,7 @@ public class CommandLineInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Saves the selected username and checks if a reconnection is available.
 	 * Prints a message letting the player know the username was accepted and how to reconnect.
-	 * 
+	 *
 	 * @param message the received message
 	 */
 	@Override
@@ -450,7 +451,7 @@ public class CommandLineInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Saves the game id and the reconnection settings.
 	 * Prints a message letting the player know the lobby was joined correctly.
-	 * 
+	 *
 	 * @param message the received message
 	 */
 	@Override
@@ -464,7 +465,7 @@ public class CommandLineInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Removes reconnection settings.
 	 * Prints a message letting the player know the lobby was left correctly.
-	 * 
+	 *
 	 * @param message the received message
 	 */
 	@Override
@@ -476,7 +477,7 @@ public class CommandLineInterface extends UserInterface {
 	/**
 	 * {@inheritDoc}
 	 * Prints the correct help message received from the server.
-	 * 
+	 *
 	 * @param message the received message
 	 */
 	@Override
@@ -487,7 +488,7 @@ public class CommandLineInterface extends UserInterface {
 	/**
 	 * {@inheritDoc}
 	 * Prints the list of available lobbies.
-	 * 
+	 *
 	 * @param message the received message
 	 */
 	@Override
@@ -508,7 +509,7 @@ public class CommandLineInterface extends UserInterface {
 	/**
 	 * {@inheritDoc}
 	 * Prints the list of players in the joined lobby
-	 * 
+	 *
 	 * @param message the received message
 	 */
 	@Override
@@ -524,7 +525,7 @@ public class CommandLineInterface extends UserInterface {
 	 * {@inheritDoc}
 	 * Prints the assistant cards played by the other players and then, if the player is the next one to play,
 	 * prints the available assistant cards.
-	 * 
+	 *
 	 * @param message the received message
 	 */
 	@Override
@@ -564,17 +565,6 @@ public class CommandLineInterface extends UserInterface {
 	public void handleMessage(BoardUpdate message) {
 		client.setBoardStatus(message.getStatus());
 		super.handleMessage(message);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * Prints the name of the played card.
-	 *
-	 * @param message the received message
-	 */
-	@Override
-	public void handleMessage(CharacterCardUpdate message) {
-		showInfo(message.getCard() + " played");
 	}
 
 	/**
@@ -656,21 +646,6 @@ public class CommandLineInterface extends UserInterface {
 	public void handleMessage(InitialBoardStatus message) {
 		showInfo("The game has begun!");
 		client.setBoardStatus(message.getStatus());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * Prints a message with reconnection details.
-	 *
-	 * @param message the received message
-	 */
-	@Override
-	public void handleMessage(ReconnectionUpdate message) {
-		String subject = message.getSubject();
-		int numPlayers = message.getNumPlayers();
-		boolean gameResumed = message.isGameResumed();
-		showInfo(subject + " has reconnected, " + numPlayers + " players currently connected"
-				+ (gameResumed ? "\n\nGame resumed" : ""));
 	}
 
 	/**

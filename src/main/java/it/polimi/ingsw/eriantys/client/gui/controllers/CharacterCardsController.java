@@ -184,11 +184,7 @@ public class CharacterCardsController extends Controller {
 				sourceColors.add(color);
 			}
 		}
-		String message = "sourceColors = " + sourceColors + "\n" +
-				"destinationColors = " + destinationColors + "\n" +
-				"targetColor = " + targetColor + "\n" +
-				"targetIsland = " + targetIsland;
-		showInfo.accept(message);
+		showArgs();
 	}
 
 	/**
@@ -197,11 +193,16 @@ public class CharacterCardsController extends Controller {
 	 */
 	public void selectIsland(String island) {
 		targetIsland = island;
-		String message = "sourceColors = " + sourceColors + "\n" +
-				"destinationColors = " + destinationColors + "\n" +
-				"targetColor = " + targetColor + "\n" +
-				"targetIsland = " + targetIsland;
-		showInfo.accept(message);
+		showArgs();
+	}
+
+	private void showArgs() {
+		StringBuilder message = new StringBuilder("Selected arguments:");
+		if (!sourceColors.isEmpty()) message.append("\n").append("Students from source: ").append(sourceColors);
+		if (!destinationColors.isEmpty()) message.append("\n").append("Students form destination: ").append(destinationColors);
+		if (targetColor != null) message.append("\n").append("Target color/student: ").append(targetColor);
+		if (targetIsland != null) message.append("\n").append("Target island: ").append(targetIsland);
+		showInfo.accept(message.toString());
 	}
 
 	private void drawImages() {

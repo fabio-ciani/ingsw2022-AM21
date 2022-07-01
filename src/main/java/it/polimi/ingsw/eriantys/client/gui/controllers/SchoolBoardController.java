@@ -353,6 +353,7 @@ public class SchoolBoardController extends Controller {
 
 		pane.setOnMouseClicked(event -> {
 			selected = null;
+			client.setCharacterCard(null);
 			drawSelected();
 			event.consume();
 		});

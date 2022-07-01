@@ -173,7 +173,7 @@ public class GraphicalApplication extends Application {
 	}
 
 	/**
-	 * Getter for the current controller, which is the {@link Controller} associated to
+	 * Getter for the current controller, which is the {@link Controller} associated with
 	 * the current scene returned from the {@link #getCurrentScene()} method.
 	 *
 	 * @return a reference to the current controller

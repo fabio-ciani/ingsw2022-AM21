@@ -26,7 +26,7 @@ public class AcceptedJoinLobby extends Accepted {
 	}
 
 	/**
-	 * A getter for the passcode which has been previously associated to the client to manage disconnection scenarios.
+	 * A getter for the passcode which has been previously associated with the client to manage disconnection scenarios.
 	 * @return the hexadecimal passcode which was given by the disconnection handling infrastructure to the client
 	 */
 	public String getPasscode() {

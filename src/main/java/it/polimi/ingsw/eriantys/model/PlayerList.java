@@ -41,7 +41,7 @@ public class PlayerList {
 	}
 
 	/**
-	 * A getter for the {@link Player} object associated to a nickname.
+	 * A getter for the {@link Player} object associated with a nickname.
 	 * @param nickname the identifier of the {@link Player}
 	 * @return the {@link Player} corresponding to the given nickname if it exists, {@code null} otherwise
 	 */

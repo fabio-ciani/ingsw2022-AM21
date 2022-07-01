@@ -24,7 +24,7 @@ public class Reconnect extends ConnectionMessage {
 	}
 
 	/**
-	 * A getter for the passcode which has been previously associated to the user to manage disconnection scenarios.
+	 * A getter for the passcode which has been previously associated with the user to manage disconnection scenarios.
 	 * @return the hexadecimal passcode which was given by the disconnection handling infrastructure to the user
 	 */
 	public String getPasscode() {

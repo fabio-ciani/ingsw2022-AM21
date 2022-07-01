@@ -122,7 +122,7 @@ public class Server extends Thread {
 	 * Handles a user reconnection by processing a {@link Reconnect} communication item.
 	 * @param username the username which has been chosen by the client prior to its disconnection
 	 * @param gameId the identifier of the game inside which the client was playing prior to its disconnection
-	 * @param passcode the hexadecimal code which has been associated to the client by the disconnection handling infrastructure
+	 * @param passcode the hexadecimal code which has been associated with the client by the disconnection handling infrastructure
 	 * @param connection a reference to the client connection instance
 	 * @throws NoConnectionException if no connection can be retrieved for the target player
 	 */

@@ -28,15 +28,11 @@ class PlayAssistantCardHandlerTest {
 	}
 
 	static Game construct() {
-		return construct(2, false);
+		return new Game(server, 1, "Tom", 2, false);
 	}
 
-	static Game construct(int lobbySize, boolean expertMode) {
-		return new Game(server, 1, "Tom", lobbySize, expertMode);
-	}
-
-	static Game construct(Server server, int lobbySize, boolean expertMode) {
-		return new Game(server, 1, "Tom", lobbySize, expertMode);
+	static Game construct(Server server) {
+		return new Game(server, 1, "Tom", 2, false);
 	}
 
 	@Test
@@ -44,7 +40,7 @@ class PlayAssistantCardHandlerTest {
 		Server server = new Server(9863);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -145,7 +141,7 @@ class PlayAssistantCardHandlerTest {
 		Server server = new Server(6173);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);

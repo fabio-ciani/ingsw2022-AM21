@@ -28,15 +28,11 @@ class SelectCloudHandlerTest {
 	}
 
 	static Game construct() {
-		return construct(2, false);
+		return new Game(server, 1, "Tom", 2, false);
 	}
 
-	static Game construct(int lobbySize, boolean expertMode) {
-		return new Game(server, 1, "Tom", lobbySize, expertMode);
-	}
-
-	static Game construct(Server server, int lobbySize, boolean expertMode) {
-		return new Game(server, 1, "Tom", lobbySize, expertMode);
+	static Game construct(Server server) {
+		return new Game(server, 1, "Tom", 2, false);
 	}
 
 	@Test
@@ -44,7 +40,7 @@ class SelectCloudHandlerTest {
 		Server server = new Server(6815);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -71,7 +67,7 @@ class SelectCloudHandlerTest {
 		Server server = new Server(5187);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -144,7 +140,7 @@ class SelectCloudHandlerTest {
 		Server server = new Server(5129);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);

@@ -33,11 +33,6 @@ public class MotherNatureDestinationHandler extends PlayCharacterCardHandler {
 	}
 
 	@Override
-	public String getHelp() {
-		return super.getHelp();
-	}
-
-	@Override
 	public void handleDisconnectedUser(String username) {
 		game.receiveCloudSelection();
 	}

@@ -126,8 +126,6 @@ public class Client extends Thread {
 		try (socket) {
 			while (running) {
 				Message message = (Message) in.readObject();
-				// if (!(message instanceof Ping))
-					// System.out.println(ConsoleColors.ANSI_BLUE + "Received a " + message.getClass() + ConsoleColors.ANSI_RESET);
 				handleMessage(message);
 			}
 		} catch (IOException | ClassNotFoundException e) {

@@ -265,9 +265,8 @@ public class Game {
 	 * Disconnects the specified player from the game, removing them from the lobby if the game has not yet started or
 	 * pausing the game if the game has started and there are less than 2 players currently connected.
 	 * @param username the username of the player which has disconnected.
-	 * @throws NoConnectionException if no connection can be retrieved for the specified player.
 	 */
-	public void disconnect(String username) throws NoConnectionException {
+	public void disconnect(String username) {
 		if (!isStarted()) {
 			removePlayer(username);
 			notifyLobbyChange();
@@ -544,11 +543,7 @@ public class Game {
 	 */
 	public void checkDisconnection() {
 		if (!server.isConnected(getCurrentPlayer())) {
-			try {
-				messageHandler.handleDisconnectedUser(getCurrentPlayer());
-			} catch (NoConnectionException e) {
-				e.printStackTrace();
-			}
+			messageHandler.handleDisconnectedUser(getCurrentPlayer());
 		}
 	}
 

@@ -42,8 +42,8 @@ class GameTest {
 		return new Game(server, 1, "Tom", lobbySize, expertMode);
 	}
 
-	static Game construct(Server server, int lobbySize, boolean expertMode) {
-		return new Game(server, 1, "Tom", lobbySize, expertMode);
+	static Game construct(Server server) {
+		return new Game(server, 1, "Tom", 2, false);
 	}
 
 	@Test
@@ -196,7 +196,7 @@ class GameTest {
 		Server server = new Server(12345);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -322,7 +322,7 @@ class GameTest {
 		Server server = new Server(7822);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -345,7 +345,7 @@ class GameTest {
 		Server server = new Server(6873);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -366,7 +366,7 @@ class GameTest {
 		Server server = new Server(9763);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -651,7 +651,7 @@ class GameTest {
 		Server server = new Server(9174);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -674,7 +674,7 @@ class GameTest {
 		Server server = new Server(8752);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -697,7 +697,7 @@ class GameTest {
 		Server server = new Server(4716);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 
 		Client client = new Client("localhost", 4716, false);

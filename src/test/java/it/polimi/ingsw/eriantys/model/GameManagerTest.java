@@ -217,11 +217,6 @@ class GameManagerTest {
 	}
 
 	@Test
-	void handleMotherNatureMovement_AdjacentIslandsWithSameController_UnifiesIslands() {
-
-	}
-
-	@Test
 	void handleSelectedCloud_NonexistentPlayer_ThrowsInvalidArgumentException() {
 		GameManager gm = new GameManager(players, false);
 		assertThrowsExactly(InvalidArgumentException.class, () -> gm.handleSelectedCloud("foo", 0));
@@ -298,19 +293,9 @@ class GameManagerTest {
 	}
 
 	@Test
-	void getWinner_SameTowersMoreProfessors_ReturnCorrectPlayer() {
-
-	}
-
-	@Test
 	void getWinner_NotLastRound_ReturnNull() {
 		GameManager gm = new GameManager(players, false);
 		assertNull(gm.getWinner());
-	}
-
-	@Test
-	void getWinner_SameTowersSameProfessors_ReturnTie() {
-		//GameManager gm = new GameManager(players, false);
 	}
 
 	@Test
@@ -478,7 +463,7 @@ class GameManagerTest {
 		// Note: the test case will never happen
 		GameManager gm = new GameManager(players, false);
 
-		assertThrowsExactly(NullPointerException.class, () -> gm.motherNatureIslandRepresentation());
+		assertThrowsExactly(NullPointerException.class, gm::motherNatureIslandRepresentation);
 	}
 
 	@Test

@@ -27,15 +27,11 @@ class GameSetupHandlerTest {
 	}
 
 	static Game construct() {
-		return construct(2, false);
+		return new Game(server, 1, "Tom", 2, false);
 	}
 
-	static Game construct(int lobbySize, boolean expertMode) {
-		return new Game(server, 1, "Tom", lobbySize, expertMode);
-	}
-
-	static Game construct(Server server, int lobbySize, boolean expertMode) {
-		return new Game(server, 1, "Tom", lobbySize, expertMode);
+	static Game construct(Server server) {
+		return new Game(server, 1, "Tom", 2, false);
 	}
 
 	@Test
@@ -43,7 +39,7 @@ class GameSetupHandlerTest {
 		Server server = new Server(9861);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -70,7 +66,7 @@ class GameSetupHandlerTest {
 		Server server = new Server(4917);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -97,7 +93,7 @@ class GameSetupHandlerTest {
 		Server server = new Server(7151);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -125,7 +121,7 @@ class GameSetupHandlerTest {
 		Server server = new Server(8124);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -153,7 +149,7 @@ class GameSetupHandlerTest {
 		Server server = new Server(6572);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
@@ -212,7 +208,7 @@ class GameSetupHandlerTest {
 		Server server = new Server(8411);
 		server.start();
 
-		Game game = construct(server, 2, false);
+		Game game = construct(server);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);

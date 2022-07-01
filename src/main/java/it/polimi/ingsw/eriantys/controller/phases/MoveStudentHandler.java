@@ -39,13 +39,6 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String getHelp() {
-		return super.getHelp();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public void handleDisconnectedUser(String username) {
 		game.receiveMotherNatureMovement();
 	}

@@ -127,10 +127,8 @@ public class Server extends Thread {
 	 * @param gameId the identifier of the game inside which the client was playing prior to its disconnection
 	 * @param passcode the hexadecimal code which has been associated with the client by the disconnection handling infrastructure
 	 * @param connection a reference to the client connection instance
-	 * @throws NoConnectionException if no connection can be retrieved for the target player
 	 */
-	public synchronized void reconnect(String username, int gameId, String passcode, ClientConnection connection)
-			throws NoConnectionException {
+	public synchronized void reconnect(String username, int gameId, String passcode, ClientConnection connection) {
 		Message response;
 		if (reconnectionSettings.get(username) != null && reconnectionSettings.get(username)) {
 			if (!gameById.containsKey(gameId) || gameById.get(gameId) == null)
@@ -167,11 +165,7 @@ public class Server extends Thread {
 					connectionByUsername.remove(user);
 					if (game != null) {
 						reconnectionSettings.put(user, game.isStarted());
-						try {
-							game.disconnect(user);
-						} catch (NoConnectionException e) {
-							e.printStackTrace();
-						}
+						game.disconnect(user);
 						if (game.isEmpty()) gameById.remove(game.getInfo().getGameId());
 					}
 				});

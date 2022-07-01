@@ -17,6 +17,10 @@ public class HelpResponse extends Message {
 		this.content = content;
 	}
 
+	/**
+	 * A getter for the result of the {@code /help} command coded for the current application phase.
+	 * @return the content of the result of the command
+	 */
 	public String getContent() {
 		return content;
 	}

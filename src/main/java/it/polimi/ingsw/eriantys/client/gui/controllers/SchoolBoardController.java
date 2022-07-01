@@ -50,7 +50,7 @@ public class SchoolBoardController extends Controller {
 	private String currentUsername;
 	private String selected;
 
-	private Map<String, GridPane> diningroomPanes;
+	private Map<String, GridPane> diningRoomPanes;
 
 	private Map<String, Image> studentImages;
 	private Map<String, Image> professorImages;
@@ -75,10 +75,10 @@ public class SchoolBoardController extends Controller {
 		professorImages = new HashMap<>();
 		towerImages = new HashMap<>();
 		towerSizes = new HashMap<>();
-		diningroomPanes = new HashMap<>();
+		diningRoomPanes = new HashMap<>();
 
 		for (String color : Color.stringLiterals()) {
-			diningroomPanes.put(color, (GridPane) schoolboard.getChildren().stream()
+			diningRoomPanes.put(color, (GridPane) schoolboard.getChildren().stream()
 					.filter(n -> Objects.equals(n.getId(), "dr_" + color.toLowerCase()))
 					.findAny().orElse(null));
 		}
@@ -174,7 +174,7 @@ public class SchoolBoardController extends Controller {
 
 	private void drawDiningRoom(Map<String, Integer> diningRoomStudents) {
 		for (String color : diningRoomStudents.keySet()) {
-			Iterator<ImageView> diningRoomIterator = diningroomPanes.get(color).getChildren().stream()
+			Iterator<ImageView> diningRoomIterator = diningRoomPanes.get(color).getChildren().stream()
 					.filter(n -> n instanceof ImageView)
 					.map(n -> (ImageView) n)
 					.iterator();
@@ -294,7 +294,7 @@ public class SchoolBoardController extends Controller {
 				.map(n -> (ImageView) n)
 				.forEach(i -> i.setOnMouseClicked(isCurrentPlayer ? (characterCardSelected ? selectColorForCharacterCard : selectSource) : Event::consume));
 		for (String color : Color.stringLiterals()) {
-			diningroomPanes.get(color).setOnMouseClicked(isCurrentPlayer ? (characterCardSelected ? selectColorForCharacterCard : selectDestination) : Event::consume);
+			diningRoomPanes.get(color).setOnMouseClicked(isCurrentPlayer ? (characterCardSelected ? selectColorForCharacterCard : selectDestination) : Event::consume);
 		}
 	}
 
@@ -381,8 +381,8 @@ public class SchoolBoardController extends Controller {
 						.filter(k -> studentImages.get(k) == imageView.getImage())
 						.findAny().orElse(null);
 			} else if (source instanceof GridPane gridPane) {
-				selectedColor = diningroomPanes.keySet().stream()
-						.filter(k -> diningroomPanes.get(k) == gridPane)
+				selectedColor = diningRoomPanes.keySet().stream()
+						.filter(k -> diningRoomPanes.get(k) == gridPane)
 						.findAny().orElse(null);
 			}
 			CharacterCardsController characterCardsController = (CharacterCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);

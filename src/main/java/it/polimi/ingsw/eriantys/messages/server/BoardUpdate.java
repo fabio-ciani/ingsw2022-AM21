@@ -34,6 +34,10 @@ public class BoardUpdate extends UserActionUpdate {
 		return status;
 	}
 
+	/**
+	 * A getter for the phase name which prompts an information message to the UI.
+	 * @return the phase name, or {@code null} if no message should be shown following the receiving of {@code this}
+	 */
 	public PhaseName getPhase() {
 		return phase;
 	}

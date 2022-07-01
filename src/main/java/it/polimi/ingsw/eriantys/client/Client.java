@@ -10,7 +10,11 @@ import it.polimi.ingsw.eriantys.messages.Message;
 import it.polimi.ingsw.eriantys.messages.Ping;
 import it.polimi.ingsw.eriantys.messages.client.*;
 import it.polimi.ingsw.eriantys.messages.server.*;
+import it.polimi.ingsw.eriantys.model.AssistantCard;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
+import it.polimi.ingsw.eriantys.model.Color;
+import it.polimi.ingsw.eriantys.model.TowerColor;
+import it.polimi.ingsw.eriantys.model.Wizard;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
@@ -41,9 +45,8 @@ public class Client extends Thread {
 	private BoardStatus boardStatus;
 
 	/**
-	 * This method is called to launch the client-side application in either CLI or GUI mode.
-	 *
-	 * @param args Command line arguments
+	 * The method is called to launch the client-side application (in either CLI or GUI mode).
+	 * @param args the command line arguments
 	 * @throws IOException if a {@link Client} object cannot be constructed
 	 */
 	public static void main(String[] args) throws IOException {
@@ -82,12 +85,13 @@ public class Client extends Thread {
 	}
 
 	/**
-	 * Constructs a {@code Client} object, starting the {@link Socket} and either the {@link CommandLineInterface} or the {@link GraphicalUserInterface}.
-	 *
-	 * @param serverAddress Server IP address
-	 * @param serverPort Port number identifying the server socket
-	 * @param gui Whether to start the GUI (if {@code true}) or the CLI (if {@code false})
-	 * @throws IOException if the {@link Socket} couldn't be opened or couldn't connect to the server, or if there was a problem opening configuration files
+	 * Constructs a {@code Client} object, starting the {@link Socket}
+	 * and either the {@link CommandLineInterface} or the {@link GraphicalUserInterface}.
+	 * @param serverAddress the server IP address
+	 * @param serverPort the port number identifying the server socket
+	 * @param gui whether to start the GUI (if {@code true}) or the CLI (if {@code false})
+	 * @throws IOException if the {@link Socket} could not be opened, the connection to the server could not be established,
+	 * or a problem occurs while opening configuration files
 	 */
 	public Client(String serverAddress, int serverPort, boolean gui) throws IOException {
 		try {
@@ -107,7 +111,7 @@ public class Client extends Thread {
 	}
 
 	/**
-	 * Starts the user interface thread and then starts the loop to receive and handle messages from the server.
+	 * Starts the user interface thread and then loops to receive and handle messages from the server.
 	 */
 	@Override
 	public void run() {
@@ -145,8 +149,7 @@ public class Client extends Thread {
 
 	/**
 	 * Sends a message to the server.
-	 *
-	 * @param message The message to send
+	 * @param message the message to send
 	 */
 	public void write(Message message) {
 		synchronized (out) {
@@ -161,15 +164,14 @@ public class Client extends Thread {
 
 	/**
 	 * Synchronized method to set the {@link #running} attribute.
-	 *
-	 * @param running Value to set
+	 * @param running the value to set
 	 */
 	public synchronized void setRunning(boolean running) {
 		this.running = running;
 	}
 
 	/**
-	 * Getter for the username chosen by the player.
+	 * A getter for the username chosen by the player.
 	 * @return the chosen username
 	 */
 	public String getUsername() {
@@ -177,8 +179,8 @@ public class Client extends Thread {
 	}
 
 	/**
-	 * Setter for the {@link #username} attribute.
-	 * @param username The username chosen by the player
+	 * A setter for the {@link #username} attribute.
+	 * @param username the username chosen by the player
 	 */
 	public void setUsername(String username) {
 		this.username = username;
@@ -193,18 +195,16 @@ public class Client extends Thread {
 	}
 
 	/**
-	 * Setter for the {@link #gameId} attribute.
-	 *
-	 * @param gameId Id of the game the player joined
+	 * A setter for the {@link #gameId} attribute.
+	 * @param gameId the identifier of the game the player joined
 	 */
 	public void setGameId(int gameId) {
 		this.gameId = gameId;
 	}
 
 	/**
-	 * Getter for the {@link #towerColor} attribute.
-	 *
-	 * @return the tower color selected by the player
+	 * A getter for the {@link #towerColor} attribute.
+	 * @return the {@link TowerColor} literal selected by the player
 	 */
 	public String getTowerColor() {
 		return towerColor;
@@ -212,8 +212,7 @@ public class Client extends Thread {
 
 	/**
 	 * Sets the tower color selected by the player and tries to send the selection to the server.
-	 *
-	 * @param towerColor The selected tower color
+	 * @param towerColor the selected {@link TowerColor} literal
 	 */
 	public void setTowerColor(String towerColor) {
 		this.towerColor = towerColor;
@@ -221,8 +220,8 @@ public class Client extends Thread {
 	}
 
 	/**
-	 * Getter for the {@link #wizard} attribute.
-	 * @return the wizard selected by the player
+	 * A getter for the {@link #wizard} attribute.
+	 * @return the {@link Wizard} literal selected by the player
 	 */
 	public String getWizard() {
 		return wizard;
@@ -230,8 +229,7 @@ public class Client extends Thread {
 
 	/**
 	 * Sets the wizard selected by the player and tries to send the selection to the server.
-	 *
-	 * @param wizard The selected wizard
+	 * @param wizard the selected {@link Wizard} literal
 	 */
 	public void setWizard(String wizard) {
 		this.wizard = wizard;
@@ -239,10 +237,9 @@ public class Client extends Thread {
 	}
 
 	/**
-	 * Getter for the last {@link BoardStatus} received from the server.
-	 * If the {@link #boardStatus} is {@code null} an error is shown via the user interface.
-	 *
-	 * @return the last board status
+	 * A getter for the last {@link BoardStatus} received from the server.
+	 * If the {@link #boardStatus} is {@code null}, an error is shown via UI.
+	 * @return the latest board status
 	 */
 	public BoardStatus getBoardStatus() {
 		if (boardStatus == null) ui.showError("Nothing to show yet");
@@ -250,17 +247,15 @@ public class Client extends Thread {
 	}
 
 	/**
-	 * Setter for the {@link #boardStatus} attribute.
-	 *
-	 * @param boardStatus The board status to set
+	 * A setter for the {@link #boardStatus} attribute.
+	 * @param boardStatus the board status to set
 	 */
 	public void setBoardStatus(BoardStatus boardStatus) {
 		this.boardStatus = boardStatus;
 	}
 
 	/**
-	 * Getter for the list of the assistant cards that the player is allowed to play.
-	 *
+	 * A getter for the list of the assistant cards that the player is allowed to play.
 	 * @return the list of available assistant cards
 	 */
 	public List<String> getAvailableCards() {
@@ -269,17 +264,15 @@ public class Client extends Thread {
 	}
 
 	/**
-	 * Setter for the {@link #availableCards} attribute.
-	 *
-	 * @param availableCards The list of the assistant cards that the player is allowed to play.
+	 * A setter for the {@link #availableCards} attribute.
+	 * @param availableCards the list of the assistant cards that the player is allowed to play
 	 */
 	public void setAvailableCards(List<String> availableCards) {
 		this.availableCards = availableCards;
 	}
 
 	/**
-	 * Getter for the {@link #characterCard} attribute.
-	 *
+	 * A getter for the {@link #characterCard} attribute.
 	 * @return the character card selected by the player
 	 */
 	public Integer getCharacterCard() {
@@ -337,12 +330,9 @@ public class Client extends Thread {
 		write(new HelpRequest(username));
 	}
 
-	// TODO parameters should be converted to the correct types (e.g. String -> int) in the UserInterface
-
 	/**
-	 * Checks if the username is valid and then sends a {@link Handshake} message to the server.
-	 *
-	 * @param username The username selected by the player
+	 * Checks if the username is valid and sends a {@link Handshake} message to the server.
+	 * @param username the username selected by the player
 	 */
 	public void sendHandshake(String username) {
 		if(username.matches("^[a-zA-Z\\d]+(?:(?:-[a-zA-Z\\d]+)*|(?:\\.[a-zA-Z\\d]+)*)\\z") && username.length() <= 16) {
@@ -353,7 +343,7 @@ public class Client extends Thread {
 	}
 
 	/**
-	 * Check if a reconnection is available and sends a {@link Reconnect} message to the server.
+	 * Checks if a reconnection is available and sends a {@link Reconnect} message to the server.
 	 */
 	public void sendReconnect() {
 		JsonObject reconnectSettings = getReconnectSettings();
@@ -376,7 +366,7 @@ public class Client extends Thread {
 
 	/**
 	 * Checks if the lobby id is a valid integer and sends a {@link JoinLobby} message to the server.
-	 * @param lobbyIdArg The id of the lobby to join
+	 * @param lobbyIdArg the identifier of the lobby to join
 	 */
 	public void joinLobby(String lobbyIdArg) {
 		if (usernameNotSet()) return;
@@ -388,17 +378,10 @@ public class Client extends Thread {
 		}
 	}
 
-	// TODO: 29/06/2022 Not used
-	public void joinLobby(int lobbyId) {
-		if (usernameNotSet()) return;
-		write(new JoinLobby(username, lobbyId));
-	}
-
 	/**
 	 * Checks if the parameters are valid and sends a {@link LobbyCreation} message to the server.
-	 *
-	 * @param numPlayersArg The desired size of the lobby
-	 * @param expertModeArg Whether to use expert mode in the lobby
+	 * @param numPlayersArg the desired size of the lobby
+	 * @param expertModeArg whether to use expert mode in the lobby
 	 */
 	public void createLobby(String numPlayersArg, String expertModeArg) {
 		if (usernameNotSet()) return;
@@ -417,8 +400,7 @@ public class Client extends Thread {
 
 	/**
 	 * Saves the reconnection settings.
-	 *
-	 * @param message The message containing the information about the joined lobby
+	 * @param message the message containing the information about the joined lobby
 	 */
 	public void putReconnectSettings(AcceptedJoinLobby message) {
 		int gameId = message.getGameId();
@@ -441,7 +423,6 @@ public class Client extends Thread {
 
 	/**
 	 * Checks if a reconnection is available.
-	 *
 	 * @return {@code true} if reconnection settings are found
 	 */
 	public boolean hasReconnectSettings() {
@@ -474,7 +455,7 @@ public class Client extends Thread {
 
 	/**
 	 * Sends a {@link PlayAssistantCard} message to the server.
-	 * @param card
+	 * @param card the {@link AssistantCard} literal
 	 */
 	public void playAssistantCard(String card) {
 		write(new PlayAssistantCard(username, card));
@@ -482,9 +463,8 @@ public class Client extends Thread {
 
 	/**
 	 * Sends a {@link MoveStudent} message to the server.
-	 *
-	 * @param color The name of the {@link it.polimi.ingsw.eriantys.model.Color} of the student to move
-	 * @param destination Where to place the student
+	 * @param color the {@link Color} literal of the student to move
+	 * @param destination where to place the student
 	 */
 	public void moveStudent(String color, String destination) {
 		write(new MoveStudent(username, color, destination));
@@ -492,8 +472,7 @@ public class Client extends Thread {
 
 	/**
 	 * Sends a {@link MotherNatureDestination} message to the server.
-	 *
-	 * @param island ID of the island where to put Mother Nature
+	 * @param island the identifier of the island where to put Mother Nature
 	 */
 	public void moveMotherNature(String island) {
 		write(new MotherNatureDestination(username, island));
@@ -501,8 +480,7 @@ public class Client extends Thread {
 
 	/**
 	 * Sends a {@link SelectCloud} message to the server.
-	 *
-	 * @param cloud ID of the selected cloud
+	 * @param cloud the identifier of the selected cloud
 	 */
 	public void chooseCloud(int cloud) {
 		write(new SelectCloud(username, cloud));
@@ -510,8 +488,7 @@ public class Client extends Thread {
 
 	/**
 	 * Sets the {@link #characterCard} attribute to save the selected character card while choosing the requested arguments.
-	 *
-	 * @param card The selected character card
+	 * @param card the selected card
 	 */
 	public void setCharacterCard(Integer card) {
 		characterCard = card;
@@ -521,11 +498,10 @@ public class Client extends Thread {
 	 * Builds the {@link JsonObject} containing the given arguments to play the selected character card,
 	 * sends a {@link PlayCharacterCard} message to the server
 	 * and then clears the {@link #characterCard} attribute setting it to {@code null}.
-	 *
-	 * @param sourceColors Array of colors selected as a source for the character card effect
-	 * @param destinationColors Array of colors selected as a destination for the character card effect
-	 * @param targetColor Single color selected for the character card effect
-	 * @param targetIsland Island selected for the character card effect
+	 * @param sourceColors an array of colors selected as a source for the character card effect
+	 * @param destinationColors an array of colors selected as a destination for the character card effect
+	 * @param targetColor the single color selected for the character card effect
+	 * @param targetIsland the island selected for the character card effect
 	 */
 	public void playCharacterCard(String[] sourceColors,
 								  String[] destinationColors,

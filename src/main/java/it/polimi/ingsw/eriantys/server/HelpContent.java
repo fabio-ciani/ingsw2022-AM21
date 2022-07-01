@@ -20,6 +20,10 @@ public enum HelpContent {
 		this.file = file;
 	}
 
+	/**
+	 * A getter for the text coded for an enumeration literal.
+	 * @return the content of the {@code *.txt} resource file associated with the literal
+	 */
 	public String getContent() {
 		String out = null;
 

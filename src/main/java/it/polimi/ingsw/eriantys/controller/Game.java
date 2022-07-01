@@ -187,7 +187,11 @@ public class Game {
 	 * round if necessary.
 	 */
 	public void advanceTurn() {
+		// started attribute is reset to false after the game ends to provide an additional check
+		if (!started) return;
+
 		nextPlayer();
+		checkConnectedPlayers();
 
 		try {
 			gameManager.cancelCharacterCardEffect();
@@ -492,11 +496,13 @@ public class Game {
 	 * Ends the game by notifying every player and deleting every reference to it.
 	 */
 	public void gameOver() {
+		started = false;
 		sendUpdate(new GameOverUpdate(gameManager.getWinner()), false);
 		server.gameOver(this, players);
 	}
 
 	private void gameOver(String winner) {
+		started = false;
 		sendUpdate(new GameOverUpdate(winner), false);
 		server.gameOver(this, players);
 	}

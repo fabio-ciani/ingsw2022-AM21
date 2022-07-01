@@ -12,7 +12,6 @@ import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import it.polimi.ingsw.eriantys.server.Server;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -40,6 +39,10 @@ class GameTest {
 	}
 
 	static Game construct(int lobbySize, boolean expertMode) {
+		return new Game(server, 1, "Tom", lobbySize, expertMode);
+	}
+
+	static Game construct(Server server, int lobbySize, boolean expertMode) {
 		return new Game(server, 1, "Tom", lobbySize, expertMode);
 	}
 
@@ -136,6 +139,15 @@ class GameTest {
 	}
 
 	@Test
+	void promptSelection() {
+		Game game = construct();
+		game.addPlayer("P1");
+		game.addPlayer("P2");
+		assertDoesNotThrow(game::setup);
+		assertDoesNotThrow(game::promptSelection);
+	}
+
+	@Test
 	void start_NormalPreconditions_LoadAllAssistantCards() {
 		Game game = construct();
 		game.addPlayer("P1");
@@ -176,27 +188,64 @@ class GameTest {
 	}
 
 	@Test
-	void advanceTurn_FirstPlayerTurnBefore_SetSecondPlayerTurn() {
-		/*Game game = construct();
+	void advanceTurn_FirstPlayerTurnBefore_SetSecondPlayerTurn() throws IOException {
+		Server server = new Server(12345);
+		server.start();
+
+		Game game = construct(server, 2, false);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
 
+		Client client1 = new Client("localhost", 12345, false);
+		client1.start();
+		client1.write(new Handshake("P1"));
+		Client client2 = new Client("localhost", 12345, false);
+		client2.start();
+		client2.write(new Handshake("P2"));
+
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+		assertDoesNotThrow(() -> game.setupPlayer("P1", "WHITE", "SNOW"));
+		assertDoesNotThrow(() -> game.setupPlayer("P2", "BLACK", "SKY"));
+
 		assertEquals("P1", game.getCurrentPlayer());
-		game.advanceTurn();
-		assertEquals("P2", game.getCurrentPlayer());*/
+		assertThrowsExactly(NullPointerException.class, game::start);
+
+		assertThrowsExactly(NullPointerException.class, game::advanceTurn);
+		assertEquals("P2", game.getCurrentPlayer());
 	}
 
 	@Test
 	void receiveMotherNatureMovement_NormalPreconditions_NoExceptions() {
-		/*Game game = construct();
-		assertDoesNotThrow(game::receiveMotherNatureMovement);*/
+		Game game = construct();
+		game.addPlayer("P1");
+		game.addPlayer("P2");
+		assertDoesNotThrow(game::setup);
+
+		assertDoesNotThrow(() -> game.setupPlayer("P1", "WHITE", "SNOW"));
+		assertDoesNotThrow(() -> game.setupPlayer("P2", "BLACK", "SKY"));
+
+		assertDoesNotThrow(game::start);
+		assertDoesNotThrow(game::receiveMotherNatureMovement);
 	}
 
 	@Test
 	void receiveCloudSelection_NormalPreconditions_NoExceptions() {
-		/*Game game = construct();
-		assertDoesNotThrow(game::receiveCloudSelection);*/
+		Game game = construct();
+		game.addPlayer("P1");
+		game.addPlayer("P2");
+		assertDoesNotThrow(game::setup);
+
+		assertDoesNotThrow(() -> game.setupPlayer("P1", "WHITE", "SNOW"));
+		assertDoesNotThrow(() -> game.setupPlayer("P2", "BLACK", "SKY"));
+
+		assertDoesNotThrow(game::start);
+		assertDoesNotThrow(game::receiveCloudSelection);
 	}
 
 	@Test
@@ -261,6 +310,74 @@ class GameTest {
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
 		assertDoesNotThrow(() -> game.disconnect("P1"));
+		assertFalse(game.isStarted());
+	}
+
+	@Test
+	void disconnect_OnePlayerConnected_SendDisconnectionUpdate() throws IOException {
+		Server server = new Server(7822);
+		server.start();
+
+		Game game = construct(server, 2, false);
+		game.addPlayer("P1");
+		game.addPlayer("P2");
+		assertDoesNotThrow(game::setup);
+
+		Client client = new Client("localhost", 7822, false);
+		client.start();
+		client.write(new Handshake("P2"));
+
+		assertThrowsExactly(NullPointerException.class, () -> game.disconnect("P1"));
+	}
+
+	@Test
+	void disconnect_IdleFor60Seconds_GameOver() throws IOException {
+		Server server = new Server(6873);
+		server.start();
+
+		Game game = construct(server, 2, false);
+		game.addPlayer("P1");
+		game.addPlayer("P2");
+		assertDoesNotThrow(game::setup);
+
+		Client client1 = new Client("localhost", 6873, false);
+		client1.start();
+		client1.write(new Handshake("P1"));
+		Client client2 = new Client("localhost", 6873, false);
+		client2.start();
+		client2.write(new Handshake("P2"));
+
+		assertThrowsExactly(NullPointerException.class, () -> game.disconnect("P1"));
+		try {
+			Thread.sleep(62500);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+		assertFalse(game.isStarted());
+	}
+
+	@Test
+	void reconnect_PreviouslyIdle_ResumeGame() throws IOException {
+		Server server = new Server(9763);
+		server.start();
+
+		Game game = construct(server, 2, false);
+		game.addPlayer("P1");
+		game.addPlayer("P2");
+		assertDoesNotThrow(game::setup);
+
+		Client client1 = new Client("localhost", 9763, false);
+		client1.start();
+		client1.write(new Handshake("P1"));
+		Client client2 = new Client("localhost", 9763, false);
+		client2.start();
+		client2.write(new Handshake("P2"));
+
+		assertThrowsExactly(NullPointerException.class, () -> game.disconnect("P1"));
+		assertThrowsExactly(NullPointerException.class, () -> game.reconnect("P1"));
+
+		assertTrue(game.isStarted());
 	}
 
 	@Test
@@ -515,13 +632,61 @@ class GameTest {
 		assertThrowsExactly(NoConnectionException.class, () -> game.handleMessage(new SelectCloud("P1", 1)));
 	}
 
-	@AfterAll
 	@Test
-	static void sendHelp_NoHandler_NormalBehavior() throws IOException {
-		Game game = construct();
+	void refuseRequest_ConnectedPlayer_NoExceptions() throws IOException {
+		Server server = new Server(9174);
+		server.start();
+
+		Game game = construct(server, 2, false);
+		game.addPlayer("P1");
+		game.addPlayer("P2");
+		assertDoesNotThrow(game::setup);
+
+		Client client = new Client("localhost", 9174, false);
+		client.start();
+		client.write(new Handshake("P1"));
+
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+		assertDoesNotThrow(() -> game.refuseRequest(new SelectCloud("P1", 0), ""));
+	}
+
+	@Test
+	void acceptRequest_ConnectedPlayer_NoExceptions() throws IOException {
+		Server server = new Server(8752);
+		server.start();
+
+		Game game = construct(server, 2, false);
+		game.addPlayer("P1");
+		game.addPlayer("P2");
+		assertDoesNotThrow(game::setup);
+
+		Client client = new Client("localhost", 8752, false);
+		client.start();
+		client.write(new Handshake("P1"));
+
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+		assertDoesNotThrow(() -> game.acceptRequest(new SelectCloud("P1", 0)));
+	}
+
+	@Test
+	void sendHelp_NoHandler_NormalBehavior() throws IOException {
+		Server server = new Server(4716);
+		server.start();
+
+		Game game = construct(server, 2, false);
 		game.addPlayer("P1");
 
-		Client client = new Client("localhost", 9133, false);
+		Client client = new Client("localhost", 4716, false);
 		client.start();
 		client.write(new Handshake("P1"));
 
@@ -531,7 +696,7 @@ class GameTest {
 				return;
 			} catch (NoConnectionException e) {
 				try {
-					Thread.sleep(500);
+					Thread.sleep(250);
 				} catch (InterruptedException ex) {
 					throw new RuntimeException(ex);
 				}

@@ -509,7 +509,8 @@ public class GameManager {
 			rep = island.getSize();
 		} catch (IslandNotFoundException e) {
 			// TODO: handle exception (?) + check NullPointerException on rep?
-			// e.printStackTrace();
+			System.out.println("This is a Throwable#printStackTrace() method call.");
+			e.printStackTrace();
 		}
 
 		return rep;
@@ -532,7 +533,8 @@ public class GameManager {
 			rep = island.getRepresentation();
 		} catch (IslandNotFoundException e) {
 			// TODO: handle exception (?) + check NullPointerException on rep?
-			// e.printStackTrace();
+			System.out.println("This is a Throwable#printStackTrace() method call.");
+			e.printStackTrace();
 		}
 
 		return rep;
@@ -554,7 +556,8 @@ public class GameManager {
 				rep = island.getController().getNickname();
 		} catch (IslandNotFoundException e) {
 			// TODO: handle exception (?) + check NullPointerException on rep?
-			// e.printStackTrace();
+			System.out.println("This is a Throwable#printStackTrace() method call.");
+			e.printStackTrace();
 		}
 
 		return rep;
@@ -589,7 +592,8 @@ public class GameManager {
 			rep = island.getNoEntryTiles();
 		} catch (IslandNotFoundException e) {
 			// TODO: handle exception (?) + check NullPointerException on rep?
-			// e.printStackTrace();
+			System.out.println("This is a Throwable#printStackTrace() method call.");
+			e.printStackTrace();
 		}
 
 		return rep;

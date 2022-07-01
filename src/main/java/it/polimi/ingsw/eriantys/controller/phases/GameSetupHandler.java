@@ -63,6 +63,7 @@ public class GameSetupHandler implements MessageHandler {
 			towerColor = availableTowerColors.get(0);
 			wizard = availableWizards.get(0);
 		} catch (IndexOutOfBoundsException e) {
+			System.out.println("This is a Throwable#printStackTrace() method call.");
 			e.printStackTrace();
 			checkStateTransition();
 			return;

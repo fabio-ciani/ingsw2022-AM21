@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -43,10 +43,10 @@ public class GraphicalApplication extends Application {
 	 */
 	public GraphicalApplication() {
 		app = this;
-		sceneByName = new HashMap<>();
-		controllerByScene = new HashMap<>();
-		popupByName = new HashMap<>();
-		controllerByPopup = new HashMap<>();
+		sceneByName = new EnumMap<>(SceneName.class);
+		controllerByScene = new EnumMap<>(SceneName.class);
+		popupByName = new EnumMap<>(PopupName.class);
+		controllerByPopup = new EnumMap<>(PopupName.class);
 	}
 
 	/**

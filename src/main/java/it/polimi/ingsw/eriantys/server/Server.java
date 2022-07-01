@@ -60,6 +60,7 @@ public class Server extends Thread {
 			Server server = new Server(serverPort);
 			server.start();
 		} catch (IOException e) {
+			System.out.println("This is a Throwable#printStackTrace() method call.");
 			e.printStackTrace();
 		}
 	}
@@ -91,7 +92,7 @@ public class Server extends Thread {
 				new Thread(connection::ping).start();
 			}
 		} catch (IOException e) {
-			System.out.println("The server has stopped due to the following exception:");
+			System.out.println("This is a Throwable#printStackTrace() method call.");
 			e.printStackTrace();
 		}
 	}

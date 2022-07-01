@@ -32,6 +32,7 @@ public enum HelpContent {
 				throw new RuntimeException();	// TODO: Is this necessary?
 			out = new String(in.readAllBytes(), StandardCharsets.UTF_8);
 		} catch (IOException e) {
+			System.out.println("This is a Throwable#printStackTrace() method call.");
 			e.printStackTrace();
 		}
 

@@ -123,9 +123,7 @@ public class ClientConnection {
 					} else {
 						game.sendHelp(helpRequest);
 					}
-				} /*else if (message instanceof Ping) {
-					System.out.println("Ping - " + socketToClient.getPort());
-				}*/
+				}
 			}
 		} catch (IOException | NoConnectionException | ClassNotFoundException e) {
 			server.disconnect(this);

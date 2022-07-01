@@ -47,7 +47,7 @@ public class IslandGroup extends StudentContainer {
 			i1.moveAllTo(this);
 			i2.moveAllTo(this);
 		} catch (InvalidArgumentException | NoMovementException e) {
-			// TODO handle exception
+			System.out.println("This is a Throwable#printStackTrace() method call.");
 			e.printStackTrace();
 		}
 

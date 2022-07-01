@@ -20,7 +20,7 @@ public class ProfessorOwnership {
 	public ProfessorOwnership(Supplier<Player> playerSupplier) {
 		this.playerSupplier = playerSupplier;
 		this.comparator = Integer::compareTo;
-		this.ownerships = new HashMap<>();
+		this.ownerships = new EnumMap<>(Color.class);
 		for (Color color : Color.values())
 			this.ownerships.put(color, null);
 	}

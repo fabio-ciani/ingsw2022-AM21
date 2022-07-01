@@ -142,6 +142,7 @@ public class Game {
 			gameManager.setupBoard();
 			gameManager.setupEntrances();
 		} catch (InvalidArgumentException | NoMovementException e) {
+			System.out.println("This is a Throwable#printStackTrace() method call.");
 			e.printStackTrace();
 		}
 
@@ -162,6 +163,7 @@ public class Game {
 			lastRound = gameManager.setupRound();
 			if (lastRound) broadcast(new LastRoundUpdate());
 		} catch (InvalidArgumentException | NoMovementException e) {
+			System.out.println("This is a Throwable#printStackTrace() method call.");
 			e.printStackTrace();
 		}
 		availableAssistantCards = gameManager.getAvailableAssistantCards();
@@ -200,6 +202,7 @@ public class Game {
 		try {
 			gameManager.cancelCharacterCardEffect();
 		} catch (InvalidArgumentException e) {
+			System.out.println("This is a Throwable#printStackTrace() method call.");
 			e.printStackTrace();
 		}
 

@@ -200,7 +200,6 @@ public class GraphicalUserInterface extends UserInterface {
 	@Override
 	public void handleMessage(BoardUpdate message) {
 		client.setBoardStatus(message.getStatus());
-		// TODO: update assistant cards view
 		Platform.runLater(() -> {
 			updateInGameControllers();
 			if (app.getCurrentScene() == SceneName.LOBBIES)

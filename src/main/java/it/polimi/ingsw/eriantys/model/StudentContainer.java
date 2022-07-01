@@ -44,7 +44,7 @@ public class StudentContainer {
 	 */
 	public StudentContainer() {
 		this.maxSize = NO_MAX_SIZE;
-		this.students = new HashMap<>();
+		this.students = new EnumMap<>(Color.class);
 		for (Color color : Color.values())
 			students.put(color, 0);
 	}
@@ -55,7 +55,7 @@ public class StudentContainer {
 	 */
 	public StudentContainer(int maxSize) {
 		this.maxSize = Math.min(maxSize, NO_MAX_SIZE);
-		this.students = new HashMap<>();
+		this.students = new EnumMap<>(Color.class);
 		for (Color color : Color.values())
 			students.put(color, 0);
 	}

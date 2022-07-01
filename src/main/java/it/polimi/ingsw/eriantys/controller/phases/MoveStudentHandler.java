@@ -27,18 +27,14 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 		this.movementCount = 0;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public void handle(GameMessage m) throws NoConnectionException {
 		if (m instanceof MoveStudent moveStudent)
 			process(moveStudent);
 		else super.handle(m);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public void handleDisconnectedUser(String username) {
 		game.receiveMotherNatureMovement();
 	}
@@ -73,7 +69,7 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 	}
 
 	private void checkStateTransition() {
-		if (movementCount == game.getCloudSize())	game.receiveMotherNatureMovement();
+		if (movementCount == game.getCloudSize()) game.receiveMotherNatureMovement();
 		else game.sendBoardUpdate();
 	}
 }

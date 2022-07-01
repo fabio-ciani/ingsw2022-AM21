@@ -72,6 +72,7 @@ public class CommandLineInterface extends UserInterface {
 				throw new RuntimeException();	// TODO: Is this necessary?
 			title = new String(in.readAllBytes(), StandardCharsets.UTF_8);
 		} catch (IOException e) {
+			System.out.println("This is a Throwable#printStackTrace() method call.");
 			e.printStackTrace();
 		}
 
@@ -94,7 +95,6 @@ public class CommandLineInterface extends UserInterface {
 			String line = scanner.nextLine();
 			String[] tokens = line.split("( )+");
 			try {
-				// Support for / commands: tokens[0].toLowerCase().substring(1);
 				switch (tokens[0].toLowerCase()) {
 					case "/help", "/h" -> {
 						if (wrongArgNumber(tokens, 0)) break;

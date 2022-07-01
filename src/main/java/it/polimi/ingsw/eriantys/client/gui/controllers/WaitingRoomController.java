@@ -1,6 +1,9 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
 import it.polimi.ingsw.eriantys.client.gui.PopupName;
+import it.polimi.ingsw.eriantys.client.gui.SceneName;
+import it.polimi.ingsw.eriantys.model.TowerColor;
+import it.polimi.ingsw.eriantys.model.Wizard;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -20,6 +23,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * A class representing the controller for the {@code WAITING_ROOM} scene.
+ * @see SceneName#WAITING_ROOM
+ * @see javafx.scene.Scene
+ */
 public class WaitingRoomController extends Controller {
 	@FXML private BorderPane pane;
 	@FXML private Text lobby;
@@ -28,9 +36,7 @@ public class WaitingRoomController extends Controller {
 	@FXML private TableColumn<Player, String> tower_colors;
 	@FXML private TableColumn<Player, String> wizards;
 	@FXML private Button leave;
-	private String towerColor;
 	private List<String> availableWizards;
-	private String wizard;
 
 	public WaitingRoomController() {
 		info = new TableView<>();
@@ -39,6 +45,10 @@ public class WaitingRoomController extends Controller {
 		wizards = new TableColumn<>();
 	}
 
+	/**
+	 * Gets all the child nodes representing the elements of the scene from the FXML.
+	 * Associates the event handler with the button on the scene.
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		usernames.setCellValueFactory(c -> c.getValue().usernameProperty());
@@ -56,10 +66,18 @@ public class WaitingRoomController extends Controller {
 		return pane;
 	}
 
+	/**
+	 * Sets the name of the lobby.
+	 * @param id the numerical identifier of the lobby
+	 */
 	public void setText(String id) {
 		lobby.setText("Lobby #" + id);
 	}
 
+	/**
+	 * Gets the information about the lobby from passed parameter and shows the list of connected users in the scene.
+	 * @param players the users inside the lobby
+	 */
 	public void updatePlayers(List<String> players) {
 		ObservableList<Player> content = info.getItems();
 		content.clear();
@@ -67,6 +85,11 @@ public class WaitingRoomController extends Controller {
 			content.add(new Player(p));
 	}
 
+	/**
+	 * Gets the information about selected literals from passed parameters and shows the mapping in the scene.
+	 * @param towerColors the mapping between usernames and previously selected {@link TowerColor} literals
+	 * @param wizards the mapping between usernames and previously selected {@link Wizard} literals
+	 */
 	public void updateSelections(Map<String, String> towerColors, Map<String, String> wizards) {
 		ObservableList<Player> content = info.getItems();
 		if (content.isEmpty()) {
@@ -85,6 +108,11 @@ public class WaitingRoomController extends Controller {
 		}
 	}
 
+	/**
+	 * Gets the information about tower colors and wizards from passed parameters and draws all the elements in a popup.
+	 * @param towerColors the available {@link TowerColor} literals to choose
+	 * @param wizards the available {@link Wizard} literals to choose
+	 */
 	public void promptSelection(List<String> towerColors, List<String> wizards) {
 		availableWizards = wizards;
 		TowersController controller = (TowersController) app.getControllerForPopup(PopupName.TOWERS);
@@ -92,17 +120,22 @@ public class WaitingRoomController extends Controller {
 		Platform.runLater(() -> app.showStickyPopup(PopupName.TOWERS));
 	}
 
+	/**
+	 * Sets the user's {@link TowerColor} literal and shows the next popup.
+	 * @param towerColor the selected {@link TowerColor} literal.
+	 */
 	public void setTowerColor(String towerColor) {
-		// this.towerColor = towerColor;
 		client.setTowerColor(towerColor);
 		WizardsController controller = (WizardsController) app.getControllerForPopup(PopupName.WIZARDS);
 		controller.populate(availableWizards);
 		app.showStickyPopup(PopupName.WIZARDS);
-		// Platform.runLater(() -> app.showStickyPopup(PopupName.WIZARDS));
 	}
 
+	/**
+	 * Sets the user's {@link Wizard} literal.
+	 * @param wizard the selected {@link Wizard} literal.
+	 */
 	public void setWizard(String wizard) {
-		// this.wizard = wizard;
 		client.setWizard(wizard);
 	}
 

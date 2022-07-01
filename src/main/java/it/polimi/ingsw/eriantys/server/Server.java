@@ -34,6 +34,10 @@ public class Server extends Thread {
 
 	public static final String name = "Server";
 
+	/**
+	 * The method is called to launch the server-side application.
+	 * @param args the command line arguments
+	 */
 	public static void main(String[] args) {
 		String serverAddress = "localhost";
 		int serverPort = 9133;
@@ -60,6 +64,11 @@ public class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Constructs a {@code Server} object, starting the {@link ServerSocket}.
+	 * @param port the port number on which the {@code Server} will run
+	 * @throws IOException if the {@link ServerSocket} could not be opened
+	 */
 	public Server(int port) throws IOException {
 		this.port = port;
 		this.running = true;

@@ -58,6 +58,7 @@ public class GameManager {
 	/**
 	 * Sets the current player to the player matching {@code currentPlayerNickname}.
 	 * @param currentPlayerNickname the nickname of the current player
+	 * @throws InvalidArgumentException if the passed parameter is {@code null}
 	 */
 	public void setCurrentPlayer(String currentPlayerNickname) throws InvalidArgumentException {
 		Player nextPlayer = players.get(currentPlayerNickname);

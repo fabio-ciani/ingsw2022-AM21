@@ -131,9 +131,10 @@ public class Player {
 	/**
 	 * A setter for the number of allowed Mother Nature's movements for a {@code Player}'s object during the current turn.
 	 * @param movements the new internal state for the number of allowed Mother Nature's movements of a {@code Player}
+	 * @throws InvalidArgumentException if the passed parameter is less than or equal to zero
 	 */
 	public void setMotherNatureMovements(int movements) throws InvalidArgumentException {
-		if (movements < 0)
+		if (movements <= 0)
 			throw new InvalidArgumentException("Parameter should not be negative.");
 		motherNatureMovements = movements;
 	}

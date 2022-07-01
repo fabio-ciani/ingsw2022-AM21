@@ -806,7 +806,7 @@ public class GameManager {
 		for (int i = 1; i < candidates.size(); i++) {
 			Player player = candidates.get(i);
 			int playerProfessors = professors.getProfessors(player).size();
-			if (playerProfessors < maxProfessors) {
+			if (playerProfessors > maxProfessors) {
 				maxProfessors = playerProfessors;
 				potentialWinners.clear();
 				potentialWinners.add(player);

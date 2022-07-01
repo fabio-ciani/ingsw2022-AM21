@@ -12,6 +12,7 @@ import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import it.polimi.ingsw.eriantys.server.Server;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -153,11 +154,15 @@ class GameTest {
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
-		assertThrows(NullPointerException.class, game::start);
+
+		assertDoesNotThrow(() -> game.setupPlayer("P1", "WHITE", "SNOW"));
+		assertDoesNotThrow(() -> game.setupPlayer("P2", "BLACK", "SKY"));
+
+		assertDoesNotThrow(game::start);
+
 		Map<String, List<String>> asstCards = game.getAssistantCards();
 		for (String p : asstCards.keySet())
 			assertEquals(10, asstCards.get(p).size());
-		// TODO fix this
 	}
 
 	@Test
@@ -327,9 +332,16 @@ class GameTest {
 		client.start();
 		client.write(new Handshake("P2"));
 
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
 		assertThrowsExactly(NullPointerException.class, () -> game.disconnect("P1"));
 	}
 
+	@Disabled
 	@Test
 	void disconnect_IdleFor60Seconds_GameOver() throws IOException {
 		Server server = new Server(6873);
@@ -340,14 +352,8 @@ class GameTest {
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
 
-		Client client1 = new Client("localhost", 6873, false);
-		client1.start();
-		client1.write(new Handshake("P1"));
-		Client client2 = new Client("localhost", 6873, false);
-		client2.start();
-		client2.write(new Handshake("P2"));
+		assertDoesNotThrow(() -> game.disconnect("P1"));
 
-		assertThrowsExactly(NullPointerException.class, () -> game.disconnect("P1"));
 		try {
 			Thread.sleep(62500);
 		} catch (InterruptedException e) {
@@ -367,12 +373,15 @@ class GameTest {
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
 
-		Client client1 = new Client("localhost", 9763, false);
-		client1.start();
-		client1.write(new Handshake("P1"));
 		Client client2 = new Client("localhost", 9763, false);
 		client2.start();
 		client2.write(new Handshake("P2"));
+
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 
 		assertThrowsExactly(NullPointerException.class, () -> game.disconnect("P1"));
 		assertThrowsExactly(NullPointerException.class, () -> game.reconnect("P1"));
@@ -433,13 +442,20 @@ class GameTest {
 
 	@Test
 	void getAssistantCards_GameStarted_ReturnNonEmptyMap() {
-		/*Game game = construct();
+		Game game = construct();
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
-		assertThrows(NullPointerException.class, game::start);
-		assertFalse(game.getAssistantCards().isEmpty());*/
-		// TODO fix this
+
+		assertDoesNotThrow(() -> game.setupPlayer("P1", "WHITE", "SNOW"));
+		assertDoesNotThrow(() -> game.setupPlayer("P2", "BLACK", "SKY"));
+
+		assertDoesNotThrow(game::start);
+
+		Map<String, List<String>> asstCards = game.getAssistantCards();
+		assertFalse(asstCards.isEmpty());
+		for (String p : asstCards.keySet())
+			assertEquals(10, asstCards.get(p).size());
 	}
 
 	@Test

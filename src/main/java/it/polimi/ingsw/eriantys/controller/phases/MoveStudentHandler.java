@@ -46,7 +46,7 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void handleDisconnectedUser(String username) throws NoConnectionException {
+	public void handleDisconnectedUser(String username) {
 		game.receiveMotherNatureMovement();
 	}
 
@@ -79,7 +79,7 @@ public class MoveStudentHandler extends PlayCharacterCardHandler {
 		checkStateTransition();
 	}
 
-	private void checkStateTransition() throws NoConnectionException {
+	private void checkStateTransition() {
 		if (movementCount == game.getCloudSize())	game.receiveMotherNatureMovement();
 		else game.sendBoardUpdate();
 	}

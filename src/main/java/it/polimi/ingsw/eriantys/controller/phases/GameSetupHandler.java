@@ -55,7 +55,7 @@ public class GameSetupHandler implements MessageHandler {
 	}
 
 	@Override
-	public void handleDisconnectedUser(String username) throws NoConnectionException {
+	public void handleDisconnectedUser(String username) {
 		String towerColor;
 		String wizard;
 

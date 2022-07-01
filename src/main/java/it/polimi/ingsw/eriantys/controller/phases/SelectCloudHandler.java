@@ -39,7 +39,7 @@ public class SelectCloudHandler extends PlayCharacterCardHandler {
 	}
 
 	@Override
-	public void handleDisconnectedUser(String username) throws NoConnectionException {
+	public void handleDisconnectedUser(String username) {
 		game.advanceTurn();
 	}
 

@@ -47,9 +47,12 @@ public class PlayAssistantCardHandler implements MessageHandler {
 	public void handleDisconnectedUser(String username) {
 		List<String> availableCardsForUser = availableCards.get(username);
 		String card = null;
-		for (int i = 0; i < availableCardsForUser.size() && card == null; i++) {
-			String c = availableCardsForUser.get(i);
-			if (isPlayable(username, c)) card = c;
+
+		if (availableCardsForUser != null) {
+			for (int i = 0; i < availableCardsForUser.size() && card == null; i++) {
+				String c = availableCardsForUser.get(i);
+				if (isPlayable(username, c)) card = c;
+			}
 		}
 
 		playedCards.put(username, card);

@@ -153,7 +153,11 @@ public class Game {
 	 * Advances to the next round of the game, or ends the game if the round which just ended was the last to be played.
 	 */
 	public void newRound() {
-		if (lastRound) gameOver();
+		if (lastRound) {
+			gameOver();
+			return;
+		}
+
 		try {
 			lastRound = gameManager.setupRound();
 			if (lastRound) broadcast(new LastRoundUpdate());
@@ -565,7 +569,6 @@ public class Game {
 			try {
 				Thread.sleep(60000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
 				return;
 			}
 			if (idle) gameOver(connectedPlayer);

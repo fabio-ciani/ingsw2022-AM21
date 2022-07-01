@@ -58,6 +58,9 @@ public abstract class PlayCharacterCardHandler implements MessageHandler {
 		} catch (DuplicateNoEntryTileException e) {
 			game.refuseRequest(message, "Duplicate no-entry tile");
 			return;
+		} catch (NullPointerException e) {
+			game.refuseRequest(message, "Unexpected error");
+			return;
 		} catch (Exception e) {
 			game.refuseRequest(message, "Already played a character card in this turn");
 			return;

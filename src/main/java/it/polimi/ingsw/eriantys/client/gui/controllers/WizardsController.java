@@ -1,6 +1,8 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
+import it.polimi.ingsw.eriantys.client.gui.PopupName;
 import it.polimi.ingsw.eriantys.client.gui.SceneName;
+import it.polimi.ingsw.eriantys.model.Wizard;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -13,10 +15,19 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * A class representing the controller for the {@code WIZARDS} popup scene.
+ * @see PopupName#WIZARDS
+ * @see javafx.scene.Scene
+ */
 public class WizardsController extends Controller {
 	@FXML private BorderPane pane;
 	@FXML private GridPane container;
 
+	/**
+	 * Gets all the child nodes representing the elements of the scene from the FXML.
+	 * Associates the event handlers with the images on the scene.
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		container.getChildren().forEach(x -> {
@@ -38,6 +49,10 @@ public class WizardsController extends Controller {
 		return pane;
 	}
 
+	/**
+	 * Gets the information about tower colors from passed parameter and draws all the elements in the scene.
+	 * @param wizards the available {@link Wizard} literals to choose
+	 */
 	public void populate(List<String> wizards) {
 		container.getChildren().forEach(x -> {
 			ImageView img = (ImageView) x;

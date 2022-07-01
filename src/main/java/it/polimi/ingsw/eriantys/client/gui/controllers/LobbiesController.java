@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
+import it.polimi.ingsw.eriantys.client.gui.SceneName;
 import it.polimi.ingsw.eriantys.controller.GameInfo;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
@@ -14,6 +15,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * A class representing the controller for the {@code LOBBIES} scene.
+ * @see SceneName#LOBBIES
+ * @see javafx.scene.Scene
+ */
 public class LobbiesController extends Controller {
 	@FXML private BorderPane pane;
 	@FXML private TableView<Lobby> lobbies;
@@ -38,6 +44,10 @@ public class LobbiesController extends Controller {
 		modes = new TableColumn<>();
 	}
 
+	/**
+	 * Gets all the child nodes representing the elements of the scene from the FXML.
+	 * Associates the event handlers with the buttons on the scene.
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		lobbies.setRowFactory(t -> {
@@ -86,6 +96,10 @@ public class LobbiesController extends Controller {
 		});
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * Asks for the available lobbies list and shows a reconnection message if related settings are found.
+	 */
 	@Override
 	public void onChangeScene() {
 		client.askLobbies();
@@ -98,6 +112,10 @@ public class LobbiesController extends Controller {
 		return pane;
 	}
 
+	/**
+	 * Gets the information about lobbies from passed parameter and shows the list in the scene.
+	 * @param availableLobbies the lobbies inside which the user could join
+	 */
 	public void updateLobbies(List<GameInfo> availableLobbies) {
 		ObservableList<Lobby> content = lobbies.getItems();
 		content.clear();

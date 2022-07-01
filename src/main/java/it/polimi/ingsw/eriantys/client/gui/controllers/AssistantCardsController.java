@@ -1,5 +1,7 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
+import it.polimi.ingsw.eriantys.client.gui.PopupName;
+import it.polimi.ingsw.eriantys.model.AssistantCard;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +15,11 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * A class representing the controller for the {@code ASSISTANT_CARDS} popup scene.
+ * @see PopupName#ASSISTANT_CARDS
+ * @see javafx.scene.Scene
+ */
 public class AssistantCardsController extends Controller {
 	@FXML private GridPane container;
 	@FXML private GridPane played_cards;
@@ -23,6 +30,10 @@ public class AssistantCardsController extends Controller {
 	private List<ImageView> playedCards_images;
 	private List<Text> playedCards_texts;
 
+	/**
+	 * Gets all the child nodes representing the elements of the scene from the FXML.
+	 * Associates the popup event handler with the button on the scene.
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		close.setOnAction(event -> {
@@ -46,6 +57,11 @@ public class AssistantCardsController extends Controller {
 		return container;
 	}
 
+	/**
+	 * Gets the information about assistant cards from passed parameters and draws all the elements in the scene.
+	 * @param assistants the {@link AssistantCard} literals which the user owns in the hand
+	 * @param played the mapping between usernames and previously played {@link AssistantCard} literals
+	 */
 	public void populate(List<String> assistants, Map<String, String> played) {
 		this.assistants = assistants;
 		this.played = played;

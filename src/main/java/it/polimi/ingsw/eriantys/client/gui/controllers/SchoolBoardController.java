@@ -25,8 +25,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * This class represents the controller for the {@code SCHOOLBOARD} scene.
- *
+ * A class representing the controller for the {@code SCHOOLBOARD} scene.
  * @see SceneName#SCHOOLBOARD
  * @see javafx.scene.Scene
  */
@@ -66,10 +65,8 @@ public class SchoolBoardController extends Controller {
 	private EventHandler<MouseEvent> selectColorForCharacterCard;
 
 	/**
-	 * Initializes all the images for the {@code SCHOOLBOARD} scene from the resource files.
+	 * Initializes all the images for the scene from the resource files.
 	 * Sets some event handlers.
-	 *
-	 * @see Image
 	 * @see EventHandler
 	 */
 	@Override

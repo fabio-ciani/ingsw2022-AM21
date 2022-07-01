@@ -3,6 +3,7 @@ package it.polimi.ingsw.eriantys.client.gui.controllers;
 import it.polimi.ingsw.eriantys.client.gui.SceneName;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
 import it.polimi.ingsw.eriantys.model.Color;
+import it.polimi.ingsw.eriantys.model.IslandGroup;
 import it.polimi.ingsw.eriantys.model.TowerColor;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -23,8 +24,7 @@ import java.net.URL;
 import java.util.*;
 
 /**
- * This class represents the controller for the {@code BOARD} scene.
- *
+ * A class representing the controller for the {@code BOARD} scene.
  * @see SceneName#BOARD
  * @see javafx.scene.Scene
  */
@@ -60,8 +60,9 @@ public class BoardController extends Controller {
 
 	/**
 	 * Gets all the child nodes representing the elements of the board from the FXML.
-	 * Initializes all the images for the {@code BOARD} scene from the resource files.
+	 * Initializes all the images for the scene from the resource files.
 	 * Sets some event handlers.
+	 * @see EventHandler
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -123,14 +124,13 @@ public class BoardController extends Controller {
 	/**
 	 * Draws all the islands and their components.
 	 * Updates the event handlers according to what is selected (character card, student, or nothing).
-	 *
-	 * @param islands The list of {@link it.polimi.ingsw.eriantys.model.IslandGroup} ID's
-	 * @param sizes The number of islands that form each island group
-	 * @param controllers The username of the player controlling each island group
-	 * @param playerTowerColors The tower color of each player
-	 * @param students The students on each island group
-	 * @param noEntryTiles The number of No Entry Tiles on each island group
-	 * @param motherNatureIsland The ID of the island on which Mother Nature is
+	 * @param islands the list of {@link IslandGroup} identifiers
+	 * @param sizes the number of islands that form each {@link IslandGroup}
+	 * @param controllers the username of the player controlling each {@link IslandGroup}
+	 * @param playerTowerColors the {@link TowerColor} of each player
+	 * @param students the students on each {@link IslandGroup}
+	 * @param noEntryTiles the number of no-entry tiles on each {@link IslandGroup}
+	 * @param motherNatureIsland The identifier of the island on which Mother Nature is
 	 */
 	protected void drawIslands(List<String> islands,
 							 Map<String, Integer> sizes,

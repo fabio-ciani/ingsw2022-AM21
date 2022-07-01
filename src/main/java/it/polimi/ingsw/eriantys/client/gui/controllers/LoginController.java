@@ -1,5 +1,6 @@
 package it.polimi.ingsw.eriantys.client.gui.controllers;
 
+import it.polimi.ingsw.eriantys.client.gui.SceneName;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -14,12 +15,21 @@ import javafx.scene.layout.Pane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * A class representing the controller for the {@code LOGIN} scene.
+ * @see SceneName#LOGIN
+ * @see javafx.scene.Scene
+ */
 public class LoginController extends Controller {
 	@FXML private BorderPane pane;
 	@FXML private TextField username;
 	@FXML private Button login;
 	@FXML private ImageView cranio, polimi;
 
+	/**
+	 * Initializes all the copyright images for the scene from the resource files.
+	 * Associates the event handler with the button on the scene.
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		username.addEventHandler(KeyEvent.KEY_PRESSED, event -> {

@@ -98,7 +98,7 @@ public class WaitingRoomController extends Controller {
 		WizardsController controller = (WizardsController) app.getControllerForPopup(PopupName.WIZARDS);
 		controller.populate(availableWizards);
 		app.showStickyPopup(PopupName.WIZARDS);
-		//Platform.runLater(() -> app.showStickyPopup(PopupName.WIZARDS));
+		// Platform.runLater(() -> app.showStickyPopup(PopupName.WIZARDS));
 	}
 
 	public void setWizard(String wizard) {

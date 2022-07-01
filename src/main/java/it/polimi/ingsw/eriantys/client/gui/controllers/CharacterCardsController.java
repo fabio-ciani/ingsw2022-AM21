@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.eriantys.client.gui.SceneName;
 import it.polimi.ingsw.eriantys.model.BoardStatus;
+import it.polimi.ingsw.eriantys.model.Color;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -25,8 +26,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * This class represents the controller for the {@code CHARACTER_CARDS} scene.
- *
+ * A class representing the controller for the {@code CHARACTER_CARDS} scene.
  * @see SceneName#CHARACTER_CARDS
  * @see javafx.scene.Scene
  */
@@ -64,7 +64,7 @@ public class CharacterCardsController extends Controller {
 	}
 
 	/**
-	 * Gets all the child nodes representing the elements of the {@code CHARACTER_CARDS} scene from the FXML.
+	 * Gets all the child nodes representing the elements of the scene from the FXML.
 	 * Associates the event handlers with the buttons on the scene.
 	 */
 	@Override
@@ -149,8 +149,7 @@ public class CharacterCardsController extends Controller {
 
 	/**
 	 * Gets the information about character cards from the board status and draws all the elements in the scene.
-	 *
-	 * @param status The updated board status
+	 * @param status the updated board status
 	 */
 	public void populate(BoardStatus status) {
 		this.status = status;
@@ -164,9 +163,7 @@ public class CharacterCardsController extends Controller {
 	 * Adds the selected color to the arguments of the effect of the selected character card.
 	 * If only one color is selected, it is considered as the {@code targetColor}.
 	 * If more colors are selected they are interpreted in alternating order as {@code sourceColors} and {@code destinationColors}.
-	 *
-	 * @param color The name of the selected color
-	 * @see it.polimi.ingsw.eriantys.model.Color
+	 * @param color the name of the selected {@link Color}
 	 */
 	public void selectColor(String color) {
 		if (sourceColors.isEmpty()) {
@@ -189,7 +186,7 @@ public class CharacterCardsController extends Controller {
 
 	/**
 	 * Sets the {@code targetIsland} argument of the effect of the selected character card.
-	 * @param island The ID of the selected island
+	 * @param island the identifier of the selected island
 	 */
 	public void selectIsland(String island) {
 		targetIsland = island;

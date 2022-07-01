@@ -195,5 +195,8 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 		client.write(new Ping());
 	}
 
+	/**
+	 * Notifies the user that they have been disconnected from the game due to an error.
+	 */
 	public abstract void quit();
 }

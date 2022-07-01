@@ -423,8 +423,10 @@ public class BoardController extends Controller {
 
 		pane.setOnMouseClicked(event -> {
 			SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
-			schoolBoardController.setSelected(null);
 			client.setCharacterCard(null);
+			schoolBoardController.setSelected(null);
+			schoolBoardController.setEventHandlers();
+			load();
 			drawSelected();
 			event.consume();
 		});
@@ -439,7 +441,7 @@ public class BoardController extends Controller {
 		for (String character : boardStatus.getCharacterCards()) {
 			characterMiniatures.put(
 					character,
-					new Image(getClass().getResource("/graphics/CharacterCards/" + character + ".jpg").toExternalForm())
+					new Image(getClass().getResource("/graphics/CharacterCards/Miniatures/" + character + ".png").toExternalForm())
 			);
 		}
 	}

@@ -118,8 +118,11 @@ public class CharacterCardsController extends Controller {
 
 		pane.setOnMouseClicked(event -> {
 			SchoolBoardController schoolBoardController = (SchoolBoardController) app.getControllerForScene(SceneName.SCHOOLBOARD);
-			schoolBoardController.setSelected(null);
+			BoardController boardController = (BoardController) app.getControllerForScene(SceneName.BOARD);
 			client.setCharacterCard(null);
+			schoolBoardController.setSelected(null);
+			schoolBoardController.setEventHandlers();
+			boardController.load();
 			drawImages();
 			event.consume();
 		});

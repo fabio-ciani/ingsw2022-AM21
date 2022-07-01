@@ -349,9 +349,12 @@ public class SchoolBoardController extends Controller {
 		});
 
 		pane.setOnMouseClicked(event -> {
-			selected = null;
+			BoardController boardController = (BoardController) app.getControllerForScene(SceneName.BOARD);
 			client.setCharacterCard(null);
+			selected = null;
+			setEventHandlers();
 			drawSelected();
+			boardController.load();
 			event.consume();
 		});
 
@@ -387,6 +390,7 @@ public class SchoolBoardController extends Controller {
 			}
 			CharacterCardsController characterCardsController = (CharacterCardsController) app.getControllerForScene(SceneName.CHARACTER_CARDS);
 			characterCardsController.selectColor(selectedColor);
+			event.consume();
 		};
 	}
 
@@ -399,7 +403,7 @@ public class SchoolBoardController extends Controller {
 		for (String character : boardStatus.getCharacterCards()) {
 			characterMiniatures.put(
 					character,
-					new Image(getClass().getResource("/graphics/CharacterCards/" + character + ".jpg").toExternalForm())
+					new Image(getClass().getResource("/graphics/CharacterCards/Miniatures/" + character + ".png").toExternalForm())
 			);
 		}
 	}

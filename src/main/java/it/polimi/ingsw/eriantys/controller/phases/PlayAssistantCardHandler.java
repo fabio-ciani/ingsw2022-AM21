@@ -48,11 +48,9 @@ public class PlayAssistantCardHandler implements MessageHandler {
 		List<String> availableCardsForUser = availableCards.get(username);
 		String card = null;
 
-		if (availableCardsForUser != null) {
-			for (int i = 0; i < availableCardsForUser.size() && card == null; i++) {
-				String c = availableCardsForUser.get(i);
-				if (isPlayable(username, c)) card = c;
-			}
+		for (int i = 0; i < availableCardsForUser.size() && card == null; i++) {
+			String c = availableCardsForUser.get(i);
+			if (isPlayable(username, c)) card = c;
 		}
 
 		playedCards.put(username, card);

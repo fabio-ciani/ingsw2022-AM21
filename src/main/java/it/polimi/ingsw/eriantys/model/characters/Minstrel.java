@@ -47,19 +47,19 @@ public class Minstrel extends BaseCharacterCard {
 	public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland)
 			throws InvalidArgumentException, NoMovementException {
 		if (sourceColors == null) {
-			throw new InvalidArgumentException("sourceColors argument is null.");
+			throw new InvalidArgumentException("No students selected from the source");
 		}
 		if (destinationColors == null) {
-			throw new InvalidArgumentException("destinationColors argument is null.");
+			throw new InvalidArgumentException("No students selected from the destination");
 		}
 		if (sourceColors.size() != destinationColors.size()) {
-			throw new InvalidArgumentException(String.format("Invalid amount of students to swap: %d from source and %d from destination (should be the same number).", sourceColors.size(), destinationColors.size()));
+			throw new InvalidArgumentException(String.format("Invalid amount of students to swap: %d from source and %d from destination (should be the same number)", sourceColors.size(), destinationColors.size()));
 		}
 		if (sourceColors.size() > MAX_SWAPS) {
-			throw new InvalidArgumentException(String.format("Invalid amount of students to swap: more than %d students selected.", MAX_SWAPS));
+			throw new InvalidArgumentException(String.format("Invalid amount of students to swap: more than %d students selected", MAX_SWAPS));
 		}
 		if (sourceColors.size() == 0) {
-			throw new InvalidArgumentException("Invalid amount of students to swap: no students selected.");
+			throw new InvalidArgumentException("Invalid amount of students to swap: no students selected");
 		}
 		StudentContainer entrance = currentPlayerSupplier.get().getEntrance();
 		StudentContainer diningRoom = currentPlayerSupplier.get().getDiningRoom();

@@ -75,10 +75,10 @@ public class HerbGranny extends BaseCharacterCard {
 	public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland)
 			throws DuplicateNoEntryTileException, InvalidArgumentException, ItemNotAvailableException {
 		if (targetIsland == null) {
-			throw new InvalidArgumentException("targetIsland argument is null.");
+			throw new InvalidArgumentException("No island was selected");
 		}
 		if (tiles.empty()) {
-			throw new ItemNotAvailableException("The HerbGranny character card does not have any no-entry tiles.");
+			throw new ItemNotAvailableException("The HerbGranny character card does not have any no-entry tiles");
 		}
 		targetIsland.putNoEntryTile(tiles.pop());
 		increaseCost();

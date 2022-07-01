@@ -37,10 +37,10 @@ public class Monk extends ContainerCharacterCard {
 	public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland)
 			throws InvalidArgumentException, NoMovementException {
 		if (targetColor == null) {
-			throw new InvalidArgumentException("targetColor argument is null.");
+			throw new InvalidArgumentException("No student was selected");
 		}
 		if (targetIsland == null) {
-			throw new InvalidArgumentException("targetIsland argument is null.");
+			throw new InvalidArgumentException("No island was selected");
 		}
 		moveTo(targetIsland, targetColor);
 		bag.moveTo(this, 1);

@@ -3,24 +3,22 @@ package it.polimi.ingsw.eriantys.controller.phases;
 import it.polimi.ingsw.eriantys.client.Client;
 import it.polimi.ingsw.eriantys.controller.Game;
 import it.polimi.ingsw.eriantys.messages.client.Handshake;
-import it.polimi.ingsw.eriantys.messages.client.PlayAssistantCard;
+import it.polimi.ingsw.eriantys.messages.client.MoveStudent;
 import it.polimi.ingsw.eriantys.messages.client.SelectCloud;
 import it.polimi.ingsw.eriantys.server.HelpContent;
 import it.polimi.ingsw.eriantys.server.Server;
-import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlayAssistantCardHandlerTest {
-
+class MoveStudentHandlerTest {
 	static Server server;
 
 	static {
 		try {
-			server = new Server(8731);
+			server = new Server(6191);
 			server.start();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -41,7 +39,7 @@ class PlayAssistantCardHandlerTest {
 
 	@Test
 	void handle_UnexpectedMessage_RefuseRequest() throws IOException {
-		Server server = new Server(9863);
+		Server server = new Server(8761);
 		server.start();
 
 		Game game = construct(server, 2, false);
@@ -49,10 +47,10 @@ class PlayAssistantCardHandlerTest {
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
 
-		Client client1 = new Client("localhost", 9863, false);
+		Client client1 = new Client("localhost", 8761, false);
 		client1.start();
 		client1.write(new Handshake("P1"));
-		Client client2 = new Client("localhost", 9863, false);
+		Client client2 = new Client("localhost", 8761, false);
 		client2.start();
 		client2.write(new Handshake("P2"));
 
@@ -62,63 +60,67 @@ class PlayAssistantCardHandlerTest {
 			throw new RuntimeException(e);
 		}
 
-		PlayAssistantCardHandler handler = new PlayAssistantCardHandler(game);
+		MoveStudentHandler handler = new MoveStudentHandler(game);
 		assertDoesNotThrow(() -> handler.handle(new SelectCloud("P1", 0)));
 	}
 
 	@Test
-	void handle_CorrectMessage_ProcessRequest() {
-		Game game = construct();
+	void handle_NonexistentIsland_RefuseRequest() throws IOException {
+		Server server = new Server(8172);
+		server.start();
+
+		Game game = construct(server, 2, false);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
 
-		assertDoesNotThrow(() -> game.setupPlayer("P1", "WHITE", "SNOW"));
-		assertDoesNotThrow(() -> game.setupPlayer("P2", "BLACK", "SKY"));
+		Client client1 = new Client("localhost", 8172, false);
+		client1.start();
+		client1.write(new Handshake("P1"));
+		Client client2 = new Client("localhost", 8172, false);
+		client2.start();
+		client2.write(new Handshake("P2"));
 
-		assertDoesNotThrow(game::start);
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 
-		PlayAssistantCardHandler handler = new PlayAssistantCardHandler(game);
-		assertThrowsExactly(NoConnectionException.class, () -> handler.handle(new PlayAssistantCard("P1", "CAT")));
+		MoveStudentHandler handler = new MoveStudentHandler(game);
+		assertDoesNotThrow(() -> handler.handle(new MoveStudent("P1", "RED", "123")));
 	}
 
 	@Test
-	void handle_RepeatedMessage_RefuseRequest() {
-		Game game = construct();
+	void handle_NonexistentColor_RefuseRequest() throws IOException {
+		Server server = new Server(8199);
+		server.start();
+
+		Game game = construct(server, 2, false);
 		game.addPlayer("P1");
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
 
-		assertDoesNotThrow(() -> game.setupPlayer("P1", "WHITE", "SNOW"));
-		assertDoesNotThrow(() -> game.setupPlayer("P2", "BLACK", "SKY"));
+		Client client1 = new Client("localhost", 8199, false);
+		client1.start();
+		client1.write(new Handshake("P1"));
+		Client client2 = new Client("localhost", 8199, false);
+		client2.start();
+		client2.write(new Handshake("P2"));
 
-		assertDoesNotThrow(game::start);
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 
-		PlayAssistantCardHandler handler = new PlayAssistantCardHandler(game);
-		assertThrowsExactly(NoConnectionException.class, () -> handler.handle(new PlayAssistantCard("P1", "CAT")));
-		assertThrowsExactly(NoConnectionException.class, () -> handler.handle(new PlayAssistantCard("P1", "CAT")));
-	}
-
-	@Test
-	void handle_UnavailableCard_RefuseRequest() {
-		Game game = construct();
-		game.addPlayer("P1");
-		game.addPlayer("P2");
-		assertDoesNotThrow(game::setup);
-
-		assertDoesNotThrow(() -> game.setupPlayer("P1", "WHITE", "SNOW"));
-		assertDoesNotThrow(() -> game.setupPlayer("P2", "BLACK", "SKY"));
-
-		assertDoesNotThrow(game::start);
-
-		PlayAssistantCardHandler handler = new PlayAssistantCardHandler(game);
-		assertThrowsExactly(NoConnectionException.class, () -> handler.handle(new PlayAssistantCard("P1", "CAT")));
-		assertThrowsExactly(NoConnectionException.class, () -> handler.handle(new PlayAssistantCard("P2", "CAT")));
+		MoveStudentHandler handler = new MoveStudentHandler(game);
+		assertDoesNotThrow(() -> handler.handle(new MoveStudent("P1", "xxx", "02")));
 	}
 
 	@Test
 	void getHelp_NormalPreconditions_ReturnCorrectHelpMessage() {
-		PlayAssistantCardHandler handler = new PlayAssistantCardHandler(construct());
+		MoveStudentHandler handler = new MoveStudentHandler(construct());
 		assertEquals(HelpContent.IN_GAME.getContent(), handler.getHelp());
 	}
 
@@ -135,14 +137,14 @@ class PlayAssistantCardHandlerTest {
 
 		assertDoesNotThrow(game::start);
 
-		PlayAssistantCardHandler handler = new PlayAssistantCardHandler(game);
+		MoveStudentHandler handler = new MoveStudentHandler(game);
 		handler.handleDisconnectedUser("P1");
 		handler.handleDisconnectedUser("P2");
 	}
 
 	@Test
 	void sendReconnectUpdate_NormalPreconditions_ThrowNullPointer() throws IOException {
-		Server server = new Server(6173);
+		Server server = new Server(9872);
 		server.start();
 
 		Game game = construct(server, 2, false);
@@ -150,10 +152,10 @@ class PlayAssistantCardHandlerTest {
 		game.addPlayer("P2");
 		assertDoesNotThrow(game::setup);
 
-		Client client1 = new Client("localhost", 6173, false);
+		Client client1 = new Client("localhost", 9872, false);
 		client1.start();
 		client1.write(new Handshake("P1"));
-		Client client2 = new Client("localhost", 6173, false);
+		Client client2 = new Client("localhost", 9872, false);
 		client2.start();
 		client2.write(new Handshake("P2"));
 
@@ -163,7 +165,7 @@ class PlayAssistantCardHandlerTest {
 			throw new RuntimeException(e);
 		}
 
-		PlayAssistantCardHandler handler = new PlayAssistantCardHandler(game);
+		MoveStudentHandler handler = new MoveStudentHandler(game);
 		assertThrowsExactly(NullPointerException.class, () -> handler.sendReconnectUpdate("P1"));
 	}
 }

@@ -12,7 +12,6 @@ import it.polimi.ingsw.eriantys.model.exceptions.IslandNotFoundException;
 import it.polimi.ingsw.eriantys.model.exceptions.NoMovementException;
 import it.polimi.ingsw.eriantys.server.Server;
 import it.polimi.ingsw.eriantys.server.exceptions.NoConnectionException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -341,7 +340,6 @@ class GameTest {
 		assertThrowsExactly(NullPointerException.class, () -> game.disconnect("P1"));
 	}
 
-	@Disabled
 	@Test
 	void disconnect_IdleFor60Seconds_GameOver() throws IOException {
 		Server server = new Server(6873);

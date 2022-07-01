@@ -1,0 +1,15 @@
+it.polimi.ingsw.eriantys.client
+it.polimi.ingsw.eriantys.client.cli
+it.polimi.ingsw.eriantys.client.gui
+it.polimi.ingsw.eriantys.client.gui.controllers
+it.polimi.ingsw.eriantys.controller
+it.polimi.ingsw.eriantys.controller.phases
+it.polimi.ingsw.eriantys.messages
+it.polimi.ingsw.eriantys.messages.client
+it.polimi.ingsw.eriantys.messages.server
+it.polimi.ingsw.eriantys.model
+it.polimi.ingsw.eriantys.model.characters
+it.polimi.ingsw.eriantys.model.exceptions
+it.polimi.ingsw.eriantys.model.influence
+it.polimi.ingsw.eriantys.server
+it.polimi.ingsw.eriantys.server.exceptions

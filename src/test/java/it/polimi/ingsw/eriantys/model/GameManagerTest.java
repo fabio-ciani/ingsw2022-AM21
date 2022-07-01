@@ -51,8 +51,6 @@ class GameManagerTest {
 		}
 	}
 
-	// TODO: Add a test which tries to create a GameManager with a single player -> Gson exception
-
 	@Test
 	void setupPlayer_PassInvalidTowerColor_ThrowException() {
 		GameManager gm = new GameManager(players, false);

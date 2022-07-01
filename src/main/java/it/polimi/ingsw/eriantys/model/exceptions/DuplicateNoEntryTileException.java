@@ -10,13 +10,6 @@ import it.polimi.ingsw.eriantys.model.IslandGroup;
 public class DuplicateNoEntryTileException extends Exception {
 
 	/**
-	 * Constructs a new exception with {@code null} as its detail message.
-	 */
-	public DuplicateNoEntryTileException() {
-		super();
-	}
-
-	/**
 	 * Constructs a new exception with the specified detail message.
 	 * @param message the detail message, which is saved for later retrieval by the {@link #getMessage()} method
 	 */

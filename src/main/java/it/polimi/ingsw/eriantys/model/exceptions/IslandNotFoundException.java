@@ -11,13 +11,6 @@ import it.polimi.ingsw.eriantys.model.IslandGroup;
 public class IslandNotFoundException extends Exception {
 
 	/**
-	 * Constructs a new exception with {@code null} as its detail message.
-	 */
-	public IslandNotFoundException() {
-		super();
-	}
-
-	/**
 	 * Constructs a new exception with the specified detail message.
 	 * @param message the detail message, which is saved for later retrieval by the {@link #getMessage()} method
 	 */

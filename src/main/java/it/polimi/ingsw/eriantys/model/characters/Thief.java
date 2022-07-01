@@ -56,7 +56,7 @@ public class Thief extends BaseCharacterCard {
 	public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland)
 			throws InvalidArgumentException {
 		if (targetColor == null) {
-			throw new InvalidArgumentException("targetColor argument is null.");
+			throw new InvalidArgumentException("No color was selected");
 		}
 		for (Player player : players) {
 			boolean emptyColor = false;

@@ -49,7 +49,7 @@ public class SpoiledPrincess extends ContainerCharacterCard {
 	public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland)
 			throws InvalidArgumentException, NoMovementException {
 		if (targetColor == null) {
-			throw new InvalidArgumentException("targetColor argument is null.");
+			throw new InvalidArgumentException("No student was selected");
 		}
 		StudentContainer diningRoom = currentPlayerSupplier.get().getDiningRoom();
 		moveTo(diningRoom, targetColor);

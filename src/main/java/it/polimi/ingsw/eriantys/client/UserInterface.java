@@ -58,14 +58,14 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 	/**
 	 * Shows an information message to the user.
 	 *
-	 * @param details The message to show
+	 * @param details the message to show
 	 */
 	public abstract void showInfo(String details);
 
 	/**
 	 * Shows an error message to the user.
 	 *
-	 * @param details The message to show
+	 * @param details the message to show
 	 */
 	public abstract void showError(String details);
 
@@ -73,7 +73,7 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 	 * {@inheritDoc}
 	 * Shows an error because the message was not recognized.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(Message message) {
@@ -84,7 +84,7 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 	 * {@inheritDoc}
 	 * Shows an error with the details of the {@link Refused} message.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(Refused message) {
@@ -96,12 +96,20 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 	 * Shows an error with the {@link RefusedReconnect} message
 	 * and removes reconnection settings from the client.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(RefusedReconnect message) {
 		showError(message.getDetails());
 		client.removeReconnectSettings();
+	}
+
+	@Override
+	public void handleMessage(UserSelectionUpdate message) {
+		String nextPlayer = message.getNextPlayer();
+		if (nextPlayer != null && !Objects.equals(client.getUsername(), nextPlayer)) {
+			showInfo(String.format("%s is choosing...", nextPlayer));
+		}
 	}
 
 	@Override
@@ -156,11 +164,8 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 	}
 
 	@Override
-	public void handleMessage(UserSelectionUpdate message) {
-		String nextPlayer = message.getNextPlayer();
-		if (nextPlayer != null && !Objects.equals(client.getUsername(), nextPlayer)) {
-			showInfo(String.format("%s is choosing...", nextPlayer));
-		}
+	public void handleMessage(LastRoundUpdate message) {
+		showInfo("The last round of the game has begun...");
 	}
 
 	/**
@@ -183,7 +188,7 @@ public abstract class UserInterface implements Runnable, ClientMessageHandler {
 	 * {@inheritDoc}
 	 * Sends back a new {@link Ping} to the server.
 	 *
-	 * @param message The received message
+	 * @param message the received message
 	 */
 	@Override
 	public void handleMessage(Ping message) {

@@ -127,7 +127,7 @@ public class Client extends Thread {
 			while (running) {
 				Message message = (Message) in.readObject();
 				// if (!(message instanceof Ping))
-				// 	System.out.println(ConsoleColors.ANSI_BLUE + "Received a " + message.getClass() + ConsoleColors.ANSI_RESET);
+					// System.out.println(ConsoleColors.ANSI_BLUE + "Received a " + message.getClass() + ConsoleColors.ANSI_RESET);
 				handleMessage(message);
 			}
 		} catch (IOException | ClassNotFoundException e) {
@@ -287,17 +287,19 @@ public class Client extends Thread {
 			ui.handleMessage(m);
 		} else if (message instanceof LobbyUpdate m) {
 			ui.handleMessage(m);
+		} else if (message instanceof UserSelectionUpdate m) {
+			ui.handleMessage(m);
+		} else if (message instanceof InitialBoardStatus m) {
+			ui.handleMessage(m);
 		} else if (message instanceof AssistantCardUpdate m) {
 			ui.handleMessage(m);
 		} else if (message instanceof BoardUpdate m) {
 			ui.handleMessage(m);
 		} else if (message instanceof CharacterCardUpdate m) {
 			ui.handleMessage(m);
-		} else if (message instanceof UserSelectionUpdate m) {
+		} else if (message instanceof LastRoundUpdate m) {
 			ui.handleMessage(m);
 		} else if (message instanceof GameOverUpdate m) {
-			ui.handleMessage(m);
-		} else if (message instanceof InitialBoardStatus m) {
 			ui.handleMessage(m);
 		} else if (message instanceof ReconnectionUpdate m) {
 			towerColor = null; wizard = null;

@@ -8,7 +8,7 @@ import it.polimi.ingsw.eriantys.server.Server;
  * The communication item is broadcast through the lobby or game (depending on the application phase).
  * The class represents a non-specific communication item which can be overridden for further object-oriented implementations.
  */
-public class UserActionUpdate extends Message {
+public abstract class UserActionUpdate extends Message {
 	private String nextPlayer;
 
 	public UserActionUpdate() {

@@ -37,7 +37,7 @@ public class Herald extends BaseCharacterCard {
 	public void applyEffect(List<Color> sourceColors, List<Color> destinationColors, Color targetColor, IslandGroup targetIsland)
 			throws InvalidArgumentException {
 		if (targetIsland == null) {
-			throw new InvalidArgumentException("targetIsland argument is null.");
+			throw new InvalidArgumentException("No island was selected");
 		}
 		gameManager.resolve(targetIsland);
 		increaseCost();

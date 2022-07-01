@@ -144,41 +144,41 @@
 				<executions>
 					<execution>
 						<id>server</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
 						<configuration>
 							<appendAssemblyId>false</appendAssemblyId>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
 							<archive>
 								<manifest>
 									<mainClass>it.polimi.ingsw.eriantys.server.Server</mainClass>
 								</manifest>
 							</archive>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<finalName>${project.artifactId} - Server</finalName>
+							<finalName>Eriantys-Server</finalName>
 						</configuration>
+					</execution>
+					<execution>
+						<id>client</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
-					</execution>
-					<execution>
-						<id>client</id>
 						<configuration>
 							<appendAssemblyId>false</appendAssemblyId>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
 							<archive>
 								<manifest>
 									<mainClass>it.polimi.ingsw.eriantys.client.Client</mainClass>
 								</manifest>
 							</archive>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<finalName>${project.artifactId} - Client</finalName>
+							<finalName>Eriantys-Client</finalName>
 						</configuration>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
 					</execution>
 				</executions>
 			</plugin>

@@ -1,12 +1,17 @@
 # Eriantys
+
+![IDE](https://img.shields.io/badge/IDE-IntelliJ%20IDEA%20Ultimate-black?style=flat&logo=intellij-idea)
+![Build](https://img.shields.io/badge/Build-Apache%20Maven-C71A36?style=flat&logo=apache-maven)
+![CodeAnalysis](https://img.shields.io/badge/Code%20Analysis-SonarQube-4E9BCD?style=flat&logo=sonarqube)
+
 An implementation of a tabletop game as the _Software Engineering_ final examination project at [Polytechnic University of Milan](https://www.polimi.it/).
 
 ## Development Team
-* **Tommaso Bonetti** ([@tommaso-bonetti](https://github.com/tommaso-bonetti))
+* **Tommaso Bonetti** ([@tommaso-bonetti](https://github.com/tommaso-bonetti))  
 [tommaso2.bonetti@mail.polimi.it](mailto:tommaso2.bonetti@mail.polimi.it)
-* **Fabio Ciani** ([@fabio-ciani](https://github.com/fabio-ciani))
+* **Fabio Ciani** ([@fabio-ciani](https://github.com/fabio-ciani))  
 [fabio1.ciani@mail.polimi.it](mailto:fabio1.ciani@mail.polimi.it)
-* **Davide Mozzi** ([@davide-mozzi](https://github.com/davide-mozzi))
+* **Davide Mozzi** ([@davide-mozzi](https://github.com/davide-mozzi))  
 [davide.mozzi@mail.polimi.it](mailto:davide.mozzi@mail.polimi.it)
 
 ## Implemented features

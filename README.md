@@ -1,8 +1,8 @@
 # Eriantys
 
-![IDE](https://img.shields.io/badge/IDE-IntelliJ%20IDEA%20Ultimate-black?style=flat&logo=intellij-idea)
-![Build](https://img.shields.io/badge/Build-Apache%20Maven-C71A36?style=flat&logo=apache-maven)
-![CodeAnalysis](https://img.shields.io/badge/Code%20Analysis-SonarQube-4E9BCD?style=flat&logo=sonarqube)
+![Build](https://img.shields.io/badge/Build-Apache%20Maven-C71A36?style=flat&logo=apache-maven&logoColor=white)
+![Test](https://img.shields.io/badge/Test-JUnit5-25A162?style=flat&logo=junit5&logoColor=white)
+![CodeAnalysis](https://img.shields.io/badge/Code%20Analysis-SonarQube-4E9BCD?style=flat&logo=sonarqube&logoColor=white)
 
 An implementation of a tabletop game as the _Software Engineering_ final examination project at [Polytechnic University of Milan](https://www.polimi.it/).
 
